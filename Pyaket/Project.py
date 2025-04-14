@@ -67,6 +67,7 @@ class PyaketProject(CodeProject):
         output:         Annotated[Path, Option("--output",         help="[magenta](Special )[/] Directory to output the compiled binary")]="Release",
         keep_open:      Annotated[bool, Option("--keep-open",      help="[magenta](Special )[/] Keep the terminal open after errors or finish")]=False,
         standalone:     Annotated[bool, Option("--standalone",     help="[magenta](Special )[/] Create a standalone offline installer")]=False,
+        upx:            Annotated[bool, Option("--upx",            help="[magenta](Special )[/] Use UPX to compress the binary")]=False,
     ) -> Path:
 
         # Build the target platform enum from options
@@ -145,6 +146,10 @@ class PyaketProject(CodeProject):
         ))
         BrokenPath.copy(src=binary, dst=release_path)
         BrokenPath.make_executable(release_path)
+
+        # Compress the final release with upx
+        if upx and (shell("upx", "--best", "--lzma", release_path).returncode != 0):
+            raise RuntimeError(log.error("Failed to compress executable with upx"))
 
         # Release a tar.gz to keep chmod +x attributes
         if tarball and (not platform.system.is_windows()):
