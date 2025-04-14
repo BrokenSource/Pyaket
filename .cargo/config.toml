@@ -1,0 +1,6 @@
+# Link against a static CRT on Windows to avoid msvcrt.dll
+[target.'cfg(all(windows, target_env = "msvc"))']
+rustflags = ["-C", "target-feature=+crt-static"]
+
+[build]
+target-dir = "Build"

@@ -1,0 +1,46 @@
+INHERIT: ../../mkdocs-base.yml
+site_name: Pyaket
+site_description: 📦 Easy Python to → Fast Executables
+site_url: https://pyaket.dev/
+repo_url: https://github.com/BrokenSource/Pyaket/
+nav:
+  - Home:
+    - index.md
+    - Special:
+      - ❓ Questions: about/faq.md
+      - ❤️ Sponsors: about/sponsors.md
+    - About:
+      - 🪵 Changelog: about/changelog.md
+      - 🧭 Roadmap: https://github.com/orgs/BrokenSource/projects/2
+      - 💬 Contact: about/contact.md
+  - Installation:
+    - get/index.md
+    - 🧀 Wheels: get/wheels.md
+    - 📦 Installers: get/installers.md
+    - 🔥 Source: get/source.md
+    - 🦀 Crates: get/crates.md
+  - Examples:
+    - examples/index.md
+  - Documentation:
+    - docs/index.md
+theme:
+  custom_dir: ../../Website/overrides
+  favicon: Pyaket/Resources/Images/Pyaket.png
+  palette:
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: light-blue
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to Light Mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to Dark Mode
+markdown_extensions:
+  pymdownx.snippets:
+    base_path: [../../Website]
