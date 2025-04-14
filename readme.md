@@ -38,7 +38,13 @@
 
 ## 🔥 Description
 
-**Pyaket** generates portable executables of your Python projects for any platform!
+**Pyaket** generates portable executables of your Python projects for all platforms!
+
+<small>✨ It works by bundling and using [**uv**](https://github.com/astral-sh/uv) at runtime in a Rust binary!</small>
+
+- [x] **Fast** and portable executables with no dependencies, automatic installation
+
+- [x] **First class** monorepo support • bundle all your wheels to be installed at runtime
 
 - (Powered by uv and rust - fast)
 - (Multiple platforms supported)
@@ -53,6 +59,8 @@
 ❤️ **Loving it?** Your [**support**](https://brokensrc.dev/about/sponsors/) is essential!
 
 ## 📦 Installation
+
+Head out to the [**Official Website**](https://pyaket.dev/get) for the latest installation instructions and more!
 
 <!-- Website screenshot, as always -->
 

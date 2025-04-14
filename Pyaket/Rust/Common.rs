@@ -396,7 +396,7 @@ static WORKSPACE_ROOT: OnceCell<PathBuf> = OnceCell::new();
 pub static PYAKET_APP_NAME:           &str = "PYAKET_APP_NAME";
 pub static PYAKET_APP_AUTHOR:         &str = "PYAKET_APP_AUTHOR";
 pub static PYAKET_APP_VERSION:        &str = "PYAKET_APP_VERSION";
-pub static PYAKET_APP_SUBDIR:         &str = "PYAKET_APP_SUBDIR";
+pub static PYAKET_VERSIONS_DIR:       &str = "PYAKET_VERSIONS_DIR";
 pub static PYAKET_APP_WHEELS:         &str = "PYAKET_APP_WHEELS";
 pub static PYAKET_APP_PYPI:           &str = "PYAKET_APP_PYPI";
 pub static PYAKET_APP_REQTXT:         &str = "PYAKET_APP_REQTXT";
@@ -410,7 +410,7 @@ pub static PYAKET_ENTRY_MODULE:       &str = "PYAKET_ENTRY_MODULE";
 pub static PYAKET_ENTRY_SCRIPT:       &str = "PYAKET_ENTRY_SCRIPT";
 pub static PYAKET_ENTRY_CODE:         &str = "PYAKET_ENTRY_CODE";
 pub static PYAKET_ENTRY_COMMAND:      &str = "PYAKET_ENTRY_COMMAND";
-pub static PYAKET_COMMON_DIRECTORY:   &str = "PYAKET_COMMON_DIRECTORY";
+pub static PYAKET_COMMON_DIR:         &str = "PYAKET_COMMON_DIR";
 pub static PYAKET_TARGET_TRIPLE:      &str = "PYAKET_TARGET_TRIPLE";
 pub static PYAKET_ROLLING:            &str = "PYAKET_ROLLING";
 pub static PYAKET_KEEP_OPEN:          &str = "PYAKET_KEEP_OPEN";
@@ -435,7 +435,7 @@ pub struct Project {
 
     /// Subdirectory of the workspace for versions to coexist
     /// - Default: `$WORKSPACE/Versions/`
-    #[default(Environment::uget(PYAKET_APP_SUBDIR, "Versions"))]
+    #[default(Environment::uget(PYAKET_VERSIONS_DIR, "Versions"))]
     pub versions_dir: String,
 
     /// List of local Python wheels to install at runtime separated by ':'
@@ -523,7 +523,7 @@ pub struct Project {
     #[default(Environment::uget(PYAKET_TARGET_TRIPLE, env::var("TARGET").unwrap().as_str()))]
     pub triple: String,
 
-    #[default(Environment::uget(PYAKET_COMMON_DIRECTORY, "Pyaket"))]
+    #[default(Environment::uget(PYAKET_COMMON_DIR, "Pyaket"))]
     pub common_dir: String,
 
     /// Shall a binary always reinstall latest pypi or git+ dependencies

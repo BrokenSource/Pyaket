@@ -23,6 +23,7 @@ nav:
     - examples/index.md
   - Documentation:
     - docs/index.md
+    - Configuration: docs/env.md
 theme:
   custom_dir: ../../Website/overrides
   favicon: Pyaket/Resources/Images/Pyaket.png

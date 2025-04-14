@@ -95,7 +95,7 @@ class PyaketProject(CodeProject):
             PYAKET_APP_NAME       = app_name,
             PYAKET_APP_AUTHOR     = app_author,
             PYAKET_APP_VERSION    = app_version,
-            PYAKET_APP_SUBDIR     = app_subdir,
+            PYAKET_VERSIONS_DIR   = app_subdir,
             PYAKET_APP_WHEELS     = app_wheels,
             PYAKET_APP_PYPI       = app_pypi,
             PYAKET_APP_REQTXT     = app_reqtxt,
