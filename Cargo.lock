@@ -554,7 +554,6 @@ dependencies = [
  "dotenvy",
  "flate2",
  "glob",
- "once_cell",
  "rust-embed",
  "serde",
  "serde_json",

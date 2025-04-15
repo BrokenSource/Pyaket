@@ -73,7 +73,7 @@ fn build() -> Result<()> {
 }
 
 fn main() {
-    Lazy::force(&START_TIME);
+    LazyLock::force(&START_TIME);
     Environment::set("BUILD", "1");
     build().unwrap();
 }

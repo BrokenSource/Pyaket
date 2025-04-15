@@ -124,7 +124,7 @@ fn run(project: &Project) -> Result<()> {
 }
 
 fn main() {
-    Lazy::force(&START_TIME);
+    LazyLock::force(&START_TIME);
     Environment::unset("BUILD");
 
     // Read the project configurion sent at the end of build.rs

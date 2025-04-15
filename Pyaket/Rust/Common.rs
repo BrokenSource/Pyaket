@@ -11,10 +11,10 @@ pub use std::fs::read_to_string as read_string;
 pub use std::fs::create_dir_all as mkdir;
 pub use std::fs::remove_dir_all as rmdir;
 pub use std::fs::{read, write, rename};
+pub use std::sync::{OnceLock, LazyLock};
 
 pub use xxhash_rust::xxh3::xxh3_64;
 pub use serde::{Serialize, Deserialize};
-pub use once_cell::sync::{OnceCell, Lazy};
 pub use spinners::{Spinner, Spinners};
 pub use smart_default::SmartDefault;
 pub use anyhow::{bail, Result};
@@ -26,7 +26,7 @@ pub use temp_dir::TempDir;
 /* -------------------------------------------------------------------------- */
 // Pretty printing log macros that works both in build.rs and main.rs
 
-pub static START_TIME: Lazy<Instant> = Lazy::new(Instant::now);
+pub static START_TIME: LazyLock<Instant> = LazyLock::new(Instant::now);
 
 pub mod log {
 
@@ -377,7 +377,7 @@ impl BrokenAssets for ArchiveAssets {
 
 /* -------------------------------------------------------------------------- */
 
-static WORKSPACE_ROOT: OnceCell<PathBuf> = OnceCell::new();
+static WORKSPACE_ROOT: OnceLock<PathBuf> = OnceLock::new();
 
 // Define environment configuration literals for consistency
 pub static PYAKET_APP_NAME:           &str = "PYAKET_APP_NAME";
