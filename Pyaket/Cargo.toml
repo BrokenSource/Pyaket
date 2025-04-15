@@ -28,7 +28,7 @@ temp-dir      = "0.1.14"
 ureq          = "3.0.10"
 uuid          = {version="1.16.0", features=["v4"]}
 xxhash-rust   = {version="0.8.15", features=["xxh3"]}
-zip           = {version="2.6.0", default-features=false, features=["bzip2", "deflate", "deflate64", "lzma", "time", "zstd"]}
+zip           = {version="2.6.0", features=["bzip2", "deflate", "deflate64", "lzma", "zstd"], default-features=false}
 zstd          = "0.13.3"
 
 [build-dependencies]
@@ -49,7 +49,7 @@ temp-dir      = "0.1.14"
 ureq          = "3.0.10"
 uuid          = {version="1.16.0", features=["v4"]}
 xxhash-rust   = {version="0.8.15", features=["xxh3"]}
-zip           = {version="2.6.0", default-features=false, features=["bzip2", "deflate", "deflate64", "lzma", "time", "zstd"]}
+zip           = {version="2.6.0", features=["bzip2", "deflate", "deflate64", "lzma", "zstd"], default-features=false}
 zstd          = "0.13.3"
 
 [[bin]]
