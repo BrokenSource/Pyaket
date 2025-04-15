@@ -170,8 +170,6 @@ dynamic = ["version"]
 
 :material-arrow-right: A continuation of the [application](#app) section for listing dependencies.
 
-!!! heart "**Private** registries are not planned, unless you're willing to [**sponsor**](https://pyaket.dev/about/sponsors/) my work for it!"
-
 <hr>
 
 ### <kbd>PYAKET_APP_WHEELS</kbd> {#app-wheels}
@@ -241,9 +239,6 @@ The version of Python to be used at runtime, from [astral-sh/python-build-standa
 
 - Please chose carefully to ensure all your wheels and dependencies are compatible with the target version. Users may not have compilers and headers for sdists.
 
-!!! heart "**MyPy, PyPy**, etc. are not planned, unless you're willing to [**sponsor**](https://pyaket.dev/about/sponsors/) my work for it!"
-
-
 <hr>
 
 ### <kbd>PYAKET_PYTHON_BUNDLE</kbd> {#python-bundle}
@@ -297,8 +292,6 @@ This section covers [PyTorch](https://pytorch.org/) configuration for ML and AI 
 > 📦 <b>Type:</b> Version string • <b>Default:</b> None
 
 An optional version of PyTorch to be installed at runtime.
-
-!!! heart "**Nightly** builds are not planned, unless you're willing to [**sponsor**](https://pyaket.dev/about/sponsors/) my work for it!"
 
 <hr>
 
@@ -357,7 +350,7 @@ An inline Python code to be executed as `python -c <code> (args)` after installa
 <hr>
 
 ### <kbd>PYAKET_ENTRY_COMMAND</kbd> {#entry-command}
-> 📦 <b>Type:</b> String • <b>Default:</b> None
+> 📦 <b>Type:</b> String • <b>Default:f</b> None
 
 A command to be executed as `<command> (args)` after installation.
 

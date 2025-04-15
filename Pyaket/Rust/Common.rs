@@ -228,17 +228,10 @@ pub mod archive {
 
 pub mod network {
     use super::*;
-    use reqwest::blocking::Client;
-
-    static CLIENT: OnceCell<Client> = OnceCell::new();
-
-    fn client() -> &'static Client {
-        CLIENT.get_or_init(Client::new)
-    }
 
     /// Check if URL is reachable and returns a 200 OK status
-    pub fn exists(url: &str) -> Result<bool, reqwest::Error> {
-        let response = network::client().head(url).send()?;
+    pub fn exists(url: &str) -> Result<bool, ureq::Error> {
+        let response = ureq::head(url).call()?;
         Ok(response.status().is_success())
     }
 
@@ -249,17 +242,11 @@ pub mod network {
         Ok(())
     }
 
-    /// Gets the `Content-Length` of an URL, if available
-    /// - No chunks: https://github.com/psf/requests/issues/3953
-    pub fn content_length(url: &str) -> Result<u64> {
-        Ok(network::client()
-            .get(url).header("Accept-Encoding", "None")
-            .send()?.content_length().unwrap_or(0))
-    }
-
     /// In-memory download an url to a byte vector
     pub fn download_bytes(url: &str) -> Result<Vec<u8>> {
-        Ok(network::client().get(url).send()?.bytes()?.to_vec())
+        Ok(ureq::get(url).call()?.body_mut()
+            .with_config().limit(100 * 1024 * 1024)
+            .read_to_vec()?)
     }
 
     /// Download to a file
