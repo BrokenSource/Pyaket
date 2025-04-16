@@ -1,8 +1,5 @@
-> [!WARNING]
-> This repository is in **early development** and is discouraged. Still fixing bugs, untested on Windows, thinking on licensing, website work and documentation, etc. Get in touch if you're interested in using it!
-
 <div align="center">
-  <img src="https://raw.githubusercontent.com/BrokenSource/Pyaket/main/Pyaket/Resources/Images/Pyaket.png" width="210">
+  <img src="https://raw.githubusercontent.com/BrokenSource/Pyaket/main/Pyaket/Resources/Images/Pyaket.png" width="210" onerror='this.src="Pyaket/Resources/Images/Pyaket.png"'>
   <h1 style="margin-top: 0">Pyaket</h1>
   <span>📦 Easy Python to → Fast Executables 📦</span>
   <br>

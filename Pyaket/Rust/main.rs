@@ -1,5 +1,5 @@
-mod Common;
-use Common::*;
+mod common;
+use common::*;
 
 fn run(project: &Project) -> Result<()> {
     project.ensure_uv()?;

@@ -1,6 +1,6 @@
-#[path="Rust/Common.rs"]
-mod Common;
-use Common::*;
+#[path="Rust/common.rs"]
+mod common;
+use common::*;
 
 /* -------------------------------------------------------------------------- */
 

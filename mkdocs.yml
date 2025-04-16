@@ -6,13 +6,9 @@ repo_url: https://github.com/BrokenSource/Pyaket/
 nav:
   - Home:
     - index.md
-    - Special:
-      - ❓ Questions: about/faq.md
-      - ❤️ Sponsors: about/sponsors.md
-    - About:
-      - 🪵 Changelog: about/changelog.md
-      - 🧭 Roadmap: https://github.com/orgs/BrokenSource/projects/2
-      - 💬 Contact: about/contact.md
+    - 🪵 Changelog: about/changelog.md
+    - 🧭 Roadmap: https://github.com/orgs/BrokenSource/projects/2
+    - 💬 Contact: about/contact.md
   - Installation:
     - get/index.md
     - 🧀 Wheels: get/wheels.md
@@ -22,8 +18,9 @@ nav:
   - Examples:
     - examples/index.md
   - Documentation:
-    - docs/index.md
+    # - docs/index.md
     - Configuration: docs/configuration.md
+  - Questions: faq.md
 theme:
   custom_dir: ../../Website/overrides
   favicon: Pyaket/Resources/Images/Pyaket.png
