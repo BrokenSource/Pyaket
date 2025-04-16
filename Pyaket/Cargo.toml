@@ -54,4 +54,4 @@ zstd          = "0.13.3"
 
 [[bin]]
 name = "pyaket"
-path = "Rust/Main.rs"
+path = "Rust/main.rs"

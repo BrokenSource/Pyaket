@@ -11,12 +11,13 @@ nav:
     - 💬 Contact: about/contact.md
   - Installation:
     - get/index.md
-    - 🧀 Wheels: get/wheels.md
-    - 📦 Installers: get/installers.md
-    - 🔥 Source: get/source.md
-    - 🦀 Crates: get/crates.md
+    - 🦀 Rust: get/rust.md
+    # - 🧀 Wheels: get/wheels.md
+    # - 📦 Installers: get/installers.md
+    # - 🔥 Source: get/source.md
+    # - 🦀 Crates: get/crates.md
   - Examples:
-    - examples/index.md
+    - examples/basic.md
   - Documentation:
     # - docs/index.md
     - Configuration: docs/configuration.md

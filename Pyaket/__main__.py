@@ -55,6 +55,9 @@ class PyaketManager(ProjectManager):
                 shell("winget", "install", "-e", "--id", "Rustlang.Rustup")
             elif BrokenPlatform.OnUnix:
                 shell("sh", "-c", requests.get("https://sh.rustup.rs").text, "-y", echo=False)
+            elif BrokenPlatform.OnMacOS:
+                # Xcode? Idk, buy me a mac
+                ...
 
             # If rustup isn't found, ask user to restart shell
             BrokenPath.add_to_path(Path.home()/".cargo"/"bin")

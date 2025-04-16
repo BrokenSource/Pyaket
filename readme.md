@@ -23,43 +23,47 @@
   <br>
   <sub>
     <a href="https://www.github.com/BrokenSource/Pyaket">GitHub</a> •
-    <a href="https://pyaket.dev/about/contact">Contact</a> •
-    <a href="https://pyaket.dev/about/changelog">Changelog</a> •
-    <a href="https://pyaket.dev/about/license">License</a>
+    <a href="https://pyaket.dev/contact">Contact</a> •
+    <a href="https://pyaket.dev/changelog">Changelog</a> •
+    <a href="https://pyaket.dev/license">License</a>
   </sub>
   <br>
   <br>
 </div>
 
+> [!WARNING]
+> This project is under active development, certain parts are incomplete and not fully tested yet.
+
 <!-- Todo: Demo video here, as always -->
 
 ## 🔥 Description
 
-**Pyaket** generates portable executables of your Python projects for all platforms!
+**Pyaket** bundles and generates portable executables of your Python projects for all platforms!
 
-<small>✨ It works by bundling and using [**uv**](https://github.com/astral-sh/uv) at runtime in a Rust binary!</small>
-
-- [x] **Fast** and portable executables with no dependencies, automatic installation
+- [x] **Fast** and portable executables for your python projects,
 
 - [x] **First class** monorepo support • bundle all your wheels to be installed at runtime
 
-- (Powered by uv and rust - fast)
-- (Multiple platforms supported)
-- (First class monorepo support)
-- (Bundling wheels to the project)
-- (Offline executables are planned)
-- (Smart detects partial installs)
-- (Easy uninstallation, version management)
-- (Common directory for multiple releases)
-- ...
-
-❤️ **Loving it?** Your [**support**](https://brokensrc.dev/about/sponsors/) is essential!
+<!--
+(Powered by uv and rust - fast)
+(Multiple platforms supported)
+(First class monorepo support)
+(Bundling wheels to the project)
+(Offline executables are planned)
+(Smart detects partial installs)
+(Easy uninstallation, version management)
+(Common directory for multiple releases)
+-->
 
 ## 📦 Installation
 
-Head out to the [**Official Website**](https://pyaket.dev/get) for the latest installation instructions and more!
+Head out to the [**website**](https://pyaket.dev/get) for the latest installation instructions and more!
 
-<!-- Website screenshot, as always -->
+<!-- Todo: Website screenshot, as always -->
+
+## 💰 Commercial
+
+Pyaket is free to use for Open Source projects and non-commercial purposes. Commercial usage (including selling executables, for-profit deployments) or bundling proprietary software requires an appropriate [sponsorship tier](https://github.com/sponsors/Tremeschin), you may freely evaluate the viability beforehand. Get in touch if the pricing is not suitable for you, new features and support, or altruistic reasons!
 
 ## ♻️ Community
 
