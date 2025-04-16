@@ -26,8 +26,8 @@ mod manage {
 
     pub fn wheels(project: &Project) -> Result<()> {
 
-        // Don't trust the user on ':'.join(wheels) formatting
-        for wheel in project.wheels.split(":")
+        // Don't trust the user on ';'.join(wheels) formatting
+        for wheel in project.wheels.split(";")
             .map(|x| x.trim()).filter(|x| !x.is_empty())
         {
             // Interpret as glob pattern to allow `/path/*.whl` sugar

@@ -581,9 +581,14 @@ impl Project {
 
     /// Get a command starting with uv executable
     pub fn uv(&self) -> Command {
-        let pattern = format!("{}/**/uv{}",
+        #[cfg(target_os="windows")]
+        let executable = "uv.exe";
+        #[cfg(not(target_os="windows"))]
+        let executable = "uv";
+
+        let pattern = format!("{}/**/{}",
             self.uv_unpack_dir().display(),
-            env::consts::EXE_EXTENSION);
+            executable);
 
         Command::new(glob::glob(&pattern)
             .expect("Invalid glob pattern")

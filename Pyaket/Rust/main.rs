@@ -66,7 +66,7 @@ fn run(project: &Project) -> Result<()> {
         }
 
         // Add PyPI packages to be installed
-        command.args(project.pypi.split(":")
+        command.args(project.pypi.split(";")
             .map(|x| x.trim()).filter(|x| !x.is_empty()));
 
         // Add the requirements.txt file to be installed
