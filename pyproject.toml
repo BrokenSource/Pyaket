@@ -15,6 +15,7 @@ license     = "AGPL-3.0"
 requires-python = ">=3.10"
 dependencies = [
     "broken-source @ git+https://github.com/BrokenSource/BrokenSource",
+    "ziglang~=0.14.0",
 ]
 
 [project.scripts]

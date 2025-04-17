@@ -157,10 +157,6 @@ pub mod subprocess {
 pub mod archive {
     use super::*;
     use std::io::{Cursor, Read, Seek};
-    use zstd::stream::read::Decoder as ZsDecoder;
-    use flate2::read::GzDecoder;
-    use bzip2::read::BzDecoder;
-    use zip::ZipArchive;
 
     /// Writes a tar stream of data to a directory
     fn unpack_tar<R: Read>(decoder: R, path: &Path) -> Result<()> {
@@ -190,6 +186,11 @@ pub mod archive {
             }
         }
 
+        // use zstd::stream::read::Decoder as ZsDecoder;
+        // use bzip2::read::BzDecoder;
+        use flate2::read::GzDecoder;
+        use zip::ZipArchive;
+
         // Can take a while on weak Disks/CPU
         let mut spinner = Spinner::new(
             Spinners::Dots, format!("Unpacking file ({})",
@@ -203,8 +204,8 @@ pub mod archive {
         cursor.seek(io::SeekFrom::Start(0))?;
         match magic {
             [0x50, 0x4B, 0x03, 0x04, ..] => ZipArchive::new(cursor)?.extract(path.as_ref())?,
-            [0x28, 0xB5, 0x2F, 0xFD, ..] => unpack_tar(ZsDecoder::new(cursor)?, path.as_ref())?,
-            [0x42, 0x5A, ..            ] => unpack_tar(BzDecoder::new(cursor),  path.as_ref())?,
+            // [0x28, 0xB5, 0x2F, 0xFD, ..] => unpack_tar(ZsDecoder::new(cursor)?, path.as_ref())?,
+            // [0x42, 0x5A, ..            ] => unpack_tar(BzDecoder::new(cursor),  path.as_ref())?,
             [0x1F, 0x8B, ..            ] => unpack_tar(GzDecoder::new(cursor),  path.as_ref())?,
             _ => bail!("Unknown archive format for magic bytes: {:?}", magic),
         }

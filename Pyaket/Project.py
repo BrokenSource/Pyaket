@@ -23,9 +23,13 @@ from Pyaket import PYAKET
 
 
 class PyaketProfile(str, BrokenEnum):
-    Debug   = "dev"
+    Debug   = "debug"
     Release = "release"
     Small   = "small"
+
+    @property
+    def cargo(self) -> str:
+        return self.value.replace("debug", "dev")
 
 # Aliases for formatting
 _Pro = PyaketProfile
@@ -68,21 +72,26 @@ class PyaketProject(CodeProject):
         keep_open:      Annotated[bool, Option("--keep-open",      help="[magenta](Special )[/] Keep the terminal open after errors or finish")]=False,
         standalone:     Annotated[bool, Option("--standalone",     help="[magenta](Special )[/] Create a standalone offline installer")]=False,
         upx:            Annotated[bool, Option("--upx",            help="[magenta](Special )[/] Use UPX to compress the binary")]=False,
+        zigbuild:       Annotated[bool, Option("--zigbuild",       help="[magenta](Special )[/] Use Zig to link the binary")]=False,
     ) -> Path:
 
         # Build the target platform enum from options
-        platform = PlatformEnum.get(f"{system.value}-{arch.value}")
+        platform = PlatformEnum(f"{system.value}-{arch.value}")
         shell("rustup", "target", "add", platform.triple)
 
-        # Filter problematic or invalid (Host -> Target) combinations
-        if BrokenPlatform.OnLinux and (platform.system.is_macos()):
-            return log.skip(f"Linux can't [italic]easily[/] compile for {platform.system}")
-        elif BrokenPlatform.OnMacOS and (not platform.system.is_macos()):
+        # Filter problematic or invalid (Host -> Target) combinations and
+        if BrokenPlatform.OnMacOS and (not platform.system.is_macos()):
             return log.skip("macOS can only [italic]easily[/] compile for itself")
         elif BrokenPlatform.OnWindows and (not platform.system.is_windows()):
             return log.skip("Windows can only [italic]easily[/] compile for itself")
         elif (platform == PlatformEnum.WindowsARM64):
             return log.skip("Windows on ARM is not supported yet")
+
+        # Apply cross compilation workarounds
+        if BrokenPlatform.OnLinux and (platform == PlatformEnum.LinuxARM64):
+            zigbuild = True
+        elif BrokenPlatform.OnLinux and (platform.system.is_macos()):
+            zigbuild = True
 
         # Fixme: Wait for uv's implementation of pip wheel for my own sanity
         if standalone and (platform != BrokenPlatform.Host):
@@ -114,25 +123,24 @@ class PyaketProject(CodeProject):
             PYAKET_KEEP_OPEN      = keep_open,
             # Notify build hooks to pin dependencies
             PYAKET_RELEASE=1,
-            # Minor fixes to cross compilation
-            CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=shutil.which("aarch64-linux-gnu-gcc"),
         )
 
         # Cargo warning: We're not 'installing' a utility
         BrokenPath.add_to_path(build_dir/"bin")
 
         if shell(
-            "cargo", "install",
-            "--path", PYAKET.PACKAGE,
-            "--root", build_dir,
+            "cargo", ("zigbuild" if zigbuild else "build"),
+            "--manifest-path", (PYAKET.PACKAGE/"Cargo.toml"),
+            "--target-dir", build_dir,
             "--target", platform.triple,
-            "--profile", profile.value,
+            "--profile", profile.cargo,
             cwd=self.path,
         ).returncode != 0:
             raise RuntimeError(log.error("Failed to compile Pyaket"))
 
         # Find the compiled binary
-        binary = next((build_dir/"bin").glob("pyaket*"))
+        _filename = ("pyaket" + ".exe"*platform.system.is_windows())
+        binary = next((build_dir/platform.triple/profile.value).glob(_filename))
         log.info(f"Compiled Pyaket binary at ({binary})")
         BrokenPath.make_executable(binary)
 
