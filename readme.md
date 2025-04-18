@@ -64,18 +64,15 @@ Thanks to Rust's amazing toolchain, coupled with [cargo-zigbuild](https://github
 <br>
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/linux.svg"   width="60">
-  <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/apple.svg"   width="60">
-  <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/windows.svg" width="60">
 
-  | From / To       | Linux             | MacOS             | Win GNU            | Win MSVC          |
-  | :-------------- | :---------------- | :---------------  | :----------------  | :---------------  |
-  | **Windows x86** | ✅ x86 <p> ☑️ Arm | ☑️ x86 <p> ☑️ Arm | ✅ x86 <p> ☑️ Arm | ✅ x86 <p> ⚠️ Arm |
-  | **Windows Arm** | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❓ Arm |
-  | **Linux x86**   | ✅ x86 <p> ☑️ Arm | ☑️ x86 <p> ☑️ Arm | ✅ x86 <p> ☑️ Arm | 🚫 x86 <p> 🚫 Arm |
-  | **Linux Arm**   | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❓ Arm | 🚫 x86 <p> 🚫 Arm |
-  | **MacOS x86**   | ✔️ x86 <p> ✔️ Arm | ✔️ x86 <p> ✔️ Arm | ✔️ x86 <p> ✔️ Arm | 🚫 x86 <p> 🚫 Arm |
-  | **MacOS Arm**   | ✔️ x86 <p> ✔️ Arm | ✔️ x86 <p> ✔️ Arm | ✔️ x86 <p> ✔️ Arm | 🚫 x86 <p> 🚫 Arm |
+  | From / To | <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/linux.svg" width="70"> <p> N/A | <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/apple.svg" width="70"> <p> N/A | <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/windows.svg" width="70"> <p> GNU| <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/windows.svg" width="70"> <p> MSVC |
+  | :-------------- | :---------------- | :---------------- | :----------------- | :---------------- |
+  | 🐧 **Linux** x86   | ✅ x86 <p> ☑️ Arm | ☑️ x86 <p> ☑️ Arm | ✅ x86 <p> ☑️ Arm | 🚫 x86 <p> 🚫 Arm |
+  | 🐧 **Linux** Arm   | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❓ Arm | 🚫 x86 <p> 🚫 Arm |
+  | 💠 **Windows** x86 | ✅ x86 <p> ☑️ Arm | ☑️ x86 <p> ☑️ Arm | ✅ x86 <p> ☑️ Arm | ✅ x86 <p> 🤏 Arm |
+  | 💠 **Windows** Arm | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❓ Arm |
+  | 🍎 **MacOS** x86   | ✔️ x86 <p> ✔️ Arm | ✔️ x86 <p> ✔️ Arm | ✔️ x86 <p> ✔️ Arm | 🚫 x86 <p> 🚫 Arm |
+  | 🍎 **MacOS** Arm   | ✔️ x86 <p> ✔️ Arm | ✔️ x86 <p> ✔️ Arm | ✔️ x86 <p> ✔️ Arm | 🚫 x86 <p> 🚫 Arm |
 
 </div>
 
@@ -83,7 +80,7 @@ Thanks to Rust's amazing toolchain, coupled with [cargo-zigbuild](https://github
 - ✅ Verified and supported
 - ☑️ Compiled, untested
 - ✔️ Should work, untested
-- ⚠️ Almost compiled
+- 🤏 Almost compiled
 - 🚫 Impractical
 
 <sup><b>Note:</b> The table says if it simply <i>compiles</i>, your Python project may not work on all platforms.</sup>
