@@ -64,11 +64,11 @@ Thanks to Rust's amazing toolchain, coupled with [cargo-zigbuild](https://github
 <br>
 
 <div align="center" text-align="left">
-  <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/windows.svg" width="60">
   <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/linux.svg"   width="60">
   <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/apple.svg"   width="60">
+  <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/windows.svg" width="60">
 
-  | From / To       | Linux             | MacOS             | Windows GNU        | Windows MSVC      |
+  | From / To       | Linux             | MacOS             | Win GNU            | Win MSVC          |
   | :-------------- | :---------------- | :---------------  | :----------------  | :---------------  |
   | **Windows x86** | ✅ x86 <p> ☑️ Arm | ☑️ x86 <p> ☑️ Arm | ✅ x86 <p> ☑️ Arm | ✅ x86 <p> ⚠️ Arm |
   | **Windows Arm** | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❓ Arm |
