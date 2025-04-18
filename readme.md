@@ -55,6 +55,40 @@
 (Common directory for multiple releases)
 -->
 
+## ⚔️ Cross compilation
+
+Thanks to Rust's amazing toolchain, coupled with [Cargo ZigBuild](https://github.com/rust-cross/cargo-zigbuild), and always prefering pure Rust crates, Pyaket can pretty much compile executables _from any platform_ to _any platform_, no Docker or Virtual Machines required!
+
+The table below shows known status of each combinations:
+
+<br>
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/windows.svg" width="100">
+  <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/linux.svg"   width="100">
+  <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/apple.svg"   width="100">
+
+  | From / To       | Linux              | MacOS             | Windows GNU       | Windows MSVC      |
+  |-----------------|--------------------|-------------------|-------------------|-------------------|
+  | **Windows x86** | ✅ x86 <p> ☑️ Arm | ☑️ x86 <p> ☑️ Arm | ✅ x86 <p> ☑️ Arm | ✅ x86 <p> ⚠️ Arm |
+  | **Windows Arm** | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❓ Arm |
+  | **Linux x86**   | ✅ x86 <p> ☑️ Arm | ☑️ x86 <p> ☑️ Arm | ✅ x86 <p> ☑️ Arm | 🚫 x86 <p> 🚫 Arm |
+  | **Linux Arm**   | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❓ Arm | 🚫 x86 <p> 🚫 Arm |
+  | **MacOS x86**   | ✔️ x86 <p> ✔️ Arm | ✔️ x86 <p> ✔️ Arm | ✔️ x86 <p> ✔️ Arm | 🚫 x86 <p> 🚫 Arm |
+  | **MacOS Arm**   | ✔️ x86 <p> ✔️ Arm | ✔️ x86 <p> ✔️ Arm | ✔️ x86 <p> ✔️ Arm | 🚫 x86 <p> 🚫 Arm |
+
+</div>
+
+**Legend:**
+- ✅ Verified and supported
+- ☑️ Compiled, untested
+- ✔️ Should work, untested
+- ⚠️ Almost compiled
+- 🚫 Impractical
+- ❓ Unknown
+
+<sup><b>Note:</b> The table says if it simply <i>compiles</i>, your Python project may not work on all platforms.</sup>
+
 ## 📦 Installation
 
 Head out to the [**website**](https://pyaket.dev/get) for the latest installation instructions and more!

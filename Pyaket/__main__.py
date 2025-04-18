@@ -75,7 +75,7 @@ class PyaketManager(ProjectManager):
             shell("winget", "install", "-e", "--id", "Microsoft.VisualStudio.2022.BuildTools", "--override", (
                 " --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64"
                 " --add Microsoft.VisualStudio.Component.Windows10SDK"
-                " --add Microsoft.VisualStudio.Component.Windows11SDK.22000"
+                " --add Microsoft.VisualStudio.Component.Windows11SDK"
                 "--wait --passive"
             ))
 

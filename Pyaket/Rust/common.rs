@@ -534,7 +534,10 @@ impl Project {
     /// The uv archive filename without extensions, e.g.:
     /// - `uv-0.6.11-x86_64-unknown-linux-gnu`
     pub fn uv_archive_stem(&self) -> String {
-        format!("uv-{}", self.triple.replace("windows-gnu", "windows-msvc"))
+        format!("uv-{}", self.triple
+            .replace("windows-gnu", "windows-msvc")
+            .replace("msvcllvm", "msvc")
+        )
     }
 
     /// The download filename of the uv distribution, e.g.:
