@@ -29,25 +29,25 @@ from Pyaket import PYAKET
 class AppConfig(BrokenModel):
     """General metadata and dependencies for the application"""
 
-    name: Annotated[str, Option("--name")] = "Pyaket"
+    name: Annotated[str, Option("--name", "-n")] = "Pyaket"
     """https://pyaket.dev/docs/configuration/#app-name"""
 
-    author: Annotated[str, Option("--author")] = "BrokenSource"
+    author: Annotated[str, Option("--author", "-a")] = "BrokenSource"
     """https://pyaket.dev/docs/configuration/#app-author"""
 
-    version: Annotated[str, Option("--version")] = "0.0.0"
+    version: Annotated[str, Option("--version", "-v")] = "0.0.0"
     """https://pyaket.dev/docs/configuration/#app-version"""
 
-    versions_dir: Annotated[str, Option("--subdir")] = None
+    versions_dir: Annotated[str, Option("--versions-dir")] = None
     """https://pyaket.dev/docs/configuration/#app-versions-dir"""
 
-    wheels: Annotated[str, Option("--wheels")] = None
+    wheels: Annotated[str, Option("--wheels", "-w")] = None
     """https://pyaket.dev/docs/configuration/#app-wheels"""
 
-    pypi: Annotated[str, Option("--pypi")] = None
+    pypi: Annotated[str, Option("--pypi", "-p")] = None
     """https://pyaket.dev/docs/configuration/#app-pypi"""
 
-    reqtxt: Annotated[str, Option("--requirements")] = None
+    reqtxt: Annotated[str, Option("--requirements", "-r")] = None
     """https://pyaket.dev/docs/configuration/#app-requirements-txt"""
 
     def export(self) -> None:
@@ -66,10 +66,10 @@ class AppConfig(BrokenModel):
 class PythonConfig(BrokenModel):
     """Python configuration"""
 
-    version: Annotated[str, Option("--python-version")] = "3.13"
+    version: Annotated[str, Option("--python-version", "-v")] = "3.13"
     """https://pyaket.dev/docs/configuration/#python-version"""
 
-    bundle: Annotated[bool, Option("--bundle-python")] = False
+    bundle: Annotated[bool, Option("--bundle-python", "-b")] = False
     """https://pyaket.dev/docs/configuration/#python-bundle"""
 
     def export(self) -> None:
@@ -81,10 +81,10 @@ class PythonConfig(BrokenModel):
 # ---------------------------------------------- #
 
 class AstralConfig(BrokenModel):
-    version: Annotated[str, Option("--uv-version")] = "0.6.13"
+    version: Annotated[str, Option("--uv-version", "-v")] = "0.6.13"
     """https://pyaket.dev/docs/configuration/#uv-version"""
 
-    bundle: Annotated[bool, Option("--bundle-uv")] = False
+    bundle: Annotated[bool, Option("--bundle-uv", "-b")] = False
     """https://pyaket.dev/docs/configuration/#uv-bundle"""
 
     def export(self) -> None:
@@ -98,10 +98,10 @@ class AstralConfig(BrokenModel):
 class TorchConfig(BrokenModel):
     """Install a PyTorch version at runtime"""
 
-    version: Annotated[str, Option("--torch-version")] = None
+    version: Annotated[str, Option("--torch-version", "-v")] = None
     """https://pyaket.dev/docs/configuration/#torch-version"""
 
-    backend: Annotated[str, Option("--torch-backend")] = "auto"
+    backend: Annotated[str, Option("--torch-backend", "-b")] = "auto"
     """https://pyaket.dev/docs/configuration/#torch-backend"""
 
     def export(self) -> None:
@@ -115,16 +115,16 @@ class TorchConfig(BrokenModel):
 class EntryConfig(BrokenModel):
     """Define the entry points of the application"""
 
-    module: Annotated[str, Option("--module")] = None
+    module: Annotated[str, Option("--module", "-m")] = None
     """https://pyaket.dev/docs/configuration/#entry-module"""
 
-    script: Annotated[Path, Option("--script")] = None
+    script: Annotated[Path, Option("--script", "-f")] = None
     """https://pyaket.dev/docs/configuration/#entry-script"""
 
-    code: Annotated[str, Option("--code")] = None
+    code: Annotated[str, Option("--code", "-c")] = None
     """https://pyaket.dev/docs/configuration/#entry-code"""
 
-    command: Annotated[str, Option("--command")] = None
+    command: Annotated[str, Option("--command", "-x")] = None
     """https://pyaket.dev/docs/configuration/#entry-command"""
 
     def export(self) -> None:
@@ -139,10 +139,10 @@ class EntryConfig(BrokenModel):
 
 class BuildConfig(BrokenModel):
 
-    system: Annotated[SystemEnum, Option("--system", "--os", "--target")] = BrokenPlatform.System
+    system: Annotated[SystemEnum, Option("--target", "-t")] = BrokenPlatform.System
     """Target Operating System to build binaries for"""
 
-    arch: Annotated[ArchEnum, Option("--arch")]   = BrokenPlatform.Arch
+    arch: Annotated[ArchEnum, Option("--arch", "-a")]   = BrokenPlatform.Arch
     """Target Architecture to build binaries for"""
 
     class Profile(str, BrokenEnum):
@@ -154,34 +154,28 @@ class BuildConfig(BrokenModel):
         def cargo(self) -> str:
             return self.value.replace("debug", "dev")
 
-    profile: Annotated[Profile, Option("--profile")] = Profile.Release
+    profile: Annotated[Profile, Option("--profile", "-p")] = Profile.Release
     """Build profile to use"""
 
-    rolling: Annotated[bool, Option("--rolling")] = False
+    rolling: Annotated[bool, Option("--rolling", "-r")] = False
     """https://pyaket.dev/docs/configuration/#rolling"""
 
-    build_dir: Annotated[Path, Option("--build-dir")] = (Path(tempfile.gettempdir())/"pyaket")
-    """Directory to build the project"""
-
-    output: Annotated[Path, Option("--output")] = "Release"
-    """Directory to output the compiled binary"""
-
-    keep_open: Annotated[bool, Option("--keep-open")] = False
+    keep_open: Annotated[bool, Option("--keep-open", "-k")] = False
     """Keep the terminal open after errors or finish"""
 
-    standalone: Annotated[bool, Option("--standalone")] = False
+    standalone: Annotated[bool, Option("--standalone", "-s")] = False
     """Create a standalone offline installer"""
 
-    upx: Annotated[bool, Option("--upx")] = False
+    upx: Annotated[bool, Option("--upx", "-u")] = False
     """Use UPX to compress the binary"""
 
-    zigbuild: Annotated[bool, Option("--zigbuild")] = False
+    zigbuild: Annotated[bool, Option("--zigbuild", "-z")] = False
     """Use Cargo zigbuild to build the binary"""
 
-    msvc: Annotated[bool, Option("--msvc")] = False
+    msvc: Annotated[bool, Option("--msvc", "-m")] = False
     """Use MSVC to build the binary"""
 
-    tarball: Annotated[bool, Option("--tarball")] = False
+    tarball: Annotated[bool, Option("--tarball", "-x")] = False
     """Create a .tar.gz for unix releases (preserves chmod +x)"""
 
     def export(self) -> None:
@@ -191,12 +185,12 @@ class BuildConfig(BrokenModel):
         )
 
     @property
-    def target(self) -> PlatformEnum:
+    def platform(self) -> PlatformEnum:
         return PlatformEnum.from_parts(self.system, self.arch)
 
     @property
     def triple(self) -> str:
-        return self.target.triple
+        return self.platform.triple
 
     # # Actions
 
@@ -204,8 +198,8 @@ class BuildConfig(BrokenModel):
         """Force enable zigbuild in configurations where it's easier"""
         if any((
             BrokenPlatform.OnWindows and (not self.system.is_windows()),
-            BrokenPlatform.OnWindows and (self.target == PlatformEnum.WindowsARM64),
-            BrokenPlatform.OnLinux and (self.target == PlatformEnum.LinuxARM64),
+            BrokenPlatform.OnWindows and (self.platform == PlatformEnum.WindowsARM64),
+            BrokenPlatform.OnLinux and (self.platform == PlatformEnum.LinuxARM64),
             BrokenPlatform.OnLinux and (self.system.is_macos()),
         )):
             log.note("Force enable Zigbuild for cross compilation")
@@ -225,11 +219,11 @@ class BuildConfig(BrokenModel):
 
                 # Native x86_64 => Other platforms
                 if BrokenPlatform.Arch.is_amd():
-                    if (self.target == PlatformEnum.WindowsAMD64):
+                    if (self.platform == PlatformEnum.WindowsAMD64):
                         install_msys2_packages("mingw-w64-x86_64-gcc")
                         BrokenPath.add_to_path(msys2/"ucrt64/bin")
 
-                    elif (self.target == PlatformEnum.WindowsARM64):
+                    elif (self.platform == PlatformEnum.WindowsARM64):
                         # Fixme: Almost got it, clang linking errors
                         ...
 
@@ -274,15 +268,15 @@ class PyaketProject(CodeProject):
             self.cli.command(self.compile)
 
     def compile(self,
-        build_dir: Annotated[Path, Option("--build-dir", help="[magenta](Special )[/] Directory to build the project")]=(Path(tempfile.gettempdir())/"pyaket"),
-        output:    Annotated[Path, Option("--output",    help="[magenta](Special )[/] Directory to output the compiled binary")]="Release",
+        cache:  Annotated[Path, Option("--cache",  "-c", help="Directory to build the project")]=(Path(tempfile.gettempdir())/"pyaket"),
+        output: Annotated[Path, Option("--output", "-o", help="Directory to output the compiled binary")]="Release",
     ) -> Path:
 
         # Fixme: Wait for uv's implementation of pip wheel for my own sanity
-        if self.build.standalone and (self.build.target != BrokenPlatform.Host):
+        if self.build.standalone and (self.build.platform != BrokenPlatform.Host):
             log.error("Standalone releases are best built in a host matching the target platform")
             log.error("• Awaiting implementation of (https://github.com/astral-sh/uv/issues/1681)")
-            log.error(f"• Attempted to build for '{self.build.target}' on '{BrokenPlatform.Host}'")
+            log.error(f"• Attempted to build for '{self.build.platform}' on '{BrokenPlatform.Host}'")
             return None
 
         self.build.should_zigbuild()
@@ -290,12 +284,12 @@ class PyaketProject(CodeProject):
         self.export_all()
 
         # Cargo warning: We're not 'installing' a utility
-        BrokenPath.add_to_path(build_dir/"bin")
+        BrokenPath.add_to_path(cache/"bin")
 
         if shell(
             "cargo", ("zigbuild" if self.build.zigbuild else "build"),
             "--manifest-path", (PYAKET.PACKAGE/"Cargo.toml"),
-            "--target-dir", build_dir,
+            "--target-dir", cache,
             "--target", self.build.triple,
             "--profile", self.build.profile.cargo,
             cwd=self.path,
@@ -304,7 +298,7 @@ class PyaketProject(CodeProject):
 
         # Find the compiled binary
         _filename = ("pyaket" + ".exe"*self.build.system.is_windows())
-        binary = next((build_dir/self.build.triple/self.build.profile.value).glob(_filename))
+        binary = next((cache/self.build.triple/self.build.profile.value).glob(_filename))
         log.info(f"Compiled Pyaket binary at ({binary})")
 
         # Rename the compiled binary to the final release name
@@ -327,8 +321,8 @@ class PyaketProject(CodeProject):
     def release_name(self) -> str:
         return ''.join((
             f"{self.name.lower()}",
-            f"-{self.build.target.value}",
+            f"-{self.build.platform.value}",
             f"-v{self.app.version}",
             f"-{self.torch.backend}" if (self.torch.version) else "",
-            f"{self.build.target.extension}",
+            f"{self.build.platform.extension}",
         ))

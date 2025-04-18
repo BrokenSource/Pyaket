@@ -59,11 +59,11 @@
 
 Thanks to Rust's amazing toolchain, coupled with [cargo-zigbuild](https://github.com/rust-cross/cargo-zigbuild), and using only pure Rust crates, Pyaket can pretty much compile executables _from any_ platform _to any_ platform, no Docker or Virtual Machines required!
 
-- The table below shows known status of each combinations:
+- The table below shows the current known status of each combinations:
 
 <br>
 
-<div align="center" text-align="left">
+<div align="center">
   <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/linux.svg"   width="60">
   <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/apple.svg"   width="60">
   <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/windows.svg" width="60">
@@ -85,7 +85,6 @@ Thanks to Rust's amazing toolchain, coupled with [cargo-zigbuild](https://github
 - ✔️ Should work, untested
 - ⚠️ Almost compiled
 - 🚫 Impractical
-- ❓ Unknown
 
 <sup><b>Note:</b> The table says if it simply <i>compiles</i>, your Python project may not work on all platforms.</sup>
 
