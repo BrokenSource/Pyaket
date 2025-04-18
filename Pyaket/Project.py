@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Annotated
 
 from attrs import Factory, define
+from pydantic import Field
 from typer import Option
 
 from Broken import (
@@ -49,9 +50,6 @@ class AppConfig(BrokenModel):
 
     reqtxt: Annotated[str, Option("--requirements", "-r")] = None
     """https://pyaket.dev/docs/configuration/#app-requirements-txt"""
-
-    standalone: Annotated[bool, Option("--standalone", "-s")] = False
-    """Create a standalone offline installer"""
 
     rolling: Annotated[bool, Option("--rolling", "-r")] = False
     """https://pyaket.dev/docs/configuration/#rolling"""
@@ -168,6 +166,9 @@ class BuildConfig(BrokenModel):
     profile: Annotated[Profile, Option("--profile", "-p")] = Profile.Release
     """Build profile to use"""
 
+    standalone: Annotated[bool, Option("--standalone", "-s")] = False
+    """Create a standalone offline installer"""
+
     upx: Annotated[bool, Option("--upx", "-u")] = False
     """Use UPX to compress the binary"""
 
@@ -231,14 +232,13 @@ class BuildConfig(BrokenModel):
 
 # ---------------------------------------------- #
 
-@define(eq=False)
-class PyaketProject(CodeProject):
-    app:    AppConfig    = Factory(AppConfig)
-    python: PythonConfig = Factory(PythonConfig)
-    astral: AstralConfig = Factory(AstralConfig)
-    torch:  TorchConfig  = Factory(TorchConfig)
-    entry:  EntryConfig  = Factory(EntryConfig)
-    build:  BuildConfig  = Factory(BuildConfig)
+class PyaketConfig(BrokenModel):
+    app:    AppConfig    = Field(default_factory=AppConfig)
+    python: PythonConfig = Field(default_factory=PythonConfig)
+    astral: AstralConfig = Field(default_factory=AstralConfig)
+    torch:  TorchConfig  = Field(default_factory=TorchConfig)
+    entry:  EntryConfig  = Field(default_factory=EntryConfig)
+    build:  BuildConfig  = Field(default_factory=BuildConfig)
 
     def export_all(self) -> None:
         Environment.update(PYAKET_RELEASE=1)
@@ -247,18 +247,23 @@ class PyaketProject(CodeProject):
         self.astral.export()
         self.torch.export()
         self.entry.export()
-        self.build.export()
+
+# ---------------------------------------------- #
+
+@define(eq=False)
+class PyaketProject(CodeProject):
+    config: PyaketConfig = Factory(PyaketConfig)
 
     def __attrs_post_init__(self):
         self.cli = BrokenTyper(chain=True)
 
         with self.cli.panel("✅ Configuration"):
-            self.cli.command(self.app,    name="app")
-            self.cli.command(self.python, name="python")
-            self.cli.command(self.astral, name="uv")
-            self.cli.command(self.torch,  name="torch")
-            self.cli.command(self.entry,  name="entry")
-            self.cli.command(self.build,  name="build")
+            self.cli.command(self.config.app,    name="app")
+            self.cli.command(self.config.python, name="python")
+            self.cli.command(self.config.astral, name="uv")
+            self.cli.command(self.config.torch,  name="torch")
+            self.cli.command(self.config.entry,  name="entry")
+            self.cli.command(self.config.build,  name="build")
 
         with self.cli.panel("📦 Actions"):
             self.cli.command(self.compile)
@@ -275,9 +280,9 @@ class PyaketProject(CodeProject):
             log.error(f"• Attempted to build for '{self.build.platform}' on '{BrokenPlatform.Host}'")
             return None
 
-        self.build.should_zigbuild()
-        self.build.install_tools()
-        self.export_all()
+        self.config.build.should_zigbuild()
+        self.config.build.install_tools()
+        self.config.export_all()
 
         # Cargo warning: We're not 'installing' a utility
         BrokenPath.add_to_path(cache/"bin")
@@ -322,3 +327,29 @@ class PyaketProject(CodeProject):
             f"-{self.torch.backend}" if (self.torch.version) else "",
             f"{self.build.platform.extension}",
         ))
+
+    # Likely temporary
+
+    @property
+    def app(self) -> AppConfig:
+        return self.config.app
+
+    @property
+    def python(self) -> PythonConfig:
+        return self.config.python
+
+    @property
+    def astral(self) -> AstralConfig:
+        return self.config.astral
+
+    @property
+    def torch(self) -> TorchConfig:
+        return self.config.torch
+
+    @property
+    def entry(self) -> EntryConfig:
+        return self.config.entry
+
+    @property
+    def build(self) -> BuildConfig:
+        return self.config.build
