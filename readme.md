@@ -33,6 +33,7 @@
 
 > [!WARNING]
 > This project is under active development, certain parts are incomplete and not fully tested yet.
+> - Install with `pip install git+https://github.com/BrokenSource/Pyaket` for now!
 
 <!-- Todo: Demo video here, as always -->
 
