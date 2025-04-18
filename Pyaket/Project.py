@@ -50,6 +50,15 @@ class AppConfig(BrokenModel):
     reqtxt: Annotated[str, Option("--requirements", "-r")] = None
     """https://pyaket.dev/docs/configuration/#app-requirements-txt"""
 
+    standalone: Annotated[bool, Option("--standalone", "-s")] = False
+    """Create a standalone offline installer"""
+
+    rolling: Annotated[bool, Option("--rolling", "-r")] = False
+    """https://pyaket.dev/docs/configuration/#rolling"""
+
+    keep_open: Annotated[bool, Option("--keep-open", "-k")] = False
+    """Keep the terminal open after errors or finish"""
+
     def export(self) -> None:
         Environment.update(
             PYAKET_APP_NAME=self.name,
@@ -59,6 +68,8 @@ class AppConfig(BrokenModel):
             PYAKET_APP_WHEELS=self.wheels,
             PYAKET_APP_PYPI=self.pypi,
             PYAKET_APP_REQTXT=self.reqtxt,
+            PYAKET_ROLLING=self.rolling,
+            PYAKET_KEEP_OPEN=self.keep_open,
         )
 
 # ---------------------------------------------- #
@@ -157,15 +168,6 @@ class BuildConfig(BrokenModel):
     profile: Annotated[Profile, Option("--profile", "-p")] = Profile.Release
     """Build profile to use"""
 
-    rolling: Annotated[bool, Option("--rolling", "-r")] = False
-    """https://pyaket.dev/docs/configuration/#rolling"""
-
-    keep_open: Annotated[bool, Option("--keep-open", "-k")] = False
-    """Keep the terminal open after errors or finish"""
-
-    standalone: Annotated[bool, Option("--standalone", "-s")] = False
-    """Create a standalone offline installer"""
-
     upx: Annotated[bool, Option("--upx", "-u")] = False
     """Use UPX to compress the binary"""
 
@@ -177,12 +179,6 @@ class BuildConfig(BrokenModel):
 
     tarball: Annotated[bool, Option("--tarball", "-x")] = False
     """Create a .tar.gz for unix releases (preserves chmod +x)"""
-
-    def export(self) -> None:
-        Environment.update(
-            PYAKET_ROLLING=self.rolling,
-            PYAKET_KEEP_OPEN=self.keep_open,
-        )
 
     @property
     def platform(self) -> PlatformEnum:
