@@ -57,19 +57,19 @@
 
 ## ⚔️ Cross compilation
 
-Thanks to Rust's amazing toolchain, coupled with [Cargo ZigBuild](https://github.com/rust-cross/cargo-zigbuild), and always prefering pure Rust crates, Pyaket can pretty much compile executables _from any platform_ to _any platform_, no Docker or Virtual Machines required!
+Thanks to Rust's amazing toolchain, coupled with [cargo-zigbuild](https://github.com/rust-cross/cargo-zigbuild), and using only pure Rust crates, Pyaket can pretty much compile executables _from any_ platform _to any_ platform, no Docker or Virtual Machines required!
 
-The table below shows known status of each combinations:
+- The table below shows known status of each combinations:
 
 <br>
 
-<div align="center">
-  <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/windows.svg" width="100">
-  <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/linux.svg"   width="100">
-  <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/apple.svg"   width="100">
+<div align="center" text-align="left">
+  <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/windows.svg" width="60">
+  <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/linux.svg"   width="60">
+  <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/apple.svg"   width="60">
 
-  | From / To       | Linux              | MacOS             | Windows GNU       | Windows MSVC      |
-  |-----------------|--------------------|-------------------|-------------------|-------------------|
+  | From / To       | Linux             | MacOS             | Windows GNU        | Windows MSVC      |
+  | :-------------- | :---------------- | :---------------  | :----------------  | :---------------  |
   | **Windows x86** | ✅ x86 <p> ☑️ Arm | ☑️ x86 <p> ☑️ Arm | ✅ x86 <p> ☑️ Arm | ✅ x86 <p> ⚠️ Arm |
   | **Windows Arm** | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❓ Arm |
   | **Linux x86**   | ✅ x86 <p> ☑️ Arm | ☑️ x86 <p> ☑️ Arm | ✅ x86 <p> ☑️ Arm | 🚫 x86 <p> 🚫 Arm |
