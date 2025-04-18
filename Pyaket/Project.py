@@ -172,7 +172,7 @@ class BuildConfig(BrokenModel):
     upx: Annotated[bool, Option("--upx", "-u")] = False
     """Use UPX to compress the binary"""
 
-    zigbuild: Annotated[bool, Option("--zigbuild", "-z")] = False
+    zigbuild: Annotated[bool, Option("--zig", "-z")] = False
     """Use Cargo zigbuild to build the binary"""
 
     msvc: Annotated[bool, Option("--msvc", "-m")] = False
