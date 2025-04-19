@@ -75,7 +75,7 @@ class AppConfig(BrokenModel):
     • [Documentation](https://pyaket.dev/docs/configuration/#app-pypi)
     """
 
-    reqtxt: Annotated[Path, Option("--requirements", "-r")] = ""
+    reqtxt: Annotated[Path, Option("--requirements", "-r")] = None
     """
     Path to a requirements.txt to install at runtime (legacy)
 
@@ -99,7 +99,7 @@ class AppConfig(BrokenModel):
     @property
     def _wheels(self) -> Iterable[Path]:
         """Gets all self.wheels as absolute paths"""
-        yield from map(BrokenPath.get, self.wheels)
+        yield from map(str, map(BrokenPath.get, self.wheels))
 
     @property
     def _pypi(self) -> Iterable[str]:
@@ -128,14 +128,14 @@ class PythonConfig(BrokenModel):
     • [Documentation](https://pyaket.dev/docs/configuration/#python)
     """
 
-    version: Annotated[str, Option("--python-version", "-v")] = "3.13"
+    version: Annotated[str, Option("--version", "-v")] = "3.13"
     """
     A target python version to use at runtime
 
     • [Documentation](https://pyaket.dev/docs/configuration/#python-version)
     """
 
-    bundle: Annotated[bool, Option("--bundle-python", "-b")] = False
+    bundle: Annotated[bool, Option("--bundle", "-b")] = False
     """
     Whether to bundle the python distribution in the executable
 
@@ -157,14 +157,14 @@ class AstralConfig(BrokenModel):
     • [Documentation](https://pyaket.dev/docs/configuration/#uv)
     """
 
-    version: Annotated[str, Option("--uv-version", "-v")] = "0.6.13"
+    version: Annotated[str, Option("--version", "-v")] = "0.6.13"
     """
     A target uv version to use at runtime
 
     • [Documentation](https://pyaket.dev/docs/configuration/#uv-version)
     """
 
-    bundle: Annotated[bool, Option("--bundle-uv", "-b")] = False
+    bundle: Annotated[bool, Option("--bundle", "-b")] = False
     """
     Whether to bundle uv in the executable
 
@@ -186,14 +186,14 @@ class TorchConfig(BrokenModel):
     • [Documentation](https://pyaket.dev/docs/configuration/#pytorch)
     """
 
-    version: Annotated[str, Option("--torch-version", "-v")] = ""
+    version: Annotated[str, Option("--version", "-v")] = None
     """
     A target torch version to use at runtime, empty disables it
 
     • [Documentation](https://pyaket.dev/docs/configuration/#torch-version)
     """
 
-    backend: Annotated[str, Option("--torch-backend", "-b")] = "auto"
+    backend: Annotated[str, Option("--backend", "-b")] = "auto"
     """
 
     • [Documentation](https://pyaket.dev/docs/configuration/#torch-backend)
@@ -216,7 +216,7 @@ class EntryConfig(BrokenModel):
 
     module: Annotated[str, Option("--module", "-m")] = None
     """
-    A module to run at runtime (python -m module ...)
+    A module to run at runtime as (python -m module ...)
 
     • [Documentation](https://pyaket.dev/docs/configuration/#entry-module)
     """
@@ -252,16 +252,20 @@ class EntryConfig(BrokenModel):
 
 # ---------------------------------------------- #
 
-class BuildConfig(BrokenModel):
+class ReleaseConfig(BrokenModel):
     """
-    Configuration for rust and the build process of the application
+    Release configuration for the application
     """
 
     system: Annotated[SystemEnum, Option("--target", "-t")] = BrokenPlatform.System
     """Target Operating System to build binaries for"""
 
-    arch: Annotated[ArchEnum, Option("--arch", "-a")]   = BrokenPlatform.Arch
+    arch: Annotated[ArchEnum, Option("--arch", "-a")] = BrokenPlatform.Arch
     """Target Architecture to build binaries for"""
+
+    @property
+    def platform(self) -> PlatformEnum:
+        return PlatformEnum.from_parts(self.system, self.arch)
 
     class Profile(str, BrokenEnum):
         Debug   = "debug"
@@ -289,10 +293,6 @@ class BuildConfig(BrokenModel):
 
     tarball: Annotated[bool, Option("--tarball", "-x")] = False
     """Create a .tar.gz for unix releases (preserves chmod +x)"""
-
-    @property
-    def platform(self) -> PlatformEnum:
-        return PlatformEnum.from_parts(self.system, self.arch)
 
     @property
     def triple(self) -> str:
@@ -352,12 +352,12 @@ class BuildConfig(BrokenModel):
 # ---------------------------------------------- #
 
 class PyaketConfig(BrokenModel):
-    app:    AppConfig    = Field(default_factory=AppConfig)
-    python: PythonConfig = Field(default_factory=PythonConfig)
-    astral: AstralConfig = Field(default_factory=AstralConfig)
-    torch:  TorchConfig  = Field(default_factory=TorchConfig)
-    entry:  EntryConfig  = Field(default_factory=EntryConfig)
-    build:  BuildConfig  = Field(default_factory=BuildConfig)
+    app:     AppConfig     = Field(default_factory=AppConfig)
+    python:  PythonConfig  = Field(default_factory=PythonConfig)
+    astral:  AstralConfig  = Field(default_factory=AstralConfig)
+    torch:   TorchConfig   = Field(default_factory=TorchConfig)
+    entry:   EntryConfig   = Field(default_factory=EntryConfig)
+    release: ReleaseConfig = Field(default_factory=ReleaseConfig)
 
     def export_all(self) -> None:
         Environment.update(PYAKET_RELEASE=1)
@@ -374,64 +374,64 @@ class PyaketProject(CodeProject):
     config: PyaketConfig = Factory(PyaketConfig)
 
     def __attrs_post_init__(self):
-        self.cli = BrokenTyper(chain=True)
+        self.cli = BrokenTyper(chain=True, help=False)
 
-        with self.cli.panel("✅ Configuration"):
-            self.cli.command(self.config.app,    name="app")
+        with self.cli.panel("🔴 Project"):
+            self.cli.command(self.config.app,   name="app")
+            self.cli.command(self.config.entry, name="run")
+
+        with self.cli.panel("🟡 Dependencies"):
             self.cli.command(self.config.python, name="python")
-            self.cli.command(self.config.astral, name="uv")
+            self.cli.command(self.config.astral, name="astral")
             self.cli.command(self.config.torch,  name="torch")
-            self.cli.command(self.config.entry,  name="entry")
-            self.cli.command(self.config.build,  name="build")
 
-        with self.cli.panel("📦 Actions"):
+        with self.cli.panel("🟢 Building"):
+            self.cli.command(self.config.release, name="release")
             self.cli.command(self.compile)
 
     def compile(self,
         cache:  Annotated[Path, Option("--cache",  "-c", help="Directory to build the project")]=(Path(tempfile.gettempdir())/"pyaket"),
         output: Annotated[Path, Option("--output", "-o", help="Directory to output the compiled binary")]="Release",
     ) -> Path:
+        output = BrokenPath.get(output)
 
         # Fixme: Wait for uv's implementation of pip wheel for my own sanity
-        if self.build.standalone and (self.build.platform != BrokenPlatform.Host):
+        if self.release.standalone and (self.release.platform != BrokenPlatform.Host):
             log.error("Standalone releases are best built in a host matching the target platform")
             log.error("• Awaiting implementation of (https://github.com/astral-sh/uv/issues/1681)")
-            log.error(f"• Attempted to build for '{self.build.platform}' on '{BrokenPlatform.Host}'")
+            log.error(f"• Attempted to build for '{self.release.platform}' on '{BrokenPlatform.Host}'")
             return None
 
-        self.config.build.should_zigbuild()
-        self.config.build.install_tools()
+        self.config.release.should_zigbuild()
+        self.config.release.install_tools()
         self.config.export_all()
 
-        # Cargo warning: We're not 'installing' a utility
-        BrokenPath.add_to_path(cache/"bin")
-
         if shell(
-            "cargo", ("zigbuild" if self.build.zigbuild else "build"),
+            "cargo", ("zigbuild" if self.release.zigbuild else "build"),
             "--manifest-path", (PYAKET.PACKAGE/"Cargo.toml"),
             "--target-dir", cache,
-            "--target", self.build.triple,
-            "--profile", self.build.profile.cargo,
+            "--target", self.release.triple,
+            "--profile", self.release.profile.cargo,
             cwd=self.path,
         ).returncode != 0:
             raise RuntimeError(log.error("Failed to compile Pyaket"))
 
         # Find the compiled binary
-        _filename = ("pyaket" + ".exe"*self.build.system.is_windows())
-        binary = next((cache/self.build.triple/self.build.profile.value).glob(_filename))
+        _filename = ("pyaket" + ".exe"*self.release.system.is_windows())
+        binary = next((cache/self.release.triple/self.release.profile.value).glob(_filename))
         log.info(f"Compiled Pyaket binary at ({binary})")
 
         # Rename the compiled binary to the final release name
         release_path = (output / self.release_name)
-        BrokenPath.copy(src=binary, dst=release_path)
+        BrokenPath.move(src=binary, dst=release_path)
         BrokenPath.make_executable(release_path)
 
         # Compress the final release with upx
-        if self.build.upx and (shell("upx", "--best", "--lzma", release_path).returncode != 0):
+        if self.release.upx and (shell("upx", "--best", "--lzma", release_path).returncode != 0):
             raise RuntimeError(log.error("Failed to compress executable with upx"))
 
         # Release a tar.gz to keep chmod +x attributes
-        if self.build.tarball and (not self.build.system.is_windows()):
+        if self.release.tarball and (not self.release.system.is_windows()):
             release_path = BrokenPath.gzip(release_path, remove=True)
 
         log.success(f"Built Project release at ({release_path})")
@@ -440,11 +440,11 @@ class PyaketProject(CodeProject):
     @property
     def release_name(self) -> str:
         return ''.join((
-            f"{self.name.lower()}",
-            f"-{self.build.platform.value}",
+            f"{self.app.name.lower()}",
+            f"-{self.release.platform.value}",
             f"-v{self.app.version}",
             f"-{self.torch.backend}" if (self.torch.version) else "",
-            f"{self.build.platform.extension}",
+            f"{self.release.platform.extension}",
         ))
 
     # Likely temporary
@@ -470,5 +470,5 @@ class PyaketProject(CodeProject):
         return self.config.entry
 
     @property
-    def build(self) -> BuildConfig:
-        return self.config.build
+    def release(self) -> ReleaseConfig:
+        return self.config.release

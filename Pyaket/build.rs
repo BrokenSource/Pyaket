@@ -21,6 +21,7 @@ mod manage {
                 &project.uv_download_url(),
             )?;
         }
+
         Ok(())
     }
 
