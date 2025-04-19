@@ -1,9 +1,8 @@
-import shutil
 import site
 import subprocess
 import tempfile
 from pathlib import Path
-from typing import Annotated
+from typing import Annotated, Iterable
 
 from attrs import Factory, define
 from pydantic import Field
@@ -28,34 +27,84 @@ from Pyaket import PYAKET
 # ---------------------------------------------- #
 
 class AppConfig(BrokenModel):
-    """General metadata and dependencies for the application"""
+    """
+    General metadata and dependencies definitions of the project
+
+    • [Documentation](https://pyaket.dev/docs/configuration/#app)
+    """
 
     name: Annotated[str, Option("--name", "-n")] = "Pyaket"
-    """https://pyaket.dev/docs/configuration/#app-name"""
+    """
+    The application name, used for
+
+    • [Documentation](https://pyaket.dev/docs/configuration/#app-name)
+    """
 
     author: Annotated[str, Option("--author", "-a")] = "BrokenSource"
-    """https://pyaket.dev/docs/configuration/#app-author"""
+    """
+    Subdirectory of the platform's user data directory to install the application
+
+    • [Documentation](https://pyaket.dev/docs/configuration/#app-author)
+    """
 
     version: Annotated[str, Option("--version", "-v")] = "0.0.0"
-    """https://pyaket.dev/docs/configuration/#app-version"""
+    """
+    The release version matching PyPI, codename, branch, latest, etc.
 
-    versions_dir: Annotated[str, Option("--versions-dir")] = None
-    """https://pyaket.dev/docs/configuration/#app-versions-dir"""
+    • [Documentation](https://pyaket.dev/docs/configuration/#app-version)
+    """
 
-    wheels: Annotated[str, Option("--wheels", "-w")] = None
-    """https://pyaket.dev/docs/configuration/#app-wheels"""
+    versions_dir: Annotated[str, Option("--versions-dir")] = "Versions"
+    """
+    Subdirectory of the workspace to install versions of the application.
 
-    pypi: Annotated[str, Option("--pypi", "-p")] = None
-    """https://pyaket.dev/docs/configuration/#app-pypi"""
+    • [Documentation](https://pyaket.dev/docs/configuration/#app-versions-dir)
+    """
 
-    reqtxt: Annotated[str, Option("--requirements", "-r")] = None
-    """https://pyaket.dev/docs/configuration/#app-requirements-txt"""
+    wheels: Annotated[list[Path], Option("--wheels", "-w")] = Field([])
+    """
+    List of wheels to bundle and install at runtime, supports glob patterns.
 
-    rolling: Annotated[bool, Option("--rolling", "-r")] = False
-    """https://pyaket.dev/docs/configuration/#rolling"""
+    • [Documentation](https://pyaket.dev/docs/configuration/#app-wheels)
+    """
+
+    pypi: Annotated[list[str], Option("--pypi", "-p")] = []
+    """
+    List of dependencies to install at runtime from PyPI, plain or pinned.
+
+    • [Documentation](https://pyaket.dev/docs/configuration/#app-pypi)
+    """
+
+    reqtxt: Annotated[Path, Option("--requirements", "-r")] = ""
+    """
+    Path to a requirements.txt to install at runtime (legacy)
+
+    • [Documentation](https://pyaket.dev/docs/configuration/#app-requirements-txt)
+    """
+
+    rolling: Annotated[bool, Option("--rolling")] = False
+    """
+    Always upgrade dependencies at startup for a rolling-release mechanism
+
+    • [Documentation](https://pyaket.dev/docs/configuration/#rolling)
+    """
 
     keep_open: Annotated[bool, Option("--keep-open", "-k")] = False
-    """Keep the terminal open after errors or finish"""
+    """
+    Keep the terminal open after errors or finish
+
+    • [Documentation](https://pyaket.dev/docs/configuration/#keep-open)
+    """
+
+    @property
+    def _wheels(self) -> Iterable[Path]:
+        """Gets all self.wheels as absolute paths"""
+        yield from map(BrokenPath.get, self.wheels)
+
+    @property
+    def _pypi(self) -> Iterable[str]:
+        for package in self.pypi:
+            yield str(package).strip()
 
     def export(self) -> None:
         Environment.update(
@@ -63,8 +112,8 @@ class AppConfig(BrokenModel):
             PYAKET_APP_VERSION=self.version,
             PYAKET_APP_AUTHOR=self.author,
             PYAKET_APP_SUBDIR=self.versions_dir,
-            PYAKET_APP_WHEELS=self.wheels,
-            PYAKET_APP_PYPI=self.pypi,
+            PYAKET_APP_WHEELS=';'.join(self._wheels),
+            PYAKET_APP_PYPI=';'.join(self._pypi),
             PYAKET_APP_REQTXT=self.reqtxt,
             PYAKET_ROLLING=self.rolling,
             PYAKET_KEEP_OPEN=self.keep_open,
@@ -73,13 +122,25 @@ class AppConfig(BrokenModel):
 # ---------------------------------------------- #
 
 class PythonConfig(BrokenModel):
-    """Python configuration"""
+    """
+    Configuration for a Python interpreter to use for the project
+
+    • [Documentation](https://pyaket.dev/docs/configuration/#python)
+    """
 
     version: Annotated[str, Option("--python-version", "-v")] = "3.13"
-    """https://pyaket.dev/docs/configuration/#python-version"""
+    """
+    A target python version to use at runtime
+
+    • [Documentation](https://pyaket.dev/docs/configuration/#python-version)
+    """
 
     bundle: Annotated[bool, Option("--bundle-python", "-b")] = False
-    """https://pyaket.dev/docs/configuration/#python-bundle"""
+    """
+    Whether to bundle the python distribution in the executable
+
+    • [Documentation](https://pyaket.dev/docs/configuration/#python-bundle)
+    """
 
     def export(self) -> None:
         Environment.update(
@@ -90,11 +151,25 @@ class PythonConfig(BrokenModel):
 # ---------------------------------------------- #
 
 class AstralConfig(BrokenModel):
+    """
+    Configuration for uv project and package manager to use
+
+    • [Documentation](https://pyaket.dev/docs/configuration/#uv)
+    """
+
     version: Annotated[str, Option("--uv-version", "-v")] = "0.6.13"
-    """https://pyaket.dev/docs/configuration/#uv-version"""
+    """
+    A target uv version to use at runtime
+
+    • [Documentation](https://pyaket.dev/docs/configuration/#uv-version)
+    """
 
     bundle: Annotated[bool, Option("--bundle-uv", "-b")] = False
-    """https://pyaket.dev/docs/configuration/#uv-bundle"""
+    """
+    Whether to bundle uv in the executable
+
+    • [Documentation](https://pyaket.dev/docs/configuration/#uv-bundle)
+    """
 
     def export(self) -> None:
         Environment.update(
@@ -105,13 +180,24 @@ class AstralConfig(BrokenModel):
 # ---------------------------------------------- #
 
 class TorchConfig(BrokenModel):
-    """Install a PyTorch version at runtime"""
+    """
+    Optional configuration to install PyTorch at runtime
 
-    version: Annotated[str, Option("--torch-version", "-v")] = None
-    """https://pyaket.dev/docs/configuration/#torch-version"""
+    • [Documentation](https://pyaket.dev/docs/configuration/#pytorch)
+    """
+
+    version: Annotated[str, Option("--torch-version", "-v")] = ""
+    """
+    A target torch version to use at runtime, empty disables it
+
+    • [Documentation](https://pyaket.dev/docs/configuration/#torch-version)
+    """
 
     backend: Annotated[str, Option("--torch-backend", "-b")] = "auto"
-    """https://pyaket.dev/docs/configuration/#torch-backend"""
+    """
+
+    • [Documentation](https://pyaket.dev/docs/configuration/#torch-backend)
+    """
 
     def export(self) -> None:
         Environment.update(
@@ -122,19 +208,39 @@ class TorchConfig(BrokenModel):
 # ---------------------------------------------- #
 
 class EntryConfig(BrokenModel):
-    """Define the entry points of the application"""
+    """
+    Configuration for the entry point of the application
+
+    • [Documentation](https://pyaket.dev/docs/configuration/#entry-points)
+    """
 
     module: Annotated[str, Option("--module", "-m")] = None
-    """https://pyaket.dev/docs/configuration/#entry-module"""
+    """
+    A module to run at runtime (python -m module ...)
+
+    • [Documentation](https://pyaket.dev/docs/configuration/#entry-module)
+    """
 
     script: Annotated[Path, Option("--script", "-f")] = None
-    """https://pyaket.dev/docs/configuration/#entry-script"""
+    """
+    A script to bundle and run at runtime (python script.py ...)
+
+    • [Documentation](https://pyaket.dev/docs/configuration/#entry-script)
+    """
 
     code: Annotated[str, Option("--code", "-c")] = None
-    """https://pyaket.dev/docs/configuration/#entry-code"""
+    """
+    A inline code snippet to run at runtime (python -c "code")
+
+    • [Documentation](https://pyaket.dev/docs/configuration/#entry-code)
+    """
 
     command: Annotated[str, Option("--command", "-x")] = None
-    """https://pyaket.dev/docs/configuration/#entry-command"""
+    """
+    A command to run at runtime (command ...)
+
+    • [Documentation](https://pyaket.dev/docs/configuration/#entry-command)
+    """
 
     def export(self) -> None:
         Environment.update(
@@ -147,6 +253,9 @@ class EntryConfig(BrokenModel):
 # ---------------------------------------------- #
 
 class BuildConfig(BrokenModel):
+    """
+    Configuration for rust and the build process of the application
+    """
 
     system: Annotated[SystemEnum, Option("--target", "-t")] = BrokenPlatform.System
     """Target Operating System to build binaries for"""
@@ -227,6 +336,16 @@ class BuildConfig(BrokenModel):
             # Ensure zig.exe is found
             for path in site.getsitepackages():
                 BrokenPath.add_to_path(Path(path)/"ziglang")
+
+        elif BrokenPlatform.OnLinux:
+            get = Environment.flag("AUTO_PACKAGES")
+
+            # Need MinGW64 for cross compilation
+            if get and (self.target == PlatformEnum.WindowsAMD64):
+                if BrokenPlatform.ArchLike:
+                    shell("sudo", "pacman", "-S", "mingw-w64-toolchain")
+                elif BrokenPlatform.UbuntuLike:
+                    shell("sudo", "apt", "install", "mingw-w64")
 
         shell("rustup", "target", "add", self.triple)
 

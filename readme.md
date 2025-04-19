@@ -33,13 +33,15 @@
 
 > [!WARNING]
 > This project is under active development, certain parts are incomplete and not fully tested yet.
+>
 > - Install with `pip install git+https://github.com/BrokenSource/Pyaket` for now!
+>
 
 <!-- Todo: Demo video here, as always -->
 
 ## 🔥 Description
 
-📦 **Pyaket** is a tool that bundles and generates portable executables of your Python projects for many platforms. No more convoluted installation instructions for casual users, give them the exe file they want [[1]](https://github.com/sherlock-project/sherlock/issues/2011), without reinventing the _wheel_ on alternative packaging solutions.
+📦 **Pyaket** is a tool that bundles and generates portable executables of your Python projects for all platforms. No more convoluted installation instructions for casual users, give them the exe file they want [[1]](https://github.com/sherlock-project/sherlock/issues/2011), without reinventing the _wheel_ on alternative packaging solutions.
 
 ✨ Major features include:
 

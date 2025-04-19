@@ -175,13 +175,15 @@ dynamic = ["version"]
 ### <kbd>PYAKET_APP_WHEELS</kbd> {#app-wheels}
 > 📦 <b>Type:</b> Paths • <b>Default:</b> None
 
-Glob patterns separated by `:` (colon), listing wheels and sdists to bundle and install at runtime.
+Glob patterns separated by `;` (semi colon) of wheels and sdists to bundle and install at runtime.
 
 ```sh title="Example"
 export PYAKET_APP_WHEELS="/path/to/wheel1.whl:/path/to/wheel2.whl"
 export PYAKET_APP_WHEELS="/path/to/*.whl:/other/*.whl"
 export PYAKET_APP_WHEELS="/path/to/sdists/*.tar.gz"
 ```
+
+!!! warning "Paths must be absolute, as they are relative to `build.rs`"
 
 This is the recommended way to specify dependencies, although third party packages may still be installed at runtime, comparing to [PyPI](#app-pypi). If we get them all, a standalone install is achieved, with zero network calls to get missing packages at cost of large binary size.
 
