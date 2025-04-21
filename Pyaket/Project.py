@@ -305,8 +305,8 @@ class ReleaseConfig(BrokenModel):
         if any((
             BrokenPlatform.OnWindows and (not self.system.is_windows()),
             BrokenPlatform.OnWindows and (self.platform == PlatformEnum.WindowsARM64),
-            BrokenPlatform.OnLinux and (self.platform == PlatformEnum.LinuxARM64),
-            BrokenPlatform.OnLinux and (self.system.is_macos()),
+            BrokenPlatform.OnLinux   and (self.platform == PlatformEnum.LinuxARM64),
+            BrokenPlatform.OnLinux   and (self.system.is_macos()),
         )):
             log.note("Force enable Zigbuild for cross compilation")
             self.zigbuild = True

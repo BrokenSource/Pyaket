@@ -381,27 +381,27 @@ impl BrokenAssets for ArchiveAssets {
 static WORKSPACE_ROOT: OnceLock<PathBuf> = OnceLock::new();
 
 // Define environment configuration literals for consistency
-pub static PYAKET_APP_NAME:           &str = "PYAKET_APP_NAME";
-pub static PYAKET_APP_AUTHOR:         &str = "PYAKET_APP_AUTHOR";
-pub static PYAKET_APP_VERSION:        &str = "PYAKET_APP_VERSION";
-pub static PYAKET_VERSIONS_DIR:       &str = "PYAKET_VERSIONS_DIR";
-pub static PYAKET_APP_WHEELS:         &str = "PYAKET_APP_WHEELS";
-pub static PYAKET_APP_PYPI:           &str = "PYAKET_APP_PYPI";
-pub static PYAKET_APP_REQTXT:         &str = "PYAKET_APP_REQTXT";
-pub static PYAKET_PYTHON_VERSION:     &str = "PYAKET_PYTHON_VERSION";
-pub static PYAKET_PYTHON_BUNDLE:      &str = "PYAKET_PYTHON_BUNDLE";
-pub static PYAKET_UV_VERSION:         &str = "PYAKET_UV_VERSION";
-pub static PYAKET_UV_BUNDLE:          &str = "PYAKET_UV_BUNDLE";
-pub static PYAKET_TORCH_VERSION:      &str = "PYAKET_TORCH_VERSION";
-pub static PYAKET_TORCH_BACKEND:      &str = "PYAKET_TORCH_BACKEND";
-pub static PYAKET_ENTRY_MODULE:       &str = "PYAKET_ENTRY_MODULE";
-pub static PYAKET_ENTRY_SCRIPT:       &str = "PYAKET_ENTRY_SCRIPT";
-pub static PYAKET_ENTRY_CODE:         &str = "PYAKET_ENTRY_CODE";
-pub static PYAKET_ENTRY_COMMAND:      &str = "PYAKET_ENTRY_COMMAND";
-pub static PYAKET_COMMON_DIR:         &str = "PYAKET_COMMON_DIR";
-pub static PYAKET_TARGET_TRIPLE:      &str = "PYAKET_TARGET_TRIPLE";
-pub static PYAKET_ROLLING:            &str = "PYAKET_ROLLING";
-pub static PYAKET_KEEP_OPEN:          &str = "PYAKET_KEEP_OPEN";
+pub static PYAKET_APP_NAME:       &str = "PYAKET_APP_NAME";
+pub static PYAKET_APP_AUTHOR:     &str = "PYAKET_APP_AUTHOR";
+pub static PYAKET_APP_VERSION:    &str = "PYAKET_APP_VERSION";
+pub static PYAKET_VERSIONS_DIR:   &str = "PYAKET_VERSIONS_DIR";
+pub static PYAKET_APP_WHEELS:     &str = "PYAKET_APP_WHEELS";
+pub static PYAKET_APP_PYPI:       &str = "PYAKET_APP_PYPI";
+pub static PYAKET_APP_REQTXT:     &str = "PYAKET_APP_REQTXT";
+pub static PYAKET_PYTHON_VERSION: &str = "PYAKET_PYTHON_VERSION";
+pub static PYAKET_PYTHON_BUNDLE:  &str = "PYAKET_PYTHON_BUNDLE";
+pub static PYAKET_UV_VERSION:     &str = "PYAKET_UV_VERSION";
+pub static PYAKET_UV_BUNDLE:      &str = "PYAKET_UV_BUNDLE";
+pub static PYAKET_TORCH_VERSION:  &str = "PYAKET_TORCH_VERSION";
+pub static PYAKET_TORCH_BACKEND:  &str = "PYAKET_TORCH_BACKEND";
+pub static PYAKET_ENTRY_MODULE:   &str = "PYAKET_ENTRY_MODULE";
+pub static PYAKET_ENTRY_SCRIPT:   &str = "PYAKET_ENTRY_SCRIPT";
+pub static PYAKET_ENTRY_CODE:     &str = "PYAKET_ENTRY_CODE";
+pub static PYAKET_ENTRY_COMMAND:  &str = "PYAKET_ENTRY_COMMAND";
+pub static PYAKET_COMMON_DIR:     &str = "PYAKET_COMMON_DIR";
+pub static PYAKET_TARGET_TRIPLE:  &str = "PYAKET_TARGET_TRIPLE";
+pub static PYAKET_ROLLING:        &str = "PYAKET_ROLLING";
+pub static PYAKET_KEEP_OPEN:      &str = "PYAKET_KEEP_OPEN";
 
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct Project {

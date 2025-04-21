@@ -8,7 +8,7 @@ fn run(project: &Project) -> Result<()> {
     let executable = env::current_exe()?.canonicalize()?;
     Environment::set("PYAKET", executable.display());
 
-    // Load environment variables where the executable is
+    // Load environment variables where the shell (executable) is
     for file in glob::glob("*.env").unwrap().map(|x| x.unwrap()) {
         dotenvy::from_path(file)?;
     }

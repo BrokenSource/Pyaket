@@ -1,3 +1,10 @@
+> [!WARNING]
+> This project is under active development, certain parts are incomplete and not fully tested yet.
+>
+> - Install with `pip install git+https://github.com/BrokenSource/Pyaket` for now!
+
+<hr>
+
 <div align="center">
   <img src="https://raw.githubusercontent.com/BrokenSource/Pyaket/main/Pyaket/Resources/Images/Pyaket.png" width="210" onerror='this.src="Pyaket/Resources/Images/Pyaket.png"'>
   <h1 style="margin-top: 0">Pyaket</h1>
@@ -31,49 +38,32 @@
   <br>
 </div>
 
-> [!WARNING]
-> This project is under active development, certain parts are incomplete and not fully tested yet.
->
-> - Install with `pip install git+https://github.com/BrokenSource/Pyaket` for now!
->
-
 <!-- Todo: Demo video here, as always -->
 
 ## 🔥 Description
 
-📦 **Pyaket** is a tool that bundles and generates portable executables of your Python projects for all platforms. No more convoluted installation instructions for casual users, give them the exe file they want [[1]](https://github.com/sherlock-project/sherlock/issues/2011), without reinventing the _wheel_ on alternative packaging solutions.
+**Pyaket** is a tool that bundles and generates portable executables of your python projects for all platforms. No more convoluted installation steps for casual users, give the comfort [they want](https://github.com/sherlock-project/sherlock/issues/2011) with maximum compatibility and ease of use compared to alternative solutions.
 
-✨ Major features include:
-
-- [x] **Fast** installation, automatically manages python, venvs, and dependencies.
-- [x] **Cross** compilation to multiple platforms and architectures made easy [#](#cross-compilation)
-- [ ] **Standalone** executables without network calls at runtime (planned).
-- [x] **Iterative** development in mind, reinstalls a version if the binary changes.
-- [x] **Smart** and safe, detects partial installs, downloads, unpacks.
-- [x] **First class** monorepo support, bundle many wheels to be installed at runtime.
-- [x] **Rolling** releases are supported, single binary that runs last version always [#](https://pyaket.dev/docs/configuration/#rolling)
-- [x] **PyTorch** optional installation at runtime, automatic backend detection. [#](https://pyaket.dev/docs/configuration/#torch-backend)
-- [ ] **Version** management, easy uninstallation and updates notifications (planned).
-- [ ] **Splash** screen to look fancy, custom icons for your app (planned).
-
-<sup><b>🚀 Powered by:</b> [astral-sh/uv](https://github.com/astral-sh/uv) • [rust-lang](https://www.rust-lang.org/) • [cargo-zigbuild](https://github.com/rust-cross/cargo-zigbuild) • [rust-embed](https://crates.io/crates/rust-embed) • [mkdocs](https://www.mkdocs.org/) • [mkdocs-material](https://squidfunk.github.io/mkdocs-material/) • and others!</sup>
+- [x] ⚡️ **Lightning fast** installation that automatically manages python, virtual environments, and dependencies without user intervention that just works.
+- [x] ♻️ **Cross compile** _from any_ platform _to any_ platform and architecture, no docker or virtual machines needed, see the table below for details!
+- [x] 🧠 **Intelligently** reinstalls itself when the executable changes or partial installs, making iterative development easy and safe against users
+- [x] 🎩 **Free to use** for open source projects that distributes releases at no cost, otherwise chose a cheap [sponsorship tier](https://github.com/sponsors/Tremeschin) to sell users convenience
+- [x] 🔦 **PyTorch** installation at runtime, automatic backend detection (optional). [#](https://pyaket.dev/docs/configuration/#torch-backend)
+- [ ] 📦 **Standalone** executables with no network calls at runtime that bundles all dependencies [#](https://github.com/BrokenSource/Pyaket/issues/2)
+- [x] 🚀 **Monorepo** support in mind, decoupled dependencies and entry point specification
+- [x] 🧀 **Rolling** releases where a single binary always runs latest pypi or git branch/tag [#](https://pyaket.dev/docs/configuration/#rolling)
 
 ## ⚔️ Cross compilation
 
-Thanks to Rust's amazing toolchain, coupled with [cargo-zigbuild](https://github.com/rust-cross/cargo-zigbuild), and mostly using pure Rust crates, Pyaket can pretty much compile executables _from any_ platform _to any_ platform.
-
-- No Docker or Virtual Machines required!
-
-The table below shows the known status for all combinations, help me with feedback!
+Thanks to Rust's amazing toolchain, coupled with [cargo-zigbuild](https://github.com/rust-cross/cargo-zigbuild), and using pure crates, Pyaket can pretty much compile executables _from any_ platform _to any_ platform without docker or vms.
 
 <br>
 
 <div align="center" markdown>
-
   <b>Cross compilation compatibility</b>
 
   | From / To | <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/linux.svg" width="70"> <p> N/A | <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/apple.svg" width="70"> <p> N/A | <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/windows.svg" width="70"> <p> GNU| <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/windows.svg" width="70"> <p> MSVC |
-  | :-------------- | :---------------- | :---------------- | :----------------- | :---------------- |
+  | :----------------- | :---------------- | :---------------- | :----------------- | :---------------- |
   | 🐧 **Linux** x86   | ✅ x86 <p> ☑️ Arm | ☑️ x86 <p> ☑️ Arm | ✅ x86 <p> ☑️ Arm | 🚫 x86 <p> 🚫 Arm |
   | 🐧 **Linux** Arm   | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❓ Arm | 🚫 x86 <p> 🚫 Arm |
   | 💠 **Windows** x86 | ✅ x86 <p> ☑️ Arm | ☑️ x86 <p> ☑️ Arm | ✅ x86 <p> ☑️ Arm | ✅ x86 <p> 🤏 Arm |
@@ -81,8 +71,7 @@ The table below shows the known status for all combinations, help me with feedba
   | 🍎 **MacOS** x86   | ✔️ x86 <p> ✔️ Arm | ✔️ x86 <p> ✔️ Arm | ✔️ x86 <p> ✔️ Arm | 🚫 x86 <p> 🚫 Arm |
   | 🍎 **MacOS** Arm   | ✔️ x86 <p> ✔️ Arm | ✔️ x86 <p> ✔️ Arm | ✔️ x86 <p> ✔️ Arm | 🚫 x86 <p> 🚫 Arm |
 
-  <sup><b>Note:</b> The table says if it simply <i>compiles or run</i>, your Python project may not work on all platforms.</sup>
-
+  <sup><b>Note:</b> The table simply states if it <i>compile and/or run</i>. Your Python project may not work on all platforms.</sup>
 </div>
 
 **Legend:**
@@ -90,7 +79,6 @@ The table below shows the known status for all combinations, help me with feedba
 - ✅ Verified and supported
 - ☑️ Compiled, but untested
 - ✔️ Should work, untested
-- 🤏 Almost compiled
 - 🚫 Impractical
 
 ## 📦 Installation
