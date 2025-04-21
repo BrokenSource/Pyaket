@@ -15,7 +15,7 @@
     <a href="https://crates.io/crates/pyaket/"><img src="https://img.shields.io/crates/d/pyaket?label=Downloads&color=orange"></a>
     <a href="https://pypi.org/project/pyaket/"><img src="https://img.shields.io/pypi/v/pyaket?label=PyPI&color=blue"></a>
     <a href="https://pypi.org/project/pyaket/"><img src="https://img.shields.io/pypi/dw/pyaket?label=Installs&color=blue"></a>
-    <a href="https://github.com/BrokenSource/Pyaket/"><img src="https://img.shields.io/github/v/tag/BrokenSource/Pyaket?label=GitHub&color=orange"></a>
+    <a href="https://github.com/BrokenSource/Pyaket/"><img src="https://img.shields.io/github/v/tag/BrokenSource/BrokenSource?label=GitHub&color=orange"></a>
     <a href="https://github.com/BrokenSource/Pyaket/stargazers"><img src="https://img.shields.io/github/stars/BrokenSource/Pyaket?label=Stars&style=flat&color=orange"></a>
     <a href="https://discord.gg/KjqvcYwRHm"><img src="https://img.shields.io/discord/1184696441298485370?label=Discord&style=flat&color=purple"></a>
   <br>
@@ -47,7 +47,7 @@
 - [x] ⚡️ **Lightning fast** installation that automatically manages python, virtual environments, and dependencies without user intervention that just works.
 - [x] ♻️ **Cross compile** _from any_ platform _to any_ platform and architecture, no docker or virtual machines needed, see the table below for details!
 - [x] 🧠 **Intelligently** reinstalls itself when the executable changes or partial installs, making iterative development easy and safe against users
-- [x] 🎩 **Free to use** for open source projects that distributes releases at no cost, otherwise chose a cheap [sponsorship tier](https://github.com/sponsors/Tremeschin) to sell users convenience
+- [x] 🎩 **Free to use** for open source projects that distributes releases at no cost, get a cheap [sponsor](https://github.com/sponsors/Tremeschin) tier to sell users convenience otherwise!
 - [x] 🔦 **PyTorch** installation at runtime, automatic backend detection (optional). [#](https://pyaket.dev/docs/configuration/#torch-backend)
 - [ ] 📦 **Standalone** executables with no network calls at runtime that bundles all dependencies [#](https://github.com/BrokenSource/Pyaket/issues/2)
 - [x] 🚀 **Monorepo** support in mind, decoupled dependencies and entry point specification
