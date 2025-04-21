@@ -1,10 +1,3 @@
-> [!WARNING]
-> This project is under active development, certain parts are incomplete and not fully tested yet.
->
-> - Install with `pip install git+https://github.com/BrokenSource/Pyaket` for now!
-
-<hr>
-
 <div align="center">
   <img src="https://raw.githubusercontent.com/BrokenSource/Pyaket/main/Pyaket/Resources/Images/Pyaket.png" width="210" onerror='this.src="Pyaket/Resources/Images/Pyaket.png"'>
   <h1 style="margin-top: 0">Pyaket</h1>
@@ -82,6 +75,11 @@ Thanks to Rust's amazing toolchain, coupled with [cargo-zigbuild](https://github
 - 🚫 Impractical
 
 ## 📦 Installation
+
+> [!WARNING]
+> This project is under active development, certain parts are incomplete and not fully tested yet.
+>
+> - Install with `pip install git+https://github.com/BrokenSource/Pyaket` for now!
 
 Head out to the [**website**](https://pyaket.dev/get) for the latest installation instructions and more!
 
