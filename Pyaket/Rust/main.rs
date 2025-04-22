@@ -129,7 +129,7 @@ fn main() {
     Environment::unset("BUILD");
 
     // Read the project configurion sent at the end of build.rs
-    let project: Project = serde_json::from_str(env!("PYAKET_PROJECT")).unwrap();
+    let project: Project = Project::from_json(env!("PYAKET_PROJECT"));
     let runtime = run(&project);
 
     if runtime.is_err() {

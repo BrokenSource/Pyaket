@@ -7,8 +7,9 @@ pub trait BrokenAssets: RustEmbed {
 
     /// Get a path to download assets to before bundling
     fn cache(path: &str) -> PathBuf {
-        Environment::repository_root()
-            .join(".cache/pyaket")
+        Environment::cargo_toml()
+            .parent().unwrap()
+            .join(".cache/assets")
             .join(path)
     }
 
@@ -46,7 +47,7 @@ pub trait BrokenAssets: RustEmbed {
 
     /// Write a file to be bundled (build.rs only!)
     fn write(path: impl AsRef<Path>, data: &Vec<u8>) -> Result<()> {
-        let file = Environment::repository_root()
+        let file = Environment::cargo_toml()
             .join(Self::path())
             .join(path);
         mkdir(file.parent().unwrap())?;

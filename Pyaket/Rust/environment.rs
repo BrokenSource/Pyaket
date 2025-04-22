@@ -73,7 +73,7 @@ impl Environment {
     }
 
     /// Path where Cargo.toml is located
-    pub fn repository_root() -> PathBuf {
+    pub fn cargo_toml() -> PathBuf {
         PathBuf::from(env!("CARGO_MANIFEST_DIR"))
     }
 }

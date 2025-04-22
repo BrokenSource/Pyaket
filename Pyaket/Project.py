@@ -18,6 +18,7 @@ from Broken import (
     Environment,
     PlatformEnum,
     SystemEnum,
+    Tools,
     log,
     shell,
 )
@@ -404,6 +405,15 @@ class PyaketProject(CodeProject):
         with self.cli.panel("🟢 Building"):
             self.cli.command(self.config.release, name="release")
             self.cli.command(self.compile)
+
+        with self.cli.panel("🔵 Special"):
+            self.cli.command(self.build, name="build")
+
+    def build(self):
+        """Build wheels for the project and bundle them on the executable"""
+        wheels: Path = BrokenPath.recreate(PYAKET.DIRECTORIES.DATA/"Wheels")
+        shell(Tools.uv, "build", "--wheel", "--all", "-o", wheels)
+        self.config.app.wheels.extend(wheels.glob("*.whl"))
 
     def compile(self,
         cache:  Annotated[Path, Option("--cache",  "-c", help="Directory to build the project")]=(Path(tempfile.gettempdir())/"pyaket"),

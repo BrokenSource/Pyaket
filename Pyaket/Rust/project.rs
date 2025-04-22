@@ -323,7 +323,7 @@ impl Project {
         serde_json::to_string(&self).unwrap()
     }
 
-    pub fn from_json(json: &str) -> Project {
+    pub fn from_json(json: &str) -> Self {
         serde_json::from_str(json).unwrap()
     }
 }
