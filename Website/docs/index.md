@@ -15,6 +15,7 @@ This page documents all :simple-rust: Rust side environment variables and extra 
 
 
 <!-- ----------------------------------------------------------------------- -->
+
 <br><br>
 
 ## Application {#app}
@@ -64,28 +65,13 @@ path = "package/__init__.py"
 dynamic = ["version"]
 ```
 
-<hr>
-
-### <kbd>PYAKET_APP_ROLLING</kbd> {#app-rolling}
-> 📦 <b>Type:</b> Bool • <b>Default:</b> False
-
-Always reinstall the project's dependencies when running the executable.
-
-This option is best combined with a `git+` dependency or `package` without a `==version` specifier, to create a one-time binary that self-updates. This is obviously discouraged for any production use, unless very controlled, or in ephemeral runtimes for a couple of reasons:
-
-- **Security**: Any malicious update (on the developer or third party side) will be downloaded and executed on the user's/your machine, _blindly_, without a way to recall.
-- **Performance**: The executable will be slower to start and require mandatory network calls at every run, which could give a temporary IP ban if abusing the registry.
-- **Stability**: The dependencies may change and break the project.
-
-A valid, but unconventional, use case is to pin all your dependencies to a specific version and target your latest stable PyPI releases (or git main branch) for clients after heavy testing.
-
-
 
 
 
 
 
 <!-- ----------------------------------------------------------------------- -->
+
 <br><br>
 
 ## Dependencies {#dependencies}
@@ -118,11 +104,11 @@ This is the recommended way to specify dependencies, although third party packag
 ### <kbd>PYAKET_APP_PYPI</kbd> {#app-pypi}
 > 📦 <b>Type:</b> String • <b>Default:</b> None
 
-List of PyPI packages to be installed at runtime, separated by `:` (colon).
+List of PyPI packages to be installed at runtime, separated by `;` (semi colon).
 
 ```sh title="Example"
 # Regular dependencies, latest version
-export PYAKET_APP_PYPI="numpy:plotly:pillow"
+export PYAKET_APP_PYPI="numpy;plotly;pillow"
 
 # Specific stable version of a package
 export PYAKET_APP_PYPI="shaderflow==0.9.0"
@@ -144,12 +130,28 @@ A local `requirements.txt` file to be installed at runtime.
 
 This option mostly exists for legacy reasons. You really should move to a `pyproject.toml` as it allows easier build backends to create portable wheels for your project that includes your code. The only use I can think of is to run a project-less script with a requirements file alongside it.
 
+<hr>
+
+### <kbd>PYAKET_APP_ROLLING</kbd> {#app-rolling}
+> 📦 <b>Type:</b> Bool • <b>Default:</b> False
+
+Always reinstall the project's dependencies when running the executable.
+
+This option is best combined with a `git+` dependency or `package` without a `==version` specifier, to create a one-time binary that self-updates. This is obviously discouraged for any production use, unless very controlled, or in ephemeral runtimes for a couple of reasons:
+
+- **Security**: Any malicious update (on the developer or third party side) will be downloaded and executed on the user's/your machine, _blindly_, without a way to recall.
+- **Performance**: The executable will be slower to start and require mandatory network calls at every run, which could give a temporary IP ban if abusing the registry.
+- **Stability**: The dependencies may change and break the project.
+
+A valid, but unconventional, use case is to pin all your dependencies to a specific version and target your latest stable PyPI releases (or git main branch) for clients after heavy testing.
+
 
 
 
 
 
 <!-- ----------------------------------------------------------------------- -->
+
 <br><br>
 
 ## Entry Points
@@ -206,6 +208,7 @@ It may be used if you have multiple entry points, like `depthflow {main,gradio}`
 
 
 <!-- ----------------------------------------------------------------------- -->
+
 <br><br>
 
 ## Directories {#dirs}
@@ -322,6 +325,7 @@ Multiple versions of the same application(s) are stored in a shared directory (v
 
 
 <!-- ----------------------------------------------------------------------- -->
+
 <br><br>
 
 ## Python {#python}
@@ -355,6 +359,7 @@ Having this enabled increases binary size by roughly 20 MB, but greatly increase
 
 
 <!-- ----------------------------------------------------------------------- -->
+
 <br><br>
 
 ## UV {#uv}
@@ -385,6 +390,7 @@ Having this enabled increases binary size by roughly 20 MB, but greatly increase
 
 
 <!-- ----------------------------------------------------------------------- -->
+
 <br><br>
 
 ## PyTorch
