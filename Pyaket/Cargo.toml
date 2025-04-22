@@ -48,6 +48,10 @@ uuid          = {version="1.16.0", features=["v4"]}
 xxhash-rust   = {version="0.8.15", features=["xxh3"]}
 zip           = {version="2.6.0", features=["deflate"], default-features=false}
 
+[lib]
+name = "pyaket"
+path = "Rust/lib.rs"
+
 [[bin]]
 name = "pyaket"
 path = "Rust/main.rs"

@@ -1,0 +1,9 @@
+# Note: Needs '+nightly' argument on vscode
+# option "rust-analyzer.rustfmt.extraArgs"
+edition = "2024"
+disable_all_formatting = true
+
+# Imports
+reorder_imports = true
+imports_granularity = "Item"
+group_imports = "StdExternalCrate"

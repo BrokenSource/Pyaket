@@ -1,11 +1,10 @@
-mod common;
-use common::*;
+use pyaket::*;
 
 fn run(project: &Project) -> Result<()> {
     project.ensure_uv()?;
 
     // Send the executable path to Python, also flags a Pyaket app
-    let executable = env::current_exe()?.canonicalize()?;
+    let executable = std::env::current_exe()?.canonicalize()?;
     Environment::set("PYAKET", executable.display());
 
     // Load environment variables where the shell (executable) is
@@ -114,7 +113,7 @@ fn run(project: &Project) -> Result<()> {
     }
 
     // Passthrough incoming arguments
-    for arg in env::args().skip(1) {
+    for arg in std::env::args().skip(1) {
         main.arg(arg);
     }
 
@@ -127,7 +126,7 @@ fn main() {
     LazyLock::force(&START_TIME);
     Environment::unset("BUILD");
 
-    log::note!("Project: {}", env!("PYAKET_PROJECT"));
+    logging::note!("Project: {}", env!("PYAKET_PROJECT"));
 
     // Read the project configurion sent at the end of build.rs
     let project: Project = serde_json::from_str(env!("PYAKET_PROJECT")).unwrap();

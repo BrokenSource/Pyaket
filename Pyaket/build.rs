@@ -1,6 +1,6 @@
-#[path="Rust/common.rs"]
-mod common;
-use common::*;
+#[path="Rust/lib.rs"]
+mod lib;
+use lib::*;
 
 /* -------------------------------------------------------------------------- */
 
@@ -31,11 +31,11 @@ mod manage {
         for wheel in project.app.wheels.split(";")
             .map(|x| x.trim()).filter(|x| !x.is_empty())
         {
-            log::info!("Resolving wheel glob: {}", wheel);
+            logging::info!("Resolving wheel glob: {}", wheel);
 
             // Interpret as glob pattern to allow `/path/*.whl` sugar
             for file in glob::glob(wheel)?.map(|x| x.unwrap()) {
-                log::info!("• {}", file.display());
+                logging::info!("• {}", file.display());
                 WheelAssets::write(
                     file.file_name().unwrap(),
                     &read(&file).unwrap(),
@@ -49,7 +49,7 @@ mod manage {
     pub fn reqtxt(project: &mut Project) -> Result<()> {
         // Todo: .read_file_or_keep() sugar
         if Path::new(&project.app.reqtxt).exists() {
-            project.app.reqtxt = fs::read_to_string(&project.app.reqtxt)?;
+            project.app.reqtxt = read_string(&project.app.reqtxt)?;
         }
         Ok(())
     }
