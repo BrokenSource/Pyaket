@@ -37,11 +37,7 @@ pub fn unpack_bytes(
     use flate2::read::GzDecoder;
     use zip::ZipArchive;
 
-    // Can take a while on weak Disks/CPU
-    let mut spinner = Spinner::new(
-        Spinners::Dots, format!("Unpacking file ({})",
-        path.as_ref().display())
-    );
+    logging::info!("Unpacking ({})", path.as_ref().display());
 
     // Identify the archive format by the magic bytes
     let mut cursor = Cursor::new(bytes.as_slice());
@@ -57,7 +53,6 @@ pub fn unpack_bytes(
         [0x1F, 0x8B, ..            ] => unpack_tar(GzDecoder::new(cursor),  path.as_ref())?,
         _ => bail!("Unknown archive format for magic bytes: {:?}", magic),
     }
-    spinner.stop_with_message("\r".into());
     write(flag, hash)?;
     Ok(())
 }

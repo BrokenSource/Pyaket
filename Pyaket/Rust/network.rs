@@ -15,6 +15,8 @@ pub fn must_exist(url: &str) -> Result<()> {
 
 /// In-memory download an url to a byte vector
 pub fn download_bytes(url: &str) -> Result<Vec<u8>> {
+    logging::info!("Downloading ({})", url);
+
     Ok(ureq::get(url).call()?.body_mut()
         .with_config().limit(100 * 1024 * 1024)
         .read_to_vec()?)

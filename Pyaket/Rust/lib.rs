@@ -27,8 +27,6 @@ pub use rust_embed::Embed as RustEmbed;
 pub use serde::Deserialize;
 pub use serde::Serialize;
 pub use smart_default::SmartDefault;
-pub use spinners::Spinner;
-pub use spinners::Spinners;
 pub use temp_dir::TempDir;
 pub use uuid::Uuid;
 pub use xxhash_rust::xxh3::xxh3_64;
