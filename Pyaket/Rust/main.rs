@@ -21,7 +21,7 @@ fn run(project: &Project) -> Result<()> {
     if match read(project.uuid_tracker_file()) {
         Ok(bytes) => {bytes != project.uuid.as_bytes()},
         Err(_) => true,
-    } || project.rolling {
+    } || project.app.rolling {
 
         /* Create the virtual environment */ {
             let mut setup = project.uv();
@@ -30,19 +30,21 @@ fn run(project: &Project) -> Result<()> {
                 .arg(project.installation_dir())
                 .arg("--python").arg(&project.python.version)
                 .arg("--seed").arg("--quiet");
-            if project.rolling {setup
+            if project.app.rolling {setup
                 .arg("--allow-existing");}
             subprocess::run(&mut setup)?;
         }
 
-        // Install PyTorch first
+        // Install PyTorch first, as other dependencies might
+        // install a platform's default backend
         if !project.torch.version.is_empty() {
-            Environment::setdefault("UV_TORCH_BACKEND", &project.torch.backend);
-            project.uv()
-                .arg("pip").arg("install")
+            let mut torch = project.uv();
+
+            torch.arg("pip").arg("install")
                 .arg(format!("torch=={}", project.torch.version))
-                .arg("--preview")
-                .spawn()?;
+                .arg(format!("--torch-backend={}", project.torch.backend))
+                .arg("--preview");
+            subprocess::run(&mut torch)?;
         }
 
         // Gets cleaned up when out of scope
@@ -126,8 +128,6 @@ fn main() {
     LazyLock::force(&START_TIME);
     Environment::unset("BUILD");
 
-    logging::note!("Project: {}", env!("PYAKET_PROJECT"));
-
     // Read the project configurion sent at the end of build.rs
     let project: Project = serde_json::from_str(env!("PYAKET_PROJECT")).unwrap();
     let runtime = run(&project);
@@ -138,7 +138,7 @@ fn main() {
 
     // Hold the terminal open with any Rust or Python errors for convenience
     // - Opt-out with the same variable that enables the feature
-    if project.keep_open && Environment::ubool(PYAKET_KEEP_OPEN, true) {
+    if project.app.keep_open && Environment::ubool(PYAKET_KEEP_OPEN, true) {
         print!("\nPress enter to exit...");
         let _ = std::io::stdin().read_line(&mut String::new());
     }

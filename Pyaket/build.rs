@@ -73,6 +73,7 @@ fn build() -> Result<()> {
 
     // Export a const configured project to be loaded at runtime
     Environment::rustc_export("PYAKET_PROJECT", project.json());
+    logging::note!("Project: {}", project.json());
     Ok(())
 }
 

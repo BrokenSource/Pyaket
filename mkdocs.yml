@@ -22,8 +22,6 @@ nav:
     - docs/index.md
     - Python:
       - Pinning: docs/pinning.md
-    - Rust:
-      - Environment: docs/rust/env.md
   - Questions: faq.md
 theme:
   custom_dir: ../../Website/overrides

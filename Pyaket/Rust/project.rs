@@ -8,37 +8,44 @@ pub static PYAKET_APP_VERSION: &str = "PYAKET_APP_VERSION";
 pub static PYAKET_APP_WHEELS:  &str = "PYAKET_APP_WHEELS";
 pub static PYAKET_APP_PYPI:    &str = "PYAKET_APP_PYPI";
 pub static PYAKET_APP_REQTXT:  &str = "PYAKET_APP_REQTXT";
+pub static PYAKET_APP_ROLLING: &str = "PYAKET_APP_ROLLING";
+pub static PYAKET_KEEP_OPEN:   &str = "PYAKET_KEEP_OPEN";
 
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct PyaketApplication {
 
-    /// The name of the application
-    #[default(Environment::uget(PYAKET_APP_NAME, "Application"))]
+    /// [Documentation](https://pyaket.dev/docs#app-name)
+    #[default(Environment::uget(PYAKET_APP_NAME, "Pyaket"))]
     pub name: String,
 
-    /// The author of the application
+    /// [Documentation](https://pyaket.dev/docs#app-author)
     #[default(Environment::uget(PYAKET_APP_AUTHOR, "BrokenSource"))]
     pub author: String,
 
-    /// The version of the application
+    /// [Documentation](https://pyaket.dev/docs#app-version)
     #[default(Environment::uget(PYAKET_APP_VERSION, "0.0.0"))]
     pub version: String,
 
-    /// List of local Python wheels to install at runtime separated by ':'
-    /// - Example: "./dist/foo.whl:./dist/bar.whl:./dist/baz.whl"
+    /// [Documentation](https://pyaket.dev/docs#app-wheels)
     #[serde(skip)]
     #[default(Environment::uget(PYAKET_APP_WHEELS, ""))]
     pub wheels: String,
 
-    /// List of PyPI packages to install at runtime separated by ':'
-    /// - Example: "numpy:pydantic==2.11.2:uv>=0.6.10"
+    /// [Documentation](https://pyaket.dev/docs#app-pypi)
     #[default(Environment::uget(PYAKET_APP_PYPI, ""))]
     pub pypi: String,
 
-    /// A requirements.txt file to install at runtime
-    /// - Example: "./requirements.txt"
+    /// [Documentation](https://pyaket.dev/docs#app-requirements-txt)
     #[default(Environment::uget(PYAKET_APP_REQTXT, ""))]
     pub reqtxt: String,
+
+    /// [Documentation](https://pyaket.dev/docs#rolling)
+    #[default(Environment::ubool(PYAKET_APP_ROLLING, false))]
+    pub rolling: bool,
+
+    /// [Documentation](https://pyaket.dev/docs#keep-open)
+    #[default(Environment::ubool(PYAKET_KEEP_OPEN, false))]
+    pub keep_open: bool,
 }
 
 /* -------------------------------------------- */
@@ -49,12 +56,11 @@ pub static PYAKET_VERSIONS_DIR: &str = "PYAKET_VERSIONS_DIR";
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct PyaketDirectories {
 
-    /// A common directory to store common unpacked assets
+    /// [Documentation](https://pyaket.dev/docs#common-dir)
     #[default(Environment::uget(PYAKET_COMMON_DIR, "Pyaket"))]
     pub common: String,
 
-    /// Subdirectory of the workspace for versions to coexist
-    /// - Default: `$WORKSPACE/Versions/`
+    /// [Documentation](https://pyaket.dev/docs#versions-dir)
     #[default(Environment::uget(PYAKET_VERSIONS_DIR, "Versions"))]
     pub versions: String,
 }
@@ -67,11 +73,11 @@ pub static PYAKET_PYTHON_BUNDLE:  &str = "PYAKET_PYTHON_BUNDLE";
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct PyaketPython {
 
-    /// Python version to use at runtime
+    /// [Documentation](https://pyaket.dev/docs#python-version)
     #[default(Environment::uget(PYAKET_PYTHON_VERSION, "3.13"))]
     pub version: String,
 
-    /// Whether to bundle Python in the application or download at runtime
+    /// [Documentation](https://pyaket.dev/docs#python-bundle)
     #[default(Environment::ubool(PYAKET_PYTHON_BUNDLE, false))]
     pub bundle: bool,
 }
@@ -84,11 +90,11 @@ pub static PYAKET_UV_BUNDLE:  &str = "PYAKET_UV_BUNDLE";
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct PyaketUV {
 
-    /// The version of uv to use at runtime
+    /// [Documentation](https://pyaket.dev/docs#uv-version)
     #[default(Environment::uget(PYAKET_UV_VERSION, "0.6.16"))]
     pub version: String,
 
-    /// Whether to bundle uv in the application
+    /// [Documentation](https://pyaket.dev/docs#uv-bundle)
     #[default(Environment::ubool(PYAKET_UV_BUNDLE, false))]
     pub bundle: bool,
 }
@@ -101,15 +107,11 @@ pub static PYAKET_TORCH_BACKEND: &str = "PYAKET_TORCH_BACKEND";
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct PyaketTorch {
 
-    /// Installs a specific version of PyTorch, e.g. `2.6.0` or none (unset)
-    /// - **Warning**: Runtime only installation, collect and bundle wheels for offline
-    /// - **Experimental**: https://docs.astral.sh/uv/guides/integration/pytorch/
+    /// [Documentation](https://pyaket.dev/docs#torch-version)
     #[default(Environment::uget(PYAKET_TORCH_VERSION, ""))]
     pub version: String,
 
-    /// A PyTorch backend to install at runtime, e.g. `auto`, `cpu`, `cu124`, `rocm6.2`
-    /// - **Warning**: Runtime only installation, collect and bundle wheels for offline
-    /// - **Experimental**: https://docs.astral.sh/uv/guides/integration/pytorch/
+    /// [Documentation](https://pyaket.dev/docs#torch-backend)
     #[default(Environment::uget(PYAKET_TORCH_BACKEND, "auto"))]
     pub backend: String,
 }
@@ -124,22 +126,19 @@ pub static PYAKET_ENTRY_COMMAND: &str = "PYAKET_ENTRY_COMMAND";
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct PyaketEntry {
 
-    /// Run an installed module to be run as `python -m module`
+    /// [Documentation](https://pyaket.dev/docs#entry-module)
     #[default(Environment::uget(PYAKET_ENTRY_MODULE, ""))]
     pub module: String,
 
-    /// Run a bundled script at runtime
+    /// [Documentation](https://pyaket.dev/docs#entry-script)
     #[default(Environment::uget(PYAKET_ENTRY_SCRIPT, ""))]
     pub script: String,
 
-    /// Run a single line of python code at runtime
-    /// - Example: `from module import main; main()`
+    /// [Documentation](https://pyaket.dev/docs#entry-code)
     #[default(Environment::uget(PYAKET_ENTRY_CODE, ""))]
     pub code: String,
 
-    /// Run a custom command inside the virtual environment at runtime
-    /// - Scripts are often defined in `[project.scripts]` in `pyproject.toml`
-    /// - This can be used to hardcode arguments, like `depthflow gradio`
+    /// [Documentation](https://pyaket.dev/docs#entry-command)
     #[default(Environment::uget(PYAKET_ENTRY_COMMAND, ""))]
     pub command: String,
 }
@@ -147,8 +146,6 @@ pub struct PyaketEntry {
 /* -------------------------------------------- */
 
 pub static PYAKET_TARGET_TRIPLE: &str = "PYAKET_TARGET_TRIPLE";
-pub static PYAKET_ROLLING:       &str = "PYAKET_ROLLING";
-pub static PYAKET_KEEP_OPEN:     &str = "PYAKET_KEEP_OPEN";
 
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct Project {
@@ -180,14 +177,6 @@ pub struct Project {
     /// The platform target triple of the build
     #[default(Environment::uget(PYAKET_TARGET_TRIPLE, std::env::var("TARGET").unwrap().as_str()))]
     pub triple: String,
-
-    /// Shall a binary always reinstall latest pypi or git+ dependencies
-    #[default(Environment::ubool(PYAKET_ROLLING, false))]
-    pub rolling: bool,
-
-    /// Keep the terminal open after errors
-    #[default(Environment::ubool(PYAKET_KEEP_OPEN, false))]
-    pub keep_open: bool,
 }
 
 /* -------------------------------------------------------------------------- */

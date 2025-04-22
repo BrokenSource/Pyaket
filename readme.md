@@ -22,7 +22,7 @@
   </b>
   <br>
   <sub>
-    <a href="https://www.github.com/BrokenSource/Pyaket">GitHub</a> •
+    <a href="https://github.com/BrokenSource/Pyaket">GitHub</a> •
     <a href="https://pyaket.dev/contact">Contact</a> •
     <a href="https://pyaket.dev/changelog">Changelog</a> •
     <a href="https://pyaket.dev/license">License</a>
