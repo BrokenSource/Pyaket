@@ -12,6 +12,7 @@ edition       = "2024"
 
 [dependencies]
 anyhow        = "1.0.97"
+bzip2         = {version="0.5.2", features=["libbz2-rs-sys"], optional=true}
 directories   = "6.0.0"
 dotenvy       = "0.15.7"
 flate2        = "1.1.1"
@@ -28,9 +29,11 @@ ureq          = "3.0.10"
 uuid          = {version="1.16.0", features=["v4"]}
 xxhash-rust   = {version="0.8.15", features=["xxh3"]}
 zip           = {version="2.6.0", features=["deflate"], default-features=false}
+zstd          = {version="0.13.3", optional=true}
 
 [build-dependencies]
 anyhow        = "1.0.97"
+bzip2         = {version="0.5.2", features=["libbz2-rs-sys"], optional=true}
 directories   = "6.0.0"
 dotenvy       = "0.15.7"
 flate2        = "1.1.1"
@@ -47,6 +50,7 @@ ureq          = "3.0.10"
 uuid          = {version="1.16.0", features=["v4"]}
 xxhash-rust   = {version="0.8.15", features=["xxh3"]}
 zip           = {version="2.6.0", features=["deflate"], default-features=false}
+zstd          = {version="0.13.3", optional=true}
 
 [lib]
 name = "pyaket"
@@ -55,3 +59,7 @@ path = "Rust/lib.rs"
 [[bin]]
 name = "pyaket"
 path = "Rust/main.rs"
+
+[features]
+zstd = ["dep:zstd"]
+bzip2 = ["dep:bzip2"]

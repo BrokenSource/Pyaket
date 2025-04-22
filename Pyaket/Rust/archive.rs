@@ -19,7 +19,8 @@ pub fn unpack_bytes(
         .join(flag.unwrap_or("archive"))
         .with_extension("unpack");
 
-    // Skip unpacking on same ok once data
+    // Detect different data or partial unpacks,
+    // skip if the data is already unpacked
     if let Ok(data) = read_string(&flag) {
         if data == hash {
             return Ok(());
@@ -28,8 +29,11 @@ pub fn unpack_bytes(
         }
     }
 
-    // use zstd::stream::read::Decoder as ZsDecoder;
-    // use bzip2::read::BzDecoder;
+    #[cfg(feature="zstd")]
+    use zstd::stream::read::Decoder as ZsDecoder;
+    #[cfg(feature="bzip2")]
+    use bzip2::read::BzDecoder;
+
     use flate2::read::GzDecoder;
     use zip::ZipArchive;
 
@@ -46,8 +50,10 @@ pub fn unpack_bytes(
     cursor.seek(SeekFrom::Start(0))?;
     match magic {
         [0x50, 0x4B, 0x03, 0x04, ..] => ZipArchive::new(cursor)?.extract(path.as_ref())?,
-        // [0x28, 0xB5, 0x2F, 0xFD, ..] => unpack_tar(ZsDecoder::new(cursor)?, path.as_ref())?,
-        // [0x42, 0x5A, ..            ] => unpack_tar(BzDecoder::new(cursor),  path.as_ref())?,
+        #[cfg(feature="zstd")]
+        [0x28, 0xB5, 0x2F, 0xFD, ..] => unpack_tar(ZsDecoder::new(cursor)?, path.as_ref())?,
+        #[cfg(feature="bzip2")]
+        [0x42, 0x5A, ..            ] => unpack_tar(BzDecoder::new(cursor),  path.as_ref())?,
         [0x1F, 0x8B, ..            ] => unpack_tar(GzDecoder::new(cursor),  path.as_ref())?,
         _ => bail!("Unknown archive format for magic bytes: {:?}", magic),
     }
