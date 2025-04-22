@@ -8,4 +8,4 @@
 ### ✏️ v0.9.0 <small>Unreleased</small> {#0.9.0}
 
 !!! example ""
-    - Initial version, will match the monorepo due heavy integration
+    - Initial version, will match the monorepo due heavy integration and use of already existing infrastructure

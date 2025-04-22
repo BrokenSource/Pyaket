@@ -1,4 +1,4 @@
-# Environment Variables
+# Configuration
 
 :material-arrow-right: 📦 Pyaket's configuration is done via environment variables read by rust at compile time, which are processed and passed through to the executable to load at runtime.
 

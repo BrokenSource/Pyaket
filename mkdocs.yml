@@ -21,11 +21,13 @@ nav:
   - Documentation:
     - docs/index.md
     - Python:
-      - Pinning: docs/pinning.md
+      - Locking dependencies: docs/pinning.md
   - Questions: faq.md
 theme:
   custom_dir: ../../Website/overrides
   favicon: Pyaket/Resources/Images/Pyaket.png
+  icon:
+    logo: octicons/package-16
   palette:
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
