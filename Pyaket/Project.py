@@ -268,7 +268,7 @@ class Entry(BrokenModel):
 
 # ---------------------------------------------- #
 
-class PyaketRelease(BrokenModel):
+class Release(BrokenModel):
     """
     Release configuration for the application
     """
@@ -374,7 +374,7 @@ class PyaketConfig(BrokenModel):
     astral:  Astral      = Field(default_factory=Astral)
     torch:   Torch       = Field(default_factory=Torch)
     entry:   Entry       = Field(default_factory=Entry)
-    release: PyaketRelease     = Field(default_factory=PyaketRelease)
+    release: Release     = Field(default_factory=Release)
 
     def export_all(self) -> None:
         Environment.update(PYAKET_RELEASE=1)
@@ -496,5 +496,5 @@ class PyaketProject(CodeProject):
         return self.config.entry
 
     @property
-    def release(self) -> PyaketRelease:
+    def release(self) -> Release:
         return self.config.release
