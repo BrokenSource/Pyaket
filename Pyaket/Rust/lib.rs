@@ -23,7 +23,7 @@ pub use std::time::Instant;
 pub use anyhow::Result;
 pub use anyhow::bail;
 pub use directories::BaseDirs;
-pub use rust_embed::Embed;
+pub use rust_embed::Embed as RustEmbed;
 pub use serde::Deserialize;
 pub use serde::Serialize;
 pub use smart_default::SmartDefault;
@@ -34,16 +34,16 @@ pub use uuid::Uuid;
 pub use xxhash_rust::xxh3::xxh3_64;
 
 pub mod archive;
+pub use assets::*;
 pub mod assets;
 pub mod environment;
+pub use environment::*;
 pub mod logging;
 pub mod network;
 pub mod project;
+pub use project::*;
 pub mod subprocess;
 
-pub use assets::*;
-pub use environment::*;
-pub use project::*;
 
 /// Time at which the program started, force call it on fn main()
 pub static START_TIME: LazyLock<Instant> = LazyLock::new(Instant::now);

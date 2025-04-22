@@ -1,8 +1,8 @@
 use crate::*;
 
-pub trait BrokenAssets: Embed {
+pub trait BrokenAssets: RustEmbed {
 
-    /// Must match `#[derive(Embed)]`'s `folder` attribute
+    /// Must match `#[derive(RustEmbed)]`'s `folder` attribute
     fn path() -> &'static str;
 
     /// Get a path to download assets to before bundling
@@ -80,7 +80,7 @@ pub trait BrokenAssets: Embed {
 
 /* -------------------------------------------------------------------------- */
 
-#[derive(Embed)]
+#[derive(RustEmbed)]
 #[allow_missing=true]
 #[folder="../.cache/bundle/wheels"]
 pub struct WheelAssets;
@@ -91,7 +91,7 @@ impl BrokenAssets for WheelAssets {
     }
 }
 
-#[derive(Embed)]
+#[derive(RustEmbed)]
 #[allow_missing=true]
 #[folder="../.cache/bundle/archives"]
 pub struct ArchiveAssets;
