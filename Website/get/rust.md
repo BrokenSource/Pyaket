@@ -1,12 +1,10 @@
 📦 Pyaket uses the rust programming language for its core functionality.
 
-<b><span class="the">D</span>eveloping</b> or compiling rust projects requires a toolchain - collection of a compiler, project manager, standard library, and other tools. Luckily, [rustup](https://www.rust-lang.org/tools/install), the official installation method, manages it all for you, including cross compilation; except for few external dependencies.
+<b><span class="the">D</span>eveloping</b> or compiling rust projects requires a toolchain - collection of a compiler, project manager, standard library, and other tools. Luckily, the official installation method [rustup](https://www.rust-lang.org/tools/install) manages it all for you, including cross compilation (except for a few external dependencies).
 
-:material-arrow-right: All major platforms are [supported](https://doc.rust-lang.org/nightly/rustc/platform-support.html#tier-1-with-host-tools), though some might be problematic for your dependencies.
+:material-arrow-right: All major platforms are [supported](https://doc.rust-lang.org/nightly/rustc/platform-support.html#tier-1-with-host-tools), though some might be problematic for your project.
 
 ## Native {#native}
-
-✅ You can run `#!ps1 $ pyaket rust` to install everything you need for your platform!
 
 ### :material-microsoft: Windows
 
@@ -16,17 +14,25 @@ Ensure you have [Winget](https://learn.microsoft.com/en-us/windows/package-manag
 winget install --id=Rustlang.Rustup -e
 ```
 
-There's two options for a C linker/compiler, :simple-gnu: MinGW or :material-microsoft: Visual C++ Build Tools (MSVC).
+There's two options for a C linker/compiler now, :simple-gnu: MinGW or :material-microsoft: Visual C++ Build Tools (MSVC).
 
 :material-arrow-right: **Reason**: Rust can't bundle Build Tools due licensing, out of two let the user choose one. Some crates links against system libraries, such as zstd or networking, and need to interface with C.
 
-Overall, it's easier to get started with MSVC if you're in a hurry or prefer official Microsoft tools - at the cost of maybe needing a [license](https://visualstudio.microsoft.com/license-terms/vs2022-ga-diagnosticbuildtools/) for medium companies. MinGW isn't bad, just extra steps.
+Overall, it's easier to get started with MinGW, which is needed for cross compiling to macOS and Linux anyway. Go with MSVC if you prefer official Microsoft tools or will only target Windows.
+
+<br>
+
+#### :simple-gnu: MinGW
+
+Download and install [MSYS2](https://www.msys2.org/), a lightweight Linux-like shell and package manager for Windows, in the default location at `C:\\msys64`.
+
+!!! success "**That's it:** The python package will auto install dependencies for the platform you're compiling for"
 
 <br>
 
 #### :material-microsoft: MSVC
 
-To avoid any potential confusion, here's a brief clarification on confusing products:
+To avoid any potential confusion, here's a brief clarification on product names:
 
 - :material-microsoft-visual-studio: **Visual Studio** is a full IDE for C#, C++, .NET development, the original one (purple) [#](https://visualstudio.microsoft.com/)
 - :material-microsoft-visual-studio-code: **Visual Studio Code** is a lightweight code editor with many extensions (blue) [#](https://code.visualstudio.com/)
@@ -40,89 +46,87 @@ Download and install [Build Tools for Visual Studio](https://visualstudio.micros
 
 This process can be somewhat reliabily automated by running:
 
-```ps1
+```ps1 title="PowerShell"
 winget install --id Microsoft.VisualStudio.2022.BuildTools `
     --override " `
         --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 `
         --add Microsoft.VisualStudio.Component.Windows10SDK `
-        --add Microsoft.VisualStudio.Component.Windows11SDK.22000 `
+        --add Microsoft.VisualStudio.Component.Windows11SDK `
     " `
     --wait --passive
 ```
 
-You should have `cl.exe`, `link.exe` and `msvc.exe` available in your shell to verify.
-
-<br>
-
-#### :simple-gnu: MinGW
-
-Download and install [MSYS2](https://www.msys2.org/), a lightweight Linux-like shell and package manager for Windows. Their homepage _conveniently_ lists instructions for installing the MinGW toolchain 🙂
-
-Either way, search for a MSYS2 Terminal application in your system, and run:
-
-```ps1
-pacman -Sy mingw-w64-ucrt-x86_64-gcc
-```
-
-:material-arrow-right: **Note**: MinGW will only be available inside the MSYS2 terminal, you might need to cd into your project's directory with `#!sh cd /c/Users/user/.../Project`, activate the venv with `activate.sh`.
+You should have `cl.exe`, `link.exe` and `msvc.exe` available in your shell.
 
 <hr>
 
 ### :simple-linux: Linux
 
-Ensure you have your Distro's equivalent of a `base-devel` package installed, and `rustup`:
-
-=== ":material-ubuntu: Ubuntu"
-    ```sh
-    # Update the package list
-    sudo apt update
-
-    # Native compilation and rustup
-    sudo apt install rustup build-essential -y
-    ```
-=== ":material-arch: Arch Linux"
-    ```sh
-    # Native compilation and rustup
-    sudo pacman -Syu rustup base-devel
-
-    # Windows cross compilation
-    sudo pacman -Syu mingw-w64-toolchain
-    ```
-=== ":material-fedora: Fedora"
-    ```sh
-    # Native compilation and rustup
-    sudo dnf install rustup gcc
-
-    # Windows cross compilation
-    sudo dnf install mingw64-gcc
-    ```
-=== ":material-debian: Debian"
-    ```sh
-    # Update the package list
-    sudo apt update
-
-    # Native compilation and rustup
-    sudo apt install rustup build-essential -y
-    ```
-
-Either way, running rustup's official command should work too:
+Install [rustup](https://www.rust-lang.org/tools/install) with the official installation script: {>>(or from your package manager)<<}
 
 ```sh
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
+Ensure you have your Distro's equivalent of a `base-devel` package installed and/or mingw:
+
+=== ":material-ubuntu: Ubuntu"
+    ```sh
+    # Native compilation
+    sudo apt install build-essential
+
+    # Cross compilation
+    sudo apt install mingw-w64
+    ```
+=== ":material-arch: Arch Linux"
+    ```sh
+    # Native compilation
+    sudo pacman -Syu base-devel
+
+    # Cross compilation
+    sudo pacman -Syu mingw-w64-toolchain
+    ```
+=== ":material-fedora: Fedora"
+    ```sh
+    # Native compilation
+    sudo dnf install gcc
+
+    # Cross compilation
+    sudo dnf install mingw64-gcc
+    ```
+=== ":material-debian: Debian"
+    ```sh
+    # Native compilation
+    sudo apt install build-essential
+
+    # Cross compilation
+    sudo apt install mingw-w64
+    ```
+
 This script should have added `~/.cargo/bin` to your `PATH` environment based on your shell.
 
-:material-arrow-right: **Note**: You may need to restart the terminal to have `cargo` and `rustc` available.
+:material-arrow-right: **Note**: You may need to restart the terminal to have `cargo` and `rustc` available, ensure it.
 
 <hr>
 
 ### :simple-apple: macOS
 
-Ensure you have [Homebrew](https://brew.sh/) and [Xcode](https://developer.apple.com/xcode/) installed, install rustup with:
+Install [Homebrew](https://brew.sh/) and [Xcode](https://developer.apple.com/xcode/), then rustup with:
 
 ```sh
 brew install rustup
+```
+
+:material-microsoft: Windows cross compilation:
+
+```sh
+brew install mingw-w64
+```
+
+:simple-linux: Linux cross compilation:
+
+```sh
+brew install gcc
 ```
 
 <br>

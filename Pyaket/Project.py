@@ -26,74 +26,67 @@ from Pyaket import PYAKET
 
 # ---------------------------------------------- #
 
-class AppConfig(BrokenModel):
+class Application(BrokenModel):
     """
     General metadata and dependencies definitions of the project
 
-    • [Documentation](https://pyaket.dev/docs/configuration/#app)
+    • [Documentation](https://pyaket.dev/docs/rust/env/#app)
     """
 
     name: Annotated[str, Option("--name", "-n")] = "Pyaket"
     """
     The application name, used for
 
-    • [Documentation](https://pyaket.dev/docs/configuration/#app-name)
+    • [Documentation](https://pyaket.dev/docs/rust/env/#app-name)
     """
 
     author: Annotated[str, Option("--author", "-a")] = "BrokenSource"
     """
     Subdirectory of the platform's user data directory to install the application
 
-    • [Documentation](https://pyaket.dev/docs/configuration/#app-author)
+    • [Documentation](https://pyaket.dev/docs/rust/env/#app-author)
     """
 
     version: Annotated[str, Option("--version", "-v")] = "0.0.0"
     """
     The release version matching PyPI, codename, branch, latest, etc.
 
-    • [Documentation](https://pyaket.dev/docs/configuration/#app-version)
-    """
-
-    versions_dir: Annotated[str, Option("--versions-dir")] = "Versions"
-    """
-    Subdirectory of the workspace to install versions of the application.
-
-    • [Documentation](https://pyaket.dev/docs/configuration/#app-versions-dir)
+    • [Documentation](https://pyaket.dev/docs/rust/env/#app-version)
     """
 
     wheels: Annotated[list[Path], Option("--wheels", "-w")] = Field([])
     """
     List of wheels to bundle and install at runtime, supports glob patterns.
 
-    • [Documentation](https://pyaket.dev/docs/configuration/#app-wheels)
+    • [Documentation](https://pyaket.dev/docs/rust/env/#app-wheels)
     """
 
     pypi: Annotated[list[str], Option("--pypi", "-p")] = []
     """
     List of dependencies to install at runtime from PyPI, plain or pinned.
 
-    • [Documentation](https://pyaket.dev/docs/configuration/#app-pypi)
+    • [Documentation](https://pyaket.dev/docs/rust/env/#app-pypi)
     """
 
     reqtxt: Annotated[Path, Option("--requirements", "-r")] = None
     """
     Path to a requirements.txt to install at runtime (legacy)
 
-    • [Documentation](https://pyaket.dev/docs/configuration/#app-requirements-txt)
+    • [Documentation](https://pyaket.dev/docs/rust/env/#app-requirements-txt)
     """
 
     rolling: Annotated[bool, Option("--rolling")] = False
     """
     Always upgrade dependencies at startup for a rolling-release mechanism
 
-    • [Documentation](https://pyaket.dev/docs/configuration/#rolling)
+    • [Documentation](https://pyaket.dev/docs/rust/env/#rolling)
     """
 
     keep_open: Annotated[bool, Option("--keep-open", "-k")] = False
     """
     Keep the terminal open after errors or finish
 
-    • [Documentation](https://pyaket.dev/docs/configuration/#keep-open)
+    • [Documentation](https://pyaket.dev/docs/rust/env/#keep-open)
     """
 
     @property
@@ -111,7 +104,6 @@ class AppConfig(BrokenModel):
             PYAKET_APP_NAME=self.name,
             PYAKET_APP_VERSION=self.version,
             PYAKET_APP_AUTHOR=self.author,
-            PYAKET_APP_SUBDIR=self.versions_dir,
             PYAKET_APP_WHEELS=';'.join(self._wheels),
             PYAKET_APP_PYPI=';'.join(self._pypi),
             PYAKET_APP_REQTXT=self.reqtxt,
@@ -121,25 +113,41 @@ class AppConfig(BrokenModel):
 
 # ---------------------------------------------- #
 
-class PythonConfig(BrokenModel):
+class Directories(BrokenModel):
+
+    versions: Annotated[str, Option("--versions-dir")] = "Versions"
+    """
+    Subdirectory of the workspace to install versions of the application.
+
+    • [Documentation](https://pyaket.dev/docs/rust/env/#app-versions-dir)
+    """
+
+    def export(self) -> None:
+        Environment.update(
+            PYAKET_VERSIONS_DIR=self.versions,
+        )
+
+# ---------------------------------------------- #
+
+class Python(BrokenModel):
     """
     Configuration for a Python interpreter to use for the project
 
-    • [Documentation](https://pyaket.dev/docs/configuration/#python)
+    • [Documentation](https://pyaket.dev/docs/rust/env/#python)
     """
 
     version: Annotated[str, Option("--version", "-v")] = "3.13"
     """
     A target python version to use at runtime
 
-    • [Documentation](https://pyaket.dev/docs/configuration/#python-version)
+    • [Documentation](https://pyaket.dev/docs/rust/env/#python-version)
     """
 
     bundle: Annotated[bool, Option("--bundle", "-b")] = False
     """
     Whether to bundle the python distribution in the executable
 
-    • [Documentation](https://pyaket.dev/docs/configuration/#python-bundle)
+    • [Documentation](https://pyaket.dev/docs/rust/env/#python-bundle)
     """
 
     def export(self) -> None:
@@ -150,25 +158,25 @@ class PythonConfig(BrokenModel):
 
 # ---------------------------------------------- #
 
-class AstralConfig(BrokenModel):
+class Astral(BrokenModel):
     """
     Configuration for uv project and package manager to use
 
-    • [Documentation](https://pyaket.dev/docs/configuration/#uv)
+    • [Documentation](https://pyaket.dev/docs/rust/env/#uv)
     """
 
     version: Annotated[str, Option("--version", "-v")] = "0.6.13"
     """
     A target uv version to use at runtime
 
-    • [Documentation](https://pyaket.dev/docs/configuration/#uv-version)
+    • [Documentation](https://pyaket.dev/docs/rust/env/#uv-version)
     """
 
     bundle: Annotated[bool, Option("--bundle", "-b")] = False
     """
     Whether to bundle uv in the executable
 
-    • [Documentation](https://pyaket.dev/docs/configuration/#uv-bundle)
+    • [Documentation](https://pyaket.dev/docs/rust/env/#uv-bundle)
     """
 
     def export(self) -> None:
@@ -179,24 +187,24 @@ class AstralConfig(BrokenModel):
 
 # ---------------------------------------------- #
 
-class TorchConfig(BrokenModel):
+class Torch(BrokenModel):
     """
     Optional configuration to install PyTorch at runtime
 
-    • [Documentation](https://pyaket.dev/docs/configuration/#pytorch)
+    • [Documentation](https://pyaket.dev/docs/rust/env/#pytorch)
     """
 
     version: Annotated[str, Option("--version", "-v")] = None
     """
     A target torch version to use at runtime, empty disables it
 
-    • [Documentation](https://pyaket.dev/docs/configuration/#torch-version)
+    • [Documentation](https://pyaket.dev/docs/rust/env/#torch-version)
     """
 
     backend: Annotated[str, Option("--backend", "-b")] = "auto"
     """
 
-    • [Documentation](https://pyaket.dev/docs/configuration/#torch-backend)
+    • [Documentation](https://pyaket.dev/docs/rust/env/#torch-backend)
     """
 
     def export(self) -> None:
@@ -207,39 +215,39 @@ class TorchConfig(BrokenModel):
 
 # ---------------------------------------------- #
 
-class EntryConfig(BrokenModel):
+class Entry(BrokenModel):
     """
     Configuration for the entry point of the application
 
-    • [Documentation](https://pyaket.dev/docs/configuration/#entry-points)
+    • [Documentation](https://pyaket.dev/docs/rust/env/#entry-points)
     """
 
     module: Annotated[str, Option("--module", "-m")] = None
     """
     A module to run at runtime as (python -m module ...)
 
-    • [Documentation](https://pyaket.dev/docs/configuration/#entry-module)
+    • [Documentation](https://pyaket.dev/docs/rust/env/#entry-module)
     """
 
     script: Annotated[Path, Option("--script", "-f")] = None
     """
     A script to bundle and run at runtime (python script.py ...)
 
-    • [Documentation](https://pyaket.dev/docs/configuration/#entry-script)
+    • [Documentation](https://pyaket.dev/docs/rust/env/#entry-script)
     """
 
     code: Annotated[str, Option("--code", "-c")] = None
     """
     A inline code snippet to run at runtime (python -c "code")
 
-    • [Documentation](https://pyaket.dev/docs/configuration/#entry-code)
+    • [Documentation](https://pyaket.dev/docs/rust/env/#entry-code)
     """
 
     command: Annotated[str, Option("--command", "-x")] = None
     """
     A command to run at runtime (command ...)
 
-    • [Documentation](https://pyaket.dev/docs/configuration/#entry-command)
+    • [Documentation](https://pyaket.dev/docs/rust/env/#entry-command)
     """
 
     def export(self) -> None:
@@ -252,7 +260,7 @@ class EntryConfig(BrokenModel):
 
 # ---------------------------------------------- #
 
-class ReleaseConfig(BrokenModel):
+class PyaketRelease(BrokenModel):
     """
     Release configuration for the application
     """
@@ -352,12 +360,13 @@ class ReleaseConfig(BrokenModel):
 # ---------------------------------------------- #
 
 class PyaketConfig(BrokenModel):
-    app:     AppConfig     = Field(default_factory=AppConfig)
-    python:  PythonConfig  = Field(default_factory=PythonConfig)
-    astral:  AstralConfig  = Field(default_factory=AstralConfig)
-    torch:   TorchConfig   = Field(default_factory=TorchConfig)
-    entry:   EntryConfig   = Field(default_factory=EntryConfig)
-    release: ReleaseConfig = Field(default_factory=ReleaseConfig)
+    app:     Application = Field(default_factory=Application)
+    dirs:    Directories = Field(default_factory=Directories)
+    python:  Python      = Field(default_factory=Python)
+    astral:  Astral      = Field(default_factory=Astral)
+    torch:   Torch       = Field(default_factory=Torch)
+    entry:   Entry       = Field(default_factory=Entry)
+    release: PyaketRelease     = Field(default_factory=PyaketRelease)
 
     def export_all(self) -> None:
         Environment.update(PYAKET_RELEASE=1)
@@ -450,25 +459,25 @@ class PyaketProject(CodeProject):
     # Likely temporary
 
     @property
-    def app(self) -> AppConfig:
+    def app(self) -> Application:
         return self.config.app
 
     @property
-    def python(self) -> PythonConfig:
+    def python(self) -> Python:
         return self.config.python
 
     @property
-    def astral(self) -> AstralConfig:
+    def astral(self) -> Astral:
         return self.config.astral
 
     @property
-    def torch(self) -> TorchConfig:
+    def torch(self) -> Torch:
         return self.config.torch
 
     @property
-    def entry(self) -> EntryConfig:
+    def entry(self) -> Entry:
         return self.config.entry
 
     @property
-    def release(self) -> ReleaseConfig:
+    def release(self) -> PyaketRelease:
         return self.config.release

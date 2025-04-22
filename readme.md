@@ -15,10 +15,10 @@
   <br>
   <b>
     Links •
-    <a href="https://pyaket.dev/get/">✅ Installation</a> •
-    <a href="https://pyaket.dev/examples/">⭐️ Examples</a> •
-    <a href="https://pyaket.dev/docs/">📝 Documentation</a> •
-    <a href="https://github.com/BrokenSource/Pyaket/issues">🔥 Issues</a>
+    <a href="https://pyaket.dev/get/">Installation</a> •
+    <a href="https://pyaket.dev/examples/">Examples</a> •
+    <a href="https://pyaket.dev/docs/">Documentation</a> •
+    <a href="https://github.com/BrokenSource/Pyaket/issues">Issues</a>
   </b>
   <br>
   <sub>
@@ -35,16 +35,18 @@
 
 ## 🔥 Description
 
-**Pyaket** is a tool that bundles and generates portable executables of your python projects for all platforms. No more convoluted installation steps for casual users, give the comfort [they want](https://github.com/sherlock-project/sherlock/issues/2011) with maximum compatibility and ease of use compared to alternative solutions.
+**📦 Pyaket** is a tool that bundles and generates portable executables of your python projects for all platforms. No more convoluted installation steps for casual users, give the comfort [they want](https://github.com/sherlock-project/sherlock/issues/2011) with maximum compatibility and ease of use compared to alternative solutions.
+
+<small>✨ It's the solution you've been dreaming of, but never knew you needed!</small>
 
 - [x] ⚡️ **Lightning fast** installation that automatically manages python, virtual environments, and dependencies without user intervention that just works.
 - [x] ♻️ **Cross compile** _from any_ platform _to any_ platform and architecture, no docker or virtual machines needed, see the table below for details!
 - [x] 🧠 **Intelligently** reinstalls itself when the executable changes or partial installs, making iterative development easy and safe against users
 - [x] 🎩 **Free to use** for open source projects that distributes releases at no cost, get a cheap [sponsor](https://github.com/sponsors/Tremeschin) tier to sell users convenience otherwise!
-- [x] 🔦 **PyTorch** installation at runtime, automatic backend detection (optional). [#](https://pyaket.dev/docs/configuration/#torch-backend)
+- [x] 🔦 **PyTorch** installation at runtime, automatic backend detection (optional). [#](https://pyaket.dev/docs/rust/#torch-backend)
 - [ ] 📦 **Standalone** executables with no network calls at runtime that bundles all dependencies [#](https://github.com/BrokenSource/Pyaket/issues/2)
 - [x] 🚀 **Monorepo** support in mind, decoupled dependencies and entry point specification
-- [x] 🧀 **Rolling** releases where a single binary always runs latest pypi or git branch/tag [#](https://pyaket.dev/docs/configuration/#rolling)
+- [x] 🧀 **Rolling** releases where a single binary always runs latest pypi or git branch/tag [#](https://pyaket.dev/docs/rust/#rolling)
 
 ## ⚔️ Cross compilation
 

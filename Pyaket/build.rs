@@ -15,7 +15,7 @@ mod manage {
     pub fn astral(project: &Project) -> Result<()> {
         network::must_exist(&project.uv_download_url())?;
 
-        if project.uv_bundle {
+        if project.uv.bundle {
             ArchiveAssets::download(
                 &project.uv_archive_name(),
                 &project.uv_download_url(),
@@ -28,7 +28,7 @@ mod manage {
     pub fn wheels(project: &Project) -> Result<()> {
 
         // Don't trust the user on ';'.join(wheels) formatting
-        for wheel in project.wheels.split(";")
+        for wheel in project.app.wheels.split(";")
             .map(|x| x.trim()).filter(|x| !x.is_empty())
         {
             log::info!("Resolving wheel glob: {}", wheel);
@@ -48,8 +48,8 @@ mod manage {
 
     pub fn reqtxt(project: &mut Project) -> Result<()> {
         // Todo: .read_file_or_keep() sugar
-        if Path::new(&project.reqtxt).exists() {
-            project.reqtxt = fs::read_to_string(&project.reqtxt)?;
+        if Path::new(&project.app.reqtxt).exists() {
+            project.app.reqtxt = fs::read_to_string(&project.app.reqtxt)?;
         }
         Ok(())
     }

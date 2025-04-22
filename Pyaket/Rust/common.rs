@@ -378,53 +378,27 @@ impl BrokenAssets for ArchiveAssets {
 
 /* -------------------------------------------------------------------------- */
 
-static WORKSPACE_ROOT: OnceLock<PathBuf> = OnceLock::new();
-
-// Define environment configuration literals for consistency
-pub static PYAKET_APP_NAME:       &str = "PYAKET_APP_NAME";
-pub static PYAKET_APP_AUTHOR:     &str = "PYAKET_APP_AUTHOR";
-pub static PYAKET_APP_VERSION:    &str = "PYAKET_APP_VERSION";
-pub static PYAKET_VERSIONS_DIR:   &str = "PYAKET_VERSIONS_DIR";
-pub static PYAKET_APP_WHEELS:     &str = "PYAKET_APP_WHEELS";
-pub static PYAKET_APP_PYPI:       &str = "PYAKET_APP_PYPI";
-pub static PYAKET_APP_REQTXT:     &str = "PYAKET_APP_REQTXT";
-pub static PYAKET_PYTHON_VERSION: &str = "PYAKET_PYTHON_VERSION";
-pub static PYAKET_PYTHON_BUNDLE:  &str = "PYAKET_PYTHON_BUNDLE";
-pub static PYAKET_UV_VERSION:     &str = "PYAKET_UV_VERSION";
-pub static PYAKET_UV_BUNDLE:      &str = "PYAKET_UV_BUNDLE";
-pub static PYAKET_TORCH_VERSION:  &str = "PYAKET_TORCH_VERSION";
-pub static PYAKET_TORCH_BACKEND:  &str = "PYAKET_TORCH_BACKEND";
-pub static PYAKET_ENTRY_MODULE:   &str = "PYAKET_ENTRY_MODULE";
-pub static PYAKET_ENTRY_SCRIPT:   &str = "PYAKET_ENTRY_SCRIPT";
-pub static PYAKET_ENTRY_CODE:     &str = "PYAKET_ENTRY_CODE";
-pub static PYAKET_ENTRY_COMMAND:  &str = "PYAKET_ENTRY_COMMAND";
-pub static PYAKET_COMMON_DIR:     &str = "PYAKET_COMMON_DIR";
-pub static PYAKET_TARGET_TRIPLE:  &str = "PYAKET_TARGET_TRIPLE";
-pub static PYAKET_ROLLING:        &str = "PYAKET_ROLLING";
-pub static PYAKET_KEEP_OPEN:      &str = "PYAKET_KEEP_OPEN";
+pub static PYAKET_APP_NAME:    &str = "PYAKET_APP_NAME";
+pub static PYAKET_APP_AUTHOR:  &str = "PYAKET_APP_AUTHOR";
+pub static PYAKET_APP_VERSION: &str = "PYAKET_APP_VERSION";
+pub static PYAKET_APP_WHEELS:  &str = "PYAKET_APP_WHEELS";
+pub static PYAKET_APP_PYPI:    &str = "PYAKET_APP_PYPI";
+pub static PYAKET_APP_REQTXT:  &str = "PYAKET_APP_REQTXT";
 
 #[derive(Serialize, Deserialize, SmartDefault)]
-pub struct Project {
-
-    /* ---------------------------------------- */
-    // Application configuration
+pub struct PyaketApplication {
 
     /// The name of the application
     #[default(Environment::uget(PYAKET_APP_NAME, "Application"))]
-    pub app_name: String,
+    pub name: String,
 
     /// The author of the application
     #[default(Environment::uget(PYAKET_APP_AUTHOR, "BrokenSource"))]
-    pub app_author: String,
+    pub author: String,
 
     /// The version of the application
     #[default(Environment::uget(PYAKET_APP_VERSION, "0.0.0"))]
-    pub app_version: String,
-
-    /// Subdirectory of the workspace for versions to coexist
-    /// - Default: `$WORKSPACE/Versions/`
-    #[default(Environment::uget(PYAKET_VERSIONS_DIR, "Versions"))]
-    pub versions_dir: String,
+    pub version: String,
 
     /// List of local Python wheels to install at runtime separated by ':'
     /// - Example: "./dist/foo.whl:./dist/bar.whl:./dist/baz.whl"
@@ -441,65 +415,137 @@ pub struct Project {
     /// - Example: "./requirements.txt"
     #[default(Environment::uget(PYAKET_APP_REQTXT, ""))]
     pub reqtxt: String,
+}
 
-    /* ---------------------------------------- */
-    // Python distribution
+/* -------------------------------------------- */
+
+pub static PYAKET_COMMON_DIR:   &str = "PYAKET_COMMON_DIR";
+pub static PYAKET_VERSIONS_DIR: &str = "PYAKET_VERSIONS_DIR";
+
+#[derive(Serialize, Deserialize, SmartDefault)]
+pub struct PyaketDirectories {
+
+    /// A common directory to store common unpacked assets
+    #[default(Environment::uget(PYAKET_COMMON_DIR, "Pyaket"))]
+    pub common: String,
+
+    /// Subdirectory of the workspace for versions to coexist
+    /// - Default: `$WORKSPACE/Versions/`
+    #[default(Environment::uget(PYAKET_VERSIONS_DIR, "Versions"))]
+    pub versions: String,
+}
+
+/* -------------------------------------------- */
+
+pub static PYAKET_PYTHON_VERSION: &str = "PYAKET_PYTHON_VERSION";
+pub static PYAKET_PYTHON_BUNDLE:  &str = "PYAKET_PYTHON_BUNDLE";
+
+#[derive(Serialize, Deserialize, SmartDefault)]
+pub struct PyaketPython {
 
     /// Python version to use at runtime
     #[default(Environment::uget(PYAKET_PYTHON_VERSION, "3.13"))]
-    pub python_version: String,
+    pub version: String,
 
     /// Whether to bundle Python in the application or download at runtime
     #[default(Environment::ubool(PYAKET_PYTHON_BUNDLE, false))]
-    pub python_bundle: bool,
+    pub bundle: bool,
+}
 
-    /* ---------------------------------------- */
-    // Astral uv distribution
+/* -------------------------------------------- */
+
+pub static PYAKET_UV_VERSION: &str = "PYAKET_UV_VERSION";
+pub static PYAKET_UV_BUNDLE:  &str = "PYAKET_UV_BUNDLE";
+
+#[derive(Serialize, Deserialize, SmartDefault)]
+pub struct PyaketUV {
 
     /// The version of uv to use at runtime
-    #[default(Environment::uget(PYAKET_UV_VERSION, "0.6.13"))]
-    pub uv_version: String,
+    #[default(Environment::uget(PYAKET_UV_VERSION, "0.6.16"))]
+    pub version: String,
 
     /// Whether to bundle uv in the application
     #[default(Environment::ubool(PYAKET_UV_BUNDLE, false))]
-    pub uv_bundle: bool,
+    pub bundle: bool,
+}
 
-    /* ---------------------------------------- */
-    // PyTorch
+/* -------------------------------------------- */
+
+pub static PYAKET_TORCH_VERSION: &str = "PYAKET_TORCH_VERSION";
+pub static PYAKET_TORCH_BACKEND: &str = "PYAKET_TORCH_BACKEND";
+
+#[derive(Serialize, Deserialize, SmartDefault)]
+pub struct PyaketTorch {
 
     /// Installs a specific version of PyTorch, e.g. `2.6.0` or none (unset)
     /// - **Warning**: Runtime only installation, collect and bundle wheels for offline
     /// - **Experimental**: https://docs.astral.sh/uv/guides/integration/pytorch/
     #[default(Environment::uget(PYAKET_TORCH_VERSION, ""))]
-    pub torch_version: String,
+    pub version: String,
 
     /// A PyTorch backend to install at runtime, e.g. `auto`, `cpu`, `cu124`, `rocm6.2`
     /// - **Warning**: Runtime only installation, collect and bundle wheels for offline
     /// - **Experimental**: https://docs.astral.sh/uv/guides/integration/pytorch/
     #[default(Environment::uget(PYAKET_TORCH_BACKEND, "auto"))]
-    pub torch_backend: String,
+    pub backend: String,
+}
 
-    /* ---------------------------------------- */
-    // Entry points
+/* -------------------------------------------- */
+
+pub static PYAKET_ENTRY_MODULE:  &str = "PYAKET_ENTRY_MODULE";
+pub static PYAKET_ENTRY_SCRIPT:  &str = "PYAKET_ENTRY_SCRIPT";
+pub static PYAKET_ENTRY_CODE:    &str = "PYAKET_ENTRY_CODE";
+pub static PYAKET_ENTRY_COMMAND: &str = "PYAKET_ENTRY_COMMAND";
+
+#[derive(Serialize, Deserialize, SmartDefault)]
+pub struct PyaketEntry {
 
     /// Run an installed module to be run as `python -m module`
     #[default(Environment::uget(PYAKET_ENTRY_MODULE, ""))]
-    pub entry_module: String,
+    pub module: String,
 
     /// Run a bundled script at runtime
     #[default(Environment::uget(PYAKET_ENTRY_SCRIPT, ""))]
-    pub entry_script: String,
+    pub script: String,
 
     /// Run a single line of python code at runtime
     /// - Example: `from module import main; main()`
     #[default(Environment::uget(PYAKET_ENTRY_CODE, ""))]
-    pub entry_code: String,
+    pub code: String,
 
     /// Run a custom command inside the virtual environment at runtime
     /// - Scripts are often defined in `[project.scripts]` in `pyproject.toml`
     /// - This can be used to hardcode arguments, like `depthflow gradio`
     #[default(Environment::uget(PYAKET_ENTRY_COMMAND, ""))]
-    pub entry_command: String,
+    pub command: String,
+}
+
+/* -------------------------------------------- */
+
+pub static PYAKET_TARGET_TRIPLE: &str = "PYAKET_TARGET_TRIPLE";
+pub static PYAKET_ROLLING:       &str = "PYAKET_ROLLING";
+pub static PYAKET_KEEP_OPEN:     &str = "PYAKET_KEEP_OPEN";
+
+#[derive(Serialize, Deserialize, SmartDefault)]
+pub struct Project {
+
+    #[default(PyaketApplication::default())]
+    pub app: PyaketApplication,
+
+    #[default(PyaketDirectories::default())]
+    pub dirs: PyaketDirectories,
+
+    #[default(PyaketPython::default())]
+    pub python: PyaketPython,
+
+    #[default(PyaketUV::default())]
+    pub uv: PyaketUV,
+
+    #[default(PyaketTorch::default())]
+    pub torch: PyaketTorch,
+
+    #[default(PyaketEntry::default())]
+    pub entry: PyaketEntry,
 
     /* ---------------------------------------- */
 
@@ -510,9 +556,6 @@ pub struct Project {
     /// The platform target triple of the build
     #[default(Environment::uget(PYAKET_TARGET_TRIPLE, env::var("TARGET").unwrap().as_str()))]
     pub triple: String,
-
-    #[default(Environment::uget(PYAKET_COMMON_DIR, "Pyaket"))]
-    pub common_dir: String,
 
     /// Shall a binary always reinstall latest pypi or git+ dependencies
     #[default(Environment::ubool(PYAKET_ROLLING, false))]
@@ -553,7 +596,7 @@ impl Project {
         format!(
             "{}/releases/download/{}/{}",
             "https://github.com/astral-sh/uv",
-            self.uv_version,
+            self.uv.version,
             self.uv_archive_name(),
         )
     }
@@ -561,7 +604,7 @@ impl Project {
     /// Path to unpack uv at runtime
     pub fn uv_unpack_dir(&self) -> PathBuf {
         self.astral_dir()
-            .join(&self.uv_version)
+            .join(&self.uv.version)
     }
 
     /// Path to download and cache uv at runtime
@@ -604,6 +647,8 @@ impl Project {
 /* -------------------------------------------------------------------------- */
 // Workspace
 
+static WORKSPACE_ROOT: OnceLock<PathBuf> = OnceLock::new();
+
 impl Project {
 
     /// - Automatic:
@@ -621,7 +666,7 @@ impl Project {
             } else {
                 BaseDirs::new().unwrap()
                     .data_local_dir()
-                    .join(&self.app_author)
+                    .join(&self.app.author)
             }
         })
     }
@@ -629,7 +674,7 @@ impl Project {
     /// A common directory to store common unpacked assets
     pub fn workspace_common(&self) -> PathBuf {
         self.workspace_root()
-            .join(&self.common_dir)
+            .join(&self.dirs.common)
     }
 
     pub fn astral_dir(&self) -> PathBuf {
@@ -646,8 +691,8 @@ impl Project {
     /// - `$WORKSPACE/Versions/1.0.0`
     pub fn installation_dir(&self) -> PathBuf {
         self.workspace_common()
-            .join(&self.versions_dir)
-            .join(&self.app_version)
+            .join(&self.dirs.versions)
+            .join(&self.app.version)
     }
 
     /// A file that tracks installs from unique binaries for a few purposes:
@@ -655,7 +700,7 @@ impl Project {
     /// - Triggers a reinstall if the hash differs for same versions
     pub fn uuid_tracker_file(&self) -> PathBuf {
         self.installation_dir()
-            .join(format!("{}.uuid", self.app_name))
+            .join(format!("{}.uuid", self.app.name))
     }
 
     /* ---------------------------------------- */

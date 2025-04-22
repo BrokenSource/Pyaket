@@ -29,7 +29,7 @@ fn run(project: &Project) -> Result<()> {
 
             setup.arg("venv")
                 .arg(project.installation_dir())
-                .arg("--python").arg(&project.python_version)
+                .arg("--python").arg(&project.python.version)
                 .arg("--seed").arg("--quiet");
             if project.rolling {setup
                 .arg("--allow-existing");}
@@ -37,11 +37,11 @@ fn run(project: &Project) -> Result<()> {
         }
 
         // Install PyTorch first
-        if !project.torch_version.is_empty() {
-            Environment::setdefault("UV_TORCH_BACKEND", &project.torch_backend);
+        if !project.torch.version.is_empty() {
+            Environment::setdefault("UV_TORCH_BACKEND", &project.torch.backend);
             project.uv()
                 .arg("pip").arg("install")
-                .arg(format!("torch=={}", project.torch_version))
+                .arg(format!("torch=={}", project.torch.version))
                 .arg("--preview")
                 .spawn()?;
         }
@@ -66,13 +66,13 @@ fn run(project: &Project) -> Result<()> {
         }
 
         // Add PyPI packages to be installed
-        command.args(project.pypi.split(";")
+        command.args(project.app.pypi.split(";")
             .map(|x| x.trim()).filter(|x| !x.is_empty()));
 
         // Add the requirements.txt file to be installed
-        if !project.reqtxt.is_empty() {
+        if !project.app.reqtxt.is_empty() {
             let file = container.child("requirements.txt");
-            write(&file, &project.reqtxt)?;
+            write(&file, &project.app.reqtxt)?;
             command.arg("-r").arg(&file);
         }
 
@@ -90,20 +90,20 @@ fn run(project: &Project) -> Result<()> {
     main.arg("--no-project");
     main.arg("--active");
 
-    if !project.entry_module.is_empty() {
+    if !project.entry.module.is_empty() {
         main.arg("python")
-            .arg("-m").arg(&project.entry_module);
+            .arg("-m").arg(&project.entry.module);
 
-    } else if !project.entry_script.is_empty() {
+    } else if !project.entry.script.is_empty() {
         main.arg("python")
-            .arg(&project.entry_script);
+            .arg(&project.entry.script);
 
-    } else if !project.entry_code.is_empty() {
+    } else if !project.entry.code.is_empty() {
         main.arg("python")
-            .arg("-c").arg(&project.entry_code);
+            .arg("-c").arg(&project.entry.code);
 
-    } else if !project.entry_command.is_empty() {
-        let args = shlex::split(&project.entry_command)
+    } else if !project.entry.command.is_empty() {
+        let args = shlex::split(&project.entry.command)
             .expect("Failed to parse entry command");
         main = Command::new(&args[0]);
         main.args(&args[..]);
@@ -126,6 +126,8 @@ fn run(project: &Project) -> Result<()> {
 fn main() {
     LazyLock::force(&START_TIME);
     Environment::unset("BUILD");
+
+    log::note!("Project: {}", env!("PYAKET_PROJECT"));
 
     // Read the project configurion sent at the end of build.rs
     let project: Project = serde_json::from_str(env!("PYAKET_PROJECT")).unwrap();
