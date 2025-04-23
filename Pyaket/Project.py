@@ -362,6 +362,10 @@ class Release(BrokenModel):
                     shell("sudo", "pacman", "-S", "mingw-w64-toolchain")
                 elif BrokenPlatform.UbuntuLike:
                     shell("sudo", "apt", "install", "mingw-w64")
+            if get and (self.target == PlatformEnum.WindowsAMD64):
+                if BrokenPlatform.ArchLike:
+                    # Todo: Is it https://aur.archlinux.org/packages/mingw-w64-llvm (fat) ?
+                    shell("yay", "-S", "mingw-w64-llvm", "--noconfirm", skip=1)
 
         shell("rustup", "target", "add", self.triple)
 
