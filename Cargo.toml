@@ -5,17 +5,17 @@ members = ["Pyaket"]
 resolver = "3"
 
 [profile.dev]
-strip = true       # Fast enough in dev mode to save a few disk writes
+strip = true       # Actually faster to compile and saves SSD writes, win-win
 
 [profile.release]
 codegen-units = 1  # Slighlty improves binary size at no significant slowdown
 incremental = true # Faster recompilation times for multiple projects
-opt-level = 3      # Opt size weird performance on hashing algorithms
+opt-level = 'z'    # About 15% reduction in size with minor performance impact
 panic = "abort"    # No need to unwind full traceback as not primary rust app
 strip = true       # Reduces binary size by quite a lot due few fat crates
 lto = false        # Annoyingly slow linking times even with mold, ldd
 
+# About 5x slower to compile for 12% size reduction
 [profile.small]
 inherits = "release"
-opt-level = "z"
 lto = true

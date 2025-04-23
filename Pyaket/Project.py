@@ -412,7 +412,7 @@ class PyaketProject(CodeProject):
     def build(self):
         """Build wheels for the project and bundle them on the executable"""
         wheels: Path = BrokenPath.recreate(PYAKET.DIRECTORIES.DATA/"Wheels")
-        shell(Tools.uv, "build", "--wheel", "--all", "-o", wheels)
+        shell(Tools.uv, "build", "--wheel", "--all-packages", "-o", wheels)
         self.config.app.wheels.extend(wheels.glob("*.whl"))
 
     def compile(self,
