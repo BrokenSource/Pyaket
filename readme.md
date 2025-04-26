@@ -38,8 +38,8 @@
 **📦 Pyaket** is a tool that bundles and generates portable executables of your python projects for all platforms. No more convoluted installation steps, give users the convenience [they want](https://github.com/sherlock-project/sherlock/issues/2011), with maximum compatibility and dev-centric ease of use compared to alternative solutions.
 
 - [x] **Lightning fast** installation that automatically manages python, virtual environments, and dependencies without user intervention that just works, bundle wheels or install from pypi.
-- [x] **Max compatibility** with how the project is run in the user's machine - pyaket does not reinvent the wheel or compile python with an intermediate, use tools that already exists
-- [x] **Cross compile** from anywhere to most platforms and architectures, no docker or virtual machines required, portable immutable executables - see the table below for details!
+- [x] **Max compatibility** with how the project is run in the user's machine - pyaket does not reinvent the wheel or compile python with an intermediate, use tools that already exists [#](https://pyaket.dev/faq/general/#how-it-works)
+- [x] **Cross compile** from anywhere to most platforms and architectures, no docker or virtual machines required, portable immutable executables - see the table below for details! [#](https://pyaket.dev/docs/crosscompile/)
 - [x] **Intelligently** detects partial installations, downloads, archive unpacks, and automatically takes appropriate action - making iterative development easy and resilient against users
 - [ ] **Standalone** executables with no network calls at runtime that bundles all dependencies [#](https://github.com/BrokenSource/Pyaket/issues/2)
 - [x] **Monorepo** support in mind, decoupled dependencies and entry point specification
@@ -49,8 +49,6 @@
 <!------------------------------------------------------------------------------------------------->
 
 ## ⭐️ Examples
-
-For more examples, proper configuration and advanced features, check out the [**website**](https://pyaket.dev/examples) page!
 
 ### Simple to use
 
@@ -161,6 +159,15 @@ $ pyaket ... torch -v 2.7.0 -b auto compile
 # ./release/app-linux-amd64-v0.0.0-cu128.bin
 $ pyaket ... torch -v 2.7.0 -b cu128 compile
 ```
+
+### More examples
+
+For more examples, proper configuration and advanced features, check out the [**website**](https://pyaket.dev/examples) page!
+
+<!-- Todo: Actual website examples page -->
+<a href="https://pyaket.dev/examples">
+  <img src="https://github.com/user-attachments/assets/8470c0d2-46de-4068-b9ce-a1261a6c0e69">
+</a>
 
 <!------------------------------------------------------------------------------------------------->
 
