@@ -6,12 +6,14 @@ repo_url: https://github.com/BrokenSource/Pyaket/
 nav:
   - Home:
     - index.md
-    - 🪵 Changelog: about/changelog.md
-    - 🧭 Roadmap: https://github.com/orgs/BrokenSource/projects/2
-    - 💬 Contact: about/contact.md
+    - Changelog: about/changelog.md
+    - Roadmap: about/roadmap.md
+    - Contact: about/contact.md
+    - License: about/license.md
+    - Credits: about/credits.md
   - Installation:
     - get/index.md
-    - 🦀 Rust: get/rust.md
+    - Rust: get/rust.md
     # - 🧀 Wheels: get/wheels.md
     # - 📦 Installers: get/installers.md
     # - 🔥 Source: get/source.md
@@ -22,7 +24,14 @@ nav:
     - docs/index.md
     - Python:
       - Locking dependencies: docs/pinning.md
-  - Questions: faq.md
+    - Extra:
+      - Crosscompile: docs/crosscompile.md
+      - Alternatives: docs/alternatives.md
+  - Questions:
+    - General: faq/general.md
+    - Windows: faq/windows.md
+    - Linux: faq/linux.md
+    - MacOS: faq/macos.md
 theme:
   custom_dir: ../../Website/overrides
   favicon: Pyaket/Resources/Images/Pyaket.png

@@ -1,5 +1,6 @@
-
-## General questions {#general}
+---
+icon: material/microsoft
+---
 
 ### **Q:** Virus warnings in Windows Defender or Antivirus {#antivirus}
 
@@ -32,22 +33,25 @@ Moral of the story, [correlation ≠ causation](https://en.wikipedia.org/wiki/Co
 
 The answer is [code signing](https://en.wikipedia.org/wiki/Code_signing), similar to how websites gets their [`https`](https://en.wikipedia.org/wiki/Let%27s_Encrypt) certificate.
 
-:material-arrow-right: Essentially, files are _"sealed"_ with a digital signature before distribution, while still in a trusted environment from the developer. A certificate authority (like your government) maintains a list of trusted signatures that can be checked against (passports), but if the content differs from the original (fake photo or fingerprint) the signature will be deemed invalid.
+:material-arrow-right: Essentially, files are _"sealed"_ with a digital signature before distribution, while still in a trusted environment from the developer. A certificate authority (like your government) maintains a list of trusted signatures that can be checked against (passports), but if the content differs from the original (fake photo or fingerprint) the signature will be deemed invalid and execution blocked.
 
-- Many Open Source projects struggles due lack of funding, which makes it infeasible to even consider getting a certificate - as it's **not** an investment with direct returns.
+At its theoretical best, this is a way to gatekeep the bad actors out, as getting a signing certificate is often expensive, easily revoked if misused, requires sensitive information to become public such as address, phone number, legal name, etc. and [might not even work](https://discord.com/channels/518489831232503809/600724122242383894/781166981746655282) properly in the end.
+
+- Many Open Source projects struggles due lack of funding, which makes it infeasible to even consider getting a certificate - as it's not an investment with direct returns.
 
 - Most services that provides free signing for open source projects disallows selling the files, something pyaket advocates for the developer's hard work and paying the bills.
 
-At its theoretical best, this is a way to gatekeep the bad actors out, as getting a signing certificate is very expensive, easily revoked if misused, requires sensitive information to become public such as address, phone number, legal name, etc. and might even not work properly in the end.
-
-:material-arrow-right: **Note**: Funnily enough, this is a _non-issue_ on platforms with official package managers such as Linux distributions with educated users - an artificial problem created solely by closed systems.
+**Note**: Funnily enough, this is a _non-issue_ on platforms with official package managers such as Linux distributions with educated users - an artificial problem created solely by closed systems.
 
 <!-- Todo: Expand list, many places I've read through the years -->
 <small>
-Reference:
+References:
 [(1)](https://news.ycombinator.com/item?id=19330062)
 [(2)](https://www.reddit.com/r/csharp/comments/qh546a/do_we_really_need_to_buy_a_certificate_for_a/)
 [(3)](https://github.com/pyinstaller/pyinstaller/issues/6754#issuecomment-1100821249)
+[(4)](https://discord.com/channels/518489831232503809/600724122242383894/781166981746655282)
 </small>
 
-## Technical questions
+<!-- ------------------------------------------------------------------------------------------- -->
+
+<br><br>

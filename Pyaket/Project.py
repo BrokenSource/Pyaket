@@ -1,3 +1,4 @@
+import shutil
 import site
 import subprocess
 import tempfile
@@ -5,7 +6,6 @@ from pathlib import Path
 from typing import Annotated, Iterable
 
 from attrs import Factory, define
-from pydantic import Field
 from typer import Option
 
 from Broken import (
@@ -17,13 +17,14 @@ from Broken import (
     BrokenTyper,
     Environment,
     PlatformEnum,
+    Runtime,
     SystemEnum,
     Tools,
+    denum,
     log,
     shell,
 )
-from Broken.Manager.Project import CodeProject
-from Pyaket import PYAKET
+from Pyaket import PYAKET, PYAKET_ABOUT
 
 # ---------------------------------------------- #
 
@@ -318,7 +319,7 @@ class Release(BrokenModel):
 
     def should_zigbuild(self) -> None:
         """Force enable zigbuild in configurations where it's easier"""
-        if any((
+        if Environment.flag("AUTO_ZIGBUILD", 1) and any((
             BrokenPlatform.OnWindows and (not self.system.is_windows()),
             BrokenPlatform.OnWindows and (self.platform == PlatformEnum.WindowsARM64),
             BrokenPlatform.OnLinux   and (self.platform == PlatformEnum.LinuxARM64),
@@ -372,13 +373,6 @@ class Release(BrokenModel):
 # ---------------------------------------------- #
 
 class PyaketConfig(BrokenModel):
-    app:     Application = Field(default_factory=Application)
-    dirs:    Directories = Field(default_factory=Directories)
-    python:  Python      = Field(default_factory=Python)
-    astral:  Astral      = Field(default_factory=Astral)
-    torch:   Torch       = Field(default_factory=Torch)
-    entry:   Entry       = Field(default_factory=Entry)
-    release: Release     = Field(default_factory=Release)
 
     def export_all(self) -> None:
         Environment.update(PYAKET_RELEASE=1)
@@ -390,38 +384,102 @@ class PyaketConfig(BrokenModel):
 
 # ---------------------------------------------- #
 
-@define(eq=False)
-class PyaketProject(CodeProject):
-    config: PyaketConfig = Factory(PyaketConfig)
+class RustToolchain(str, BrokenEnum):
+    Stable  = "stable"
+    Nightly = "nightly"
+
+# ---------------------------------------------- #
+
+@define
+class PyaketProject:
+    app:     Application = Factory(Application)
+    dirs:    Directories = Factory(Directories)
+    python:  Python      = Factory(Python)
+    astral:  Astral      = Factory(Astral)
+    torch:   Torch       = Factory(Torch)
+    entry:   Entry       = Factory(Entry)
+    release: Release     = Factory(Release)
+
+    cli: BrokenTyper = Factory(BrokenTyper)
 
     def __attrs_post_init__(self):
         self.cli = BrokenTyper(chain=True, help=False)
+        self.cli.description = PYAKET_ABOUT
+
+        with self.cli.panel("🚀 Core"):
+            self.cli.command(self.rust)
 
         with self.cli.panel("🔴 Project"):
-            self.cli.command(self.config.app,   name="app")
-            self.cli.command(self.config.entry, name="run")
+            self.cli.command(self.app,   name="app")
+            self.cli.command(self.entry, name="run")
 
         with self.cli.panel("🟡 Dependencies"):
-            self.cli.command(self.config.python, name="python")
-            self.cli.command(self.config.astral, name="astral")
-            self.cli.command(self.config.torch,  name="torch")
+            self.cli.command(self.python, name="python")
+            self.cli.command(self.astral, name="astral")
+            self.cli.command(self.torch,  name="torch")
 
         with self.cli.panel("🟢 Building"):
-            self.cli.command(self.config.release, name="release")
+            self.cli.command(self.release, name="release")
             self.cli.command(self.compile)
 
         with self.cli.panel("🔵 Special"):
             self.cli.command(self.build, name="build")
 
+    @staticmethod
+    def rust(
+        toolchain:   Annotated[RustToolchain, Option("--toolchain",   "-t", help="(Any    ) Rust toolchain to use (stable, nightly)")]="stable",
+        build_tools: Annotated[bool,          Option("--build-tools", "-b", help="(Windows) Install Visual C++ Build Tools")]=True,
+    ):
+        """Installs rustup and a rust toolchain"""
+        import requests
+
+        # Actions has its own workflow setup
+        if (Runtime.GitHub):
+            return
+
+        # Install rustup based on platform
+        if not shutil.which("rustup"):
+            log.info("Rustup wasn't found, will install it")
+
+            if BrokenPlatform.OnWindows:
+                shell("winget", "install", "-e", "--id", "Rustlang.Rustup")
+            elif BrokenPlatform.OnUnix:
+                shell("sh", "-c", requests.get("https://sh.rustup.rs").text, "-y", echo=False)
+            elif BrokenPlatform.OnMacOS:
+                # Xcode? Idk, buy me a mac
+                ...
+
+            # If rustup isn't found, ask user to restart shell
+            BrokenPath.add_to_path(Path.home()/".cargo"/"bin")
+
+            if not BrokenPath.which("rustup"):
+                log.warning("Rustup was likely installed but wasn't found adding '~/.cargo/bin' to Path")
+                log.warning("• Maybe you changed the CARGO_HOME or RUSTUP_HOME environment variables")
+                log.warning("• Please restart your shell for Rust toolchain to be on PATH")
+                exit(0)
+
+        # Install Visual C++ Build Tools on Windows
+        if (BrokenPlatform.OnWindows and build_tools):
+            log.warning("You must have Microsoft Visual C++ Build Tools installed to compile Rust projects")
+            log.warning("• Will try installing it, you might need to restart your shell, good luck!")
+            shell("winget", "install", "-e", "--id", "Microsoft.VisualStudio.2022.BuildTools", "--override", (
+                " --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64"
+                " --add Microsoft.VisualStudio.Component.Windows10SDK"
+                " --add Microsoft.VisualStudio.Component.Windows11SDK"
+                "--wait --passive"
+            ))
+
+        shell("rustup", "default", denum(toolchain))
+
     def build(self):
         """Build wheels for the project and bundle them on the executable"""
         wheels: Path = BrokenPath.recreate(PYAKET.DIRECTORIES.DATA/"Wheels")
         shell(Tools.uv, "build", "--wheel", "--all-packages", "-o", wheels)
-        self.config.app.wheels.extend(wheels.glob("*.whl"))
+        self.app.wheels.extend(wheels.glob("*.whl"))
 
     def compile(self,
         cache:  Annotated[Path, Option("--cache",  "-c", help="Directory to build the project")]=(Path(tempfile.gettempdir())/"pyaket"),
-        output: Annotated[Path, Option("--output", "-o", help="Directory to output the compiled binary")]="Release",
+        output: Annotated[Path, Option("--output", "-o", help="Directory to output the compiled binary")]="release",
     ) -> Path:
         output = BrokenPath.get(output)
 
@@ -432,9 +490,14 @@ class PyaketProject(CodeProject):
             log.error(f"• Attempted to build for '{self.release.platform}' on '{BrokenPlatform.Host}'")
             return None
 
-        self.config.release.should_zigbuild()
-        self.config.release.install_tools()
-        self.config.export_all()
+        self.release.should_zigbuild()
+        self.release.install_tools()
+        self.app.export()
+        self.dirs.export()
+        self.python.export()
+        self.astral.export()
+        self.torch.export()
+        self.entry.export()
 
         if shell(
             "cargo", ("zigbuild" if self.release.zigbuild else "build"),
@@ -442,7 +505,6 @@ class PyaketProject(CodeProject):
             "--target-dir", cache,
             "--target", self.release.triple,
             "--profile", self.release.profile.cargo,
-            cwd=self.path,
         ).returncode != 0:
             raise RuntimeError(log.error("Failed to compile Pyaket"))
 
@@ -453,6 +515,7 @@ class PyaketProject(CodeProject):
 
         # Rename the compiled binary to the final release name
         release_path = (output / self.release_name)
+        BrokenPath.mkdir(release_path.parent)
         BrokenPath.move(src=binary, dst=release_path)
         BrokenPath.make_executable(release_path)
 
@@ -476,29 +539,3 @@ class PyaketProject(CodeProject):
             f"-{self.torch.backend}" if (self.torch.version) else "",
             f"{self.release.platform.extension}",
         ))
-
-    # Likely temporary
-
-    @property
-    def app(self) -> Application:
-        return self.config.app
-
-    @property
-    def python(self) -> Python:
-        return self.config.python
-
-    @property
-    def astral(self) -> Astral:
-        return self.config.astral
-
-    @property
-    def torch(self) -> Torch:
-        return self.config.torch
-
-    @property
-    def entry(self) -> Entry:
-        return self.config.entry
-
-    @property
-    def release(self) -> Release:
-        return self.config.release

@@ -35,66 +35,135 @@
 
 ## 🔥 Description
 
-**📦 Pyaket** is a tool that bundles and generates portable executables of your python projects for all platforms. No more convoluted installation steps for casual users, give the comfort [they want](https://github.com/sherlock-project/sherlock/issues/2011) with maximum compatibility and ease of use compared to alternative solutions.
+**📦 Pyaket** is a tool that bundles and generates portable executables of your python projects for all platforms. No more convoluted installation steps, give users the convenience [they want](https://github.com/sherlock-project/sherlock/issues/2011), with maximum compatibility and dev-centric ease of use compared to alternative solutions.
 
-<small>✨ It's the solution you've been dreaming of, but never knew you needed!</small>
-
-- [x] ⚡️ **Lightning fast** installation that automatically manages python, virtual environments, and dependencies without user intervention that just works.
-- [x] ♻️ **Cross compile** _from any_ platform _to any_ platform and architecture, no docker or virtual machines needed, see the table below for details!
-- [x] 🧠 **Intelligently** reinstalls itself when the executable changes or partial installs, making iterative development easy and safe against users
-- [x] 🎩 **Free to use** for open source projects that distributes releases at no cost, get a cheap [sponsor](https://github.com/sponsors/Tremeschin) tier to sell users convenience otherwise!
-- [x] 🔦 **PyTorch** installation at runtime, automatic backend detection (optional). [#](https://pyaket.dev/docs/rust/#torch-backend)
+- [x] ⚡️ **Lightning fast** installation that automatically manages python, virtual environments, and dependencies without user intervention that just works, bundle wheels or install from pypi.
+- [x] ✨ **Max compatibility** with how the project is run in the user's machine - pyaket does not reinvent the wheel or compile python with an intermediate, use tools that already exists
+- [x] ♻️ **Cross compile** from anywhere to most platforms and architectures, no docker or virtual machines required, portable immutable executables - see the table below for details!
+- [x] 🧠 **Intelligently** detects partial installations, downloads, archive unpacks, and automatically takes appropriate action - making iterative development easy and resilient against users
 - [ ] 📦 **Standalone** executables with no network calls at runtime that bundles all dependencies [#](https://github.com/BrokenSource/Pyaket/issues/2)
 - [x] 🚀 **Monorepo** support in mind, decoupled dependencies and entry point specification
 - [x] 🧀 **Rolling** releases where a single binary always runs latest pypi or git branch/tag [#](https://pyaket.dev/docs/rust/#rolling)
+- [x] 🔦 **PyTorch** installation at runtime, automatic backend detection (optional). [#](https://pyaket.dev/docs/rust/#torch-backend)
 
-## ⚔️ Cross compilation
+<!------------------------------------------------------------------------------------------------->
 
-Thanks to Rust's amazing toolchain, coupled with [cargo-zigbuild](https://github.com/rust-cross/cargo-zigbuild), and using pure crates, Pyaket can pretty much compile executables _from any_ platform _to any_ platform without docker or vms.
+## ⭐️ Examples
 
-<br>
+For more examples, proper configuration and advanced features, check out the [**website**](https://pyaket.dev/examples) page!
 
-<div align="center" markdown>
-  <b>Cross compilation compatibility</b>
+### Simple to use
 
-  | From / To | <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/linux.svg" width="70"> <p> N/A | <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/apple.svg" width="70"> <p> N/A | <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/windows.svg" width="70"> <p> GNU| <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/windows.svg" width="70"> <p> MSVC |
-  | :----------------- | :---------------- | :---------------- | :----------------- | :---------------- |
-  | 🐧 **Linux** x86   | ✅ x86 <p> ☑️ Arm | ☑️ x86 <p> ☑️ Arm | ✅ x86 <p> ❌ Arm | 🚫 x86 <p> 🚫 Arm |
-  | 🐧 **Linux** Arm   | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❌ Arm | 🚫 x86 <p> 🚫 Arm |
-  | 💠 **Windows** x86 | ✅ x86 <p> ☑️ Arm | ☑️ x86 <p> ☑️ Arm | ✅ x86 <p> ☑️ Arm | ✅ x86 <p> 🤏 Arm |
-  | 💠 **Windows** Arm | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❓ Arm | ❓ x86 <p> ❓ Arm |
-  | 🍎 **MacOS** x86   | ✔️ x86 <p> ✔️ Arm | ✔️ x86 <p> ✔️ Arm | ✔️ x86 <p> ✔️ Arm | 🚫 x86 <p> 🚫 Arm |
-  | 🍎 **MacOS** Arm   | ✔️ x86 <p> ✔️ Arm | ✔️ x86 <p> ✔️ Arm | ✔️ x86 <p> ✔️ Arm | 🚫 x86 <p> 🚫 Arm |
+Compile a [cowsay](https://pypi.org/project/cowsay/) binary for the current platform and run it:
 
-  <sup><b>Note:</b> The table simply states if it <i>compile and/or run</i>. Your Python project may not work on all platforms.</sup>
-</div>
+```sh hl_lines="1"
+$ pyaket app --name cowsay --pypi "cowsay==6.1" run --module cowsay compile
+  Compiling libc v0.2.172
+  Compiling typenum v1.18.0
+  ...
+  Finished `release` profile [optimized] target(s) in 9.88s
+```
 
-**Legend:**
+```sh hl_lines="1"
+$ ./release/cowsay-linux-amd64-v0.0.0.bin -t "Hello, Pyaket!"
+  ______________
+| Hello, Pyaket! |
+  ==============
+     \
+      \
+        ^__^
+        (oo)\_______
+        (__)\       )\/\
+            ||----w |
+            ||     ||
+```
 
-- ✅ Verified and supported
-- ☑️ Compiled, but untested
-- ✔️ Should work (untested)
-- ❌ Impractical (possible)
-- 🚫 Impossible
+### Blazingly fast
+
+..after the first installation:
+
+```sh hl_lines="1 5"
+$ hyperfine "./release/cowsay-linux-amd64-v0.0.0.bin -t anyhow"
+  Time (mean ± σ):      24.3 ms ±   0.9 ms    [User: 8.8 ms, System: 15.4 ms]
+  Range (min … max):    22.4 ms …  26.6 ms    100 runs
+
+$ hyperfine "python -m cowsay -t anyhow"
+  Time (mean ± σ):      21.2 ms ±   0.9 ms    [User: 15.6 ms, System: 5.3 ms]
+  Range (min … max):    19.4 ms …  23.5 ms    100 runs
+```
+
+### Cross compile
+
+..to most platforms and architectures easily:
+
+```sh hl_lines="1 4"
+$ pyaket app -n cowsay -p "cowsay==6.1" run -m cowsay release -t windows compile
+  Finished `release` profile [optimized] target(s) in 8.11s
+
+$ wine ./Release/cowsay-windows-amd64-v0.0.0.exe -t "Hello, Wine!"
+  ____________
+| Hello, Wine! |
+  ============
+            \
+             \
+               ^__^
+               (oo)\_______
+               (__)\       )\/\
+                   ||----w |
+                   ||     ||
+```
+
+```sh hl_lines="2 5"
+# Intel Macbook @ ./release/cowsay-macos-amd64-v0.0.0.bin
+$ pyaket ... release --target macos --arch amd64 compile
+
+# Apple Silicon @ ./release/cowsay-macos-arm64-v0.0.0.bin
+$ pyaket ... release --target macos --arch arm64 compile
+```
+
+<!------------------------------------------------------------------------------------------------->
 
 ## 📦 Installation
 
-> [!WARNING]
-> This project is under active development, certain parts are incomplete and not fully tested yet.
->
-> - Install with `pip install git+https://github.com/BrokenSource/Pyaket` for now!
+<b>Warn:</b> Only installation from source is currently available, unreleased elsewhere.
+
+**Note**: This section does not cover everything and lacks information on setting up a rust toolchain, environment for cross-compilation, workflows, etc. refer to the [**website**](https://pyaket.dev/get/) below for more details.
+
+<!-- Todo: Swap to actual pyaket website -->
+<a href="https://pyaket.dev/get">
+  <img src="https://github.com/user-attachments/assets/8470c0d2-46de-4068-b9ce-a1261a6c0e69">
+</a>
+
+### From registries
+
+Pyaket is primarily available on [pypi](https://pypi.org/project/pyaket/) and [crates.io](https://crates.io/crates/pyaket) under the same name and version.
+
+- The python package bundles the same rust code and provides a command line interface, automatic dependencies installation, and a few extra features  (recommended option)
+- The rust crate implements the core functionality and can be used independently by passing [environment variables](https://pyaket.dev/docs/) while compiling the executable. Note that writing any code in rust is not needed, but simply compiling the existing one (advanced option)
+
+Install directly with pip with:
+
+```sh
+python3 -m pip install pyaket
+```
 
 Head out to the [**website**](https://pyaket.dev/get) for the latest installation instructions and more!
 
-<!-- Todo: Website screenshot, as always -->
+### From releases
 
-## 💰 Commercial
+For flexing and [dogfooding](https://en.wikipedia.org/wiki/Eating_your_own_dog_food), you can run pyaket executables made with pyaket itself 🤯
 
-Pyaket is free to use for open source projects that distributes releases at no cost.
+- Grab a file for you platform from the [releases](https://github.com/BrokenSource/Pyaket/releases) page, it just works!
 
-Commercial usage (including selling executables, for-profit deployments) or bundling proprietary software requires an appropriate [sponsorship tier](https://github.com/sponsors/Tremeschin). You may freely evaluate the viability beforehand, or use it to get started at a limited budget. Fair and enables me to keep the project alive and improve it over time.
+### From source
 
-Get in touch if you have any questions, need support or features, or want a custom agreement!
+You can install directly from the git repository with:
+
+```sh
+python3 -m pip install git+https://github.com/BrokenSource/Pyaket
+```
+
+<!------------------------------------------------------------------------------------------------->
 
 ## ♻️ Community
 

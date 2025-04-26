@@ -1,3 +1,7 @@
+---
+icon: material/file-document-edit
+---
+
 <style>
     li {margin-bottom: 2px !important;}
     p  {margin-bottom: 2px !important;}
