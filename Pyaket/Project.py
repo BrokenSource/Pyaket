@@ -56,7 +56,7 @@ class Application(BrokenModel):
     • [Documentation](https://pyaket.dev/docs#app-version)
     """
 
-    wheels: Annotated[list[Path], Option("--wheels", "-w")] = []
+    wheels: Annotated[list[Path], Option("--wheel", "-w")] = []
     """
     List of wheels to bundle and install at runtime, supports glob patterns.
 

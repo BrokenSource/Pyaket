@@ -37,14 +37,14 @@
 
 **📦 Pyaket** is a tool that bundles and generates portable executables of your python projects for all platforms. No more convoluted installation steps, give users the convenience [they want](https://github.com/sherlock-project/sherlock/issues/2011), with maximum compatibility and dev-centric ease of use compared to alternative solutions.
 
-- [x] ⚡️ **Lightning fast** installation that automatically manages python, virtual environments, and dependencies without user intervention that just works, bundle wheels or install from pypi.
-- [x] ✨ **Max compatibility** with how the project is run in the user's machine - pyaket does not reinvent the wheel or compile python with an intermediate, use tools that already exists
-- [x] ♻️ **Cross compile** from anywhere to most platforms and architectures, no docker or virtual machines required, portable immutable executables - see the table below for details!
-- [x] 🧠 **Intelligently** detects partial installations, downloads, archive unpacks, and automatically takes appropriate action - making iterative development easy and resilient against users
-- [ ] 📦 **Standalone** executables with no network calls at runtime that bundles all dependencies [#](https://github.com/BrokenSource/Pyaket/issues/2)
-- [x] 🚀 **Monorepo** support in mind, decoupled dependencies and entry point specification
-- [x] 🧀 **Rolling** releases where a single binary always runs latest pypi or git branch/tag [#](https://pyaket.dev/docs/rust/#rolling)
-- [x] 🔦 **PyTorch** installation at runtime, automatic backend detection (optional). [#](https://pyaket.dev/docs/rust/#torch-backend)
+- [x] **Lightning fast** installation that automatically manages python, virtual environments, and dependencies without user intervention that just works, bundle wheels or install from pypi.
+- [x] **Max compatibility** with how the project is run in the user's machine - pyaket does not reinvent the wheel or compile python with an intermediate, use tools that already exists
+- [x] **Cross compile** from anywhere to most platforms and architectures, no docker or virtual machines required, portable immutable executables - see the table below for details!
+- [x] **Intelligently** detects partial installations, downloads, archive unpacks, and automatically takes appropriate action - making iterative development easy and resilient against users
+- [ ] **Standalone** executables with no network calls at runtime that bundles all dependencies [#](https://github.com/BrokenSource/Pyaket/issues/2)
+- [x] **Monorepo** support in mind, decoupled dependencies and entry point specification
+- [x] **Rolling** releases where a single binary always runs latest pypi or git branch/tag [#](https://pyaket.dev/docs/rust/#rolling)
+- [x] **PyTorch** installation at runtime, automatic backend detection (optional). [#](https://pyaket.dev/docs/rust/#torch-backend)
 
 <!------------------------------------------------------------------------------------------------->
 
@@ -96,7 +96,8 @@ $ hyperfine "python -m cowsay -t anyhow"
 
 ..to most platforms and architectures easily:
 
-```sh hl_lines="1 4"
+```sh hl_lines="2 5"
+# Windows executables compiled from linux
 $ pyaket app -n cowsay -p "cowsay==6.1" run -m cowsay release -t windows compile
   Finished `release` profile [optimized] target(s) in 8.11s
 
@@ -119,6 +120,46 @@ $ pyaket ... release --target macos --arch amd64 compile
 
 # Apple Silicon @ ./release/cowsay-macos-arm64-v0.0.0.bin
 $ pyaket ... release --target macos --arch arm64 compile
+```
+
+### Bundle wheels
+
+..and install them at runtime, perfect for monorepos:
+
+```sh hl_lines="1 6"
+$ uv build --all-packages --wheel -o dist
+  Successfully built dist/shared-1.0.0-py3-none-any.whl
+  Successfully built dist/project_a-1.0.0-py3-none-any.whl
+  Successfully built dist/project_b-1.0.0-py3-none-any.whl
+
+# Both will share the same virtual environment 🤯
+# ./release/{project_a,project_b}-linux-amd64-v0.0.0.bin
+$ pyaket app -n project_a -w "dist/*.whl" run -m project_a compile
+$ pyaket app -n project_b -w "dist/*.whl" run -m project_b compile
+```
+
+### Predownload
+
+..uv and a python instead of runtime download:
+
+```sh hl_lines="2 5"
+# Adds ~18 MB to the final binary
+$ pyaket ... uv --bundle compile
+
+# Adds ~20 MB to the final binary (not implemented yet)
+$ pyaket ... python --bundle compile
+```
+
+### Install pytorch
+
+..at runtime, with automatic backend detection:
+
+```sh hl_lines="2 5"
+# ./release/app-linux-amd64-v0.0.0-auto.bin
+$ pyaket ... torch -v 2.7.0 -b auto compile
+
+# ./release/app-linux-amd64-v0.0.0-cu128.bin
+$ pyaket ... torch -v 2.7.0 -b cu128 compile
 ```
 
 <!------------------------------------------------------------------------------------------------->
@@ -167,6 +208,6 @@ python3 -m pip install git+https://github.com/BrokenSource/Pyaket
 
 ## ♻️ Community
 
-<small>✅ **Be featured here** if you're using Pyaket in your projects!</small>
+<sup>✅ **Be featured here** if you're using Pyaket in your projects!</sup>
 
 _🌵 Such an empty place here, for now.._
