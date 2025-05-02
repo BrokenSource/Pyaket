@@ -82,13 +82,15 @@ $ ./release/cowsay-linux-amd64-v0.0.0.bin -t "Hello, Pyaket!"
 
 ```sh hl_lines="1 5"
 $ hyperfine "./release/cowsay-linux-amd64-v0.0.0.bin -t anyhow"
-  Time (mean ± σ):      24.3 ms ±   0.9 ms    [User: 8.8 ms, System: 15.4 ms]
-  Range (min … max):    22.4 ms …  26.6 ms    100 runs
+  Time (mean ± σ):      23.3 ms ±   0.3 ms    [User: 15.8 ms, System: 7.2 ms]
+  Range (min … max):    22.9 ms …  24.8 ms    100 runs
 
 $ hyperfine "python -m cowsay -t anyhow"
-  Time (mean ± σ):      21.2 ms ±   0.9 ms    [User: 15.6 ms, System: 5.3 ms]
-  Range (min … max):    19.4 ms …  23.5 ms    100 runs
+  Time (mean ± σ):      18.5 ms ±   0.1 ms    [User: 14.2 ms, System: 4.1 ms]
+  Range (min … max):    18.2 ms …  19.0 ms    100 runs
 ```
+
+<sup><b>Note:</b> The full benchmark command was `nice -20 taskset -c 2 hyperfine -w 50 -r 100 -N (...)`, executed on mainline Arch Linux kernel v6.14.4 EEVDF, R9 5900x stock + PBO, 2x3200 MT/s DDR4 CL16 2Rx8, Ondemand governor as of May 2025</sup>
 
 ### Cross compile
 

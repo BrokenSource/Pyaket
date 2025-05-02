@@ -240,20 +240,19 @@ impl Project {
     }
 
     /// Get a command starting with uv executable
-    pub fn uv(&self) -> Command {
-        #[cfg(target_os="windows")]
-        let executable = "uv.exe";
-        #[cfg(not(target_os="windows"))]
-        let executable = "uv";
-
-        let pattern = format!("{}/**/{}",
+    pub fn uv(&self) -> Result<Command> {
+        let pattern = format!("{}/**/uv{}",
             self.uv_unpack_dir().display(),
-            executable);
+            if cfg!(target_os="windows") {".exe"} else {""}
+        );
 
-        Command::new(glob::glob(&pattern)
-            .expect("Invalid glob pattern")
+        if !glob::glob(&pattern)?.any(|x| x.is_ok()) {
+            self.ensure_uv()?;
+        }
+
+        Ok(Command::new(glob::glob(&pattern)?
             .filter_map(Result::ok).next()
-            .expect("uv executable not found"))
+            .expect("uv executable not found")))
     }
 }
 

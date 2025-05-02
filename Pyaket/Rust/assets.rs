@@ -38,6 +38,7 @@ pub trait BrokenAssets: RustEmbed {
         Self::get(path).map(|file| file.data.to_vec())
     }
 
+    /// Compound function to read from bundle or download to a static file at runtime
     fn read_or_download(bundle: &str, cache: &PathBuf, url: &str) -> Result<Vec<u8>> {
         match Self::read(bundle) {
             None => network::download(url, Some(&cache.into())),

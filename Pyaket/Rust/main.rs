@@ -1,7 +1,6 @@
 use pyaket::*;
 
 fn run(project: &Project) -> Result<()> {
-    project.ensure_uv()?;
 
     // Send the executable path to Python, also flags a Pyaket app
     let executable = std::env::current_exe()?.canonicalize()?;
@@ -24,7 +23,7 @@ fn run(project: &Project) -> Result<()> {
     } || project.app.rolling {
 
         /* Create the virtual environment */ {
-            let mut setup = project.uv();
+            let mut setup = project.uv()?;
 
             setup.arg("venv")
                 .arg(project.installation_dir())
@@ -38,7 +37,7 @@ fn run(project: &Project) -> Result<()> {
         // Install PyTorch first, as other dependencies might
         // install a platform's default backend
         if !project.torch.version.is_empty() {
-            let mut torch = project.uv();
+            let mut torch = project.uv()?;
 
             torch.arg("pip").arg("install")
                 .arg(format!("torch=={}", project.torch.version))
@@ -51,7 +50,7 @@ fn run(project: &Project) -> Result<()> {
         // Gets cleaned up when out of scope
         let container = TempDir::with_prefix("pyaket-").unwrap();
 
-        let mut command = project.uv();
+        let mut command = project.uv()?;
         command.arg("pip").arg("install");
         command.arg("--upgrade");
 
@@ -87,7 +86,7 @@ fn run(project: &Project) -> Result<()> {
     /* ---------------------------------------- */
     // Entry points
 
-    let mut main = project.uv();
+    let mut main = project.uv()?;
     main.arg("run");
     main.arg("--no-project");
     main.arg("--active");
