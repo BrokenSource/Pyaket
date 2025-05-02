@@ -44,6 +44,7 @@ fn run(project: &Project) -> Result<()> {
                 .arg(format!("torch=={}", project.torch.version))
                 .arg(format!("--torch-backend={}", project.torch.backend))
                 .arg("--preview");
+
             subprocess::run(&mut torch)?;
         }
 
