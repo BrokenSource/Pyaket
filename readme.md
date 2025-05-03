@@ -90,7 +90,7 @@ $ pyaket app -n cowsay -p "cowsay==6.1" run -m cowsay compile
 after the first installation:
 
 ```sh hl_lines="1 5"
-$ hyperfine -w 1 "./release/cowsay-linux-amd64-v0.0.0.bin -t anyhow"
+$ hyperfine "./release/cowsay-linux-amd64-v0.0.0.bin -t anyhow"
   Time (mean ± σ):      23.3 ms ±   0.3 ms    [User: 15.8 ms, System: 7.2 ms]
   Range (min … max):    22.9 ms …  24.8 ms    100 runs
 
@@ -145,18 +145,6 @@ $ uv build --all-packages --wheel -o dist
 # ./release/{project_a,project_b}-linux-amd64-v0.0.0.bin
 $ pyaket app -n project_a -w "dist/*.whl" run -m project_a compile
 $ pyaket app -n project_b -w "dist/*.whl" run -m project_b compile
-```
-
-### Predownload
-
-..uv and a python instead of runtime download:
-
-```sh hl_lines="2 5"
-# Adds ~18 MB to the final binary
-$ pyaket ... uv --bundle compile
-
-# Adds ~20 MB to the final binary (not implemented yet)
-$ pyaket ... python --bundle compile
 ```
 
 ### Install pytorch
