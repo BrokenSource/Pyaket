@@ -29,9 +29,6 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["Pyaket"]
 
-[tool.hatch.build.targets.wheel.force-include]
-"Cargo.lock" = "Pyaket/Cargo.lock"
-
 [tool.hatch.metadata.hooks.custom]
 path = ".github/hatch_build.py"
 
