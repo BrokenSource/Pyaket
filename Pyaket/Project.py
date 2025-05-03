@@ -92,26 +92,13 @@ class Application(BrokenModel):
     """
 
     @property
-    def _wheels(self) -> Iterable[Path]:
+    def r_wheels(self) -> str:
         """Gets all self.wheels as absolute paths"""
-        yield from map(str, map(BrokenPath.get, self.wheels))
+        return ';'.join(map(str, map(BrokenPath.get, self.wheels)))
 
     @property
-    def _pypi(self) -> Iterable[str]:
-        for package in self.pypi:
-            yield str(package).strip()
-
-    def export(self) -> None:
-        Environment.update(
-            PYAKET_APP_NAME=self.name,
-            PYAKET_APP_VERSION=self.version,
-            PYAKET_APP_AUTHOR=self.author,
-            PYAKET_APP_WHEELS=';'.join(self._wheels),
-            PYAKET_APP_PYPI=';'.join(self._pypi),
-            PYAKET_APP_REQTXT=self.reqtxt,
-            PYAKET_APP_ROLLING=self.rolling,
-            PYAKET_KEEP_OPEN=self.keep_open,
-        )
+    def r_pypi(self) -> str:
+        return ';'.join(map(str, self.pypi))
 
 # ---------------------------------------------- #
 
@@ -130,11 +117,6 @@ class Directories(BrokenModel):
 
     • [Documentation](https://pyaket.dev/docs#versions-dir)
     """
-
-    def export(self) -> None:
-        Environment.update(
-            PYAKET_VERSIONS_DIR=self.versions,
-        )
 
 # ---------------------------------------------- #
 
@@ -159,12 +141,6 @@ class Python(BrokenModel):
     • [Documentation](https://pyaket.dev/docs#python-bundle)
     """
 
-    def export(self) -> None:
-        Environment.update(
-            PYAKET_PYTHON_VERSION=self.version,
-            PYAKET_PYTHON_BUNDLE=self.bundle,
-        )
-
 # ---------------------------------------------- #
 
 class Astral(BrokenModel):
@@ -188,12 +164,6 @@ class Astral(BrokenModel):
     • [Documentation](https://pyaket.dev/docs#uv-bundle)
     """
 
-    def export(self) -> None:
-        Environment.update(
-            PYAKET_UV_VERSION=self.version,
-            PYAKET_UV_BUNDLE=self.bundle,
-        )
-
 # ---------------------------------------------- #
 
 class Torch(BrokenModel):
@@ -215,12 +185,6 @@ class Torch(BrokenModel):
 
     • [Documentation](https://pyaket.dev/docs#torch-backend)
     """
-
-    def export(self) -> None:
-        Environment.update(
-            PYAKET_TORCH_VERSION=self.version,
-            PYAKET_TORCH_BACKEND=self.backend,
-        )
 
 # ---------------------------------------------- #
 
@@ -258,14 +222,6 @@ class Entry(BrokenModel):
 
     • [Documentation](https://pyaket.dev/docs#entry-command)
     """
-
-    def export(self) -> None:
-        Environment.update(
-            PYAKET_ENTRY_MODULE=self.module,
-            PYAKET_ENTRY_SCRIPT=self.script,
-            PYAKET_ENTRY_CODE=self.code,
-            PYAKET_ENTRY_COMMAND=self.command,
-        )
 
 # ---------------------------------------------- #
 
@@ -369,18 +325,6 @@ class Release(BrokenModel):
                     shell("yay", "-S", "mingw-w64-llvm", "--noconfirm", skip=1)
 
         shell("rustup", "target", "add", self.triple)
-
-# ---------------------------------------------- #
-
-class PyaketConfig(BrokenModel):
-
-    def export_all(self) -> None:
-        Environment.update(PYAKET_RELEASE=1)
-        self.app.export()
-        self.python.export()
-        self.astral.export()
-        self.torch.export()
-        self.entry.export()
 
 # ---------------------------------------------- #
 
@@ -495,12 +439,7 @@ class PyaketProject:
 
         self.release.should_zigbuild()
         self.release.install_tools()
-        self.app.export()
-        self.dirs.export()
-        self.python.export()
-        self.astral.export()
-        self.torch.export()
-        self.entry.export()
+        self.export()
 
         if shell(
             "cargo", ("zigbuild" if self.release.zigbuild else "build"),
@@ -542,3 +481,27 @@ class PyaketProject:
             f"-{self.torch.backend}" if (self.torch.version) else "",
             f"{self.release.platform.extension}",
         ))
+
+    def export(self) -> None:
+        Environment.update(
+            PYAKET_RELEASE        = 1,
+            PYAKET_APP_NAME       = self.app.name,
+            PYAKET_APP_VERSION    = self.app.version,
+            PYAKET_APP_AUTHOR     = self.app.author,
+            PYAKET_APP_WHEELS     = self.app.r_wheels,
+            PYAKET_APP_PYPI       = self.app.r_pypi,
+            PYAKET_APP_REQTXT     = self.app.reqtxt,
+            PYAKET_APP_ROLLING    = self.app.rolling,
+            PYAKET_KEEP_OPEN      = self.app.keep_open,
+            PYAKET_VERSIONS_DIR   = self.dirs.versions,
+            PYAKET_PYTHON_VERSION = self.python.version,
+            PYAKET_PYTHON_BUNDLE  = self.python.bundle,
+            PYAKET_UV_VERSION     = self.astral.version,
+            PYAKET_UV_BUNDLE      = self.astral.bundle,
+            PYAKET_TORCH_VERSION  = self.torch.version,
+            PYAKET_TORCH_BACKEND  = self.torch.backend,
+            PYAKET_ENTRY_MODULE   = self.entry.module,
+            PYAKET_ENTRY_SCRIPT   = self.entry.script,
+            PYAKET_ENTRY_CODE     = self.entry.code,
+            PYAKET_ENTRY_COMMAND  = self.entry.command,
+        )

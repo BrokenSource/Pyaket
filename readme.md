@@ -76,12 +76,21 @@ $ ./release/cowsay-linux-amd64-v0.0.0.bin -t "Hello, Pyaket!"
             ||     ||
 ```
 
+### Fast iterative development
+
+with a warm build cache:
+
+```sh hl_lines="1"
+$ pyaket app -n cowsay -p "cowsay==6.1" run -m cowsay compile
+  Finished `release` profile [optimized] target(s) in 1.54s
+```
+
 ### Blazingly fast
 
-..after the first installation:
+after the first installation:
 
 ```sh hl_lines="1 5"
-$ hyperfine "./release/cowsay-linux-amd64-v0.0.0.bin -t anyhow"
+$ hyperfine -w 1 "./release/cowsay-linux-amd64-v0.0.0.bin -t anyhow"
   Time (mean ± σ):      23.3 ms ±   0.3 ms    [User: 15.8 ms, System: 7.2 ms]
   Range (min … max):    22.9 ms …  24.8 ms    100 runs
 
@@ -90,11 +99,11 @@ $ hyperfine "python -m cowsay -t anyhow"
   Range (min … max):    18.2 ms …  19.0 ms    100 runs
 ```
 
-<sup><b>Note:</b> For the keen among you, the full benchmark command was `nice -20 taskset -c 2 hyperfine -w 50 -r 100 -N (...)`, executed on mainline Arch Linux kernel v6.14.4 EEVDF, R9 5900x stock + PBO, 2x3200 MT/s DDR4 CL16 2Rx8, Ondemand governor as of May 2025</sup>
+<sup><b>Note:</b> For the keen among you, the actual benchmark command was `nice -20 taskset -c 2 hyperfine -w 50 -r 100 -N (...)`, executed on mainline Arch Linux kernel v6.14.4 EEVDF, R9 5900x stock + PBO, 2x3200 MT/s DDR4 CL16 2Rx8, ondemand governor as of May 2025</sup>
 
 ### Cross compile
 
-..to most platforms and architectures easily:
+to most platforms and architectures easily:
 
 ```sh hl_lines="2 5"
 # Windows executables compiled from linux
@@ -124,7 +133,7 @@ $ pyaket ... release --target macos --arch arm64 compile
 
 ### Bundle wheels
 
-..and install them at runtime, perfect for monorepos:
+and install them at runtime, perfect for monorepos:
 
 ```sh hl_lines="1 6"
 $ uv build --all-packages --wheel -o dist

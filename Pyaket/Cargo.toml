@@ -73,8 +73,8 @@ panic = "abort"    # No need to unwind full traceback as not primary rust app
 strip = true       # Reduces binary size by quite a lot due few fat crates
 lto = false        # Annoyingly slow linking times for minor size reduction
 
-# About 5x slower to compile for 15% size reduction
-# and 35% slower decompression time
+# About 5x slower to build the final binary, for about 15%
+# size reduction, but 35% slower decompression, hashing
 [profile.small]
 inherits = "release"
 opt-level = 'z'
