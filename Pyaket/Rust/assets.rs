@@ -16,7 +16,7 @@ pub trait BrokenAssets: RustEmbed {
     /// Smart bundle a download (build.rs only!)
     fn download(path: &str, url: &str) -> Result<Vec<u8>> {
         let cache = Self::cache(path);
-        let bytes = network::download(url, Some(&cache))?;
+        let bytes = Network::download(url, Some(&cache))?;
         Self::write(&path, &bytes)?;
         Ok(bytes)
     }
@@ -41,7 +41,7 @@ pub trait BrokenAssets: RustEmbed {
     /// Compound function to read from bundle or download to a static file at runtime
     fn read_or_download(bundle: &str, cache: &PathBuf, url: &str) -> Result<Vec<u8>> {
         match Self::read(bundle) {
-            None => network::download(url, Some(&cache.into())),
+            None => Network::download(url, Some(&cache.into())),
             Some(data) => Ok(data),
         }
     }

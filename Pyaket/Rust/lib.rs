@@ -38,6 +38,7 @@ pub mod environment;
 pub use environment::*;
 pub mod logging;
 pub mod network;
+pub use network::*;
 pub mod project;
 pub use project::*;
 pub mod subprocess;
