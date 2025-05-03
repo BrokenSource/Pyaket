@@ -32,8 +32,8 @@ pub use uuid::Uuid;
 pub use xxhash_rust::xxh3::xxh3_64;
 
 pub mod archive;
-pub use assets::*;
 pub mod assets;
+pub use assets::*;
 pub mod environment;
 pub use environment::*;
 pub mod logging;
@@ -42,6 +42,5 @@ pub mod project;
 pub use project::*;
 pub mod subprocess;
 
-
-/// Time at which the program started, force call it on fn main()
+/// Time at which the program started, used for logging
 pub static START_TIME: LazyLock<Instant> = LazyLock::new(Instant::now);

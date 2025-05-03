@@ -149,7 +149,7 @@ $ pyaket app -n project_b -w "dist/*.whl" run -m project_b compile
 
 ### Install pytorch
 
-..at runtime, with automatic backend detection:
+at runtime, with automatic backend detection:
 
 ```sh hl_lines="2 5"
 # ./release/app-linux-amd64-v0.0.0-auto.bin

@@ -59,9 +59,9 @@ pub fn unpack_bytes(
 
 /// Unpack common archive formats from a file to a directory
 pub fn unpack_file(
-    archive: impl AsRef<Path>,
+    file: impl AsRef<Path>,
     path: impl AsRef<Path>,
     flag: Option<&str>,
 ) -> Result<()> {
-    archive::unpack_bytes(&read(archive)?, path, flag)
+    archive::unpack_bytes(&read(file)?, path, flag)
 }

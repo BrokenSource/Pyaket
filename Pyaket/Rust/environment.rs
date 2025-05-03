@@ -11,7 +11,7 @@ impl Environment {
 
     /// Calls `set()` if the variable does not exist
     pub fn setdefault(name: &str, value: impl Display) {
-        if std::env::var(name).is_err() {
+        if !Environment::exists(name) {
             Environment::set(name, value);
         }
     }

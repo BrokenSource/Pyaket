@@ -74,7 +74,7 @@ strip = true       # Reduces binary size by quite a lot due few fat crates
 lto = false        # Annoyingly slow linking times for minor size reduction
 
 # About 5x slower to build the final binary, for about 15%
-# size reduction, but 35% slower decompression, hashing
+# size reduction, but 35% slower decompression and hashing
 [profile.small]
 inherits = "release"
 opt-level = 'z'
