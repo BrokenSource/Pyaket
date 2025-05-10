@@ -3,4 +3,4 @@
 rustflags = ["-C", "target-feature=+crt-static"]
 
 [build]
-target-dir = "Build"
+target-dir = "../Build"

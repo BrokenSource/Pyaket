@@ -397,15 +397,15 @@ class PyaketProject:
             BrokenPath.add_to_path(Path.home()/".cargo"/"bin")
 
             if not BrokenPath.which("rustup"):
-                log.warning("Rustup was likely installed but wasn't found adding '~/.cargo/bin' to Path")
-                log.warning("• Maybe you changed the CARGO_HOME or RUSTUP_HOME environment variables")
-                log.warning("• Please restart your shell for Rust toolchain to be on PATH")
+                log.warn("Rustup was likely installed but wasn't found adding '~/.cargo/bin' to Path")
+                log.warn("• Maybe you changed the CARGO_HOME or RUSTUP_HOME environment variables")
+                log.warn("• Please restart your shell for Rust toolchain to be on PATH")
                 exit(0)
 
         # Install Visual C++ Build Tools on Windows
         if (BrokenPlatform.OnWindows and build_tools):
-            log.warning("You must have Microsoft Visual C++ Build Tools installed to compile Rust projects")
-            log.warning("• Will try installing it, you might need to restart your shell, good luck!")
+            log.warn("You must have Microsoft Visual C++ Build Tools installed to compile Rust projects")
+            log.warn("• Will try installing it, you might need to restart your shell, good luck!")
             shell("winget", "install", "-e", "--id", "Microsoft.VisualStudio.2022.BuildTools", "--override", (
                 " --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64"
                 " --add Microsoft.VisualStudio.Component.Windows10SDK"
@@ -469,7 +469,7 @@ class PyaketProject:
         if self.release.tarball and (not self.release.system.is_windows()):
             release_path = BrokenPath.gzip(release_path, remove=True)
 
-        log.success(f"Built Project release at ({release_path})")
+        log.ok(f"Built Project release at ({release_path})")
         return release_path
 
     @property

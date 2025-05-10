@@ -26,11 +26,12 @@ impl Network {
             .read_to_vec()?)
     }
 
-    /// Download to a file
+    /// Download to a file serving as cache, returns the bytes
     pub fn download_file(url: &str, path: &PathBuf) -> Result<Vec<u8>> {
         match path.exists() {
             true => Ok(read(path)?),
             false => {
+                // Note: The trick here is that rename is atomic!
                 let bytes = Network::download_bytes(&url)?;
                 let temp = path.with_extension("part");
                 mkdir(&path.parent().unwrap())?;

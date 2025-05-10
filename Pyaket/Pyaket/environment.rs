@@ -2,18 +2,17 @@ use crate::*;
 
 pub struct Environment;
 
+// String
 impl Environment {
+
+    /// Get a string from the environment, optional default
+    pub fn get(name: &str, default: Option<&str>) -> Option<String> {
+        std::env::var(name).ok().or(default.map(|x| x.to_string()))
+    }
 
     /// Set an environment variable to a value
     pub fn set(name: &str, value: impl Display) {
         unsafe {std::env::set_var(name, format!("{}", value))}
-    }
-
-    /// Calls `set()` if the variable does not exist
-    pub fn setdefault(name: &str, value: impl Display) {
-        if !Environment::exists(name) {
-            Environment::set(name, value);
-        }
     }
 
     /// Remove a variable from the environment
@@ -21,15 +20,21 @@ impl Environment {
         unsafe {std::env::remove_var(name)}
     }
 
-    /// Get a string from the environment, optional default
-    pub fn get(name: &str, default: Option<&str>) -> Option<String> {
-        std::env::var(name).ok().or(default.map(|x| x.to_string()))
+    /// Calls `set()` if the variable does not exist
+    pub fn setdefault(name: &str, value: impl Display) {
+        if std::env::var(name).is_err() {
+            Environment::set(name, value);
+        }
     }
 
     /// Get a string from the environment, required default
     pub fn uget(name: &str, default: &str) -> String {
         Environment::get(name, Some(default)).unwrap()
     }
+}
+
+// Boolean
+impl Environment {
 
     /// Parse a bool from an environment variable, optional default
     pub fn bool(name: &str, default: Option<bool>) -> Option<bool> {
@@ -47,19 +52,10 @@ impl Environment {
     pub fn ubool(name: &str, default: bool) -> bool {
         Environment::bool(name, Some(default)).unwrap()
     }
+}
 
-    /// Get all environment variables names
-    pub fn keys() -> Vec<String> {
-        std::env::vars().map(|(k, _)| k).collect()
-    }
-
-    /// Check if an environment variable exists
-    pub fn exists(name: &str) -> bool {
-        std::env::var(name).is_ok()
-    }
-
-    /* ---------------------------------------- */
-    // Exporting and printing
+// Exporting and printing
+impl Environment {
 
     /// Print an environment variable
     pub fn print(name: &str) {

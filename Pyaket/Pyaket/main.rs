@@ -53,8 +53,6 @@ fn run(project: &Project) -> Result<()> {
         let mut command = project.uv()?;
         command.arg("pip").arg("install");
         command.arg("--upgrade");
-
-        // Add at least pip so the command fails ok when empty
         command.arg("pip");
 
         // Write temp wheel/sdist packages and mark to install
@@ -67,8 +65,8 @@ fn run(project: &Project) -> Result<()> {
         }
 
         // Add PyPI packages to be installed
-        command.args(project.app.pypi.split(";")
-            .map(|x| x.trim()).filter(|x| !x.is_empty()));
+        command.args(project.app.pypi.split(";"));
+        // command.args(&project.app.pypi);
 
         // Add the requirements.txt file to be installed
         if !project.app.reqtxt.is_empty() {

@@ -1,4 +1,4 @@
-#[path="Rust/lib.rs"]
+#[path="Pyaket/lib.rs"]
 mod lib;
 use lib::*;
 
