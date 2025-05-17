@@ -39,7 +39,7 @@
 
 - [x] **Lightning fast** installation that automatically manages python, virtual environments, and dependencies without user intervention that just works, bundle wheels or install from pypi.
 - [x] **Max compatibility** with how the project is run in the user's machine - pyaket does not reinvent the wheel or compile python with an intermediate, use tools that already exists [#](https://pyaket.dev/faq/general/#how-it-works)
-- [x] **Cross compile** from anywhere to most platforms and architectures, no docker or virtual machines required, portable immutable executables - see the table below for details! [#](https://pyaket.dev/docs/crosscompile/)
+- [x] **Cross compile** from anywhere to most platforms and architectures, no docker or virtual machines required, portable immutable executables - see the table for details! [#](https://pyaket.dev/docs/crosscompile/)
 - [x] **Intelligently** detects partial installations, downloads, archive unpacks, and automatically takes appropriate action - making iterative development easy and resilient against users
 - [ ] **Standalone** executables with no network calls at runtime that bundles all dependencies [#](https://github.com/BrokenSource/Pyaket/issues/2)
 - [x] **Monorepo** support in mind, decoupled dependencies and entry point specification
@@ -172,43 +172,13 @@ For more examples, proper configuration and advanced features, check out the [**
 
 ## 📦 Installation
 
-<b>Warn:</b> Only installation from source is currently available, unreleased elsewhere.
-
-**Note**: This section does not cover everything and lacks information on setting up a rust toolchain, environment for cross-compilation, workflows, etc. refer to the [**website**](https://pyaket.dev/get/) below for more details.
-
-<!-- Todo: Swap to actual pyaket website -->
-<a href="https://pyaket.dev/get">
-  <img src="https://github.com/user-attachments/assets/8470c0d2-46de-4068-b9ce-a1261a6c0e69">
-</a>
-
-### From registries
-
-Pyaket is primarily available on [pypi](https://pypi.org/project/pyaket/) and [crates.io](https://crates.io/crates/pyaket) under the same name and version.
-
-- The python package bundles the same rust code and provides a command line interface, automatic dependencies installation, and a few extra features  (recommended option)
-- The rust crate implements the core functionality and can be used independently by passing [environment variables](https://pyaket.dev/docs/) while compiling the executable. Note that writing any code in rust is not needed, but simply compiling the existing one (advanced option)
-
-Install directly with pip with:
+For now, Pyaket is only available when installing from source:
 
 ```sh
-python3 -m pip install pyaket
+python3 -m pip install git+https://github.com/BrokenSource/Pyaket[cross]
 ```
 
-Head out to the [**website**](https://pyaket.dev/get) for the latest installation instructions and more!
-
-### From releases
-
-For flexing and [dogfooding](https://en.wikipedia.org/wiki/Eating_your_own_dog_food), you can run pyaket executables made with pyaket itself 🤯
-
-- Grab a file for you platform from the [releases](https://github.com/BrokenSource/Pyaket/releases) page, it just works!
-
-### From source
-
-You can install directly from the git repository with:
-
-```sh
-python3 -m pip install git+https://github.com/BrokenSource/Pyaket
-```
+In the future, you'll be able to install from [pypi](https://pypi.org/project/pyaket/), or [crates.io](https://crates.io/crates/pyaket) for pure rust usage.
 
 <!------------------------------------------------------------------------------------------------->
 

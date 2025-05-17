@@ -33,7 +33,6 @@ pub fn unpack_bytes(
     use zstd::stream::read::Decoder as ZsDecoder;
     #[cfg(feature="bzip2")]
     use bzip2::read::BzDecoder;
-
     use flate2::read::GzDecoder;
     use zip::ZipArchive;
 
