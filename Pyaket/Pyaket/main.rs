@@ -94,7 +94,7 @@ fn run(project: &Project) -> Result<()> {
             .arg("-m").arg(&project.entry.module);
 
     } else if !project.entry.script.is_empty() {
-        main.arg("python")
+        main.arg("run")
             .arg(&project.entry.script);
 
     } else if !project.entry.code.is_empty() {

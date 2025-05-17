@@ -3,7 +3,7 @@ import site
 import subprocess
 import tempfile
 from pathlib import Path
-from typing import Annotated, Iterable
+from typing import Annotated
 
 from attrs import Factory, define
 from typer import Option
@@ -150,7 +150,7 @@ class Astral(BrokenModel):
     • [Documentation](https://pyaket.dev/docs#uv)
     """
 
-    version: Annotated[str, Option("--version", "-v")] = "0.7.2"
+    version: Annotated[str, Option("--version", "-v")] = "0.7.5"
     """
     A target uv version to use at runtime
 
@@ -269,7 +269,7 @@ class Release(BrokenModel):
 
     @property
     def triple(self) -> str:
-        return self.platform.triple
+        return self.platform.triple()
 
     # # Actions
 
@@ -344,7 +344,7 @@ class PyaketProject:
     entry:   Entry       = Factory(Entry)
     release: Release     = Factory(Release)
 
-    cli: BrokenTyper = Factory(BrokenTyper)
+    cli: BrokenTyper = None
 
     def __attrs_post_init__(self):
         self.cli = BrokenTyper(chain=True, help=False)
@@ -359,7 +359,7 @@ class PyaketProject:
 
         with self.cli.panel("🟡 Dependencies"):
             self.cli.command(self.python, name="python")
-            self.cli.command(self.astral, name="astral")
+            self.cli.command(self.astral, name="uv")
             self.cli.command(self.torch,  name="torch")
 
         with self.cli.panel("🟢 Building"):
