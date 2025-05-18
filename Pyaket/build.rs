@@ -8,7 +8,10 @@ mod manage {
     use super::*;
 
     // Todo: Find a way to match against uv
-    pub fn python(_project: &Project) -> Result<()> {
+    pub fn python(project: &Project) -> Result<()> {
+        if project.python.bundle {
+            logging::warn!("Bundling Python is not implemented yet")
+        }
         Ok(())
     }
 

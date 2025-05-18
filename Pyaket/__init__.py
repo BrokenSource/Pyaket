@@ -1,8 +1,6 @@
 from Broken import BrokenProject, __version__
 
-PYAKET_ABOUT = """
-📦 Easy Python to → Fast Executables
-"""
+PYAKET_ABOUT = "📦 Easy Python to → Fast Executables"
 
 PYAKET = BrokenProject(
     PACKAGE=__file__,

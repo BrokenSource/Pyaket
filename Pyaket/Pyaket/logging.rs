@@ -8,7 +8,7 @@ pub use crate::warn;
 
 #[macro_export]
 macro_rules! make_log {
-    ($level:expr, $color:expr, $($tokens:tt)*) => {
+    ($level:expr, $color:expr, $($tokens:tt)*) => {{
         let elapsed: f32 = (START_TIME.elapsed().as_millis() as f32)/1000.0;
         println!(
             "cargo::warning=\r\
@@ -18,7 +18,7 @@ macro_rules! make_log {
             format!("{}'{:06.3}", (elapsed/60.0).floor(), (elapsed%60.0)),
             $color, $level, format!($($tokens)*)
         );
-    };
+    }};
 }
 #[macro_export]
 macro_rules! info  {($($tokens:tt)*) =>

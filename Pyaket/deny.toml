@@ -1,0 +1,29 @@
+# Options https://github.com/EmbarkStudios/cargo-deny
+
+[graph]
+all-features = true
+
+[licenses]
+confidence-threshold = 0.8
+allow = [
+    "MIT",
+    "Apache-2.0",
+    "BSD-3-Clause",
+    "MPL-2.0",
+    "BSL-1.0",
+    "Zlib",
+    "ISC",
+]
+exceptions = [
+    {allow=["AGPL-3.0"],            crate="pyaket"},
+    {allow=["CDLA-Permissive-2.0"], crate="webpki-roots"},
+    {allow=["Unicode-3.0"],         crate="unicode-ident"},
+    {allow=["bzip2-1.0.6"],         crate="libbz2-rs-sys"},
+]
+
+[bans]
+multiple-versions = "warn"
+skip = [
+    # "We will make a 0.26.11 release that uses 1.0.0 using the semver trick"
+    {crate="webpki-roots@0.26.11", reason="https://github.com/rustls/webpki-roots/releases/tag/v/1.0.0"},
+]
