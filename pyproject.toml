@@ -23,6 +23,11 @@ cross = [
     "ziglang~=0.14.0",
 ]
 
+[dependency-groups]
+dev = [
+    "pyaket[cross]",
+]
+
 [project.scripts]
 pyaket = "Pyaket.__main__:main"
 

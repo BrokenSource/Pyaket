@@ -5,7 +5,7 @@ import tempfile
 from pathlib import Path
 from typing import Annotated
 
-from attrs import Factory, define
+from attr import Factory, define
 from typer import Option
 
 from Broken import (
