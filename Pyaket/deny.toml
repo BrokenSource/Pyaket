@@ -2,23 +2,24 @@
 
 [graph]
 all-features = true
+exclude = ["redox_users"]
 
 [licenses]
 confidence-threshold = 0.8
 allow = [
-    "MIT",
-    "Apache-2.0",
-    "BSD-3-Clause",
-    "MPL-2.0",
-    "BSL-1.0",
-    "Zlib",
-    "ISC",
+    "Apache-2.0",          # https://spdx.org/licenses/Apache-2.0.html
+    "BSD-3-Clause",        # https://spdx.org/licenses/BSD-3-Clause.html
+    "BSL-1.0",             # https://spdx.org/licenses/BSL-1.0.html
+    "bzip2-1.0.6",         # https://spdx.org/licenses/bzip2-1.0.6.html
+    "CDLA-Permissive-2.0", # https://spdx.org/licenses/CDLA-Permissive-2.0.html
+    "ISC",                 # https://spdx.org/licenses/ISC.html
+    "MIT",                 # https://spdx.org/licenses/MIT.html
+    "MPL-2.0",             # https://spdx.org/licenses/MPL-2.0.html
+    "Unicode-3.0",         # https://spdx.org/licenses/Unicode-3.0.html
+    "Zlib",                # https://spdx.org/licenses/Zlib.html
 ]
 exceptions = [
-    {allow=["AGPL-3.0"],            crate="pyaket"},
-    {allow=["CDLA-Permissive-2.0"], crate="webpki-roots"},
-    {allow=["Unicode-3.0"],         crate="unicode-ident"},
-    {allow=["bzip2-1.0.6"],         crate="libbz2-rs-sys"},
+    {allow=["AGPL-3.0"], crate="pyaket"},
 ]
 
 [bans]

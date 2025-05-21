@@ -68,7 +68,7 @@ bzip2 = ["dep:bzip2"]
 strip = true       # Actually faster to compile and saves SSD writes, win-win
 
 [profile.release]
-codegen-units = 1  # Slighlty improves binary size at no significant slowdown
+codegen-units = 1  # Slighlty improves binary size at no worse compile time
 incremental = true # Faster recompilation times for multiple projects
 opt-level = 3      # Milisseconds matter in production, time is money
 panic = "abort"    # No need to unwind full traceback as not primary rust app
