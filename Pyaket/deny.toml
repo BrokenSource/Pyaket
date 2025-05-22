@@ -1,5 +1,3 @@
-# Options https://github.com/EmbarkStudios/cargo-deny
-
 [graph]
 all-features = true
 exclude = ["redox_users"]

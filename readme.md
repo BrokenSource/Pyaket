@@ -99,7 +99,7 @@ $ hyperfine "python -m cowsay -t anyhow"
   Range (min … max):    18.2 ms …  19.0 ms    100 runs
 ```
 
-<sup><b>Note:</b> For the keen among you, the actual benchmark command was `nice -20 taskset -c 2 hyperfine -w 50 -r 100 -N (...)`, executed on mainline Arch Linux kernel v6.14.4 EEVDF, R9 5900x stock + PBO, 2x3200 MT/s DDR4 CL16 2Rx8, ondemand governor as of May 2025</sup>
+<sup><b>Note:</b> For the keen among you, the actual benchmark command was `nice -20 taskset -c 2 hyperfine -w 50 -r 100 -N (...)`, executed on Python 3.13.3, mainline Linux kernel v6.14.4, R9 5900x ondemand governor stock, 2x3200 MT/s DDR4 CL16 2Rx8 as of May 2025</sup>
 
 ### Cross compile
 
