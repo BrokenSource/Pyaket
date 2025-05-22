@@ -227,7 +227,7 @@ This is a special variable that can be overriden at runtime and is dynamic if un
         <tbody class="slim-table">
             <tr>
                 <td style="width: 20%">:material-microsoft: Windows</td>
-                <td><kbd>C:\\\\Users\\User\\AppData\\Local\\Author</kbd></td>
+                <td><kbd>C:\\Users\\User\\AppData\\Local\\Author</kbd></td>
             </tr>
             <tr>
                 <td>:simple-apple: MacOS</td>
@@ -240,7 +240,7 @@ This is a special variable that can be overriden at runtime and is dynamic if un
         </tbody>
     </table>
 
-Shall a user set it, the value is used as is. This is especially useful if folks have a full C:\\\\ drive or want a custom directory than the above for large application data. A Python project should follow the same pattern, so all files are in the same place for easier uninstallation.
+Shall a user set it, the value is used as is. This is especially useful if folks have a full C:\\ drive or want a custom directory than the above for large application data. A Python project should follow the same pattern, so all files are in the same place for easier uninstallation.
 
 ```sh title="Example"
 $ export WORKSPACE="/tmp/workspace"
@@ -261,7 +261,7 @@ By default, things are stored in a `Pyaket` directory (due lack of a better name
         <tbody class="slim-table">
             <tr>
                 <td style="width: 20%">:material-microsoft: Windows</td>
-                <td><kbd>C:\\\\Users\\User\\AppData\\Local\\Author\\Pyaket</kbd></td>
+                <td><kbd>C:\\Users\\User\\AppData\\Local\\Author\\Pyaket</kbd></td>
             </tr>
             <tr>
                 <td>:simple-apple: MacOS</td>
@@ -299,7 +299,7 @@ Multiple versions of the same application(s) are stored in a shared directory (v
         <tbody class="slim-table">
             <tr>
                 <td style="width: 20%">:material-microsoft: Windows</td>
-                <td><kbd>C:\\\\Users\\User\\AppData\\Local\\Author\\Pyaket\\Versions\\(...)</kbd></td>
+                <td><kbd>C:\\Users\\User\\AppData\\Local\\Author\\Pyaket\\Versions\\(...)</kbd></td>
             </tr>
             <tr>
                 <td>:simple-apple: MacOS</td>

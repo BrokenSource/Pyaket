@@ -65,8 +65,10 @@ fn run(project: &Project) -> Result<()> {
         }
 
         // Add PyPI packages to be installed
-        command.args(project.app.pypi.split(";"));
-        // command.args(&project.app.pypi);
+        if !project.app.pypi.is_empty() {
+            command.args(project.app.pypi.split(";"));
+            // command.args(&project.app.pypi);
+        }
 
         // Add the requirements.txt file to be installed
         if !project.app.reqtxt.is_empty() {
