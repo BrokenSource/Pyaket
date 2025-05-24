@@ -19,7 +19,7 @@ fn run(project: &Project) -> Result<()> {
 
     if match read(project.uuid_tracker_file()) {
         Ok(bytes) => {bytes != project.uuid.as_bytes()},
-        Err(_) => true,
+        Err(_)    => true,
     } || project.app.rolling {
 
         /* Create the virtual environment */ {

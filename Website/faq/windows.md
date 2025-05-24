@@ -37,7 +37,7 @@ The answer is [code signing](https://en.wikipedia.org/wiki/Code_signing), simila
 
 At its theoretical best, this is a way to gatekeep the bad actors out, as getting a signing certificate is often expensive, easily revoked if misused, requires sensitive information to become public such as address, phone number, legal name, etc. and [might not even work](https://discord.com/channels/518489831232503809/600724122242383894/781166981746655282) properly in the end.
 
-- Many Open Source projects struggles due lack of funding, which makes it infeasible to even consider getting a certificate - as it's not an investment with direct returns.
+- Many Open Source projects struggles due lack of funding, which makes it infeasible to even consider getting a certificate - as it's _**not**_ an investment with direct returns.
 
 - Most services that provides free signing for open source projects disallows selling the files, something pyaket advocates for the developer's hard work and paying the bills.
 

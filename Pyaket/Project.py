@@ -351,7 +351,7 @@ class PyaketProject:
         self.cli.description = PYAKET_ABOUT
 
         with self.cli.panel("🚀 Core"):
-            self.cli.command(self.rust)
+            self.cli.command(self.install_rust, name="rust")
 
         with self.cli.panel("🔴 Project"):
             self.cli.command(self.app,   name="app")
@@ -370,7 +370,7 @@ class PyaketProject:
             self.cli.command(self.build, name="build")
 
     @staticmethod
-    def rust(
+    def install_rust(
         toolchain:   Annotated[RustToolchain, Option("--toolchain",   "-t", help="(Any    ) Rust toolchain to use (stable, nightly)")]="stable",
         build_tools: Annotated[bool,          Option("--build-tools", "-b", help="(Windows) Install Visual C++ Build Tools")]=True,
     ):
