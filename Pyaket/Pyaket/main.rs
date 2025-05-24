@@ -17,6 +17,11 @@ fn run(project: &Project) -> Result<()> {
     Environment::set("UV_SYSTEM_PYTHON", false);
     Environment::set("UV_NO_CONFIG",     true);
 
+    // Force disable the GIL on freethreaded python
+    if project.python.version.contains('t') {
+        Environment::set("UV_PYTHON_GIL", 0);
+    }
+
     if match read(project.uuid_tracker_file()) {
         Ok(bytes) => {bytes != project.uuid.as_bytes()},
         Err(_)    => true,

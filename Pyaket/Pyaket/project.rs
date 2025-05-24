@@ -183,6 +183,8 @@ pub struct Project {
 
 impl Project {
 
+    /// Directory to store many python versions
+    /// - Should mirror `UV_PYTHON_INSTALL_DIR`
     pub fn python_install_dir(&self) -> PathBuf {
         self.workspace_common().join("Python")
     }
