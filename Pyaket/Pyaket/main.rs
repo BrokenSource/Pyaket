@@ -19,7 +19,7 @@ fn run(project: &Project) -> Result<()> {
 
     // Force disable the GIL on freethreaded python
     if project.python.version.contains('t') {
-        Environment::set("UV_PYTHON_GIL", 0);
+        Environment::set("PYTHON_GIL", 0);
     }
 
     if match read(project.uuid_tracker_file()) {
