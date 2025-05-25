@@ -1,4 +1,3 @@
-import shutil
 import site
 import subprocess
 import tempfile
@@ -281,7 +280,7 @@ class Release(BrokenModel):
             BrokenPlatform.OnLinux   and (self.platform == PlatformEnum.LinuxARM64),
             BrokenPlatform.OnLinux   and (self.system.is_macos()),
         )):
-            log.note("Force enable Zigbuild for cross compilation")
+            log.note("Force enabling Zigbuild for cross compilation")
             self.zigbuild = True
 
     def install_tools(self) -> None:
@@ -300,15 +299,11 @@ class Release(BrokenModel):
                 if BrokenPlatform.Arch.is_amd():
                     if (self.platform == PlatformEnum.WindowsAMD64):
                         install_msys2_packages("mingw-w64-x86_64-gcc")
-                        BrokenPath.add_to_path(msys2/"ucrt64/bin")
+                        Environment.add_to_path(msys2/"ucrt64/bin")
 
                     elif (self.platform == PlatformEnum.WindowsARM64):
                         # Fixme: Almost got it, clang linking errors
                         ...
-
-            # Ensure zig.exe is found
-            for path in site.getsitepackages():
-                BrokenPath.add_to_path(Path(path)/"ziglang")
 
         elif BrokenPlatform.OnLinux:
             get = Environment.flag("AUTO_PACKAGES")
@@ -373,34 +368,12 @@ class PyaketProject:
     def install_rust(
         toolchain:   Annotated[RustToolchain, Option("--toolchain",   "-t", help="(Any    ) Rust toolchain to use (stable, nightly)")]="stable",
         build_tools: Annotated[bool,          Option("--build-tools", "-b", help="(Windows) Install Visual C++ Build Tools")]=True,
-    ):
-        """Installs rustup and a rust toolchain"""
-        import requests
+    ) -> None:
+        """Installs a rust toolchain"""
 
         # Actions has its own workflow setup
         if (Runtime.GitHub):
             return
-
-        # Install rustup based on platform
-        if not shutil.which("rustup"):
-            log.info("Rustup wasn't found, will install it")
-
-            if BrokenPlatform.OnWindows:
-                shell("winget", "install", "-e", "--id", "Rustlang.Rustup")
-            elif BrokenPlatform.OnUnix:
-                shell("sh", "-c", requests.get("https://sh.rustup.rs").text, "-y", echo=False)
-            elif BrokenPlatform.OnMacOS:
-                # Xcode? Idk, buy me a mac
-                ...
-
-            # If rustup isn't found, ask user to restart shell
-            BrokenPath.add_to_path(Path.home()/".cargo"/"bin")
-
-            if not BrokenPath.which("rustup"):
-                log.warn("Rustup was likely installed but wasn't found adding '~/.cargo/bin' to Path")
-                log.warn("• Maybe you changed the CARGO_HOME or RUSTUP_HOME environment variables")
-                log.warn("• Please restart your shell for Rust toolchain to be on PATH")
-                exit(0)
 
         # Install Visual C++ Build Tools on Windows
         if (BrokenPlatform.OnWindows and build_tools):
@@ -438,27 +411,32 @@ class PyaketProject:
             return None
 
         self.release.should_zigbuild()
-        self.release.install_tools()
         self.export()
+
+        try:
+            if self.release.zigbuild:
+                import ziglang
+        except ImportError:
+            raise RuntimeError("Missing group 'pip install pyaket[cross]' for cross compilation")
 
         if shell(
             "cargo", ("zigbuild" if self.release.zigbuild else "build"),
             "--manifest-path", (PYAKET.PACKAGE/"Cargo.toml"),
-            "--target-dir", cache,
-            "--target", self.release.triple,
             "--profile", self.release.profile.cargo,
+            "--target", self.release.triple,
+            "--target-dir", cache,
         ).returncode != 0:
             raise RuntimeError(log.error("Failed to compile Pyaket"))
 
         # Find the compiled binary
-        _filename = ("pyaket" + ".exe"*self.release.system.is_windows())
+        _filename = ("pyaket" + (".exe"*self.release.system.is_windows()))
         binary = next((cache/self.release.triple/self.release.profile.value).glob(_filename))
         log.info(f"Compiled Pyaket binary at ({binary})")
 
         # Rename the compiled binary to the final release name
         release_path = (output / self.release_name)
         BrokenPath.mkdir(release_path.parent)
-        BrokenPath.move(src=binary, dst=release_path)
+        BrokenPath.move(src=binary, dst=release_path, echo=False)
         BrokenPath.make_executable(release_path)
 
         # Compress the final release with upx
