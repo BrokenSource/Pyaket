@@ -1,4 +1,3 @@
-import site
 import subprocess
 import tempfile
 from pathlib import Path
@@ -7,7 +6,7 @@ from typing import Annotated
 from attr import Factory, define
 from typer import Option
 
-from Broken import (
+from broken import (
     ArchEnum,
     BrokenEnum,
     BrokenModel,
@@ -19,11 +18,10 @@ from Broken import (
     Runtime,
     SystemEnum,
     Tools,
-    denum,
     log,
     shell,
 )
-from Pyaket import PYAKET, PYAKET_ABOUT
+from pyaket import PYAKET, PYAKET_ABOUT
 
 # ---------------------------------------------- #
 
@@ -34,14 +32,14 @@ class Application(BrokenModel):
     • [Documentation](https://pyaket.dev/docs#app)
     """
 
-    name: Annotated[str, Option("--name", "-n")] = "Pyaket"
+    name: Annotated[str, Option("--name", "-n")] = "pyaket"
     """
     The application name, used for
 
     • [Documentation](https://pyaket.dev/docs#app-name)
     """
 
-    author: Annotated[str, Option("--author", "-a")] = "BrokenSource"
+    author: Annotated[str, Option("--author", "-a")] = "brokensource"
     """
     Subdirectory of the platform's user data directory to install the application
 
@@ -103,14 +101,14 @@ class Application(BrokenModel):
 
 class Directories(BrokenModel):
 
-    common: Annotated[str, Option("--common", "-c")] = "Pyaket"
+    common: Annotated[str, Option("--common", "-c")] = "pyaket"
     """
     Subdirectory of the workspace to use for all installed files
 
     • [Documentation](https://pyaket.dev/docs#common-dir)
     """
 
-    versions: Annotated[str, Option("--versions", "-v")] = "Versions"
+    versions: Annotated[str, Option("--versions", "-v")] = "versions"
     """
     Subdirectory of the common dir to install versions of the application
 
@@ -281,7 +279,7 @@ class Release(BrokenModel):
             BrokenPlatform.OnLinux   and (self.system.is_macos()),
         )):
             log.note("Force enabling Zigbuild for cross compilation")
-            self.zigbuild = True
+            # self.zigbuild = True
 
     def install_tools(self) -> None:
         if BrokenPlatform.OnWindows:
@@ -319,7 +317,6 @@ class Release(BrokenModel):
                     # Todo: Is it https://aur.archlinux.org/packages/mingw-w64-llvm (fat) ?
                     shell("yay", "-S", "mingw-w64-llvm", "--noconfirm", skip=1)
 
-        shell("rustup", "target", "add", self.triple)
 
 # ---------------------------------------------- #
 
@@ -386,7 +383,7 @@ class PyaketProject:
                 "--wait --passive"
             ))
 
-        shell("rustup", "default", denum(toolchain))
+        shell("rustup-init", "-y")
 
     def build(self,
         standalone: Annotated[bool, Option("--standalone", "-s")]=False,
@@ -410,17 +407,23 @@ class PyaketProject:
             log.error(f"• Attempted to build for '{self.release.platform}' on '{BrokenPlatform.Host}'")
             return None
 
+        shell("rustup", "install", "stable")
+        shell("rustup", "default", "stable")
+        shell("rustup", "update",  "stable")
+        shell("rustup", "target",  "add", self.release.triple)
+
         self.release.should_zigbuild()
+        self.release.install_tools()
         self.export()
 
         try:
             if self.release.zigbuild:
-                import ziglang
+                import ziglang # noqa
         except ImportError:
             raise RuntimeError("Missing group 'pip install pyaket[cross]' for cross compilation")
 
         if shell(
-            "cargo", ("zigbuild" if self.release.zigbuild else "build"),
+            "cargo", ("zig"*self.release.zigbuild) + "build",
             "--manifest-path", (PYAKET.PACKAGE/"Cargo.toml"),
             "--profile", self.release.profile.cargo,
             "--target", self.release.triple,

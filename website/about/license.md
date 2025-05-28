@@ -23,7 +23,7 @@ The code is licensed under the [AGPLv3](https://www.tldrlegal.com/license/gnu-af
 
 ## Dependencies
 
-Thanks to [cargo-deny](https://github.com/EmbarkStudios/cargo-deny) and my strict [configuration](https://github.com/BrokenSource/Pyaket/blob/main/Pyaket/deny.toml) for only permissive licenses, no part of the rust code links to or uses proprietary or viral libraries. The python part uses [minimal](https://github.com/BrokenSource/BrokenSource/blob/main/pyproject.toml) dependencies and was also checked, although manually - check the [credits](site:about/credits) page for an exhaustive list.
+Thanks to [cargo-deny](https://github.com/EmbarkStudios/cargo-deny) and my strict [configuration](https://github.com/BrokenSource/Pyaket/blob/main/pyaket/deny.toml) for only permissive licenses, no part of the rust code links to or uses proprietary or viral libraries. The python part uses [minimal](https://github.com/BrokenSource/BrokenSource/blob/main/pyproject.toml) dependencies and was also checked, although manually - check the [credits](site:about/credits) page for an exhaustive list.
 
 :material-arrow-right: However, for purely functional reasons, third party tools are downloaded and used at runtime, or bundled in the executable, such as [astral-sh/uv](https://github.com/astral-sh/uv) and [astral-sh/python-buid-standalone](https://github.com/astral-sh/python-build-standalone/).
 

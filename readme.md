@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/BrokenSource/Pyaket/main/Pyaket/Resources/Images/Pyaket.png" width="210" onerror='this.src="Pyaket/Resources/Images/Pyaket.png"'>
+  <img src="https://raw.githubusercontent.com/BrokenSource/Pyaket/main/pyaket/resources/images/logo.png" width="210">
   <h1 style="margin-top: 0">Pyaket</h1>
   <span>📦 Easy Python to → Fast Executables 📦</span>
   <br>

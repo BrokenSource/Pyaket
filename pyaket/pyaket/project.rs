@@ -57,11 +57,11 @@ pub static PYAKET_VERSIONS_DIR: &str = "PYAKET_VERSIONS_DIR";
 pub struct PyaketDirectories {
 
     /// [Documentation](https://pyaket.dev/docs#common-dir)
-    #[default(Environment::uget(PYAKET_COMMON_DIR, "Pyaket"))]
+    #[default(Environment::uget(PYAKET_COMMON_DIR, "pyaket"))]
     pub common: String,
 
     /// [Documentation](https://pyaket.dev/docs#versions-dir)
-    #[default(Environment::uget(PYAKET_VERSIONS_DIR, "Versions"))]
+    #[default(Environment::uget(PYAKET_VERSIONS_DIR, "versions"))]
     pub versions: String,
 }
 
@@ -186,7 +186,7 @@ impl Project {
     /// Directory to store many python versions
     /// - Should mirror `UV_PYTHON_INSTALL_DIR`
     pub fn python_install_dir(&self) -> PathBuf {
-        self.workspace_common().join("Python")
+        self.workspace_common().join("python")
     }
 
     /// The uv archive filename without extensions, e.g.:
@@ -293,12 +293,12 @@ impl Project {
 
     pub fn astral_dir(&self) -> PathBuf {
         self.workspace_common()
-            .join("Astral")
+            .join("astral")
     }
 
     pub fn uv_cache_dir(&self) -> PathBuf {
         self.workspace_common()
-            .join("Cache")
+            .join("cache")
     }
 
     /// Where to install the Python's virtual environment:

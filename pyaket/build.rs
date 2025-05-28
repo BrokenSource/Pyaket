@@ -1,4 +1,4 @@
-#[path="Pyaket/lib.rs"]
+#[path="pyaket/lib.rs"]
 mod lib;
 use lib::*;
 

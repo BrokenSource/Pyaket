@@ -54,11 +54,11 @@ zstd          = {version="0.13.3", optional=true}
 
 [lib]
 name = "pyaket"
-path = "Pyaket/lib.rs"
+path = "pyaket/lib.rs"
 
 [[bin]]
 name = "pyaket"
-path = "Pyaket/main.rs"
+path = "pyaket/main.rs"
 
 [features]
 zstd  = ["dep:zstd"]

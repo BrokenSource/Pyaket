@@ -1,9 +1,7 @@
 import sys
 
-from Pyaket import PyaketProject
-
-
 def main():
+    from pyaket import PyaketProject
     pyaket = PyaketProject()
     pyaket.cli(*sys.argv[1:])
 

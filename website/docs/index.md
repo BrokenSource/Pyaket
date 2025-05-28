@@ -32,7 +32,7 @@ Currently only used for identifying • flagging successfull installations and r
 <hr>
 
 ### <kbd>PYAKET_APP_AUTHOR</kbd> {#app-author}
-> 📦 <b>Type:</b> String • <b>Default:</b> BrokenSource
+> 📦 <b>Type:</b> String • <b>Default:</b> brokensrc
 
 The author's name, group, organization of the application being built.
 

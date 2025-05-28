@@ -6,7 +6,7 @@ When building the wheels of your project, pyaket sets the environment variable `
 
 ## Hatchling
 
-Add a [metadata hook](https://hatch.pypa.io/1.6/plugins/metadata-hook/reference/) in your project like I do with [other projects](https://github.com/BrokenSource/BrokenSource/blob/main/Broken/Hatch.py):
+Add a [metadata hook](https://hatch.pypa.io/1.6/plugins/metadata-hook/reference/) in your project like I do with [other projects](https://github.com/BrokenSource/BrokenSource/blob/main/broken/hook.py):
 
 !!! note "**Note**: At least one field must be dynamic to trigger the hook, redefining version is the easiest"
 
