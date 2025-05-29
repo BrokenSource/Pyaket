@@ -395,8 +395,8 @@ class PyaketProject:
         self.app.wheels.extend(wheels.glob("*.whl"))
 
     def compile(self,
-        cache:  Annotated[Path, Option("--cache",  "-c", help="Directory to build the project")]=(Path(tempfile.gettempdir())/"pyaket"),
-        output: Annotated[Path, Option("--output", "-o", help="Directory to output the compiled binary")]="release",
+        cache:  Annotated[Path, Option("--cache",  "-c", help="Directory to build the project")]=(Path.cwd()/"target"),
+        output: Annotated[Path, Option("--output", "-o", help="Directory to output the compiled binary")]=(Path.cwd()/"release"),
     ) -> Path:
         output = BrokenPath.get(output)
 
@@ -409,7 +409,6 @@ class PyaketProject:
 
         shell("rustup", "install", "stable")
         shell("rustup", "default", "stable")
-        shell("rustup", "update",  "stable")
         shell("rustup", "target",  "add", self.release.triple)
 
         self.release.should_zigbuild()
