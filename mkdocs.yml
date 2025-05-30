@@ -14,10 +14,10 @@ nav:
   - Installation:
     - get/index.md
     - Rust: get/rust.md
-    # - 🧀 Wheels: get/wheels.md
-    # - 📦 Installers: get/installers.md
-    # - 🔥 Source: get/source.md
-    # - 🦀 Crates: get/crates.md
+    # - Wheels: get/wheels.md
+    # - Installers: get/installers.md
+    # - Source: get/source.md
+    # - Crates: get/crates.md
   - Examples:
     - examples/basic.md
   - Documentation:

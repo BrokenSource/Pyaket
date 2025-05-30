@@ -1,4 +1,4 @@
-from Pyaket import PyaketProject
+from pyaket import PyaketProject
 
 project = PyaketProject()
 project.build(all=True)

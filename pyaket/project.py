@@ -259,10 +259,10 @@ class Release(BrokenModel):
     """Use Cargo zigbuild to build the binary"""
 
     msvc: Annotated[bool, Option("--msvc", "-m")] = False
-    """Use MSVC to build the binary"""
+    """(Windows) Use MSVC to build the binary"""
 
     tarball: Annotated[bool, Option("--tarball", "-x")] = False
-    """Create a .tar.gz for unix releases (preserves chmod +x)"""
+    """(Unix   ) Create a .tar.gz for unix releases (preserves chmod +x)"""
 
     @property
     def triple(self) -> str:
@@ -279,7 +279,7 @@ class Release(BrokenModel):
             BrokenPlatform.OnLinux   and (self.system.is_macos()),
         )):
             log.note("Force enabling Zigbuild for cross compilation")
-            # self.zigbuild = True
+            self.zigbuild = True
 
     def install_tools(self) -> None:
         if BrokenPlatform.OnWindows:
@@ -316,7 +316,6 @@ class Release(BrokenModel):
                 if BrokenPlatform.ArchLike:
                     # Todo: Is it https://aur.archlinux.org/packages/mingw-w64-llvm (fat) ?
                     shell("yay", "-S", "mingw-w64-llvm", "--noconfirm", skip=1)
-
 
 # ---------------------------------------------- #
 
@@ -409,7 +408,7 @@ class PyaketProject:
 
         shell("rustup", "install", "stable")
         shell("rustup", "default", "stable")
-        shell("rustup", "target",  "add", self.release.triple)
+        shell("rustup", "target", "add", self.release.triple)
 
         self.release.should_zigbuild()
         self.release.install_tools()

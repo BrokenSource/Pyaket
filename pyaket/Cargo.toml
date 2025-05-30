@@ -65,7 +65,7 @@ zstd  = ["dep:zstd"]
 bzip2 = ["dep:bzip2"]
 
 [profile.dev]
-strip = true       # Actually faster to compile and saves SSD writes, win-win
+strip = true       # Saves disk writes at no worse compile time
 
 [profile.release]
 codegen-units = 1  # Slighlty improves binary size at no worse compile time
