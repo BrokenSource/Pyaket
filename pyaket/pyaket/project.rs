@@ -91,7 +91,7 @@ pub static PYAKET_UV_BUNDLE:  &str = "PYAKET_UV_BUNDLE";
 pub struct PyaketUV {
 
     /// [Documentation](https://pyaket.dev/docs#uv-version)
-    #[default(Environment::uget(PYAKET_UV_VERSION, "0.7.7"))]
+    #[default(Environment::uget(PYAKET_UV_VERSION, "0.7.9"))]
     pub version: String,
 
     /// [Documentation](https://pyaket.dev/docs#uv-bundle)
