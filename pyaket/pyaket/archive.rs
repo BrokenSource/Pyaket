@@ -6,7 +6,7 @@ fn unpack_tar<R: Read>(decoder: R, path: &Path) -> Result<()> {
     Ok(())
 }
 
-/// Unpack common archive formats in-memory to a directory
+/// Unpack common archive formats to a directory
 pub fn unpack_bytes(
     bytes: &Vec<u8>,
     path:  impl AsRef<Path>,

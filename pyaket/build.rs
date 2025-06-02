@@ -34,16 +34,8 @@ mod manage {
         for wheel in project.app.wheels.split(";")
             .map(|x| x.trim()).filter(|x| !x.is_empty())
         {
-            logging::info!("Resolving wheel glob: {}", wheel);
-
-            // Interpret as glob pattern to allow `/path/*.whl` sugar
-            for file in glob::glob(wheel)?.map(|x| x.unwrap()) {
-                logging::info!("• {}", file.display());
-                WheelAssets::write(
-                    file.file_name().unwrap(),
-                    &read(&file).unwrap(),
-                )?;
-            }
+            WheelAssets::write(wheel, &read(&wheel).unwrap())?;
+            logging::info!("• {}", wheel);
         }
 
         Ok(())

@@ -19,6 +19,7 @@ fn run(project: &Project) -> Result<()> {
 
     // Force disable the GIL on freethreaded python
     if project.python.version.contains('t') {
+        Environment::set("UNSAFE_PYO3_BUILD_FREE_THREADED", 1);
         Environment::set("PYTHON_GIL", 0);
     }
 
