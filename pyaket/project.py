@@ -32,14 +32,14 @@ class Application(BrokenModel):
     • [Documentation](https://pyaket.dev/docs#app)
     """
 
-    name: Annotated[str, Option("--name", "-n")] = "pyaket"
+    name: Annotated[str, Option("--name", "-n")] = "Pyaket"
     """
     The application name, used for
 
     • [Documentation](https://pyaket.dev/docs#app-name)
     """
 
-    author: Annotated[str, Option("--author", "-a")] = "brokensource"
+    author: Annotated[str, Option("--author", "-a")] = "BrokenSource"
     """
     Subdirectory of the platform's user data directory to install the application
 
@@ -101,14 +101,14 @@ class Application(BrokenModel):
 
 class Directories(BrokenModel):
 
-    common: Annotated[str, Option("--common", "-c")] = "pyaket"
+    common: Annotated[str, Option("--common", "-c")] = "Pyaket"
     """
     Subdirectory of the workspace to use for all installed files
 
     • [Documentation](https://pyaket.dev/docs#common-dir)
     """
 
-    versions: Annotated[str, Option("--versions", "-v")] = "versions"
+    versions: Annotated[str, Option("--versions", "-v")] = "Versions"
     """
     Subdirectory of the common dir to install versions of the application
 
