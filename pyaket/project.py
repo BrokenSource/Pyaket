@@ -147,7 +147,7 @@ class Astral(BrokenModel):
     • [Documentation](https://pyaket.dev/docs#uv)
     """
 
-    version: Annotated[str, Option("--version", "-v")] = "0.7.9"
+    version: Annotated[str, Option("--version", "-v")] = "0.7.11"
     """
     A target uv version to use at runtime
 
