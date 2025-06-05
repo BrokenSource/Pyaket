@@ -8,7 +8,7 @@ fn unpack_tar<R: Read>(decoder: R, path: &Path) -> Result<()> {
 
 /// Unpack common archive formats to a directory
 pub fn unpack_bytes(
-    bytes: &Vec<u8>,
+    bytes: &[u8],
     path:  impl AsRef<Path>,
     flag:  Option<&str>,
 ) -> Result<()> {
@@ -39,7 +39,7 @@ pub fn unpack_bytes(
     logging::info!("Unpacking ({})", path.as_ref().display());
 
     // Identify the archive format by the magic bytes
-    let mut cursor = Cursor::new(bytes.as_slice());
+    let mut cursor = Cursor::new(bytes);
     let mut magic = [0u8; 6];
     cursor.read_exact(&mut magic)?;
     cursor.seek(SeekFrom::Start(0))?;

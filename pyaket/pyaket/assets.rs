@@ -47,7 +47,7 @@ pub trait BrokenAssets: RustEmbed {
     }
 
     /// Write a file to be bundled (build.rs only!)
-    fn write(path: impl AsRef<Path>, data: &Vec<u8>) -> Result<()> {
+    fn write(path: impl AsRef<Path>, data: &[u8]) -> Result<()> {
         let file = Environment::cargo_toml()
             .join(Self::path())
             .join(path);
