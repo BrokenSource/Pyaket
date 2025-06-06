@@ -1,4 +1,12 @@
 use crate::*;
+use flate2::read::GzDecoder;
+use zip::ZipArchive;
+
+#[cfg(feature="zstd")]
+use zstd::stream::read::Decoder as ZsDecoder;
+
+#[cfg(feature="bzip2")]
+use bzip2::read::BzDecoder;
 
 /// Writes a tar stream of data to a directory
 fn unpack_tar<R: Read>(decoder: R, path: &Path) -> Result<()> {
@@ -28,13 +36,6 @@ pub fn unpack_bytes(
             rmdir(&path)?;
         }
     }
-
-    #[cfg(feature="zstd")]
-    use zstd::stream::read::Decoder as ZsDecoder;
-    #[cfg(feature="bzip2")]
-    use bzip2::read::BzDecoder;
-    use flate2::read::GzDecoder;
-    use zip::ZipArchive;
 
     logging::info!("Unpacking ({})", path.as_ref().display());
 
