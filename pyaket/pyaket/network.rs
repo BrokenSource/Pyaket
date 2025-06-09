@@ -10,7 +10,7 @@ impl Network {
         Ok(response.status().is_success())
     }
 
-    /// Syntactic sugar for `bail!` on `!exists(url)`
+    /// Syntactic sugar to `bail!` on `!exists(url)`
     pub fn must_exist(url: &str) -> Result<()> {
         if !Network::exists(url)? {
             bail!("Download url is not valid: {}", url)}
