@@ -13,7 +13,7 @@ edition       = "2024"
 [dependencies]
 anyhow        = "1.0.97"
 bzip2         = {version="0.5.2",  features=["libbz2-rs-sys"], optional=true}
-clap          = {version="4.5.37", features=["derive"]}
+clap          = {version="4.5.37", features=["derive"], optional=true}
 directories   = "6.0.0"
 dotenvy       = "0.15.7"
 flate2        = "1.1.1"
@@ -34,7 +34,7 @@ zstd          = {version="0.13.3", optional=true}
 [build-dependencies]
 anyhow        = "1.0.97"
 bzip2         = {version="0.5.2",  features=["libbz2-rs-sys"], optional=true}
-clap          = {version="4.5.37", features=["derive"]}
+clap          = {version="4.5.37", features=["derive"], optional=true}
 directories   = "6.0.0"
 dotenvy       = "0.15.7"
 flate2        = "1.1.1"
@@ -61,8 +61,10 @@ name = "pyaket"
 path = "pyaket/main.rs"
 
 [features]
-zstd  = ["dep:zstd"]
-bzip2 = ["dep:bzip2"]
+default = ["self"]
+zstd    = ["dep:zstd"]
+bzip2   = ["dep:bzip2"]
+self    = ["dep:clap"]
 
 [profile.dev]
 strip = true       # Saves disk writes at no worse compile time
