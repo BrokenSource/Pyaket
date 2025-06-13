@@ -5,6 +5,9 @@ Contact   = "https://pyaket.dev/about/contact"
 Docs      = "https://pyaket.dev/docs"
 Homepage  = "https://pyaket.dev"
 
+[tool.hatch.metadata.hooks.custom]
+path = ".github/hatch_build.py"
+
 [project]
 name        = "pyaket"
 description = "📦 Easy Python to → Fast Executables"
@@ -39,11 +42,5 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["pyaket"]
 
-[tool.hatch.metadata.hooks.custom]
-path = ".github/hatch_build.py"
-
 [tool.hatch.metadata]
 allow-direct-references = true
-
-[tool.hatch.build.targets.sdist]
-exclude = ["*"]

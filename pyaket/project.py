@@ -1,3 +1,4 @@
+import shutil
 import subprocess
 import tempfile
 from pathlib import Path
@@ -147,7 +148,7 @@ class Astral(BrokenModel):
     • [Documentation](https://pyaket.dev/docs#uv)
     """
 
-    version: Annotated[str, Option("--version", "-v")] = "0.7.11"
+    version: Annotated[str, Option("--version", "-v")] = "0.7.13"
     """
     A target uv version to use at runtime
 
@@ -252,14 +253,14 @@ class Release(BrokenModel):
     standalone: Annotated[bool, Option("--standalone", "-s")] = False
     """Create a standalone offline installer"""
 
-    upx: Annotated[bool, Option("--upx", "-u")] = False
-    """Use UPX to compress the binary"""
+    msvc: Annotated[bool, Option("--msvc", "-m")] = False
+    """(Windows) Use MSVC to build the binary"""
 
     zigbuild: Annotated[bool, Option("--zig", "-z")] = False
     """Use Cargo zigbuild to build the binary"""
 
-    msvc: Annotated[bool, Option("--msvc", "-m")] = False
-    """(Windows) Use MSVC to build the binary"""
+    upx: Annotated[bool, Option("--upx", "-u")] = False
+    """Use UPX to compress the binary"""
 
     tarball: Annotated[bool, Option("--tarball", "-x")] = False
     """(Unix   ) Create a .tar.gz for unix releases (preserves chmod +x)"""
