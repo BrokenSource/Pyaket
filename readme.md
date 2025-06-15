@@ -31,6 +31,9 @@
   <br>
 </div>
 
+> [!IMPORTANT]
+> This project is under active development. Basic functionality works, but some features are incomplete, documentation needs improvement, and more testing is required. Feedback is welcome 🙂
+
 <!-- Todo: Demo video here, as always -->
 
 ## 🔥 Description
@@ -172,13 +175,60 @@ For more examples, proper configuration and advanced features, check out the [**
 
 ## 📦 Installation
 
-For now, Pyaket is only available when installing from source:
+For now, it is better to install pyaket directly from the source code for the latest features and fixes:
 
 ```sh
+# Optional 'cross' feature for cross compilation support with cargo-zigbuild
 python3 -m pip install git+https://github.com/BrokenSource/Pyaket[cross]
 ```
 
-In the future, you'll be able to install from [pypi](https://pypi.org/project/pyaket/), or [crates.io](https://crates.io/crates/pyaket) for pure rust usage.
+A **PyPI** and **Rust Crate** of the same name are also available, but might lag behind from git main shown below.
+
+For further setup, refer to the website [**installation**](https://pyaket.dev/get/) page.
+
+
+### Python Package
+
+> **Package**: https://pypi.org/project/pyaket/
+
+Either add to your project's `dev-dependencies` with the tool you use:
+
+- `uv add pyaket --dev`
+- `pdm add pyaket --dev`
+- `poetry add pyaket --dev`
+
+Or install in the current venv directly:
+
+- `python3 -m pip install pyaket`
+- `uv pip install pyaket`
+
+Or use it as a [uv tool](https://docs.astral.sh/uv/guides/tools/):
+
+- `uvx pyaket app --name cowsay ... compile`
+
+
+### Rust Crate
+
+> Crate: https://crates.io/crates/pyaket
+
+This is advanced usage, but also works:
+
+```sh
+$ export PYAKET_APP_NAME="cowsay"
+$ export PYAKET_APP_PYPI="cowsay==6.1"
+$ export PYAKET_ENTRY_MODULE="cowsay"
+
+# Remove previous compilation
+$ rm ./target/bin/pyaket
+
+# Compile it from crates.io
+$ cargo install pyaket --root ./target
+    Finished `release` profile [optimized] target(s) in 10.27s
+  Installing ./target/bin/pyaket
+
+# Run your project, rename it to your choice!
+$ ./target/bin/pyaket
+```
 
 <!------------------------------------------------------------------------------------------------->
 
