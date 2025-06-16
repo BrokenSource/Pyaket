@@ -7,7 +7,7 @@ pub trait BrokenAssets: RustEmbed {
 
     /// Get a path to download assets to before bundling
     fn cache(path: &str) -> PathBuf {
-        Environment::cargo_toml()
+        envy::cargo_toml()
             .parent().unwrap()
             .join(".cache/assets")
             .join(path)
@@ -16,7 +16,7 @@ pub trait BrokenAssets: RustEmbed {
     /// Smart bundle a download (build.rs only!)
     fn download(path: &str, url: &str) -> Result<Vec<u8>> {
         let cache = Self::cache(path);
-        let bytes = Network::download(url, Some(&cache))?;
+        let bytes = network::download(url, Some(&cache))?;
         Self::write(&path, &bytes)?;
         Ok(bytes)
     }
@@ -41,14 +41,14 @@ pub trait BrokenAssets: RustEmbed {
     /// Compound function to read from bundle or download to a static file at runtime
     fn read_or_download(bundle: &str, cache: &PathBuf, url: &str) -> Result<Vec<u8>> {
         match Self::read(bundle) {
-            None => Network::download(url, Some(&cache.into())),
+            None => network::download(url, Some(&cache.into())),
             Some(data) => Ok(data),
         }
     }
 
     /// Write a file to be bundled (build.rs only!)
     fn write(path: impl AsRef<Path>, data: &[u8]) -> Result<()> {
-        let file = Environment::cargo_toml()
+        let file = envy::cargo_toml()
             .join(Self::path())
             .join(path);
         mkdir(file.parent().unwrap())?;

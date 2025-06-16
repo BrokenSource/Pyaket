@@ -16,7 +16,7 @@ mod manage {
     }
 
     pub fn astral(project: &Project) -> Result<()> {
-        Network::must_exist(&project.uv_download_url())?;
+        network::must_exist(&project.uv_download_url())?;
 
         if project.uv.bundle {
             ArchiveAssets::download(
@@ -74,14 +74,14 @@ fn build() -> Result<()> {
     manage::reqtxt(&mut project)?;
 
     // Export a const configured project to be loaded at runtime
-    Environment::rustc_export("PYAKET_PROJECT", project.json());
+    environment::rustc_export("PYAKET_PROJECT", project.json());
     logging::note!("Project: {}", project.json());
     Ok(())
 }
 
 fn main() {
     LazyLock::force(&START_TIME);
-    Environment::set("BUILD", "1");
+    environment::set("BUILD", "1");
     logging::info!("Building pyaket project");
     build().unwrap();
 }

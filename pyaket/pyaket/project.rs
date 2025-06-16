@@ -15,36 +15,36 @@ pub static PYAKET_KEEP_OPEN:   &str = "PYAKET_KEEP_OPEN";
 pub struct PyaketApplication {
 
     /// [Documentation](https://pyaket.dev/docs#app-name)
-    #[default(Environment::uget(PYAKET_APP_NAME, "Pyaket"))]
+    #[default(envy::uget(PYAKET_APP_NAME, "Pyaket"))]
     pub name: String,
 
     /// [Documentation](https://pyaket.dev/docs#app-author)
-    #[default(Environment::uget(PYAKET_APP_AUTHOR, "BrokenSource"))]
+    #[default(envy::uget(PYAKET_APP_AUTHOR, "BrokenSource"))]
     pub author: String,
 
     /// [Documentation](https://pyaket.dev/docs#app-version)
-    #[default(Environment::uget(PYAKET_APP_VERSION, "0.0.0"))]
+    #[default(envy::uget(PYAKET_APP_VERSION, "0.0.0"))]
     pub version: String,
 
     /// [Documentation](https://pyaket.dev/docs#app-wheels)
     #[serde(skip)]
-    #[default(Environment::uget(PYAKET_APP_WHEELS, ""))]
+    #[default(envy::uget(PYAKET_APP_WHEELS, ""))]
     pub wheels: String,
 
     /// [Documentation](https://pyaket.dev/docs#app-pypi)
-    #[default(Environment::uget(PYAKET_APP_PYPI, ""))]
+    #[default(envy::uget(PYAKET_APP_PYPI, ""))]
     pub pypi: String,
 
     /// [Documentation](https://pyaket.dev/docs#app-requirements-txt)
-    #[default(Environment::uget(PYAKET_APP_REQTXT, ""))]
+    #[default(envy::uget(PYAKET_APP_REQTXT, ""))]
     pub reqtxt: String,
 
     /// [Documentation](https://pyaket.dev/docs#rolling)
-    #[default(Environment::ubool(PYAKET_APP_ROLLING, false))]
+    #[default(envy::ubool(PYAKET_APP_ROLLING, false))]
     pub rolling: bool,
 
     /// [Documentation](https://pyaket.dev/docs#keep-open)
-    #[default(Environment::ubool(PYAKET_KEEP_OPEN, false))]
+    #[default(envy::ubool(PYAKET_KEEP_OPEN, false))]
     pub keep_open: bool,
 }
 
@@ -57,11 +57,11 @@ pub static PYAKET_VERSIONS_DIR: &str = "PYAKET_VERSIONS_DIR";
 pub struct PyaketDirectories {
 
     /// [Documentation](https://pyaket.dev/docs#common-dir)
-    #[default(Environment::uget(PYAKET_COMMON_DIR, "Pyaket"))]
+    #[default(envy::uget(PYAKET_COMMON_DIR, "Pyaket"))]
     pub common: String,
 
     /// [Documentation](https://pyaket.dev/docs#versions-dir)
-    #[default(Environment::uget(PYAKET_VERSIONS_DIR, "Versions"))]
+    #[default(envy::uget(PYAKET_VERSIONS_DIR, "Versions"))]
     pub versions: String,
 }
 
@@ -74,11 +74,11 @@ pub static PYAKET_PYTHON_BUNDLE:  &str = "PYAKET_PYTHON_BUNDLE";
 pub struct PyaketPython {
 
     /// [Documentation](https://pyaket.dev/docs#python-version)
-    #[default(Environment::uget(PYAKET_PYTHON_VERSION, "3.13"))]
+    #[default(envy::uget(PYAKET_PYTHON_VERSION, "3.13"))]
     pub version: String,
 
     /// [Documentation](https://pyaket.dev/docs#python-bundle)
-    #[default(Environment::ubool(PYAKET_PYTHON_BUNDLE, false))]
+    #[default(envy::ubool(PYAKET_PYTHON_BUNDLE, false))]
     pub bundle: bool,
 }
 
@@ -91,11 +91,11 @@ pub static PYAKET_UV_BUNDLE:  &str = "PYAKET_UV_BUNDLE";
 pub struct PyaketUV {
 
     /// [Documentation](https://pyaket.dev/docs#uv-version)
-    #[default(Environment::uget(PYAKET_UV_VERSION, "0.7.13"))]
+    #[default(envy::uget(PYAKET_UV_VERSION, "0.7.13"))]
     pub version: String,
 
     /// [Documentation](https://pyaket.dev/docs#uv-bundle)
-    #[default(Environment::ubool(PYAKET_UV_BUNDLE, false))]
+    #[default(envy::ubool(PYAKET_UV_BUNDLE, false))]
     pub bundle: bool,
 }
 
@@ -108,11 +108,11 @@ pub static PYAKET_TORCH_BACKEND: &str = "PYAKET_TORCH_BACKEND";
 pub struct PyaketTorch {
 
     /// [Documentation](https://pyaket.dev/docs#torch-version)
-    #[default(Environment::uget(PYAKET_TORCH_VERSION, ""))]
+    #[default(envy::uget(PYAKET_TORCH_VERSION, ""))]
     pub version: String,
 
     /// [Documentation](https://pyaket.dev/docs#torch-backend)
-    #[default(Environment::uget(PYAKET_TORCH_BACKEND, "auto"))]
+    #[default(envy::uget(PYAKET_TORCH_BACKEND, "auto"))]
     pub backend: String,
 }
 
@@ -127,19 +127,19 @@ pub static PYAKET_ENTRY_COMMAND: &str = "PYAKET_ENTRY_COMMAND";
 pub struct PyaketEntry {
 
     /// [Documentation](https://pyaket.dev/docs#entry-module)
-    #[default(Environment::uget(PYAKET_ENTRY_MODULE, ""))]
+    #[default(envy::uget(PYAKET_ENTRY_MODULE, ""))]
     pub module: String,
 
     /// [Documentation](https://pyaket.dev/docs#entry-script)
-    #[default(Environment::uget(PYAKET_ENTRY_SCRIPT, ""))]
+    #[default(envy::uget(PYAKET_ENTRY_SCRIPT, ""))]
     pub script: String,
 
     /// [Documentation](https://pyaket.dev/docs#entry-code)
-    #[default(Environment::uget(PYAKET_ENTRY_CODE, ""))]
+    #[default(envy::uget(PYAKET_ENTRY_CODE, ""))]
     pub code: String,
 
     /// [Documentation](https://pyaket.dev/docs#entry-command)
-    #[default(Environment::uget(PYAKET_ENTRY_COMMAND, ""))]
+    #[default(envy::uget(PYAKET_ENTRY_COMMAND, ""))]
     pub command: String,
 }
 
@@ -175,7 +175,7 @@ pub struct Project {
     pub uuid: String,
 
     /// The platform target triple of the build
-    #[default(Environment::uget(PYAKET_TARGET_TRIPLE, std::env::var("TARGET").unwrap().as_str()))]
+    #[default(envy::uget(PYAKET_TARGET_TRIPLE, std::env::var("TARGET").unwrap().as_str()))]
     pub triple: String,
 }
 

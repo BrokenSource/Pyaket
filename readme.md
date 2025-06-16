@@ -109,7 +109,7 @@ $ hyperfine "python -m cowsay -t anyhow"
 to most platforms and architectures easily:
 
 ```sh hl_lines="2 5"
-# Windows executables compiled from linux
+# Windows executables compiled from linux, needs a mingw64 toolchain!
 $ pyaket app -n cowsay -p "cowsay==6.1" run -m cowsay release -t windows compile
   Finished `release` profile [optimized] target(s) in 8.11s
 
@@ -139,7 +139,7 @@ $ pyaket ... release --target macos --arch arm64 compile
 and install them at runtime, perfect for monorepos:
 
 ```sh hl_lines="1 6"
-$ uv build --all-packages --wheel -o dist
+$ uv build --all-packages --wheel
   Successfully built dist/shared-1.0.0-py3-none-any.whl
   Successfully built dist/project_a-1.0.0-py3-none-any.whl
   Successfully built dist/project_b-1.0.0-py3-none-any.whl

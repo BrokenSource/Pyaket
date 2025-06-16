@@ -1,6 +1,4 @@
 //! Pretty printing log macros that works both in build.rs and main.rs
-#![allow(unused_imports)]
-
 pub use crate::error;
 pub use crate::info;
 pub use crate::note;

@@ -12,11 +12,11 @@ edition       = "2024"
 
 [dependencies]
 anyhow        = "1.0.97"
-bzip2         = {version="0.5.2",  features=["libbz2-rs-sys"]}
+bzip2         = {version="0.5.2",  features=["libbz2-rs-sys"], optional=true}
 clap          = {version="4.5.37", features=["derive"], optional=true}
 directories   = "6.0.0"
 dotenvy       = "0.15.7"
-flate2        = "1.1.1"
+flate2        = {version="1.1.1", optional=true}
 glob          = "0.3.2"
 rust-embed    = "8.7.0"
 serde         = {version="1.0.219", features=["derive"]}
@@ -28,16 +28,16 @@ temp-dir      = "0.1.14"
 ureq          = "3.0.12"
 uuid          = {version="1.16.0", features=["v4"]}
 xxhash-rust   = {version="0.8.15", features=["xxh3"]}
-zip           = {version="4.1.0",  features=["deflate"], default-features=false}
-zstd          = "0.13.3"
+zip           = {version="4.1.0",  features=["deflate"], default-features=false, optional=true}
+zstd          = {version="0.13.3", optional=true}
 
 [build-dependencies]
 anyhow        = "1.0.97"
-bzip2         = {version="0.5.2",  features=["libbz2-rs-sys"]}
+bzip2         = {version="0.5.2",  features=["libbz2-rs-sys"], optional=true}
 clap          = {version="4.5.37", features=["derive"], optional=true}
 directories   = "6.0.0"
 dotenvy       = "0.15.7"
-flate2        = "1.1.1"
+flate2        = {version="1.1.1", optional=true}
 glob          = "0.3.2"
 rust-embed    = "8.7.0"
 serde         = {version="1.0.219", features=["derive"]}
@@ -49,8 +49,8 @@ temp-dir      = "0.1.14"
 ureq          = "3.0.12"
 uuid          = {version="1.16.0", features=["v4"]}
 xxhash-rust   = {version="0.8.15", features=["xxh3"]}
-zip           = {version="4.1.0",  features=["deflate"], default-features=false}
-zstd          = "0.13.3"
+zip           = {version="4.1.0",  features=["deflate"], default-features=false, optional=true}
+zstd          = {version="0.13.3", optional=true}
 
 [lib]
 name = "pyaket"
@@ -61,8 +61,21 @@ name = "pyaket"
 path = "pyaket/main.rs"
 
 [features]
-default = ["self"]
+default = [
+    "self",
+    "gzip",
+    "zip",
+    "zstd"
+]
+
+# Optional features
 self    = ["dep:clap"]
+
+# Archive formats
+bzip    = ["dep:bzip2"]
+gzip    = ["dep:flate2"]
+zip     = ["dep:zip"]
+zstd    = ["dep:zstd"]
 
 [profile.dev]
 strip = true       # Saves disk writes at no worse compile time

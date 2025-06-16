@@ -4,23 +4,23 @@ fn run(project: &Project) -> Result<()> {
 
     // Send the executable path to Python, also flags a Pyaket app
     let executable = std::env::current_exe()?.canonicalize()?;
-    Environment::set("PYAKET", executable.display());
+    envy::set("PYAKET", executable.display());
 
     // Load environment variables where the shell (executable) is
     for file in glob::glob("*.env").unwrap().map(|x| x.unwrap()) {
         dotenvy::from_path(file)?;
     }
 
-    Environment::set("UV_PYTHON_INSTALL_DIR", project.python_install_dir().display());
-    Environment::set("VIRTUAL_ENV",      project.installation_dir().display());
-    Environment::set("UV_CACHE_DIR",     project.uv_cache_dir().display());
-    Environment::set("UV_SYSTEM_PYTHON", false);
-    Environment::set("UV_NO_CONFIG",     true);
+    envy::set("UV_PYTHON_INSTALL_DIR", project.python_install_dir().display());
+    envy::set("VIRTUAL_ENV",      project.installation_dir().display());
+    envy::set("UV_CACHE_DIR",     project.uv_cache_dir().display());
+    envy::set("UV_SYSTEM_PYTHON", false);
+    envy::set("UV_NO_CONFIG",     true);
 
     // Force disable the GIL on freethreaded python
     if project.python.version.contains('t') {
-        Environment::set("UNSAFE_PYO3_BUILD_FREE_THREADED", 1);
-        Environment::set("PYTHON_GIL", 0);
+        envy::set("UNSAFE_PYO3_BUILD_FREE_THREADED", 1);
+        envy::set("PYTHON_GIL", 0);
     }
 
     if match read(project.uuid_tracker_file()) {
@@ -132,7 +132,7 @@ fn run(project: &Project) -> Result<()> {
 
 fn main() {
     LazyLock::force(&START_TIME);
-    Environment::unset("BUILD");
+    envy::unset("BUILD");
 
     // Read the project configurion sent at the end of build.rs
     let project: Project = Project::from_json(env!("PYAKET_PROJECT"));
@@ -144,7 +144,7 @@ fn main() {
 
     // Hold the terminal open with any Rust or Python errors for convenience
     // - Opt-out with the same variable that enables the feature
-    if project.app.keep_open && Environment::ubool(PYAKET_KEEP_OPEN, true) {
+    if project.app.keep_open && envy::ubool(PYAKET_KEEP_OPEN, true) {
         print!("\nPress enter to exit...");
         let _ = std::io::stdin().read_line(&mut String::new());
     }

@@ -1,7 +1,15 @@
 use crate::*;
+
+#[cfg(feature="bzip")]
 use bzip2::read::BzDecoder;
+
+#[cfg(feature="gzip")]
 use flate2::read::GzDecoder;
+
+#[cfg(feature="zip")]
 use zip::ZipArchive;
+
+#[cfg(feature="zstd")]
 use zstd::stream::read::Decoder as ZsDecoder;
 
 /// Writes a tar stream of data to a directory
@@ -41,9 +49,13 @@ pub fn unpack_bytes(
     cursor.read_exact(&mut magic)?;
     cursor.seek(SeekFrom::Start(0))?;
     match magic {
+        #[cfg(feature="zip")]
         [0x50, 0x4B, 0x03, 0x04, ..] => ZipArchive::new(cursor)?.extract(path.as_ref())?,
+        #[cfg(feature="zstd")]
         [0x28, 0xB5, 0x2F, 0xFD, ..] => unpack_tar(ZsDecoder::new(cursor)?, path.as_ref())?,
+        #[cfg(feature="bzip")]
         [0x42, 0x5A, ..            ] => unpack_tar(BzDecoder::new(cursor),  path.as_ref())?,
+        #[cfg(feature="gzip")]
         [0x1F, 0x8B, ..            ] => unpack_tar(GzDecoder::new(cursor),  path.as_ref())?,
         _ => bail!("Unknown archive format for magic bytes: {:?}", magic),
     }
@@ -57,5 +69,5 @@ pub fn unpack_file(
     path: impl AsRef<Path>,
     flag: Option<&str>,
 ) -> Result<()> {
-    archive::unpack_bytes(&read(file)?, path, flag)
+    self::unpack_bytes(&read(file)?, path, flag)
 }
