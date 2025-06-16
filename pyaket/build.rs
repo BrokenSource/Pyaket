@@ -74,14 +74,14 @@ fn build() -> Result<()> {
     manage::reqtxt(&mut project)?;
 
     // Export a const configured project to be loaded at runtime
-    environment::rustc_export("PYAKET_PROJECT", project.json());
+    envy::rustc_export("PYAKET_PROJECT", project.json());
     logging::note!("Project: {}", project.json());
     Ok(())
 }
 
 fn main() {
     LazyLock::force(&START_TIME);
-    environment::set("BUILD", "1");
+    envy::set("BUILD", "1");
     logging::info!("Building pyaket project");
     build().unwrap();
 }
