@@ -182,7 +182,7 @@ For now, it is better to install pyaket directly from the source code for the la
 python3 -m pip install git+https://github.com/BrokenSource/Pyaket[cross]
 ```
 
-A **PyPI** and **Rust Crate** of the same name are also available, but might lag behind from git main shown below.
+A PyPI and Rust Crate of the same name are also available, but might lag behind from git main.
 
 For further setup, refer to the website [**installation**](https://pyaket.dev/get/) page.
 

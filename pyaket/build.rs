@@ -68,6 +68,7 @@ fn build() -> Result<()> {
     ArchiveAssets::reset()?;
     manage::python(&project)?;
     manage::astral(&project)?;
+
     WheelAssets::reset()?;
     manage::wheels(&project)?;
     manage::reqtxt(&mut project)?;

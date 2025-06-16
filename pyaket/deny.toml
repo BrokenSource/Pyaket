@@ -22,7 +22,3 @@ exceptions = [
 
 [bans]
 multiple-versions = "warn"
-skip = [
-    # "We will make a 0.26.11 release that uses 1.0.0 using the semver trick"
-    {crate="webpki-roots@0.26.11", reason="https://github.com/rustls/webpki-roots/releases/tag/v/1.0.0"},
-]

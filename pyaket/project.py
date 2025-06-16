@@ -1,6 +1,4 @@
-import shutil
 import subprocess
-import tempfile
 from pathlib import Path
 from typing import Annotated
 
@@ -276,8 +274,8 @@ class Release(BrokenModel):
         if Environment.flag("AUTO_ZIGBUILD", 1) and any((
             BrokenPlatform.OnWindows and (not self.system.is_windows()),
             BrokenPlatform.OnWindows and (self.platform == PlatformEnum.WindowsARM64),
-            BrokenPlatform.OnLinux   and (self.platform == PlatformEnum.LinuxARM64),
             BrokenPlatform.OnLinux   and (self.system.is_macos()),
+            BrokenPlatform.OnLinux   and (self.platform == PlatformEnum.LinuxARM64),
         )):
             log.note("Force enabling Zigbuild for cross compilation")
             self.zigbuild = True
