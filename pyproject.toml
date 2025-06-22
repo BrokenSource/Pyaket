@@ -33,7 +33,21 @@ dev = [
 ]
 
 [project.scripts]
-pyaket = "pyaket.__main__:main"
+pyaket        = "pyaket.__main__:main"
+rustup-init   = "rustup_shims:init"
+cargo         = "rustup_shims:cargo"
+cargo-clippy  = "rustup_shims:cargo_clippy"
+cargo-fmt     = "rustup_shims:cargo_fmt"
+cargo-miri    = "rustup_shims:cargo_miri"
+clippy-driver = "rustup_shims:clippy_driver"
+rls           = "rustup_shims:rls"
+rust-analyzer = "rustup_shims:rust_analyzer"
+rust-gdb      = "rustup_shims:rust_gdb"
+rust-gdbgui   = "rustup_shims:rust_gdbgui"
+rust-lldb     = "rustup_shims:rust_lldb"
+rustc         = "rustup_shims:rustc"
+rustdoc       = "rustup_shims:rustdoc"
+rustfmt       = "rustup_shims:rustfmt"
 
 [build-system]
 requires = ["hatchling"]
@@ -41,6 +55,9 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["pyaket"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"pyaket/shims.py" = "rustup_shims.py"
 
 [tool.hatch.metadata]
 allow-direct-references = true
