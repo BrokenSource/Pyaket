@@ -286,17 +286,20 @@ class Release(BrokenModel):
 
             # MSYS2 Configuration
             if (not self.msvc):
+
+                # Automatically install MSYS2 if not found
                 if not (msys2 := Path(Environment.get("MSYS2_PATH", r"C:\\msys64"))).exists():
-                    log.error(r"Please install MSYS2 from https://www.msys2.org at default location")
+                    shell("winget", "install", "-e", "--id", "MSYS2.MSYS2")
 
                 def install_msys2_packages(*packages: str) -> subprocess.CompletedProcess:
-                    return shell(msys2/"usr/bin/bash.exe", "-lc", f"pacman -S {' '.join(packages)} --noconfirm --needed")
+                    return shell(msys2/"usr"/"bin"/"bash.exe", "-lc",
+                        f"pacman -S {' '.join(packages)} --noconfirm --needed")
 
                 # Native x86_64 => Other platforms
                 if BrokenPlatform.Arch.is_amd():
                     if (self.platform == PlatformEnum.WindowsAMD64):
                         install_msys2_packages("mingw-w64-x86_64-gcc")
-                        Environment.add_to_path(msys2/"ucrt64/bin")
+                        Environment.add_to_path(msys2/"ucrt64"/"bin")
 
                     elif (self.platform == PlatformEnum.WindowsARM64):
                         # Fixme: Almost got it, clang linking errors
