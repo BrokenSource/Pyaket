@@ -407,9 +407,11 @@ class PyaketProject:
             log.error("• Awaiting implementation of (https://github.com/astral-sh/uv/issues/1681)")
             log.error(f"• Attempted to build for '{self.release.platform}' on '{BrokenPlatform.Host}'")
             return None
+        elif self.release.standalone:
+            log.error("Standalone releases are not implemented yet")
+            return None
 
-        shell("rustup", "install", "stable")
-        shell("rustup", "default", "stable")
+        shell("rustup", "default", f"stable-{BrokenPlatform.Host.triple()}")
         shell("rustup", "target", "add", self.release.triple)
 
         self.release.should_zigbuild()
