@@ -2,10 +2,11 @@ import os
 import shutil
 import subprocess
 import sys
+from typing import NoReturn
 
 # ------------------------------------------------------------------------------------------------ #
 
-def _shim(proxy: str) -> None:
+def _shim(proxy: str) -> NoReturn:
     rustup = shutil.which("rustup")
     args = (proxy, *sys.argv[1:])
 
@@ -19,44 +20,44 @@ def _shim(proxy: str) -> None:
 
 # ------------------------------------------------------------------------------------------------ #
 
-def init() -> None:
+def init() -> NoReturn:
     _shim("rustup-init")
 
-def cargo() -> None:
+def cargo() -> NoReturn:
     _shim("cargo")
 
-def cargo_clippy() -> None:
+def cargo_clippy() -> NoReturn:
     _shim("cargo-clippy")
 
-def cargo_fmt() -> None:
+def cargo_fmt() -> NoReturn:
     _shim("cargo-fmt")
 
-def cargo_miri() -> None:
+def cargo_miri() -> NoReturn:
     _shim("cargo-miri")
 
-def clippy_driver() -> None:
+def clippy_driver() -> NoReturn:
     _shim("clippy-driver")
 
-def rls() -> None:
+def rls() -> NoReturn:
     _shim("rls")
 
-def rust_analyzer() -> None:
+def rust_analyzer() -> NoReturn:
     _shim("rust-analyzer")
 
-def rust_gdb() -> None:
+def rust_gdb() -> NoReturn:
     _shim("rust-gdb")
 
-def rust_gdbgui() -> None:
+def rust_gdbgui() -> NoReturn:
     _shim("rust-gdbgui")
 
-def rust_lldb() -> None:
+def rust_lldb() -> NoReturn:
     _shim("rust-lldb")
 
-def rustc() -> None:
+def rustc() -> NoReturn:
     _shim("rustc")
 
-def rustdoc() -> None:
+def rustdoc() -> NoReturn:
     _shim("rustdoc")
 
-def rustfmt() -> None:
+def rustfmt() -> NoReturn:
     _shim("rustfmt")
