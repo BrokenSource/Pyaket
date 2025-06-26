@@ -12,7 +12,6 @@ from broken import (
     BrokenModel,
     BrokenPath,
     BrokenPlatform,
-    BrokenTyper,
     Environment,
     PlatformEnum,
     Runtime,
@@ -20,6 +19,7 @@ from broken import (
     log,
     shell,
 )
+from broken.core.typerx import BrokenTyper
 from pyaket import PYAKET, PYAKET_ABOUT
 
 # ---------------------------------------------- #
