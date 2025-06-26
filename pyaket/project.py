@@ -1,4 +1,5 @@
 import subprocess
+import sys
 from pathlib import Path
 from typing import Annotated
 
@@ -16,7 +17,6 @@ from broken import (
     PlatformEnum,
     Runtime,
     SystemEnum,
-    Tools,
     log,
     shell,
 )
@@ -146,7 +146,7 @@ class Astral(BrokenModel):
     • [Documentation](https://pyaket.dev/docs#uv)
     """
 
-    version: Annotated[str, Option("--version", "-v")] = "0.7.13"
+    version: Annotated[str, Option("--version", "-v")] = "0.7.15"
     """
     A target uv version to use at runtime
 
@@ -392,7 +392,7 @@ class PyaketProject:
     ):
         """Build wheels for the project and bundle them on the executable"""
         wheels: Path = BrokenPath.recreate(PYAKET.DIRECTORIES.DATA/"Wheels")
-        shell(Tools.uv, "build", "--wheel", ("--all-packages"*all), "-o", wheels)
+        shell(sys.executable, "-m", "uv", "build", "--wheel", ("--all-packages"*all), "-o", wheels)
         self.app.wheels.extend(wheels.glob("*.whl"))
 
     def compile(self,
