@@ -403,14 +403,14 @@ This section covers [PyTorch](https://pytorch.org/) configuration for ML and AI 
 
 <hr>
 
-### <kbd>PYAKET_TORCH_VERSION</kbd> {#torch-version}
+### <kbd>PYAKET_TORCH_VERSION</kbd> {#pytorch-version}
 > 📦 <b>Type:</b> Version string • <b>Default:</b> None
 
 An optional version of PyTorch to be installed at runtime.
 
 <hr>
 
-### <kbd>PYAKET_TORCH_BACKEND</kbd> {#torch-backend}
+### <kbd>PYAKET_TORCH_BACKEND</kbd> {#pytorch-backend}
 > 📦 <b>Type:</b> String • <b>Default:</b> auto
 
 The hardware acceleration backend of PyTorch to be installed at runtime.
