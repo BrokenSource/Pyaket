@@ -1,6 +1,7 @@
 use crate::*;
 
 /* -------------------------------------------- */
+// https://pyaket.dev/docs#app
 
 pub static PYAKET_APP_NAME:    &str = "PYAKET_APP_NAME";
 pub static PYAKET_APP_AUTHOR:  &str = "PYAKET_APP_AUTHOR";
@@ -14,41 +15,34 @@ pub static PYAKET_KEEP_OPEN:   &str = "PYAKET_KEEP_OPEN";
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct PyaketApplication {
 
-    /// [Documentation](https://pyaket.dev/docs#app-name)
     #[default(envy::uget(PYAKET_APP_NAME, "Pyaket"))]
     pub name: String,
 
-    /// [Documentation](https://pyaket.dev/docs#app-author)
     #[default(envy::uget(PYAKET_APP_AUTHOR, "BrokenSource"))]
     pub author: String,
 
-    /// [Documentation](https://pyaket.dev/docs#app-version)
     #[default(envy::uget(PYAKET_APP_VERSION, "0.0.0"))]
     pub version: String,
 
-    /// [Documentation](https://pyaket.dev/docs#app-wheels)
     #[serde(skip)]
     #[default(envy::uget(PYAKET_APP_WHEELS, ""))]
     pub wheels: String,
 
-    /// [Documentation](https://pyaket.dev/docs#app-pypi)
     #[default(envy::uget(PYAKET_APP_PYPI, ""))]
     pub pypi: String,
 
-    /// [Documentation](https://pyaket.dev/docs#app-requirements-txt)
     #[default(envy::uget(PYAKET_APP_REQTXT, ""))]
     pub reqtxt: String,
 
-    /// [Documentation](https://pyaket.dev/docs#rolling)
     #[default(envy::ubool(PYAKET_APP_ROLLING, false))]
     pub rolling: bool,
 
-    /// [Documentation](https://pyaket.dev/docs#keep-open)
     #[default(envy::ubool(PYAKET_KEEP_OPEN, false))]
     pub keep_open: bool,
 }
 
 /* -------------------------------------------- */
+// https://pyaket.dev/docs#directories
 
 pub static PYAKET_COMMON_DIR:   &str = "PYAKET_COMMON_DIR";
 pub static PYAKET_VERSIONS_DIR: &str = "PYAKET_VERSIONS_DIR";
@@ -56,16 +50,15 @@ pub static PYAKET_VERSIONS_DIR: &str = "PYAKET_VERSIONS_DIR";
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct PyaketDirectories {
 
-    /// [Documentation](https://pyaket.dev/docs#common-dir)
     #[default(envy::uget(PYAKET_COMMON_DIR, "Pyaket"))]
     pub common: String,
 
-    /// [Documentation](https://pyaket.dev/docs#versions-dir)
     #[default(envy::uget(PYAKET_VERSIONS_DIR, "Versions"))]
     pub versions: String,
 }
 
 /* -------------------------------------------- */
+// https://pyaket.dev/docs#python
 
 pub static PYAKET_PYTHON_VERSION: &str = "PYAKET_PYTHON_VERSION";
 pub static PYAKET_PYTHON_BUNDLE:  &str = "PYAKET_PYTHON_BUNDLE";
@@ -73,16 +66,15 @@ pub static PYAKET_PYTHON_BUNDLE:  &str = "PYAKET_PYTHON_BUNDLE";
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct PyaketPython {
 
-    /// [Documentation](https://pyaket.dev/docs#python-version)
     #[default(envy::uget(PYAKET_PYTHON_VERSION, "3.13"))]
     pub version: String,
 
-    /// [Documentation](https://pyaket.dev/docs#python-bundle)
     #[default(envy::ubool(PYAKET_PYTHON_BUNDLE, false))]
     pub bundle: bool,
 }
 
 /* -------------------------------------------- */
+// https://pyaket.dev/docs#uv
 
 pub static PYAKET_UV_VERSION: &str = "PYAKET_UV_VERSION";
 pub static PYAKET_UV_BUNDLE:  &str = "PYAKET_UV_BUNDLE";
@@ -90,16 +82,15 @@ pub static PYAKET_UV_BUNDLE:  &str = "PYAKET_UV_BUNDLE";
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct PyaketUV {
 
-    /// [Documentation](https://pyaket.dev/docs#uv-version)
     #[default(envy::uget(PYAKET_UV_VERSION, "0.7.18"))]
     pub version: String,
 
-    /// [Documentation](https://pyaket.dev/docs#uv-bundle)
     #[default(envy::ubool(PYAKET_UV_BUNDLE, false))]
     pub bundle: bool,
 }
 
 /* -------------------------------------------- */
+// https://pyaket.dev/docs#pytorch
 
 pub static PYAKET_TORCH_VERSION: &str = "PYAKET_TORCH_VERSION";
 pub static PYAKET_TORCH_BACKEND: &str = "PYAKET_TORCH_BACKEND";
@@ -107,16 +98,15 @@ pub static PYAKET_TORCH_BACKEND: &str = "PYAKET_TORCH_BACKEND";
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct PyaketTorch {
 
-    /// [Documentation](https://pyaket.dev/docs#torch-version)
     #[default(envy::uget(PYAKET_TORCH_VERSION, ""))]
     pub version: String,
 
-    /// [Documentation](https://pyaket.dev/docs#torch-backend)
     #[default(envy::uget(PYAKET_TORCH_BACKEND, "auto"))]
     pub backend: String,
 }
 
 /* -------------------------------------------- */
+// https://pyaket.dev/docs#entry-points
 
 pub static PYAKET_ENTRY_MODULE:  &str = "PYAKET_ENTRY_MODULE";
 pub static PYAKET_ENTRY_SCRIPT:  &str = "PYAKET_ENTRY_SCRIPT";
@@ -126,19 +116,15 @@ pub static PYAKET_ENTRY_COMMAND: &str = "PYAKET_ENTRY_COMMAND";
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct PyaketEntry {
 
-    /// [Documentation](https://pyaket.dev/docs#entry-module)
     #[default(envy::uget(PYAKET_ENTRY_MODULE, ""))]
     pub module: String,
 
-    /// [Documentation](https://pyaket.dev/docs#entry-script)
     #[default(envy::uget(PYAKET_ENTRY_SCRIPT, ""))]
     pub script: String,
 
-    /// [Documentation](https://pyaket.dev/docs#entry-code)
     #[default(envy::uget(PYAKET_ENTRY_CODE, ""))]
     pub code: String,
 
-    /// [Documentation](https://pyaket.dev/docs#entry-command)
     #[default(envy::uget(PYAKET_ENTRY_COMMAND, ""))]
     pub command: String,
 }

@@ -18,7 +18,7 @@ fn unpack_tar<R: Read>(decoder: R, path: &Path) -> Result<()> {
     Ok(())
 }
 
-/// Unpack common archive formats to a directory
+/// Unpack common archive formats from bytes
 pub fn unpack_bytes(
     bytes: &[u8],
     path:  impl AsRef<Path>,
@@ -63,7 +63,7 @@ pub fn unpack_bytes(
     Ok(())
 }
 
-/// Unpack common archive formats from a file to a directory
+/// Unpack common archive formats from a file
 pub fn unpack_file(
     file: impl AsRef<Path>,
     path: impl AsRef<Path>,

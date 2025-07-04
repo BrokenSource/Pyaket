@@ -1,6 +1,6 @@
 use crate::*;
 
-/* ---------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 // String
 
 /// Get a string from the environment, optional default
@@ -30,7 +30,7 @@ pub fn uget(name: &str, default: &str) -> String {
     self::get(name, Some(default)).unwrap()
 }
 
-/* ---------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 // Boolean
 
 /// Parse a bool from an environment variable, optional default
@@ -50,7 +50,7 @@ pub fn ubool(name: &str, default: bool) -> bool {
     self::bool(name, Some(default)).unwrap()
 }
 
-/* ---------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 // Exporting and printing
 
 /// Print an environment variable
