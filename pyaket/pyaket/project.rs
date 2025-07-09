@@ -80,7 +80,7 @@ pub static PYAKET_UV_VERSION: &str = "PYAKET_UV_VERSION";
 pub static PYAKET_UV_BUNDLE:  &str = "PYAKET_UV_BUNDLE";
 
 #[derive(Serialize, Deserialize, SmartDefault)]
-pub struct PyaketUV {
+pub struct PyaketAstral {
 
     #[default(envy::uget(PYAKET_UV_VERSION, "0.7.18"))]
     pub version: String,
@@ -131,38 +131,32 @@ pub struct PyaketEntry {
 
 /* -------------------------------------------- */
 
-pub static PYAKET_TARGET_TRIPLE: &str = "PYAKET_TARGET_TRIPLE";
-
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct Project {
-
-    #[default(PyaketApplication::default())]
-    pub app: PyaketApplication,
-
-    #[default(PyaketDirectories::default())]
-    pub dirs: PyaketDirectories,
-
-    #[default(PyaketPython::default())]
+    pub app:    PyaketApplication,
+    pub dirs:   PyaketDirectories,
     pub python: PyaketPython,
-
-    #[default(PyaketUV::default())]
-    pub uv: PyaketUV,
-
-    #[default(PyaketTorch::default())]
-    pub torch: PyaketTorch,
-
-    #[default(PyaketEntry::default())]
-    pub entry: PyaketEntry,
-
-    /* ---------------------------------------- */
+    pub astral: PyaketAstral,
+    pub torch:  PyaketTorch,
+    pub entry:  PyaketEntry,
 
     /// A unique identifier to this compiled binary
     #[default(Uuid::new_v4().to_string())]
     pub uuid: String,
 
     /// The platform target triple of the build
-    #[default(envy::uget(PYAKET_TARGET_TRIPLE, std::env::var("TARGET").unwrap().as_str()))]
+    #[default(std::env::var("TARGET").unwrap())]
     pub triple: String,
+}
+
+impl Project {
+    pub fn json(&self) -> String {
+        serde_json::to_string(&self).unwrap()
+    }
+
+    pub fn from_json(json: &str) -> Self {
+        serde_json::from_str(json).unwrap()
+    }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -197,7 +191,7 @@ impl Project {
         format!(
             "{}/releases/download/{}/{}",
             "https://github.com/astral-sh/uv",
-            self.uv.version,
+            self.astral.version,
             self.uv_archive_name(),
         )
     }
@@ -205,7 +199,7 @@ impl Project {
     /// Path to unpack uv at runtime
     pub fn uv_unpack_dir(&self) -> PathBuf {
         self.astral_dir()
-            .join(&self.uv.version)
+            .join(&self.astral.version)
     }
 
     /// Path to download and cache uv at runtime
@@ -301,16 +295,5 @@ impl Project {
     pub fn uuid_tracker_file(&self) -> PathBuf {
         self.installation_dir()
             .join(format!("{}.uuid", self.app.name))
-    }
-
-    /* ---------------------------------------- */
-    // Serialization
-
-    pub fn json(&self) -> String {
-        serde_json::to_string(&self).unwrap()
-    }
-
-    pub fn from_json(json: &str) -> Self {
-        serde_json::from_str(json).unwrap()
     }
 }

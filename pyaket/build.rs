@@ -18,7 +18,7 @@ mod manage {
     pub fn astral(project: &Project) -> Result<()> {
         network::must_exist(&project.uv_download_url())?;
 
-        if project.uv.bundle {
+        if project.astral.bundle {
             ArchiveAssets::download(
                 &project.uv_archive_name(),
                 &project.uv_download_url(),
