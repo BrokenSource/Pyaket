@@ -20,14 +20,20 @@ from pyaket import PYAKET, PYAKET_ABOUT
 class Application(BrokenModel):
     """General metadata and dependencies definitions of the project"""
 
-    name: Annotated[str, Option("--name", "-n")] = "Pyaket"
+    name: Annotated[str, Option("--name", "-n")] = "pyaket"
     """The application name, used for"""
 
-    author: Annotated[str, Option("--author", "-a")] = "BrokenSource"
+    author: Annotated[str, Option("--author", "-a")] = "brokensource"
     """Subdirectory of the platform's user data directory to install the application"""
 
     version: Annotated[str, Option("--version", "-v")] = "0.0.0"
     """The release version matching PyPI, codename, branch, latest, etc."""
+
+    description: Annotated[str, Option("--description", "-d")] = "No description provided"
+    """A short description of the application, used for metadata, shortcuts"""
+
+    icon: Annotated[Path, Option("--icon", "-i")] = None
+    """Path to an icon file to use for the application"""
 
     wheels: Annotated[list[Path], Option("--wheel", "-w")] = []
     """List of wheels to bundle and install at runtime, supports glob patterns."""
@@ -387,4 +393,5 @@ class PyaketProject:
             PYAKET_ENTRY_SCRIPT   = self.entry.script,
             PYAKET_ENTRY_CODE     = self.entry.code,
             PYAKET_ENTRY_COMMAND  = self.entry.command,
+            OriginalFilename      = self.release_name
         )

@@ -6,6 +6,8 @@ use crate::*;
 pub static PYAKET_APP_NAME:    &str = "PYAKET_APP_NAME";
 pub static PYAKET_APP_AUTHOR:  &str = "PYAKET_APP_AUTHOR";
 pub static PYAKET_APP_VERSION: &str = "PYAKET_APP_VERSION";
+pub static PYAKET_APP_DESC:    &str = "PYAKET_APP_DESCRIPTION";
+pub static PYAKET_APP_ICON:    &str = "PYAKET_APP_ICON";
 pub static PYAKET_APP_WHEELS:  &str = "PYAKET_APP_WHEELS";
 pub static PYAKET_APP_PYPI:    &str = "PYAKET_APP_PYPI";
 pub static PYAKET_APP_REQTXT:  &str = "PYAKET_APP_REQTXT";
@@ -15,14 +17,21 @@ pub static PYAKET_KEEP_OPEN:   &str = "PYAKET_KEEP_OPEN";
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct PyaketApplication {
 
-    #[default(envy::uget(PYAKET_APP_NAME, "Pyaket"))]
+    #[default(envy::uget(PYAKET_APP_NAME, "pyaket"))]
     pub name: String,
 
-    #[default(envy::uget(PYAKET_APP_AUTHOR, "BrokenSource"))]
+    #[default(envy::uget(PYAKET_APP_AUTHOR, "brokensource"))]
     pub author: String,
 
     #[default(envy::uget(PYAKET_APP_VERSION, "0.0.0"))]
     pub version: String,
+
+    #[default(envy::uget(PYAKET_APP_DESC, "No description provided"))]
+    pub description: String,
+
+    #[serde(skip)]
+    #[default(envy::get(PYAKET_APP_ICON, None))]
+    pub icon: Option<String>,
 
     #[serde(skip)]
     #[default(envy::uget(PYAKET_APP_WHEELS, ""))]

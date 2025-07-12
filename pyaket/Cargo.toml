@@ -49,6 +49,7 @@ temp-dir      = "0.1.16"
 ureq          = "3.0.12"
 uuid          = {version="1.17.0", features=["v4"]}
 xxhash-rust   = {version="0.8.15", features=["xxh3"]}
+winresource   = {version="0.1.22", default-features=false}
 zip           = {version="4.1.0",  features=["deflate"], default-features=false, optional=true}
 zstd          = {version="0.13.3", optional=true}
 
@@ -65,7 +66,7 @@ default = [
     "self",
     "gzip",
     "zip",
-    "zstd"
+    "zstd",
 ]
 
 # Optional features

@@ -527,6 +527,7 @@ dependencies = [
  "temp-dir",
  "ureq",
  "uuid",
+ "winresource",
  "xxhash-rust",
  "zip",
  "zstd",
@@ -1160,6 +1161,15 @@ name = "windows_x86_64_msvc"
 version = "0.53.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "271414315aff87387382ec3d271b52d7ae78726f5d44ac98b4f4030c91880486"
+
+[[package]]
+name = "winresource"
+version = "0.1.22"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a179ac8923651ff1d15efbee760b4dd3679fd85fa5a8b2bb1109b7248f80e30f"
+dependencies = [
+ "version_check",
+]
 
 [[package]]
 name = "wit-bindgen-rt"

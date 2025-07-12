@@ -73,9 +73,25 @@ fn build() -> Result<()> {
     manage::wheels(&project)?;
     manage::reqtxt(&mut project)?;
 
+    // Windows executable resources metadata
+    if std::env::var("CARGO_CFG_TARGET_OS").unwrap() == "windows" {
+        logging::info!("Making windows executable resources");
+        let mut meta = winresource::WindowsResource::new();
+        meta.set("ProductName",      &project.app.name);
+        meta.set("CompanyName",      &project.app.author);
+        meta.set("FileVersion",      &project.app.version);
+        meta.set("FileDescription",  &project.app.description);
+        meta.set("OriginalFilename", &envy::uget("OriginalFilename", "pyaket.exe"));
+        meta.set("LegalCopyright",   &envy::uget("LegalCopyright", "Unknown"));
+        if let Some(icon) = &project.app.icon {
+            meta.set_icon(icon)}
+        meta.compile()?;
+    }
+
     // Export a const configured project to be loaded at runtime
     envy::rustc_export("PYAKET_PROJECT", project.json());
     logging::note!("Project: {}", project.json());
+
     Ok(())
 }
 
