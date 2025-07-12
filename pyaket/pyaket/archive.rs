@@ -22,14 +22,12 @@ fn unpack_tar<R: Read>(decoder: R, path: &Path) -> Result<()> {
 pub fn unpack_bytes(
     bytes: &[u8],
     path:  impl AsRef<Path>,
-    flag:  Option<&str>,
 ) -> Result<()> {
 
     // Unique identifer for unpacked data
     let hash = xxh3_64(bytes).to_string();
     let flag = path.as_ref()
-        .join(flag.unwrap_or("archive"))
-        .with_extension("unpack");
+        .join("unpack.hash");
 
     // Detect different data or partial unpacks,
     // skip if the data is already unpacked
@@ -67,7 +65,6 @@ pub fn unpack_bytes(
 pub fn unpack_file(
     file: impl AsRef<Path>,
     path: impl AsRef<Path>,
-    flag: Option<&str>,
 ) -> Result<()> {
-    self::unpack_bytes(&read(file)?, path, flag)
+    self::unpack_bytes(&read(file)?, path)
 }

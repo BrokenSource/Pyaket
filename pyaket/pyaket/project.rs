@@ -50,10 +50,10 @@ pub static PYAKET_VERSIONS_DIR: &str = "PYAKET_VERSIONS_DIR";
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct PyaketDirectories {
 
-    #[default(envy::uget(PYAKET_COMMON_DIR, "Pyaket"))]
+    #[default(envy::uget(PYAKET_COMMON_DIR, "pyaket"))]
     pub common: String,
 
-    #[default(envy::uget(PYAKET_VERSIONS_DIR, "Versions"))]
+    #[default(envy::uget(PYAKET_VERSIONS_DIR, "versions"))]
     pub versions: String,
 }
 
@@ -82,7 +82,7 @@ pub static PYAKET_UV_BUNDLE:  &str = "PYAKET_UV_BUNDLE";
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct PyaketAstral {
 
-    #[default(envy::uget(PYAKET_UV_VERSION, "0.7.18"))]
+    #[default(envy::uget(PYAKET_UV_VERSION, "0.7.20"))]
     pub version: String,
 
     #[default(envy::ubool(PYAKET_UV_BUNDLE, false))]
@@ -160,6 +160,67 @@ impl Project {
 }
 
 /* -------------------------------------------------------------------------- */
+// Workspace
+
+static WORKSPACE_ROOT: OnceLock<PathBuf> = OnceLock::new();
+
+impl Project {
+
+    /// Automatic:
+    /// - Windows: `%LocalAppData%/$Author/`
+    /// - Linux: `~/.local/share/$Author/`
+    /// - MacOS: `~/Library/Application Support/$Author/`
+    ///
+    /// Custom:
+    /// - Any: `$WORKSPACE/`
+    pub fn workspace_root(&self) -> &'static PathBuf {
+        WORKSPACE_ROOT.get_or_init(|| {
+            if let Ok(custom) = std::env::var("WORKSPACE") {
+                PathBuf::from(custom)
+            } else {
+                BaseDirs::new().unwrap()
+                    .data_local_dir()
+                    .join(&self.app.author)
+            }
+        })
+    }
+
+    /// A common directory to store shared data
+    pub fn workspace_common(&self) -> PathBuf {
+        self.workspace_root()
+            .join(&self.dirs.common)
+    }
+
+    /// Directory to store uv assets
+    pub fn astral_dir(&self) -> PathBuf {
+        self.workspace_common()
+            .join("astral")
+    }
+
+    /// Mirrored to `$UV_CACHE_DIR`
+    pub fn uv_cache_dir(&self) -> PathBuf {
+        self.workspace_common()
+            .join("packages")
+    }
+
+    /// Where to install the Python's virtual environment:
+    /// - `$WORKSPACE/Versions/1.0.0`
+    pub fn installation_dir(&self) -> PathBuf {
+        self.workspace_common()
+            .join(&self.dirs.versions)
+            .join(&self.app.version)
+    }
+
+    /// A file that tracks installs from unique binaries for a few purposes:
+    /// - Flags if the installation was successful to skip bootstrapping
+    /// - Triggers a reinstall if the hash differs for same versions
+    pub fn uuid_tracker_file(&self) -> PathBuf {
+        self.installation_dir()
+            .join(format!("{}.uuid", self.app.name))
+    }
+}
+
+/* -------------------------------------------------------------------------- */
 
 impl Project {
 
@@ -214,10 +275,7 @@ impl Project {
             &self.uv_download_file(),
             &self.uv_download_url(),
         )?;
-        archive::unpack_bytes(
-            &bytes, self.uv_unpack_dir(),
-            Some(&self.uv_archive_stem())
-        )?;
+        archive::unpack_bytes(&bytes, self.uv_unpack_dir())?;
         Ok(())
     }
 
@@ -238,62 +296,3 @@ impl Project {
     }
 }
 
-/* -------------------------------------------------------------------------- */
-// Workspace
-
-static WORKSPACE_ROOT: OnceLock<PathBuf> = OnceLock::new();
-
-impl Project {
-
-    /// - Automatic:
-    ///   - Windows: `%LocalAppData%/Author/`
-    ///   - Linux: `~/.local/share/Author/`
-    ///   - MacOS: `~/Library/Application Support/Author/`
-    ///
-    /// - Custom:
-    ///   - Any: `$WORKSPACE/`
-    ///
-    pub fn workspace_root(&self) -> &'static PathBuf {
-        WORKSPACE_ROOT.get_or_init(|| {
-            if let Ok(custom) = std::env::var("WORKSPACE") {
-                PathBuf::from(custom)
-            } else {
-                BaseDirs::new().unwrap()
-                    .data_local_dir()
-                    .join(&self.app.author)
-            }
-        })
-    }
-
-    /// A common directory to store common unpacked assets
-    pub fn workspace_common(&self) -> PathBuf {
-        self.workspace_root()
-            .join(&self.dirs.common)
-    }
-
-    pub fn astral_dir(&self) -> PathBuf {
-        self.workspace_common()
-            .join("Astral")
-    }
-
-    pub fn uv_cache_dir(&self) -> PathBuf {
-        self.workspace_common()
-            .join("Cache")
-    }
-
-    /// Where to install the Python's virtual environment:
-    /// - `$WORKSPACE/Versions/1.0.0`
-    pub fn installation_dir(&self) -> PathBuf {
-        self.workspace_common()
-            .join(&self.dirs.versions)
-            .join(&self.app.version)
-    }
-
-    /// A file that tracks installs from unique binaries for a few purposes:
-    /// - Flags if the installation was successful to skip bootstrapping
-    /// - Triggers a reinstall if the hash differs for same versions
-    pub fn uuid_tracker_file(&self) -> PathBuf {
-        self.installation_dir()
-            .join(format!("{}.uuid", self.app.name))
-    }
-}

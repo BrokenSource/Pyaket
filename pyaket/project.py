@@ -59,10 +59,10 @@ class Application(BrokenModel):
 class Directories(BrokenModel):
     """Configuration for the directories used by the project"""
 
-    common: Annotated[str, Option("--common", "-c")] = "Pyaket"
+    common: Annotated[str, Option("--common", "-c")] = "pyaket"
     """Subdirectory of the workspace to use for all installed files"""
 
-    versions: Annotated[str, Option("--versions", "-v")] = "Versions"
+    versions: Annotated[str, Option("--versions", "-v")] = "versions"
     """Subdirectory of the common dir to install versions of the application"""
 
 # ---------------------------------------------- #
@@ -75,7 +75,7 @@ class Python(BrokenModel):
     """A target python version to use at runtime"""
 
     bundle: Annotated[bool, Option("--bundle", "-b")] = False
-    """Whether to bundle the python distribution in the executable"""
+    """Whether to bundle python in the executable"""
 
 # ---------------------------------------------- #
 # https://pyaket.dev/docs#uv
@@ -83,7 +83,7 @@ class Python(BrokenModel):
 class Astral(BrokenModel):
     """Configuration for uv project and package manager to use"""
 
-    version: Annotated[str, Option("--version", "-v")] = "0.7.18"
+    version: Annotated[str, Option("--version", "-v")] = "0.7.20"
     """A target uv version to use at runtime"""
 
     bundle: Annotated[bool, Option("--bundle", "-b")] = False
@@ -375,6 +375,7 @@ class PyaketProject:
             PYAKET_APP_REQTXT     = self.app.reqtxt,
             PYAKET_APP_ROLLING    = self.app.rolling,
             PYAKET_KEEP_OPEN      = self.app.keep_open,
+            PYAKET_COMMON_DIR     = self.dirs.common,
             PYAKET_VERSIONS_DIR   = self.dirs.versions,
             PYAKET_PYTHON_VERSION = self.python.version,
             PYAKET_PYTHON_BUNDLE  = self.python.bundle,
