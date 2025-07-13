@@ -2,7 +2,7 @@
 mod lib;
 use lib::*;
 
-/* ---------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 
 mod manage {
     use super::*;
@@ -56,7 +56,7 @@ mod manage {
     }
 }
 
-/* ---------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 
 fn build() -> Result<()> {
     // Workaround to always trigger a rebuild
@@ -84,7 +84,8 @@ fn build() -> Result<()> {
         meta.set("OriginalFilename", &envy::uget("OriginalFilename", "pyaket.exe"));
         meta.set("LegalCopyright",   &envy::uget("LegalCopyright", "Unknown"));
         if let Some(icon) = &project.app.icon {
-            meta.set_icon(icon)}
+            meta.set_icon(icon);
+        }
         meta.compile()?;
     }
 
