@@ -29,19 +29,19 @@ pub trait BrokenAssets: RustEmbed {
     }
 
     /// Check if a file exists in the bundle
-    fn exists(path: &str) -> bool {
-        Self::get(path).is_some()
+    fn exists(asset: &str) -> bool {
+        Self::get(asset).is_some()
     }
 
     /// Read a single known file from the bundle
-    fn read(path: &str) -> Option<Vec<u8>> {
-        Self::get(path).map(|file| file.data.to_vec())
+    fn read(asset: &str) -> Option<Vec<u8>> {
+        Self::get(asset).map(|file| file.data.to_vec())
     }
 
     /// Compound function to read from bundle or download to a static file at runtime
-    fn read_or_download(bundle: &str, cache: &PathBuf, url: &str) -> Result<Vec<u8>> {
-        match Self::read(bundle) {
-            None => network::download(url, Some(&cache.into())),
+    fn read_or_download(asset: &str, url: &str, path: &PathBuf) -> Result<Vec<u8>> {
+        match Self::read(asset) {
+            None => network::download(url, Some(&path.into())),
             Some(data) => Ok(data),
         }
     }

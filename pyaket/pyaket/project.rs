@@ -241,7 +241,7 @@ impl Project {
 
     /// The uv archive filename without extensions, e.g.:
     /// - `uv-0.6.11-x86_64-unknown-linux-gnu`
-    pub fn uv_archive_stem(&self) -> String {
+    pub fn uv_download_stem(&self) -> String {
         format!("uv-{}", self.triple
             .replace("windows-gnu", "windows-msvc")
             .replace("msvcllvm", "msvc")
@@ -250,8 +250,8 @@ impl Project {
 
     /// The download filename of the uv distribution, e.g.:
     /// - `uv-0.6.11-x86_64-unknown-linux-gnu.tar.gz`
-    pub fn uv_archive_name(&self) -> String {
-        format!("{}.{}", self.uv_archive_stem(),
+    pub fn uv_download_file(&self) -> String {
+        format!("{}.{}", self.uv_download_stem(),
             if self.triple.contains("windows") {"zip"} else {"tar.gz"}
         )
     }
@@ -262,7 +262,7 @@ impl Project {
             "{}/releases/download/{}/{}",
             "https://github.com/astral-sh/uv",
             self.astral.version,
-            self.uv_archive_name(),
+            self.uv_download_file(),
         )
     }
 
@@ -273,16 +273,16 @@ impl Project {
     }
 
     /// Path to download and cache uv at runtime
-    pub fn uv_download_file(&self) -> PathBuf {
+    pub fn uv_download_path(&self) -> PathBuf {
         self.uv_unpack_dir()
-            .join(&self.uv_archive_name())
+            .join(&self.uv_download_file())
     }
 
     pub fn ensure_uv(&self) -> Result<()> {
         let bytes = ArchiveAssets::read_or_download(
-            &self.uv_archive_name(),
             &self.uv_download_file(),
             &self.uv_download_url(),
+            &self.uv_download_path(),
         )?;
         archive::unpack_bytes(&bytes, self.uv_unpack_dir())?;
         Ok(())

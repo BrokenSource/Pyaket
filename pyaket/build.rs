@@ -74,7 +74,7 @@ fn build() -> Result<()> {
     manage::reqtxt(&mut project)?;
 
     // Windows executable resources metadata
-    if std::env::var("CARGO_CFG_TARGET_OS").unwrap() == "windows" {
+    if cfg!(target_os="windows") {
         logging::info!("Making windows executable resources");
         let mut meta = winresource::WindowsResource::new();
         meta.set("ProductName",      &project.app.name);
