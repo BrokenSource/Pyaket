@@ -89,7 +89,7 @@ class Python(BrokenModel):
 class Astral(BrokenModel):
     """Configuration for uv project and package manager to use"""
 
-    version: Annotated[str, Option("--version", "-v")] = "0.7.20"
+    version: Annotated[str, Option("--version", "-v")] = "0.8.0"
     """A target uv version to use at runtime"""
 
     bundle: Annotated[bool, Option("--bundle", "-b")] = False

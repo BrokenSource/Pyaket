@@ -11,16 +11,17 @@ fn run(project: &Project) -> Result<()> {
         dotenvy::from_path(file)?;
     }
 
-    envy::set("UV_PYTHON_INSTALL_DIR", project.python_install_dir().display());
-    envy::set("VIRTUAL_ENV",      project.installation_dir().display());
-    envy::set("UV_CACHE_DIR",     project.uv_cache_dir().display());
-    envy::set("UV_SYSTEM_PYTHON", false);
-    envy::set("UV_NO_CONFIG",     true);
+    envy::setdefault("UV_PYTHON_INSTALL_DIR", project.python_install_dir().display());
+    envy::setdefault("VIRTUAL_ENV",      project.installation_dir().display());
+    envy::setdefault("UV_CACHE_DIR",     project.uv_cache_dir().display());
+    envy::setdefault("UV_VENV_CLEAR",    1); // Skip confirmation prompt on 0.8.0
+    envy::setdefault("UV_SYSTEM_PYTHON", 0); // Always use a managed distribution
+    envy::setdefault("UV_NO_CONFIG",     1); // Do not look for a pyproject.toml
 
     // Force disable the GIL on freethreaded python
     if project.python.version.contains('t') {
-        envy::set("UNSAFE_PYO3_BUILD_FREE_THREADED", 1);
-        envy::set("PYTHON_GIL", 0);
+        envy::setdefault("UNSAFE_PYO3_BUILD_FREE_THREADED", 1);
+        envy::setdefault("PYTHON_GIL", 0);
     }
 
     if match read(project.uuid_tracker_file()) {

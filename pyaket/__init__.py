@@ -3,7 +3,7 @@ from pathlib import Path
 
 from broken import BrokenProject, Environment, __version__
 
-PYAKET_ABOUT = "📦 Easy Python to → Fast Executables"
+PYAKET_ABOUT = "📦 Easy Python to Fast Executables"
 
 PYAKET = BrokenProject(
     PACKAGE=__file__,

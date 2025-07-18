@@ -2,7 +2,7 @@
 name          = "pyaket"
 version       = "0.9.1"
 authors       = ["Tremeschin"]
-description   = "📦 Easy Python to → Fast Executables"
+description   = "📦 Easy Python to Fast Executables"
 repository    = "https://github.com/BrokenSource/Pyaket"
 documentation = "https://pyaket.dev/docs/"
 homepage      = "https://pyaket.dev/"

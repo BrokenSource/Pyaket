@@ -9,7 +9,7 @@
     <a href="https://pypi.org/project/pyaket/"><img src="https://img.shields.io/pypi/v/pyaket?label=PyPI&color=blue"></a>
     <a href="https://pypi.org/project/pyaket/"><img src="https://img.shields.io/pypi/dw/pyaket?label=Installs&color=blue"></a>
     <a href="https://github.com/BrokenSource/Pyaket/"><img src="https://img.shields.io/github/v/tag/BrokenSource/BrokenSource?label=GitHub&color=orange"></a>
-    <a href="https://github.com/BrokenSource/Pyaket/stargazers"><img src="https://img.shields.io/github/stars/BrokenSource/Pyaket?label=Stars&style=flat&color=orange"></a>
+    <a href="https://github.com/BrokenSource/Pyaket/stargazers/"><img src="https://img.shields.io/github/stars/BrokenSource/Pyaket?label=Stars&style=flat&color=orange"></a>
     <a href="https://discord.gg/KjqvcYwRHm"><img src="https://img.shields.io/discord/1184696441298485370?label=Discord&style=flat&color=purple"></a>
   <br>
   <br>
@@ -18,14 +18,14 @@
     <a href="https://pyaket.dev/get/">Installation</a> •
     <a href="https://pyaket.dev/examples/">Examples</a> •
     <a href="https://pyaket.dev/docs/">Documentation</a> •
-    <a href="https://github.com/BrokenSource/Pyaket/issues">Issues</a>
+    <a href="https://github.com/BrokenSource/Pyaket/issues/">Issues</a>
   </b>
   <br>
   <sub>
-    <a href="https://github.com/BrokenSource/Pyaket">GitHub</a> •
-    <a href="https://pyaket.dev/contact">Contact</a> •
-    <a href="https://pyaket.dev/changelog">Changelog</a> •
-    <a href="https://pyaket.dev/license">License</a>
+    <a href="https://github.com/BrokenSource/Pyaket/">GitHub</a> •
+    <a href="https://pyaket.dev/about/contact/">Contact</a> •
+    <a href="https://pyaket.dev/about/changelog/">Changelog</a> •
+    <a href="https://pyaket.dev/about/license">License</a>
   </sub>
   <br>
   <br>

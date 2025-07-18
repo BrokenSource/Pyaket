@@ -20,7 +20,7 @@ mod manage {
 
         if project.astral.bundle {
             ArchiveAssets::download(
-                &project.uv_archive_name(),
+                &project.uv_download_file(),
                 &project.uv_download_url(),
             )?;
         }

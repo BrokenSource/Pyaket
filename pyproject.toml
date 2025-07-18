@@ -10,7 +10,7 @@ path = ".github/hatch_build.py"
 
 [project]
 name        = "pyaket"
-description = "📦 Easy Python to → Fast Executables"
+description = "📦 Easy Python to Fast Executables"
 authors     = [{name="Tremeschin", email="29046864+Tremeschin@users.noreply.github.com"}]
 dynamic     = ["version"]
 readme      = "readme.md"
