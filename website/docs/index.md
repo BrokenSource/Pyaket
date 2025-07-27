@@ -1,47 +1,45 @@
-# Configuration
+# Documentation
 
 :material-arrow-right: 📦 Pyaket's configuration is done via environment variables read by rust at compile time, which are processed and passed through to the executable to load at runtime.
 
-This page documents all :simple-rust: Rust side environment variables and extra information. You don't need the Python package to build a Pyaket executable if you're skilled with cargo, although most of these have python cognates and follows the same structure seen here.
+This page documents all :simple-rust: Rust side environment variables and extra information. You don't need the Python package to build a Pyaket executable if you're skilled with cargo, although most of these have python cognates and follows the same structure seen here, which is the main way to build your project.
 
 !!! note "Some settings are exclusive to python"
-    - The `--upx` flag can't currently be supported by the rust side yet, as cargo lacks post-build hooks. You can do it yourself though, finding the binary at `target/*/pyaket` and running `upx` on it.
+    - The `--upx` flag can't currently be supported by the rust side yet, as cargo lacks post-build hooks. You can do it yourself though, e.g. find the binary at `target/*/pyaket` and run `upx` on it.
     - The `--standalone` flag is a syntatic sugar for other options; exporting all deps wheels is annoying in rust.
 
-
-
-
-
-
-
-<!-- ----------------------------------------------------------------------- -->
-
-<br><br>
+<!------------------------------------------------------------------------------------------------->
+<br>
 
 ## Application {#app}
 
 :material-arrow-right: General metadata of the project
 
+<!------------------------------------------------------------------------------------------------->
+<hr>
+
 ### <kbd>PYAKET_APP_NAME</kbd> {#app-name}
-> 📦 <b>Type:</b> String • <b>Default:</b> Application
+> 📦 **Type:** string • **Default:** pyaket
 
 The name of the application being built.
 
 Currently only used for identifying • flagging successfull installations and recreating the virtual environment shall the binary hash changes. This is purely useful for iterative development.
 
+<!------------------------------------------------------------------------------------------------->
 <hr>
 
 ### <kbd>PYAKET_APP_AUTHOR</kbd> {#app-author}
-> 📦 <b>Type:</b> String • <b>Default:</b> brokensrc
+> 📦 **Type:** string • **Default:** brokensource
 
 The author's name, group, organization of the application being built.
 
 The value is mostly used for dictating the [workspace](#workspace) root when dynamic. Centralizes installation paths and caches for a given author, while being independent enough to not interfere with others.
 
+<!------------------------------------------------------------------------------------------------->
 <hr>
 
 ### <kbd>PYAKET_APP_VERSION</kbd> {#app-version}
-> 📦 <b>Type:</b> String • <b>Default:</b> 0.0.0
+> 📦 **Type:** string • **Default:** 0.0.0
 
 The version of the application being built.
 
@@ -55,28 +53,40 @@ from importlib.metadata import version as get_version
 version = get_version("package")
 ```
 
-Or better yet, if using [Hatch](https://hatch.pypa.io/latest/), define a `__version__` at `__init__.py` and use in `pyproject.toml`:
+Or better yet, if using [Hatch](https://hatch.pypa.io/latest/)
 
 ```python
 [tool.hatch.version]
-path = "package/__init__.py"
+path = "package/version.py"
 
 [project]
 dynamic = ["version"]
 ```
 
+<!------------------------------------------------------------------------------------------------->
+<hr>
+
+### <kbd>PYAKET_APP_ABOUT</kbd> {#app-about}
+> 📦 **Type:** string • **Default:** No description provided
+
+A description of the application, exclusively for metadata or banner purposes.
+
+<!------------------------------------------------------------------------------------------------->
+<hr>
+
+### <kbd>PYAKET_APP_ICON</kbd> {#app-icon}
+> 📦 **Type:** Path • **Default:** None
 
 
-
-
-
-<!-- ----------------------------------------------------------------------- -->
-
-<br><br>
+<!------------------------------------------------------------------------------------------------->
+<br>
 
 ## Dependencies {#dependencies}
 
 :material-arrow-right: A continuation of the [application](#app) section for listing dependencies.
+
+<!------------------------------------------------------------------------------------------------->
+<hr>
 
 ### <kbd>PYAKET_APP_WHEELS</kbd> {#app-wheels}
 > 📦 <b>Type:</b> Paths • <b>Default:</b> None
@@ -99,6 +109,7 @@ This is the recommended way to specify dependencies, although third party packag
 
 <small>✅ This is the recommended way to specify dependencies</small>
 
+<!------------------------------------------------------------------------------------------------->
 <hr>
 
 ### <kbd>PYAKET_APP_PYPI</kbd> {#app-pypi}
@@ -121,6 +132,7 @@ export PYAKET_APP_PYPI="git+...@v1.0.0"
 
 This option is partially recommended, as it requires a network download at runtime and pushing to a registry for iterative development. [Bundling wheels](#app-wheels) is often a better option if binary size is not a concern, you can test with wheels first then push a stable version to a registry too.
 
+<!------------------------------------------------------------------------------------------------->
 <hr>
 
 ### <kbd>PYAKET_APP_REQTXT</kbd> {#app-requirements-txt}
@@ -130,6 +142,7 @@ A local `requirements.txt` file to be installed at runtime.
 
 This option mostly exists for legacy reasons. You really should move to a `pyproject.toml` as it allows easier build backends to create portable wheels for your project that includes your code. The only use I can think of is to run a project-less script with a requirements file alongside it.
 
+<!------------------------------------------------------------------------------------------------->
 <hr>
 
 ### <kbd>PYAKET_APP_ROLLING</kbd> {#app-rolling}
@@ -145,14 +158,8 @@ This option is best combined with a `git+` dependency or `package` without a `==
 
 A valid, but unconventional, use case is to pin all your dependencies to a specific version and target your latest stable PyPI releases (or git main branch) for clients after heavy testing.
 
-
-
-
-
-
-<!-- ----------------------------------------------------------------------- -->
-
-<br><br>
+<!------------------------------------------------------------------------------------------------->
+<br>
 
 ## Entry Points
 
@@ -161,6 +168,7 @@ A valid, but unconventional, use case is to pin all your dependencies to a speci
 - At least one entry point is required, otherwise it'll boot to the Python shell.
 - All incoming args of the executable are passed through to the final command.
 
+<!------------------------------------------------------------------------------------------------->
 <hr>
 
 ### <kbd>PYAKET_ENTRY_MODULE</kbd> {#entry-module}
@@ -172,6 +180,7 @@ A module's name to be called as `python -m <module> (args)` after installation.
 
 <small>✅ This is the recommended and reliable way to run your project, have a top-level cli for multiple entries</small>
 
+<!------------------------------------------------------------------------------------------------->
 <hr>
 
 ### <kbd>PYAKET_ENTRY_SCRIPT</kbd> {#entry-script}
@@ -179,6 +188,7 @@ A module's name to be called as `python -m <module> (args)` after installation.
 
 A local script to be bundled and called as `python <script.py> (args)` after installation.
 
+<!------------------------------------------------------------------------------------------------->
 <hr>
 
 ### <kbd>PYAKET_ENTRY_CODE</kbd> {#entry-code}
@@ -189,6 +199,7 @@ An inline Python code to be executed as `python -c <code> (args)` after installa
 - Slightly more reliable than an [entry script](#entry-script), as it doesn't write a temp file.
 - Less flexible and readable because it must be a single line of code.
 
+<!------------------------------------------------------------------------------------------------->
 <hr>
 
 ### <kbd>PYAKET_ENTRY_COMMAND</kbd> {#entry-command}
@@ -202,18 +213,15 @@ It may be used if you have multiple entry points, like `depthflow {main,gradio}`
 
 !!! warning "**Discouraged**: Security implications, man in the middle attack, may use wrong command"
 
-
-
-
-
-
-<!-- ----------------------------------------------------------------------- -->
-
-<br><br>
+<!------------------------------------------------------------------------------------------------->
+<br>
 
 ## Directories {#dirs}
 
 :material-arrow-right: Directories used by Pyaket to store the application data.
+
+<!------------------------------------------------------------------------------------------------->
+<hr>
 
 ### <kbd>WORKSPACE</kbd> {#workspace}
 > 📦 <b>Type:</b> Path • <b>Default:</b> Dynamic
@@ -247,6 +255,7 @@ $ export WORKSPACE="/tmp/workspace"
 $ ./pyaket-project.bin
 ```
 
+<!------------------------------------------------------------------------------------------------->
 <hr>
 
 ### <kbd>PYAKET_COMMON_DIR</kbd> {#common-dir}
@@ -285,6 +294,7 @@ You may find the following directories inside the composition:
 - **Python**: Stores multiple versions of Python distributions.
 - **Versions**: See [versions dir](#versions-dir) for more details.
 
+<!------------------------------------------------------------------------------------------------->
 <hr>
 
 ### <kbd>PYAKET_VERSIONS_DIR</kbd> {#versions-dir}
@@ -318,19 +328,15 @@ Multiple versions of the same application(s) are stored in a shared directory (v
 
 - **Note**: Applications of an author that shares the same versions dir **must** be coupled together. If they are independent, a workaround is to set this value to `Versions/<app_name>`, so each application have a separate versions directory. Default is shared for monorepos in mind.
 
-
-
-
-
-
-
-<!-- ----------------------------------------------------------------------- -->
-
-<br><br>
+<!------------------------------------------------------------------------------------------------->
+<br>
 
 ## Python {#python}
 
 :material-arrow-right: This section is about the Python interpreter to be used at runtime.
+
+<!------------------------------------------------------------------------------------------------->
+<hr>
 
 ### <kbd>PYAKET_PYTHON_VERSION</kbd> {#python-version}
 > 📦 <b>Type:</b> Version string • <b>Default:</b> 3.13
@@ -341,6 +347,7 @@ The version of Python to be used at runtime, from [astral-sh/python-build-standa
 
 - Please chose carefully to ensure all your wheels and dependencies are compatible with the target version. Users may not have compilers and headers for sdists.
 
+<!------------------------------------------------------------------------------------------------->
 <hr>
 
 ### <kbd>PYAKET_PYTHON_BUNDLE</kbd> {#python-bundle}
@@ -352,21 +359,17 @@ Having this enabled increases binary size by roughly 20 MB, but greatly increase
 
 <small><b>⚠️ Warning:</b> This feature is not yet implemented</small>
 
-
-
-
-
-
-
-<!-- ----------------------------------------------------------------------- -->
-
-<br><br>
+<!------------------------------------------------------------------------------------------------->
+<br>
 
 ## UV {#uv}
 
 :material-arrow-right: This section is about [uv](https://github.com/astral-sh/uv), a fast python and project manager, to be used at runtime.
 
 Pyaket wouldn't be possible without it, huge kudos to the Astral Team!
+
+<!------------------------------------------------------------------------------------------------->
+<hr>
 
 ### <kbd>PYAKET_UV_VERSION</kbd> {#uv-version}
 > 📦 <b>Type:</b> Version string • <b>Default:</b> 0.6.14
@@ -375,6 +378,7 @@ The version of uv to be used at runtime, from official [astral-sh/uv](https://gi
 
 - **Note**: This value shouldn't really be changed. Older versions may miss features, newer ones might have breaking changes. Pyaket guarantees only the default version to work.
 
+<!------------------------------------------------------------------------------------------------->
 <hr>
 
 ### <kbd>PYAKET_UV_BUNDLE</kbd> {#uv-bundle}
@@ -384,14 +388,8 @@ Whether to embed the uv distribution in the executable, instead of a runtime dow
 
 Having this enabled increases binary size by roughly 20 MB, but greatly increases reliability and improves first startup times. However, it may trigger antivirus heuristics on giving false positives, as it is a sketchy thing to include archives and decompressors in a binary - this is mostly a non-issue Windows only moment. Disabled by default for easy to share small executables.
 
-
-
-
-
-
-<!-- ----------------------------------------------------------------------- -->
-
-<br><br>
+<!------------------------------------------------------------------------------------------------->
+<br>
 
 ## PyTorch
 
@@ -401,6 +399,7 @@ This section covers [PyTorch](https://pytorch.org/) configuration for ML and AI 
 
 - **Warn**: Version 2.7.0+ with cu128 is required for RTX 5000+ series! [[1]](https://en.wikipedia.org/wiki/CUDA#GPUs_supported)
 
+<!------------------------------------------------------------------------------------------------->
 <hr>
 
 ### <kbd>PYAKET_TORCH_VERSION</kbd> {#pytorch-version}
@@ -408,6 +407,7 @@ This section covers [PyTorch](https://pytorch.org/) configuration for ML and AI 
 
 An optional version of PyTorch to be installed at runtime.
 
+<!------------------------------------------------------------------------------------------------->
 <hr>
 
 ### <kbd>PYAKET_TORCH_BACKEND</kbd> {#pytorch-backend}

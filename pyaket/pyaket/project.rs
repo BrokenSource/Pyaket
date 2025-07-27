@@ -6,7 +6,7 @@ use crate::*;
 pub static PYAKET_APP_NAME:    &str = "PYAKET_APP_NAME";
 pub static PYAKET_APP_AUTHOR:  &str = "PYAKET_APP_AUTHOR";
 pub static PYAKET_APP_VERSION: &str = "PYAKET_APP_VERSION";
-pub static PYAKET_APP_DESC:    &str = "PYAKET_APP_DESCRIPTION";
+pub static PYAKET_APP_ABOUT:   &str = "PYAKET_APP_ABOUT";
 pub static PYAKET_APP_ICON:    &str = "PYAKET_APP_ICON";
 pub static PYAKET_APP_WHEELS:  &str = "PYAKET_APP_WHEELS";
 pub static PYAKET_APP_PYPI:    &str = "PYAKET_APP_PYPI";
@@ -26,8 +26,8 @@ pub struct PyaketApplication {
     #[default(envy::uget(PYAKET_APP_VERSION, "0.0.0"))]
     pub version: String,
 
-    #[default(envy::uget(PYAKET_APP_DESC, "No description provided"))]
-    pub description: String,
+    #[default(envy::uget(PYAKET_APP_ABOUT, "No description provided"))]
+    pub about: String,
 
     #[serde(skip)]
     #[default(envy::get(PYAKET_APP_ICON, None))]
@@ -89,9 +89,9 @@ pub static PYAKET_UV_VERSION: &str = "PYAKET_UV_VERSION";
 pub static PYAKET_UV_BUNDLE:  &str = "PYAKET_UV_BUNDLE";
 
 #[derive(Serialize, Deserialize, SmartDefault)]
-pub struct PyaketAstral {
+pub struct PyaketUV {
 
-    #[default(envy::uget(PYAKET_UV_VERSION, "0.8.0"))]
+    #[default(envy::uget(PYAKET_UV_VERSION, "0.8.3"))]
     pub version: String,
 
     #[default(envy::ubool(PYAKET_UV_BUNDLE, false))]
@@ -145,7 +145,7 @@ pub struct Project {
     pub app:    PyaketApplication,
     pub dirs:   PyaketDirectories,
     pub python: PyaketPython,
-    pub astral: PyaketAstral,
+    pub uv:     PyaketUV,
     pub torch:  PyaketTorch,
     pub entry:  PyaketEntry,
 
@@ -176,16 +176,14 @@ static WORKSPACE_ROOT: OnceLock<PathBuf> = OnceLock::new();
 impl Project {
 
     /// Automatic:
-    /// - Windows: `%LocalAppData%/$Author/`
-    /// - Linux: `~/.local/share/$Author/`
-    /// - MacOS: `~/Library/Application Support/$Author/`
-    ///
-    /// Custom:
-    /// - Any: `$WORKSPACE/`
+    /// - Windows: `%LocalAppData%/$author/`
+    /// - Linux:   `~/.local/share/$author/`
+    /// - MacOS:   `~/Library/Application Support/$author/`
+    /// - Custom:  `$WORKSPACE/`
     pub fn workspace_root(&self) -> &'static PathBuf {
         WORKSPACE_ROOT.get_or_init(|| {
-            if let Ok(custom) = std::env::var("WORKSPACE") {
-                PathBuf::from(custom)
+            if let Some(path) = envy::get("WORKSPACE", None) {
+                PathBuf::from(path)
             } else {
                 BaseDirs::new().unwrap()
                     .data_local_dir()
@@ -213,7 +211,7 @@ impl Project {
     }
 
     /// Where to install the Python's virtual environment:
-    /// - `$WORKSPACE/Versions/1.0.0`
+    /// - `$WORKSPACE/versions/1.0.0`
     pub fn installation_dir(&self) -> PathBuf {
         self.workspace_common()
             .join(&self.dirs.versions)
@@ -261,7 +259,7 @@ impl Project {
         format!(
             "{}/releases/download/{}/{}",
             "https://github.com/astral-sh/uv",
-            self.astral.version,
+            self.uv.version,
             self.uv_download_file(),
         )
     }
@@ -269,7 +267,7 @@ impl Project {
     /// Path to unpack uv at runtime
     pub fn uv_unpack_dir(&self) -> PathBuf {
         self.astral_dir()
-            .join(&self.astral.version)
+            .join(&self.uv.version)
     }
 
     /// Path to download and cache uv at runtime
@@ -304,4 +302,3 @@ impl Project {
             .expect("uv executable not found")))
     }
 }
-

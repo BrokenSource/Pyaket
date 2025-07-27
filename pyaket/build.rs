@@ -18,7 +18,7 @@ mod manage {
     pub fn astral(project: &Project) -> Result<()> {
         network::must_exist(&project.uv_download_url())?;
 
-        if project.astral.bundle {
+        if project.uv.bundle {
             ArchiveAssets::download(
                 &project.uv_download_file(),
                 &project.uv_download_url(),
@@ -80,18 +80,22 @@ fn build() -> Result<()> {
         meta.set("ProductName",      &project.app.name);
         meta.set("CompanyName",      &project.app.author);
         meta.set("FileVersion",      &project.app.version);
-        meta.set("FileDescription",  &project.app.description);
+        meta.set("FileDescription",  &project.app.about);
         meta.set("OriginalFilename", &envy::uget("OriginalFilename", "pyaket.exe"));
         meta.set("LegalCopyright",   &envy::uget("LegalCopyright", "Unknown"));
         if let Some(icon) = &project.app.icon {
             meta.set_icon(icon);
         }
         meta.compile()?;
+    } else {
+        if let Some(icon) = &project.app.icon {
+            ArchiveAssets::write("icon", &read(icon)?)?;
+        }
     }
 
     // Export a const configured project to be loaded at runtime
     envy::rustc_export("PYAKET_PROJECT", project.json());
-    logging::note!("Project: {}", project.json());
+    logging::info!("Project: {}", project.json());
 
     Ok(())
 }

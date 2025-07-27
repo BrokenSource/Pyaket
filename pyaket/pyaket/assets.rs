@@ -2,7 +2,7 @@ use crate::*;
 
 pub trait BrokenAssets: RustEmbed {
 
-    /// Must match RustEmbed's `folder` attribute
+    /// Warn: Must match RustEmbed's `folder` attribute
     fn path() -> &'static str;
 
     /// Get a path to download assets to before bundling

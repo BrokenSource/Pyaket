@@ -1,6 +1,6 @@
 INHERIT: ../../mkdocs-base.yml
 site_name: Pyaket
-site_description: 📦 Easy Python to → Fast Executables
+site_description: 📦 Easy Python to Fast Executables
 site_url: https://pyaket.dev/
 repo_url: https://github.com/BrokenSource/Pyaket/
 nav:
@@ -26,12 +26,13 @@ nav:
       - Locking dependencies: docs/pinning.md
     - Extra:
       - Crosscompile: docs/crosscompile.md
-      - Alternatives: docs/alternatives.md
   - Questions:
     - General: faq/general.md
-    - Windows: faq/windows.md
-    - Linux: faq/linux.md
-    - MacOS: faq/macos.md
+    - Alternatives: faq/alternatives.md
+    - Systems:
+      - Windows: faq/windows.md
+      - Linux: faq/linux.md
+      - MacOS: faq/macos.md
 theme:
   custom_dir: ../../website/overrides
   favicon: pyaket/resources/images/logo.png

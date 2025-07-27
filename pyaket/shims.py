@@ -4,7 +4,6 @@ import subprocess
 import sys
 from typing import NoReturn
 
-# ------------------------------------------------------------------------------------------------ #
 
 def _shim(proxy: str) -> NoReturn:
     rustup = shutil.which("rustup")
@@ -17,8 +16,6 @@ def _shim(proxy: str) -> NoReturn:
         ).returncode)
 
     os.execv(rustup, args)
-
-# ------------------------------------------------------------------------------------------------ #
 
 def init() -> NoReturn:
     _shim("rustup-init")

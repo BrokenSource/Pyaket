@@ -14,7 +14,7 @@ fn run(project: &Project) -> Result<()> {
     envy::setdefault("UV_PYTHON_INSTALL_DIR", project.python_install_dir().display());
     envy::setdefault("VIRTUAL_ENV",      project.installation_dir().display());
     envy::setdefault("UV_CACHE_DIR",     project.uv_cache_dir().display());
-    envy::setdefault("UV_VENV_CLEAR",    1); // Skip confirmation prompt on 0.8.0
+    envy::setdefault("UV_VENV_CLEAR",    1); // Skip destructive confirmation prompt
     envy::setdefault("UV_SYSTEM_PYTHON", 0); // Always use a managed distribution
     envy::setdefault("UV_NO_CONFIG",     1); // Do not look for a pyproject.toml
 
@@ -74,7 +74,6 @@ fn run(project: &Project) -> Result<()> {
         // Add PyPI packages to be installed
         if !project.app.pypi.is_empty() {
             command.args(project.app.pypi.split(";"));
-            // command.args(&project.app.pypi);
         }
 
         // Add the requirements.txt file to be installed
