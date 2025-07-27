@@ -8,14 +8,14 @@ mod manage {
     use super::*;
 
     // Todo: Find a way to match against uv
-    pub fn python(project: &Project) -> Result<()> {
+    pub fn python(project: &PyaketProject) -> Result<()> {
         if project.python.bundle {
-            logging::warn!("Bundling Python is not implemented yet")
+            logging::warn!("Bundling Python is not implemented yet");
         }
         Ok(())
     }
 
-    pub fn astral(project: &Project) -> Result<()> {
+    pub fn astral(project: &PyaketProject) -> Result<()> {
         network::must_exist(&project.uv_download_url())?;
 
         if project.uv.bundle {
@@ -28,7 +28,7 @@ mod manage {
         Ok(())
     }
 
-    pub fn wheels(project: &Project) -> Result<()> {
+    pub fn wheels(project: &PyaketProject) -> Result<()> {
 
         // Don't trust the user on ';'.join(wheels) formatting
         for wheel in project.app.wheels.split(";")
@@ -47,7 +47,7 @@ mod manage {
         Ok(())
     }
 
-    pub fn reqtxt(project: &mut Project) -> Result<()> {
+    pub fn reqtxt(project: &mut PyaketProject) -> Result<()> {
         // Todo: .read_file_or_keep() sugar
         if Path::new(&project.app.reqtxt).exists() {
             project.app.reqtxt = read_string(&project.app.reqtxt)?;
@@ -63,7 +63,12 @@ fn build() -> Result<()> {
     println!("cargo:rerun-if-changed=NULL");
 
     // Build the project from current settings
-    let mut project = Project::default();
+    let mut project = PyaketProject::default();
+
+    // Common assertions
+    if project.app.name.is_empty() {
+        bail!(logging::error!("Application name cannot be empty"))
+    }
 
     ArchiveAssets::reset()?;
     manage::python(&project)?;

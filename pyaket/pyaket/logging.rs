@@ -8,14 +8,16 @@ pub use crate::warn;
 macro_rules! make_log {
     ($level:expr, $color:expr, $($tokens:tt)*) => {{
         let elapsed: f32 = (START_TIME.elapsed().as_millis() as f32)/1000.0;
+        let message = format!($($tokens)*);
         println!(
             "cargo::warning=\r\
             │\x1b[38;2;255;180;70mPyaket\x1b[0m├\
             ┤\x1b[\x1b[32m{}\x1b[0m├\
             ┤\x1b[{}m{}\x1b[0m│ ▸ {}",
             format!("{}'{:06.3}", (elapsed/60.0).floor(), (elapsed%60.0)),
-            $color, $level, format!($($tokens)*)
+            $color, $level, message
         );
+        message
     }};
 }
 #[macro_export]

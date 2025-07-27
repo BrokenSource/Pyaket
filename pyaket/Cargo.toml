@@ -88,11 +88,10 @@ zstd    = ["dep:zstd"]
 strip = true       # Saves disk writes at no worse compile time
 
 [profile.release]
-codegen-units = 1  # Slighlty improves binary size at no worse compile time
-incremental = true # Faster recompilation times for multiple projects
-opt-level = 3      # Milisseconds matter in production, time is money
-panic = "abort"    # No need to unwind full traceback as not primary rust app
-strip = true       # Reduces binary size by quite a lot due few fat crates
+codegen-units = 1  # Slightly improves binary size at no worse compile time
+incremental = true # Faster recompilation times for iterative development
+opt-level = 3      # Microseconds matter in production, space is plenty
+panic = "abort"    # Not a complex application, saves some binary size
 lto = false        # Annoyingly slow linking times for minor size reduction
 
 # About 5x slower to build the final binary, for about 15%

@@ -50,6 +50,19 @@ pub struct PyaketApplication {
     pub keep_open: bool,
 }
 
+impl PyaketApplication {
+
+    /// Workspace root identifier, either `author or name`
+    /// - Makes having an author name optional
+    /// - Disallows root being the data local
+    pub fn vendor(&self) -> String {
+        match self.author.is_empty() {
+            false => self.author.clone(),
+            true  => self.name.clone(),
+        }
+    }
+}
+
 /* -------------------------------------------- */
 // https://pyaket.dev/docs#directories
 
@@ -141,7 +154,7 @@ pub struct PyaketEntry {
 /* -------------------------------------------- */
 
 #[derive(Serialize, Deserialize, SmartDefault)]
-pub struct Project {
+pub struct PyaketProject {
     pub app:    PyaketApplication,
     pub dirs:   PyaketDirectories,
     pub python: PyaketPython,
@@ -158,7 +171,7 @@ pub struct Project {
     pub triple: String,
 }
 
-impl Project {
+impl PyaketProject {
     pub fn json(&self) -> String {
         serde_json::to_string(&self).unwrap()
     }
@@ -173,12 +186,12 @@ impl Project {
 
 static WORKSPACE_ROOT: OnceLock<PathBuf> = OnceLock::new();
 
-impl Project {
+impl PyaketProject {
 
-    /// Automatic:
-    /// - Windows: `%LocalAppData%/$author/`
-    /// - Linux:   `~/.local/share/$author/`
-    /// - MacOS:   `~/Library/Application Support/$author/`
+    /// Centralized working directory:
+    /// - Windows: `%LocalAppData%/$vendor/`
+    /// - Linux:   `~/.local/share/$vendor/`
+    /// - MacOS:   `~/Library/Application Support/$vendor/`
     /// - Custom:  `$WORKSPACE/`
     pub fn workspace_root(&self) -> &'static PathBuf {
         WORKSPACE_ROOT.get_or_init(|| {
@@ -187,7 +200,7 @@ impl Project {
             } else {
                 BaseDirs::new().unwrap()
                     .data_local_dir()
-                    .join(&self.app.author)
+                    .join(self.app.vendor())
             }
         })
     }
@@ -229,7 +242,7 @@ impl Project {
 
 /* -------------------------------------------------------------------------- */
 
-impl Project {
+impl PyaketProject {
 
     /// Directory to store many python versions
     /// - Should mirror `UV_PYTHON_INSTALL_DIR`

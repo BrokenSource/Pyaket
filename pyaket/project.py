@@ -2,11 +2,13 @@ import sys
 from pathlib import Path
 from typing import Annotated
 
+import toml
 from attr import Factory, define
+from dotmap import DotMap
 from typer import Option
 
 from broken import Environment
-from broken.core import BrokenModel, log, shell
+from broken.core import BrokenCache, BrokenModel, log, shell
 from broken.core.enumx import BrokenEnum
 from broken.core.path import BrokenPath
 from broken.core.system import ArchEnum, BrokenPlatform, PlatformEnum, SystemEnum
@@ -179,6 +181,16 @@ class PyaketProject:
     entry:   PyaketEntry       = Factory(PyaketEntry)
     release: PyaketRelease     = Factory(PyaketRelease)
 
+    @property
+    def release_name(self) -> str:
+        return ''.join((
+            f"{self.app.name.lower()}",
+            f"-{self.release.platform.value}",
+            f"-v{self.app.version}",
+            f"-{self.torch.backend}" if (self.torch.version) else "",
+            f"{self.release.platform.extension}",
+        ))
+
     cli: BrokenTyper = None
 
     def __attrs_post_init__(self):
@@ -191,8 +203,8 @@ class PyaketProject:
 
         with self.cli.panel("🟡 Dependencies"):
             self.cli.command(self.python, name="python")
-            self.cli.command(self.uv,     name="uv")
             self.cli.command(self.torch,  name="torch")
+            self.cli.command(self.uv,     name="uv")
 
         with self.cli.panel("🟢 Building"):
             self.cli.command(self.release, name="release")
@@ -200,6 +212,8 @@ class PyaketProject:
 
         with self.cli.panel("🔵 Special"):
             self.cli.command(self.build, name="build")
+
+    # -------------------------------------------------------------------------------------------- #
 
     def build(self,
         standalone: Annotated[bool, Option("--standalone", "-s")]=False,
@@ -210,18 +224,17 @@ class PyaketProject:
         shell(sys.executable, "-m", "uv", "build", "--wheel", ("--all-packages"*all), "-o", wheels)
         self.app.wheels.extend(wheels.glob("*.whl"))
 
-        return self.release.zigbuild
-
     def compile(self,
         target: Annotated[Path, Option("--target", "-t", help="Directory to build the project (target)")]=(Path.cwd()/"target"),
         output: Annotated[Path, Option("--output", "-o", help="Directory to output the compiled binary")]=(Path.cwd()/"release"),
     ) -> Path:
+        Environment.set("MSVC", self.release.msvc)
 
         # Fixme: Wait for uv's implementation of pip wheel for my own sanity
         if self.release.standalone and (self.release.platform != BrokenPlatform.Host):
             log.error("Standalone releases are best built in a host matching the target platform")
             log.error("• Awaiting implementation of (https://github.com/astral-sh/uv/issues/1681)")
-            log.error(f"• Attempted to build for '{self.release.platform}' on '{BrokenPlatform.Host}'")
+            log.error(f"• Attempted to build for {self.release.platform} on {BrokenPlatform.Host}")
             return None
         elif self.release.standalone:
             log.error("Standalone releases are not implemented yet")
@@ -270,7 +283,6 @@ class PyaketProject:
         release_path = (Path(output) / self.release_name)
         BrokenPath.mkdir(release_path.parent)
         BrokenPath.move(src=binary, dst=release_path, echo=False)
-        BrokenPath.make_executable(release_path)
 
         # Compress the final release with upx
         if self.release.upx and (shell("upx", "--best", "--lzma", release_path).returncode != 0):
@@ -280,21 +292,11 @@ class PyaketProject:
         if self.release.tarball and self.release.system.is_unix():
             release_path = BrokenPath.gzip(release_path, remove=True)
 
-        log.ok(f"Built Project release at ({release_path})")
+        log.ok(f"Final project release at ({release_path})")
         return release_path
 
-    @property
-    def release_name(self) -> str:
-        return ''.join((
-            f"{self.app.name.lower()}",
-            f"-{self.release.platform.value}",
-            f"-v{self.app.version}",
-            f"-{self.torch.backend}" if (self.torch.version) else "",
-            f"{self.release.platform.extension}",
-        ))
-
     def export(self) -> None:
-        Environment.update(
+        Environment.updatedefault(
             PYAKET_RELEASE        = 1,
             PYAKET_APP_NAME       = self.app.name,
             PYAKET_APP_VERSION    = self.app.version,

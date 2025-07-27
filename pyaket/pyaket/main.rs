@@ -1,6 +1,6 @@
 use pyaket::*;
 
-fn run(project: &Project) -> Result<()> {
+fn run(project: &PyaketProject) -> Result<()> {
 
     // Send the executable path to Python, also flags a Pyaket app
     let executable = std::env::current_exe()?.canonicalize()?;
@@ -135,7 +135,7 @@ fn main() {
     envy::unset("BUILD");
 
     // Read the project configurion sent at the end of build.rs
-    let project: Project = Project::from_json(env!("PYAKET_PROJECT"));
+    let project: PyaketProject = PyaketProject::from_json(env!("PYAKET_PROJECT"));
     let runtime = run(&project);
 
     if runtime.is_err() {
