@@ -78,9 +78,9 @@ fn build() -> Result<()> {
     manage::wheels(&project)?;
     manage::reqtxt(&mut project)?;
 
-    // Windows executable resources metadata
-    if cfg!(target_os="windows") {
-        logging::info!("Making windows executable resources");
+    // Executable resources (icon, metadata, etc)
+    if project.triple.contains("windows") {
+        logging::info!("Making Windows executable resources");
         let mut meta = winresource::WindowsResource::new();
         meta.set("ProductName",      &project.app.name);
         meta.set("CompanyName",      &project.app.author);
