@@ -33,6 +33,7 @@ class PyaketApplication(BrokenModel):
     about: Annotated[str, Option("--about", "-d")] = "No description provided"
     """A short description of the application, used for metadata, shortcuts"""
 
+    # Todo: Ensure PNG for Unix, 256x256 .ico for Windows
     icon: Annotated[Path, Option("--icon", "-i")] = None
     """Path to an icon file to use for the application"""
 
@@ -63,7 +64,7 @@ class PyaketApplication(BrokenModel):
 # ---------------------------------------------- #
 # https://pyaket.dev/docs#directories
 
-class PyakerDirectories(BrokenModel):
+class PyaketDirectories(BrokenModel):
     """Configuration for the directories used by the project"""
 
     common: Annotated[str, Option("--common", "-c")] = "pyaket"
@@ -90,7 +91,7 @@ class PyaketPython(BrokenModel):
 class PyaketUV(BrokenModel):
     """Configuration for uv project and package manager to use"""
 
-    version: Annotated[str, Option("--version", "-v")] = "0.8.3"
+    version: Annotated[str, Option("--version", "-v")] = "0.8.9"
     """A target uv version to use at runtime"""
 
     bundle: Annotated[bool, Option("--bundle", "-b")] = False
@@ -174,7 +175,7 @@ class PyaketRelease(BrokenModel):
 @define
 class PyaketProject:
     app:     PyaketApplication = Factory(PyaketApplication)
-    dirs:    PyakerDirectories = Factory(PyakerDirectories)
+    dirs:    PyaketDirectories = Factory(PyaketDirectories)
     python:  PyaketPython      = Factory(PyaketPython)
     uv:      PyaketUV          = Factory(PyaketUV)
     torch:   PyaketTorch       = Factory(PyaketTorch)
@@ -295,6 +296,8 @@ class PyaketProject:
         log.ok(f"Final project release at ({release_path})")
         return release_path
 
+    # -------------------------------------------------------------------------------------------- #
+
     def export(self) -> None:
         Environment.updatedefault(
             PYAKET_RELEASE        = 1,
@@ -322,3 +325,37 @@ class PyaketProject:
             PYAKET_ENTRY_COMMAND  = self.entry.command,
             OriginalFilename      = self.release_name
         )
+
+    # -------------------------------------------------------------------------------------------- #
+
+    def pyproject(self,
+        path: Annotated[Path, Option("--pyproject", "-p", help="Path to a pyproject.toml file")],
+        pin:  Annotated[bool, Option("--pin",             help="Pin dependencies versions")]=False,
+    ) -> None:
+        """Update project metadata from a pyproject.toml file"""
+        data = DotMap(toml.loads(Path(path).read_text(encoding="utf-8")))
+        self.app.name   = data.project.get("name", self.app.name)
+        self.app.author = "" # Secret mode for independent projects
+
+        def _pin(package: str) -> str:
+            """"""
+            if (not pin):
+                return package
+
+            package = package.replace(" ", "")
+
+            # Todo: Pin @git+ dependencies
+
+            # Simple known
+            for marker in ("~=", ">=", "<=", "=="):
+                if marker in package:
+                    package = package.replace(marker, "==")
+                    return
+
+            # Get the latest version from PyPI dynamically
+            with BrokenCache.package_info(package) as pypi:
+                return f"{package}=={pypi.info.version}"
+
+        # Standard dependencies
+        for package in data.project.dependencies:
+            self.app.pypi.append(_pin(package))

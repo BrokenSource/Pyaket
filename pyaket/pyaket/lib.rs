@@ -20,8 +20,12 @@ pub use std::sync::LazyLock;
 pub use std::sync::OnceLock;
 pub use std::time::Instant;
 
-pub use anyhow::Result;
 pub use anyhow::bail;
+pub use anyhow::Result;
+pub use clap::Args;
+pub use clap::Parser;
+pub use clap::Subcommand;
+pub use clap::ValueEnum;
 pub use directories::BaseDirs;
 pub use rust_embed::Embed as RustEmbed;
 pub use serde::Deserialize;
@@ -33,13 +37,15 @@ pub use xxhash_rust::xxh3::xxh3_64;
 
 pub mod archive;
 pub mod assets;
-pub use assets::*;
+pub mod commands;
 pub mod envy;
 pub mod logging;
 pub mod network;
 pub mod project;
-pub use project::*;
 pub mod subprocess;
+pub use assets::*;
+pub use commands::*;
+pub use project::*;
 
 /// Time at which the program started, used for logging
 pub static START_TIME: LazyLock<Instant> = LazyLock::new(Instant::now);

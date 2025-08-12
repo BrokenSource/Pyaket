@@ -9,13 +9,11 @@ fn main() {
     let project: PyaketProject = PyaketProject::from_json(env!("PYAKET_PROJECT"));
 
     // Self management command
-    #[cfg(feature="self")]
     if let Some("self") = std::env::args().nth(1).as_deref() {
-        // Remove the first argument
         let args: Vec<String> = std::env::args().skip(1).collect();
-        // Manager::try_parse_from(args).unwrap().run().unwrap();
+
         match Manager::try_parse_from(args) {
-            Ok(manager) => manager.run().unwrap(),
+            Ok(manager) => manager.run(&project).unwrap(),
             Err(e) => eprintln!("Error: {}", e),
         }
         return;

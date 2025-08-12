@@ -104,7 +104,7 @@ pub static PYAKET_UV_BUNDLE:  &str = "PYAKET_UV_BUNDLE";
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct PyaketUV {
 
-    #[default(envy::uget(PYAKET_UV_VERSION, "0.8.3"))]
+    #[default(envy::uget(PYAKET_UV_VERSION, "0.8.9"))]
     pub version: String,
 
     #[default(envy::ubool(PYAKET_UV_BUNDLE, false))]

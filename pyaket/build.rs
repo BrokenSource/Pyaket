@@ -59,10 +59,11 @@ mod manage {
 /* -------------------------------------------------------------------------- */
 
 fn build() -> Result<()> {
+
     // Workaround to always trigger a rebuild
     println!("cargo:rerun-if-changed=NULL");
 
-    // Build the project from current settings
+    // Get options from environment variables
     let mut project = PyaketProject::default();
 
     // Common assertions
