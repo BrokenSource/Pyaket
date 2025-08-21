@@ -65,7 +65,7 @@ This script should have added `~/.cargo/bin` to your `PATH` environment based on
 
 ### :material-microsoft: Windows
 
-Ensure you have [Winget](https://learn.microsoft.com/en-us/windows/package-manager/winget/) installed, open a powershell and run:
+Ensure you have [WinGet](https://learn.microsoft.com/en-us/windows/package-manager/winget/) installed, open a powershell and run:
 
 ```python
 winget install --id=Rustlang.Rustup -e
