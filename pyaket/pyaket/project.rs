@@ -100,6 +100,7 @@ pub struct PyaketPython {
 
 pub static PYAKET_UV_VERSION: &str = "PYAKET_UV_VERSION";
 pub static PYAKET_UV_BUNDLE:  &str = "PYAKET_UV_BUNDLE";
+pub static PYAKET_UV_SYSTEM:  &str = "PYAKET_UV_SYSTEM";
 
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct PyaketUV {
@@ -109,6 +110,9 @@ pub struct PyaketUV {
 
     #[default(envy::ubool(PYAKET_UV_BUNDLE, false))]
     pub bundle: bool,
+
+    #[default(envy::ubool(PYAKET_UV_SYSTEM, false))]
+    pub system: bool,
 }
 
 /* -------------------------------------------- */
