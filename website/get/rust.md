@@ -148,7 +148,7 @@ brew install gcc
 Runners seem to already have rustup installed by default. Better be safe than sorry though - you can add the following action in your workflow job steps by [@dtolnay](https://github.com/dtolnay/rust-toolchain) _(unofficial)_:
 
 ```yaml
-- name: Install Rust
+- name: Setup Rust
   uses: dtol/rust-toolchain@stable
 ```
 

@@ -11,7 +11,7 @@ path = ".github/hatch_build.py"
 [project]
 name        = "pyaket"
 description = "📦 Easy Python to Fast Executables"
-authors     = [{name="Tremeschin", email="29046864+Tremeschin@users.noreply.github.com"}]
+authors     = [{name="Tremeschin"}]
 dynamic     = ["version"]
 readme      = "readme.md"
 license     = "AGPL-3.0"
@@ -49,8 +49,9 @@ rustc         = "rustup_shims:rustc"
 rustdoc       = "rustup_shims:rustdoc"
 rustfmt       = "rustup_shims:rustfmt"
 
+[tool.hatch.metadata.hooks.plugin]
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "hook@git+https://github.com/BrokenSource/Hook/"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
