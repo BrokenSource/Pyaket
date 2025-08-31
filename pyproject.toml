@@ -21,8 +21,8 @@ dependencies = [
 
 [project.optional-dependencies]
 cross = [
-    "cargo-zigbuild~=0.20.0",
-    "ziglang~=0.14.0",
+    "cargo-zigbuild~=0.20.1",
+    "ziglang~=0.15.1",
 ]
 
 [dependency-groups]
