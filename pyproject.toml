@@ -47,10 +47,11 @@ rustc         = "rustup_shims:rustc"
 rustdoc       = "rustup_shims:rustdoc"
 rustfmt       = "rustup_shims:rustfmt"
 
-[tool.hatch.metadata.hooks.plugin]
 [build-system]
 requires = ["hatchling", "hook@git+https://github.com/BrokenSource/Hook/"]
 build-backend = "hatchling.build"
+
+[tool.hatch.metadata.hooks.plugin]
 
 [tool.hatch.build.targets.wheel]
 packages = ["pyaket"]
