@@ -1,7 +1,10 @@
+import importlib.metadata
 import site
 from pathlib import Path
 
-from broken import BrokenProject, Environment, __version__
+from broken import BrokenProject, Environment
+
+__version__ = importlib.metadata.version(__package__)
 
 PYAKET_ABOUT = "📦 Easy Python to Fast Executables"
 
