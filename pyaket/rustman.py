@@ -2,12 +2,13 @@ import subprocess
 from pathlib import Path
 from typing import Annotated
 
+from loguru import logger
 from typer import Option
 
-from broken import Environment, Runtime
-from broken.core import log, shell
-from broken.core.enumx import BrokenEnum
-from broken.core.system import BrokenPlatform, PlatformEnum
+from broken.enumx import BrokenEnum
+from broken.envy import Environment, Runtime
+from broken.system import BrokenPlatform, PlatformEnum
+from broken.utils import shell
 
 
 class RustToolchain(str, BrokenEnum):
@@ -29,8 +30,8 @@ class Rustman:
 
         # Install Visual C++ Build Tools on Windows
         if (BrokenPlatform.OnWindows and build_tools):
-            log.warn("You must have Microsoft Visual C++ Build Tools installed to compile Rust projects")
-            log.warn("• Will try installing it, you might need to restart your shell, good luck!")
+            logger.warn("You must have Microsoft Visual C++ Build Tools installed to compile Rust projects")
+            logger.warn("• Will try installing it, you might need to restart your shell, good luck!")
             shell("winget", "install", "-e", "--id", "Microsoft.VisualStudio.2022.BuildTools", "--override", (
                 " --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64"
                 " --add Microsoft.VisualStudio.Component.Windows10SDK"

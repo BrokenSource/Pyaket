@@ -3,17 +3,19 @@ from pathlib import Path
 from typing import Annotated
 
 import toml
-from attr import Factory, define
+from attrs import Factory, define
 from dotmap import DotMap
+from loguru import logger
 from typer import Option
 
-from broken import Environment
-from broken.core import BrokenCache, BrokenModel, log, shell
-from broken.core.enumx import BrokenEnum
-from broken.core.path import BrokenPath
-from broken.core.system import ArchEnum, BrokenPlatform, PlatformEnum, SystemEnum
-from broken.core.typerx import BrokenTyper
-from pyaket import PYAKET, PYAKET_ABOUT
+from broken.enumx import BrokenEnum
+from broken.envy import Environment
+from broken.model import BrokenModel
+from broken.path import BrokenPath
+from broken.system import ArchEnum, BrokenPlatform, PlatformEnum, SystemEnum
+from broken.typerx import BrokenTyper
+from broken.utils import BrokenCache, shell
+from pyaket import PYAKET, PYAKET_ABOUT, __version__
 
 # ---------------------------------------------- #
 # https://pyaket.dev/docs#app
@@ -195,7 +197,7 @@ class PyaketProject:
     cli: BrokenTyper = None
 
     def __attrs_post_init__(self):
-        self.cli = BrokenTyper(chain=True, help=False)
+        self.cli = BrokenTyper(chain=True, help=False, version=__version__)
         self.cli.description = PYAKET_ABOUT
 
         with self.cli.panel("🔴 Project"):
@@ -233,12 +235,12 @@ class PyaketProject:
 
         # Fixme: Wait for uv's implementation of pip wheel for my own sanity
         if self.release.standalone and (self.release.platform != BrokenPlatform.Host):
-            log.error("Standalone releases are best built in a host matching the target platform")
-            log.error("• Awaiting implementation of (https://github.com/astral-sh/uv/issues/1681)")
-            log.error(f"• Attempted to build for {self.release.platform} on {BrokenPlatform.Host}")
+            logger.error("Standalone releases are best built in a host matching the target platform")
+            logger.error("• Awaiting implementation of (https://github.com/astral-sh/uv/issues/1681)")
+            logger.error(f"• Attempted to build for {self.release.platform} on {BrokenPlatform.Host}")
             return None
         elif self.release.standalone:
-            log.error("Standalone releases are not implemented yet")
+            logger.error("Standalone releases are not implemented yet")
             return None
 
         # Auto enable zigbuild in scenarios where it's easier
@@ -248,7 +250,7 @@ class PyaketProject:
             BrokenPlatform.OnLinux   and (self.release.system.is_macos()),
             BrokenPlatform.OnLinux   and (self.release.platform == PlatformEnum.LinuxARM64),
         )):
-            log.note((
+            logger.note((
                 "Auto enabling zigbuild for easier cross compilation, "
                 f"you can opt-out of this by setting {_FLAG}=0"
             ))
@@ -271,14 +273,14 @@ class PyaketProject:
             "--target", self.release.platform.triple(),
             "--target-dir", Path(target),
         ).returncode != 0:
-            raise RuntimeError(log.error("Failed to compile Pyaket"))
+            raise RuntimeError(logger.error("Failed to compile Pyaket"))
 
         # Find the compiled binary
         binary = next(
             (Path(target)/self.release.platform.triple()/self.release.profile.value)
             .glob(("pyaket" + (".exe"*self.release.system.is_windows())))
         )
-        log.info(f"Compiled Pyaket binary at ({binary})")
+        logger.info(f"Compiled Pyaket binary at ({binary})")
 
         # Rename the compiled binary to the final release name
         release_path = (Path(output) / self.release_name)
@@ -287,13 +289,13 @@ class PyaketProject:
 
         # Compress the final release with upx
         if self.release.upx and (shell("upx", "--best", "--lzma", release_path).returncode != 0):
-            raise RuntimeError(log.error("Failed to compress executable with upx"))
+            raise RuntimeError(logger.error("Failed to compress executable with upx"))
 
         # Release a tar.gz to keep chmod +x attributes
         if self.release.tarball and self.release.system.is_unix():
             release_path = BrokenPath.gzip(release_path, remove=True)
 
-        log.ok(f"Final project release at ({release_path})")
+        logger.ok(f"Final project release at ({release_path})")
         return release_path
 
     # -------------------------------------------------------------------------------------------- #
