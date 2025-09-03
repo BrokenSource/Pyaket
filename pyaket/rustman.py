@@ -7,7 +7,7 @@ from typer import Option
 
 from broken.enumx import BrokenEnum
 from broken.envy import Environment, Runtime
-from broken.system import BrokenPlatform, PlatformEnum
+from broken.system import Host, PlatformEnum
 from broken.utils import shell
 
 
@@ -29,7 +29,7 @@ class Rustman:
             return
 
         # Install Visual C++ Build Tools on Windows
-        if (BrokenPlatform.OnWindows and build_tools):
+        if (Host.OnWindows and build_tools):
             logger.warn("You must have Microsoft Visual C++ Build Tools installed to compile Rust projects")
             logger.warn("• Will try installing it, you might need to restart your shell, good luck!")
             shell("winget", "install", "-e", "--id", "Microsoft.VisualStudio.2022.BuildTools", "--override", (
@@ -42,7 +42,7 @@ class Rustman:
         shell("rustup-init", "-y")
 
     def install_tools(self) -> None:
-        if BrokenPlatform.OnWindows:
+        if Host.OnWindows:
             Environment.set("MSVC", self.release.msvc)
 
             # MSYS2 Configuration
@@ -57,7 +57,7 @@ class Rustman:
                         f"pacman -S {' '.join(packages)} --noconfirm --needed")
 
                 # Native x86_64 => Other platforms
-                if BrokenPlatform.Arch.is_amd():
+                if Host.Arch.is_amd():
                     if (self.release.platform == PlatformEnum.WindowsAMD64):
                         install_msys2_packages("mingw-w64-x86_64-gcc")
                         Environment.add_to_path(msys2/"ucrt64"/"bin")
@@ -66,16 +66,16 @@ class Rustman:
                         # Fixme: Almost got it, clang linking errors
                         ...
 
-        elif BrokenPlatform.OnLinux:
+        elif Host.OnLinux:
             get = Environment.flag("AUTO_PACKAGES")
 
             # Need MinGW64 for cross compilation
             if get and (self.release.platform == PlatformEnum.WindowsAMD64):
-                if BrokenPlatform.ArchLike:
+                if Host.ArchLike:
                     shell("sudo", "pacman", "-S", "mingw-w64-toolchain")
-                elif BrokenPlatform.UbuntuLike:
+                elif Host.UbuntuLike:
                     shell("sudo", "apt", "install", "mingw-w64")
             if get and (self.release.platform == PlatformEnum.WindowsAMD64):
-                if BrokenPlatform.ArchLike:
+                if Host.ArchLike:
                     # Todo: Is it https://aur.archlinux.org/packages/mingw-w64-llvm (fat) ?
                     shell("yay", "-S", "mingw-w64-llvm", "--noconfirm", skip=1)

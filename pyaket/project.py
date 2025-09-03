@@ -12,7 +12,7 @@ from broken.enumx import BrokenEnum
 from broken.envy import Environment
 from broken.model import BrokenModel
 from broken.path import BrokenPath
-from broken.system import ArchEnum, BrokenPlatform, PlatformEnum, SystemEnum
+from broken.system import ArchEnum, Host, PlatformEnum, SystemEnum
 from broken.typerx import BrokenTyper
 from broken.utils import BrokenCache, shell
 from pyaket import PYAKET, PYAKET_ABOUT, __version__
@@ -135,10 +135,10 @@ class PyaketEntry(BrokenModel):
 class PyaketRelease(BrokenModel):
     """Release configuration for the application"""
 
-    system: Annotated[SystemEnum, Option("--target", "-t")] = BrokenPlatform.System
+    system: Annotated[SystemEnum, Option("--target", "-t")] = Host.System
     """Target Operating System to build binaries for"""
 
-    arch: Annotated[ArchEnum, Option("--arch", "-a")] = BrokenPlatform.Arch
+    arch: Annotated[ArchEnum, Option("--arch", "-a")] = Host.Arch
     """Target Architecture to build binaries for"""
 
     @property
@@ -234,10 +234,10 @@ class PyaketProject:
         Environment.set("MSVC", self.release.msvc)
 
         # Fixme: Wait for uv's implementation of pip wheel for my own sanity
-        if self.release.standalone and (self.release.platform != BrokenPlatform.Host):
+        if self.release.standalone and (self.release.platform != Host.Platform):
             logger.error("Standalone releases are best built in a host matching the target platform")
             logger.error("• Awaiting implementation of (https://github.com/astral-sh/uv/issues/1681)")
-            logger.error(f"• Attempted to build for {self.release.platform} on {BrokenPlatform.Host}")
+            logger.error(f"• Attempted to build for {self.release.platform} on {Host.Platform}")
             return None
         elif self.release.standalone:
             logger.error("Standalone releases are not implemented yet")
@@ -245,10 +245,10 @@ class PyaketProject:
 
         # Auto enable zigbuild in scenarios where it's easier
         if Environment.flag((_FLAG := "AUTO_ZIGBUILD"), 1) and any((
-            BrokenPlatform.OnWindows and (not self.release.system.is_windows()),
-            BrokenPlatform.OnWindows and (self.release.platform == PlatformEnum.WindowsARM64),
-            BrokenPlatform.OnLinux   and (self.release.system.is_macos()),
-            BrokenPlatform.OnLinux   and (self.release.platform == PlatformEnum.LinuxARM64),
+            Host.OnWindows and (not self.release.system.is_windows()),
+            Host.OnWindows and (self.release.platform == PlatformEnum.WindowsARM64),
+            Host.OnLinux   and (self.release.system.is_macos()),
+            Host.OnLinux   and (self.release.platform == PlatformEnum.LinuxARM64),
         )):
             logger.note((
                 "Auto enabling zigbuild for easier cross compilation, "
@@ -262,7 +262,7 @@ class PyaketProject:
         except ImportError:
             raise RuntimeError("Missing group 'pip install pyaket[cross]' for cross compilation")
 
-        shell("rustup", "default", f"stable-{BrokenPlatform.Host.triple()}")
+        shell("rustup", "default", f"stable-{Host.Platform.triple()}")
         shell("rustup", "target", "add", self.release.platform.triple())
         self.export()
 
