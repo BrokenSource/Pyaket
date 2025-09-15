@@ -39,8 +39,6 @@ class Rustman:
                 "--wait --passive"
             ))
 
-        shell("rustup-init", "-y")
-
     def install_tools(self) -> None:
         if Host.OnWindows:
             Environment.set("MSVC", self.release.msvc)
