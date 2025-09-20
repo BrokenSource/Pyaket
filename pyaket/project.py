@@ -93,7 +93,7 @@ class PyaketPython(BrokenModel):
 class PyaketUV(BrokenModel):
     """Configuration for uv project and package manager to use"""
 
-    version: Annotated[str, Option("--version", "-v")] = "0.8.9"
+    version: Annotated[str, Option("--version", "-v")] = "0.8.19"
     """A target uv version to use at runtime"""
 
     bundle: Annotated[bool, Option("--bundle", "-b")] = False
