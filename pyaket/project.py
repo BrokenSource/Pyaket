@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 from typing import Annotated
 
-import toml
+import tomli
 from attrs import Factory, define
 from dotmap import DotMap
 from loguru import logger
@@ -335,7 +335,7 @@ class PyaketProject:
         pin:  Annotated[bool, Option("--pin",             help="Pin dependencies versions")]=False,
     ) -> None:
         """Update project metadata from a pyproject.toml file"""
-        data = DotMap(toml.loads(Path(path).read_text(encoding="utf-8")))
+        data = DotMap(tomli.loads(Path(path).read_text(encoding="utf-8")))
         self.app.name   = data.project.get("name", self.app.name)
         self.app.author = "" # Secret mode for independent projects
 

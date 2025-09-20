@@ -57,7 +57,7 @@ class Rustman:
                 # Native x86_64 => Other platforms
                 if Host.Arch.is_amd():
                     if (self.release.platform == PlatformEnum.WindowsAMD64):
-                        install_msys2_packages("mingw-w64-x86_64-gcc")
+                        install_msys2_packages("mingw-w64-ucrt-x86_64-gcc")
                         Environment.add_to_path(msys2/"ucrt64"/"bin")
 
                     elif (self.release.platform == PlatformEnum.WindowsARM64):
