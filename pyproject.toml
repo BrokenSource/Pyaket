@@ -16,14 +16,11 @@ license     = "AGPL-3.0"
 requires-python = ">=3.10"
 dependencies = [
     "broken-source @ git+https://github.com/BrokenSource/BrokenSource",
-    "rustup~=1.28.2.1",
+    "rustbin~=1.28.2",
 ]
 
 [project.optional-dependencies]
-cross = [
-    "cargo-zigbuild~=0.20.1",
-    "ziglang~=0.15.1",
-]
+cross = ["cargo-zigbuild"]
 
 [dependency-groups]
 dev = [

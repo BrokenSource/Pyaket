@@ -33,9 +33,9 @@ class Rustman:
             logger.warn("You must have Microsoft Visual C++ Build Tools installed to compile Rust projects")
             logger.warn("• Will try installing it, you might need to restart your shell, good luck!")
             shell("winget", "install", "-e", "--id", "Microsoft.VisualStudio.2022.BuildTools", "--override", (
-                " --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64"
-                " --add Microsoft.VisualStudio.Component.Windows10SDK"
-                " --add Microsoft.VisualStudio.Component.Windows11SDK"
+                "--add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 "
+                "--add Microsoft.VisualStudio.Component.Windows10SDK "
+                "--add Microsoft.VisualStudio.Component.Windows11SDK "
                 "--wait --passive"
             ))
 
