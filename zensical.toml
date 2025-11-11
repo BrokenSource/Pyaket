@@ -1,0 +1,157 @@
+# Note: Experimental transition to zensical from mkdocs and its plugins
+
+# Fixme: Missing gen-files, mkdocstrings, snippets include, deploying, etc.
+# Fixme: Extend from a base configuration when supported
+# Fixme: Build script or `ln .github/readme.md website/index.md`
+
+[project]
+site_name = "Pyaket"
+site_description = "📦 Easy Python to Fast Executables"
+site_author = "Tremeschin"
+site_url  = "https://pyaket.dev/"
+repo_url  = "https://github.com/BrokenSource/Pyaket/"
+repo_name = "BrokenSource/Pyaket"
+edit_uri  = "edit/main/website/"
+copyright = "© CC BY-SA 4.0, <a href='https://github.com/Tremeschin/'>Tremeschin</a> 🇧🇷"
+docs_dir  = "website"
+nav = [
+  {"Home" = [
+    "index.md",
+    {"Changelog"="about/changelog.md"},
+    {"Roadmap"="about/roadmap.md"},
+    {"Contact"="about/contact.md"},
+    {"License"="about/license.md"},
+    {"Credits"="about/credits.md"},
+  ]},
+  {"Installation" = [
+    "get/rust.md",
+  ]},
+  {"Examples" = [
+    "basic.md",
+  ]},
+  {"Documentation" = [
+    "docs/index.md",
+    {"Python" = [
+      "docs/pinning.md",
+    ]},
+    {"Extra" = [
+      "docs/crosscompile.md",
+    ]},
+  ]},
+  {"Questions" = [
+    {"General" = [
+      "faq/general.md",
+      "faq/alternatives.md",
+    ]},
+    {"Systems" = [
+      "faq/windows.md",
+      "faq/linux.md",
+      "faq/macos.md",
+    ]},
+  ]},
+]
+
+# extra_css = ["css/extra.css"]
+# extra_javascript = [
+#   "javascript/mathjax.js",
+#   "javascript/particles.js",
+#   "https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js",
+#   "https://cdn.jsdelivr.net/npm/tsparticles@2.9.3/tsparticles.bundle.min.js",
+# ]
+
+# ----------------------------------------------------------------------------
+
+[project.theme]
+variant = "modern"
+# custom_dir = "../../website/overrides"
+# favicon = "pyaket/resources/images/logo.png"
+language = "en"
+features = [
+    "announce.dismiss",
+
+    # View or edit page source
+    "content.action.edit",
+    "content.action.view",
+
+    # Code block features
+    "content.code.annotate",
+    "content.code.copy",
+
+    # Footnote preview
+    "content.footnote.tooltips",
+    "content.tooltips",
+
+    # Switch all tabs with the same name at once
+    "content.tabs.link",
+
+    # Others
+    "navigation.indexes",
+    "navigation.expand",
+    "navigation.footer",
+    "navigation.path",
+    "navigation.instant",
+    "navigation.instant.prefetch",
+    "navigation.instant.progress",
+    "navigation.tabs",
+    "navigation.top",
+    "search.highlight",
+    "toc.follow",
+]
+
+# ---------------------------------------------------------------------------- #
+
+[project.theme.icon]
+logo = "octicons/package-16"
+repo = "fontawesome/brands/github"
+
+[project.theme.font]
+text = "Roboto"
+code = "Cascadia Code"
+
+[[project.theme.palette]]
+toggle.name = "Switch to dark mode"
+toggle.icon = "lucide/sun"
+media       = "(prefers-color-scheme: light)"
+scheme      = "default"
+primary     = "blue"
+accent      = "light-blue"
+
+[[project.theme.palette]]
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to light mode"
+media       = "(prefers-color-scheme: dark)"
+scheme      = "slate"
+primary     = "orange"
+accent      = "orange"
+
+# ----------------------------------------------------------------------------
+
+[[project.extra.social]]
+icon = "fontawesome/brands/discord"
+link = "https://discord.gg/KjqvcYwRHm"
+name = "Discord"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/telegram"
+link = "https://t.me/BrokenSource"
+name = "Telegram"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/patreon"
+link = "https://www.patreon.com/Tremeschin"
+name = "Patreon"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/github"
+link = "https://github.com/Tremeschin"
+name = "GitHub"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/youtube"
+link = "https://www.youtube.com/@Tremeschin"
+name = "YouTube"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/x-twitter"
+link = "https://twitter.com/Tremeschine"
+name = "Twitter"
