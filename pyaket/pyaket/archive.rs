@@ -54,7 +54,7 @@ pub fn unpack_bytes(
         [0x42, 0x5A, ..            ] => unpack_tar(BzDecoder::new(cursor),  &path)?,
         #[cfg(feature="gzip")]
         [0x1F, 0x8B, ..            ] => unpack_tar(GzDecoder::new(cursor),  &path)?,
-        _ => bail!("Unknown archive format for magic bytes: {:?}", magic),
+        _ => bail!("Unknown or disabled archive format for magic bytes: {:?}", magic),
     }
     write(flag, hash)?;
     Ok(())

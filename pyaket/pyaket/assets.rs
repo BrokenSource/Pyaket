@@ -1,30 +1,72 @@
 use crate::*;
 
-pub trait BrokenAssets: RustEmbed {
+pub static PYAKET_ASSETS: &str = "PYAKET_ASSETS";
 
-    /// Warn: Must match RustEmbed's `folder` attribute
-    fn path() -> &'static str;
+/// Global path for storing cache and/or final assets in subdirectories
+/// - Always overriden by environment variable
+/// - Editable install: `repository/.cache/`
+/// - Python package: `site-packages/.cache/`
+#[cfg(not(runtime))]
+fn workspace() -> PathBuf {
 
-    /// Get a path to download assets to before bundling
-    fn cache(path: &str) -> PathBuf {
-        envy::cargo_toml()
-            .parent().unwrap()
-            .join(".cache/assets")
-            .join(path)
+    // Optional custom directory
+    if let Some(path) = envy::get(PYAKET_ASSETS, None) {
+        return PathBuf::from(path);
     }
 
-    /// Smart bundle a download (build.rs only!)
+    // Otherwise the repository root
+    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .parent().unwrap()
+        .join(".cache")
+}
+
+/// All implementations **must** use the following:
+///
+/// ```rust
+/// #[derive(RustEmbed)]
+/// #[allow_missing=true]
+/// #[folder="${PYAKET_ASSETS:-../.cache/name()/files}"]
+/// pub struct MyAssets;
+///
+/// impl PyaketAssets for MyAssets { ... }
+/// ```
+pub trait PyaketAssets: RustEmbed {
+
+    /// Subdirectory for this instance
+    fn name() -> &'static str;
+
+    // Unique workspace for this instance
+    #[cfg(not(runtime))]
+    fn _root() -> PathBuf {
+        workspace().join(Self::name())
+    }
+
+    /// Path for final bundled files
+    #[cfg(not(runtime))]
+    fn files_dir() -> PathBuf {
+        Self::_root().join("files")
+    }
+
+    /// Path for downloads cache
+    #[cfg(not(runtime))]
+    fn cache_dir() -> PathBuf {
+        Self::_root().join("cache")
+    }
+
+    /// Smart bundle a download
+    #[cfg(not(runtime))]
     fn download(path: &str, url: &str) -> Result<Vec<u8>> {
-        let cache = Self::cache(path);
-        let bytes = network::download(url, Some(&cache))?;
+        let cache = &Self::cache_dir().join(path);
+        let bytes = network::download_file(url, &cache)?;
         Self::write(&path, &bytes)?;
         Ok(bytes)
     }
 
     /// Delete and recreate the bundle directory
+    #[cfg(not(runtime))]
     fn reset() -> Result<()> {
-        rmdir(Self::path()).ok();
-        mkdir(Self::path())?;
+        rmdir(Self::files_dir()).ok();
+        mkdir(Self::files_dir())?;
         Ok(())
     }
 
@@ -46,11 +88,10 @@ pub trait BrokenAssets: RustEmbed {
         }
     }
 
-    /// Write a file to be bundled (build.rs only!)
-    fn write(path: impl AsRef<Path>, data: &[u8]) -> Result<()> {
-        let file = envy::cargo_toml()
-            .join(Self::path())
-            .join(path);
+    /// Write a file to be bundled
+    #[cfg(not(runtime))]
+    fn write(path: impl AsRef<Path>, data: &Vec<u8>) -> Result<()> {
+        let file = Self::files_dir().join(path);
         mkdir(file.parent().unwrap())?;
         write(file, data)?;
         Ok(())
@@ -84,22 +125,27 @@ pub trait BrokenAssets: RustEmbed {
 
 #[derive(RustEmbed)]
 #[allow_missing=true]
-#[folder="../.cache/bundle/wheels"]
+#[folder="${PYAKET_ASSETS:-../.cache/wheels/files}"]
 pub struct WheelAssets;
 
-impl BrokenAssets for WheelAssets {
-    fn path() -> &'static str {
-        "../.cache/bundle/wheels"
+impl PyaketAssets for WheelAssets {
+    fn name() -> &'static str {
+        "wheels"
     }
 }
 
 #[derive(RustEmbed)]
 #[allow_missing=true]
-#[folder="../.cache/bundle/archives"]
+#[folder="${PYAKET_ASSETS:-../.cache/archives/files}"]
 pub struct ArchiveAssets;
 
-impl BrokenAssets for ArchiveAssets {
-    fn path() -> &'static str {
-        "../.cache/bundle/archives"
+impl PyaketAssets for ArchiveAssets {
+    fn name() -> &'static str {
+        "archives"
     }
 }
+
+/* -------------------------------------------------------------------------- */
+// Common assets names
+
+pub static ASSET_ICON: &str = "icon";

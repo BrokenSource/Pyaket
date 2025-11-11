@@ -35,7 +35,7 @@ directories   = "6.0.0"
 dotenvy       = "0.15.7"
 flate2        = {version="1.1.5", optional=true}
 glob          = "0.3.3"
-rust-embed    = "8.9.0"
+rust-embed    = {version="8.9.0", features=["interpolate-folder-path"]}
 serde         = {version="1.0.228", features=["derive"]}
 serde_json    = "1.0.145"
 shlex         = "1.3.0"
@@ -56,7 +56,7 @@ directories   = "6.0.0"
 dotenvy       = "0.15.7"
 flate2        = {version="1.1.5", optional=true}
 glob          = "0.3.3"
-rust-embed    = "8.9.0"
+rust-embed    = {version="8.9.0", features=["interpolate-folder-path"]}
 serde         = {version="1.0.228", features=["derive"]}
 serde_json    = "1.0.145"
 shlex         = "1.3.0"
@@ -85,21 +85,25 @@ gzip    = ["dep:flate2"]
 zip     = ["dep:zip"]
 zstd    = ["dep:zstd"]
 
+[lints.rust]
+unexpected_cfgs = {level="warn", check-cfg=["cfg(runtime)", "cfg(rust_analyzer)"]}
+
 # ---------------------------------------------------------------------------- #
 
 [profile.dev]
-strip = true       # Saves disk writes at no worse compile time
+panic = "abort" # Still shows panic message, skips unwinding
+strip = true    # Saves disk writes at no worse compile time
 
 [profile.release]
 codegen-units = 1  # Slightly improves binary size at no worse compile time
 incremental = true # Faster recompilation times for iterative development
 opt-level = 3      # Microseconds matter in production, space is plenty
-panic = "abort"    # Not a complex application, saves some binary size
+panic = "abort"    # Still shows panic message, skips unwinding
 lto = false        # Annoyingly slow linking times for minor size reduction
 
 # About 5x slower to build the final binary, for about 15%
 # size reduction, but 35% slower decompression and hashing
 [profile.small]
 inherits = "release"
-opt-level = 'z'
+opt-level = "z"
 lto = true

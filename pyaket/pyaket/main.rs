@@ -2,10 +2,9 @@ use pyaket::*;
 
 fn main() {
     LazyLock::force(&START_TIME);
-    envy::unset("BUILD");
 
     // Read the project configurion sent at the end of build.rs
-    let project: PyaketProject = PyaketProject::from_json(env!("PYAKET_PROJECT"));
+    let project = PyaketProject::from_json(env!("PYAKET_PROJECT"));
 
     // Self management command
     if let Some("self") = std::env::args().nth(1).as_deref() {
@@ -18,9 +17,10 @@ fn main() {
         return;
     }
 
-    let runtime = project.run();
-    if runtime.is_err() {
-        println!("\nError: {}", runtime.unwrap_err());
+    // Actually execute the project
+    match project.run() {
+        Err(e) => eprintln!("\nError: {}", e),
+        Ok(_) => {},
     }
 
     // Hold the terminal open with any Rust or Python errors for convenience

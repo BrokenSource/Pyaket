@@ -63,6 +63,11 @@ fn build() -> Result<()> {
     // Workaround to always trigger a rebuild
     println!("cargo:rerun-if-changed=NULL");
 
+    // Workaround for conditional compilation in build.rs, where
+    // code marked as `#[cfg(not(runtime))]` is disabled
+    #[cfg(rust_analyzer)]
+    println!("cargo:rustc-cfg=runtime");
+
     // Get options from environment variables
     let mut project = PyaketProject::default();
 
@@ -95,7 +100,7 @@ fn build() -> Result<()> {
         meta.compile()?;
     } else {
         if let Some(icon) = &project.app.icon {
-            ArchiveAssets::write("icon", &read(icon)?)?;
+            ArchiveAssets::write(ASSET_ICON, &read(icon)?)?;
         }
     }
 
@@ -108,7 +113,6 @@ fn build() -> Result<()> {
 
 fn main() {
     LazyLock::force(&START_TIME);
-    envy::set("BUILD", "1");
     logging::info!("Building pyaket project");
     build().unwrap();
 }
