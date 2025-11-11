@@ -251,7 +251,7 @@ class PyaketProject:
             Host.OnLinux   and (self.release.platform == PlatformEnum.LinuxARM64),
         )):
             logger.note((
-                "Auto enabling zigbuild for easier cross compilation, "
+                "Enabling zigbuild for easier cross compilation, "
                 f"you can opt-out of this by setting {_FLAG}=0"
             ))
             self.release.zigbuild = True
@@ -301,7 +301,7 @@ class PyaketProject:
     # -------------------------------------------------------------------------------------------- #
 
     def export(self) -> None:
-        Environment.updatedefault(
+        Environment.update(
             PYAKET_RELEASE        = 1,
             PYAKET_APP_NAME       = self.app.name,
             PYAKET_APP_VERSION    = self.app.version,
