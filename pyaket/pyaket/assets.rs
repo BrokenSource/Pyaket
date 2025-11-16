@@ -54,15 +54,6 @@ pub trait PyaketAssets: RustEmbed {
         Self::_root().join("cache")
     }
 
-    /// Smart bundle a download
-    #[cfg(not(runtime))]
-    fn download(path: &str, url: &str) -> Result<Vec<u8>> {
-        let cache = &Self::cache_dir().join(path);
-        let bytes = network::download_file(url, &cache)?;
-        Self::write(&path, &bytes)?;
-        Ok(bytes)
-    }
-
     /// Delete and recreate the files directory
     #[cfg(not(runtime))]
     fn clear_files() -> Result<()> {
@@ -86,14 +77,6 @@ pub trait PyaketAssets: RustEmbed {
     /// Read a single known file from the bundle
     fn read(asset: &str) -> Option<Vec<u8>> {
         Self::get(asset).map(|file| file.data.to_vec())
-    }
-
-    /// Compound function to read from bundle or download to a static file at runtime
-    fn read_or_download(asset: &str, url: &str, path: &PathBuf) -> Result<Vec<u8>> {
-        match Self::read(asset) {
-            None => network::download_file(url, &path),
-            Some(data) => Ok(data),
-        }
     }
 
     /// Write a file to be bundled

@@ -29,62 +29,37 @@ path = "pyaket/main.rs"
 
 [dependencies]
 anyhow        = {version="1.0.100"}
-bzip2         = {version="0.6.1", optional=true}
 clap          = {version="4.5.51", features=["derive"]}
 directories   = {version="6.0.0"}
 dotenvy       = {version="0.15.7"}
-flate2        = {version="1.1.5", optional=true}
 glob          = {version="0.3.3"}
 rust-embed    = {version="8.9.0", features=["interpolate-folder-path"]}
 serde         = {version="1.0.228", features=["derive"]}
 serde_json    = {version="1.0.145"}
 shlex         = {version="1.3.0"}
 smart-default = {version="0.7.1"}
-tar           = {version="0.4.44"}
 temp-dir      = {version="0.1.16"}
-ureq          = {version="3.1.4"}
 uuid          = {version="1.18.1", features=["v4"]}
 uv            = {version="0.9.9", git="https://github.com/astral-sh/uv/", default-features=false}
-xxhash-rust   = {version="0.8.15", features=["xxh3"]}
-zip           = {version="6.0.0", features=["deflate"], default-features=false, optional=true}
-zstd          = {version="0.13.3", optional=true}
 
 [build-dependencies]
 anyhow        = {version="1.0.100"}
-bzip2         = {version="0.6.1", optional=true}
 clap          = {version="4.5.51", features=["derive"]}
 directories   = {version="6.0.0"}
 dotenvy       = {version="0.15.7"}
-flate2        = {version="1.1.5", optional=true}
 glob          = {version="0.3.3"}
 rust-embed    = {version="8.9.0", features=["interpolate-folder-path"]}
 serde         = {version="1.0.228", features=["derive"]}
 serde_json    = {version="1.0.145"}
 shlex         = {version="1.3.0"}
 smart-default = {version="0.7.1"}
-tar           = {version="0.4.44"}
 temp-dir      = {version="0.1.16"}
-ureq          = {version="3.1.4"}
 uuid          = {version="1.18.1", features=["v4"]}
-xxhash-rust   = {version="0.8.15", features=["xxh3"]}
 winresource   = {version="0.1.27", default-features=false}
-zip           = {version="6.0.0", features=["deflate"], default-features=false, optional=true}
-zstd          = {version="0.13.3", optional=true}
 
 # ---------------------------------------------------------------------------- #
 
 [features]
-default = [
-    "gzip",
-    "zip",
-    "zstd",
-]
-
-# Archive formats
-bzip = ["dep:bzip2"]
-gzip = ["dep:flate2"]
-zip  = ["dep:zip"]
-zstd = ["dep:zstd"]
 
 [lints.rust]
 unexpected_cfgs = {level="warn", check-cfg=["cfg(runtime)", "cfg(rust_analyzer)"]}

@@ -34,14 +34,11 @@ pub use serde::Serialize;
 pub use smart_default::SmartDefault;
 pub use temp_dir::TempDir;
 pub use uuid::Uuid;
-pub use xxhash_rust::xxh3::xxh3_64;
 
-pub mod archive;
 pub mod assets;
 pub mod commands;
 pub mod envy;
 pub mod logging;
-pub mod network;
 pub mod project;
 pub mod runtime;
 pub mod subprocess;
