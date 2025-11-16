@@ -13,9 +13,7 @@ impl PyaketProject {
             dotenvy::from_path(file)?;
         }
 
-        envy::setdefault("UV_PYTHON_INSTALL_DIR", self.python_install_dir().display());
         envy::setdefault("VIRTUAL_ENV",      self.installation_dir().display());
-        envy::setdefault("UV_CACHE_DIR",     self.uv_cache_dir().display());
         envy::setdefault("UV_VENV_CLEAR",    1); // Skip destructive confirmation prompt
         envy::setdefault("UV_SYSTEM_PYTHON", 0); // Always use a managed distribution
         envy::setdefault("UV_NO_CONFIG",     1); // Do not look for a pyproject.toml

@@ -6,7 +6,6 @@ enum VersionQuery {
     Project,
     Pyaket,
     Python,
-    Uv,
 }
 
 #[derive(Args)]
@@ -27,9 +26,6 @@ impl PyaketCommand for VersionCommand {
 
             VersionQuery::Python =>
                 println!("{}", project.python.version),
-
-            VersionQuery::Uv =>
-                println!("{}", project.uv.version),
         }
         Ok(())
     }

@@ -88,18 +88,6 @@ class PyaketPython(BrokenModel):
     """Whether to bundle python in the executable"""
 
 # ---------------------------------------------- #
-# https://pyaket.dev/docs#uv
-
-class PyaketUV(BrokenModel):
-    """Configuration for uv project and package manager to use"""
-
-    version: Annotated[str, Option("--version", "-v")] = "0.9.8"
-    """A target uv version to use at runtime"""
-
-    bundle: Annotated[bool, Option("--bundle", "-b")] = False
-    """Whether to bundle uv in the executable"""
-
-# ---------------------------------------------- #
 # https://pyaket.dev/docs#pytorch
 
 class PyaketTorch(BrokenModel):
@@ -147,10 +135,10 @@ class PyaketRelease(BrokenModel):
 
     class Profile(str, BrokenEnum):
         Develop = "develop"
-        Release = "release"
+        Speed   = "speed"
         Small   = "small"
 
-    profile: Annotated[Profile, Option("--profile", "-p")] = Profile.Release
+    profile: Annotated[Profile, Option("--profile", "-p")] = Profile.Small
     """Build profile to use"""
 
     standalone: Annotated[bool, Option("--standalone", "-s")] = False
@@ -175,7 +163,6 @@ class PyaketProject:
     app:     PyaketApplication = Factory(PyaketApplication)
     dirs:    PyaketDirectories = Factory(PyaketDirectories)
     python:  PyaketPython      = Factory(PyaketPython)
-    uv:      PyaketUV          = Factory(PyaketUV)
     torch:   PyaketTorch       = Factory(PyaketTorch)
     entry:   PyaketEntry       = Factory(PyaketEntry)
     release: PyaketRelease     = Factory(PyaketRelease)
@@ -203,7 +190,6 @@ class PyaketProject:
         with self.cli.panel("🟡 Dependencies"):
             self.cli.command(self.python, name="python")
             self.cli.command(self.torch,  name="torch")
-            self.cli.command(self.uv,     name="uv")
 
         with self.cli.panel("🟢 Building"):
             self.cli.command(self.release, name="release")
@@ -251,6 +237,8 @@ class PyaketProject:
                 f"you can opt-out of this by setting {_FLAG}=0"
             ))
             self.release.zigbuild = True
+
+        # Todo: MacOS ulimit
 
         try:
             if self.release.zigbuild:
@@ -316,8 +304,6 @@ class PyaketProject:
             PYAKET_VERSIONS_DIR   = self.dirs.versions,
             PYAKET_PYTHON_VERSION = self.python.version,
             PYAKET_PYTHON_BUNDLE  = self.python.bundle,
-            PYAKET_UV_VERSION     = self.uv.version,
-            PYAKET_UV_BUNDLE      = self.uv.bundle,
             PYAKET_TORCH_VERSION  = self.torch.version,
             PYAKET_TORCH_BACKEND  = self.torch.backend,
             PYAKET_ENTRY_MODULE   = self.entry.module,

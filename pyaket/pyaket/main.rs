@@ -3,6 +3,18 @@ use pyaket::*;
 fn main() {
     LazyLock::force(&START_TIME);
 
+    // Todo: Move to CLI?
+    match envy::uget("PYAKET_SHIM", "").as_str() {
+        "uv" => unsafe {
+            match uv::main(std::env::args()) {
+                ExitCode::SUCCESS => std::process::exit(0),
+                ExitCode::FAILURE => std::process::exit(1),
+                _ => std::process::exit(1),
+            }
+        }
+        _ => {}
+    }
+
     // Read the project configurion sent at the end of build.rs
     let project = PyaketProject::from_json(env!("PYAKET_PROJECT"));
 

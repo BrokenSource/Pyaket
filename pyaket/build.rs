@@ -7,27 +7,6 @@ use lib::*;
 mod manage {
     use super::*;
 
-    // Todo: Find a way to match against uv
-    pub fn python(project: &PyaketProject) -> Result<()> {
-        if project.python.bundle {
-            logging::warn!("Bundling Python is not implemented yet");
-        }
-        Ok(())
-    }
-
-    pub fn astral(project: &PyaketProject) -> Result<()> {
-        network::must_exist(&project.uv_download_url())?;
-
-        if project.uv.bundle {
-            ArchiveAssets::download(
-                &project.uv_download_file(),
-                &project.uv_download_url(),
-            )?;
-        }
-
-        Ok(())
-    }
-
     pub fn wheels(project: &PyaketProject) -> Result<()> {
 
         // Don't trust the user on ';'.join(wheels) formatting
@@ -77,8 +56,6 @@ fn build() -> Result<()> {
     }
 
     ArchiveAssets::clear_files()?;
-    manage::python(&project)?;
-    manage::astral(&project)?;
 
     WheelAssets::clear_files()?;
     manage::wheels(&project)?;

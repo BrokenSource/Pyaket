@@ -83,36 +83,12 @@ pub struct PyaketDirectories {
 // https://pyaket.dev/docs#python
 
 pub static PYAKET_PYTHON_VERSION: &str = "PYAKET_PYTHON_VERSION";
-pub static PYAKET_PYTHON_BUNDLE:  &str = "PYAKET_PYTHON_BUNDLE";
 
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct PyaketPython {
 
     #[default(envy::uget(PYAKET_PYTHON_VERSION, "3.13"))]
     pub version: String,
-
-    #[default(envy::ubool(PYAKET_PYTHON_BUNDLE, false))]
-    pub bundle: bool,
-}
-
-/* -------------------------------------------- */
-// https://pyaket.dev/docs#uv
-
-pub static PYAKET_UV_VERSION: &str = "PYAKET_UV_VERSION";
-pub static PYAKET_UV_BUNDLE:  &str = "PYAKET_UV_BUNDLE";
-pub static PYAKET_UV_SYSTEM:  &str = "PYAKET_UV_SYSTEM";
-
-#[derive(Serialize, Deserialize, SmartDefault)]
-pub struct PyaketUV {
-
-    #[default(envy::uget(PYAKET_UV_VERSION, "0.9.8"))]
-    pub version: String,
-
-    #[default(envy::ubool(PYAKET_UV_BUNDLE, false))]
-    pub bundle: bool,
-
-    #[default(envy::ubool(PYAKET_UV_SYSTEM, false))]
-    pub system: bool,
 }
 
 /* -------------------------------------------- */
@@ -162,7 +138,6 @@ pub struct PyaketProject {
     pub app:    PyaketApplication,
     pub dirs:   PyaketDirectories,
     pub python: PyaketPython,
-    pub uv:     PyaketUV,
     pub torch:  PyaketTorch,
     pub entry:  PyaketEntry,
 
@@ -215,12 +190,6 @@ impl PyaketProject {
             .join(&self.dirs.common)
     }
 
-    /// Directory to store uv assets
-    pub fn astral_dir(&self) -> PathBuf {
-        self.workspace_common()
-            .join("astral")
-    }
-
     /// Mirrored to `$UV_CACHE_DIR`
     pub fn uv_cache_dir(&self) -> PathBuf {
         self.workspace_common()
@@ -254,68 +223,10 @@ impl PyaketProject {
         self.workspace_common().join("Python")
     }
 
-    /// The uv archive filename without extensions, e.g.:
-    /// - `uv-0.6.11-x86_64-unknown-linux-gnu`
-    pub fn uv_download_stem(&self) -> String {
-        format!("uv-{}", self.triple
-            .replace("windows-gnu", "windows-msvc")
-            .replace("msvcllvm", "msvc")
-        )
-    }
-
-    /// The download filename of the uv distribution, e.g.:
-    /// - `uv-0.6.11-x86_64-unknown-linux-gnu.tar.gz`
-    pub fn uv_download_file(&self) -> String {
-        format!("{}.{}", self.uv_download_stem(),
-            if self.triple.contains("windows") {"zip"} else {"tar.gz"}
-        )
-    }
-
-    /// The download URL of the uv distribution
-    pub fn uv_download_url(&self) -> String {
-        format!(
-            "{}/releases/download/{}/{}",
-            "https://github.com/astral-sh/uv",
-            self.uv.version,
-            self.uv_download_file(),
-        )
-    }
-
-    /// Path to unpack uv at runtime
-    pub fn uv_unpack_dir(&self) -> PathBuf {
-        self.astral_dir()
-            .join(&self.uv.version)
-    }
-
-    /// Path to download and cache uv at runtime
-    pub fn uv_download_path(&self) -> PathBuf {
-        self.uv_unpack_dir()
-            .join(&self.uv_download_file())
-    }
-
-    pub fn ensure_uv(&self) -> Result<()> {
-        let bytes = ArchiveAssets::read_or_download(
-            &self.uv_download_file(),
-            &self.uv_download_url(),
-            &self.uv_download_path(),
-        )?;
-        archive::unpack_bytes(&bytes, self.uv_unpack_dir())?;
-        Ok(())
-    }
-
     /// Get a command starting with uv executable
     pub fn uv(&self) -> Result<Command> {
-        let pattern = format!("{}/**/uv{}",
-            self.uv_unpack_dir().display(),
-            if cfg!(target_os="windows") {".exe"} else {""}
-        );
-
-        if !glob::glob(&pattern)?.any(|x| x.is_ok()) {
-            self.ensure_uv()?;
-        }
-
-        Ok(Command::new(glob::glob(&pattern)?
-            .filter_map(Result::ok).next()
-            .expect("uv executable not found")))
+        let mut cmd = Command::new(std::env::current_exe()?);
+        cmd.env("PYAKET_SHIM", "uv");
+        Ok(cmd)
     }
 }
