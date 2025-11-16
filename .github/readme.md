@@ -34,6 +34,12 @@
 > [!IMPORTANT]
 > This project is under active development. Basic functionality works, but some features are incomplete, documentation needs improvement, and more testing is required. Feedback is welcome 🙂
 
+> [!WARNING]
+> The code is going through major changes, most notably:
+> - Linking against uv directly for better reliability. Rust releases are temporarily paused until `uv` is installable on [crates.io](https://crates.io/crates/uv), as git dependencies are not allowed there.
+> - Examples, benchmarks, cross compilation auto-management are yet to be updated.
+> - Porting and individualizing the website to [zensical](https://zensical.org/).
+
 <!-- Todo: Demo video here, as always -->
 
 ## 🔥 Description
