@@ -146,13 +146,9 @@ class PyaketRelease(BrokenModel):
         return PlatformEnum.from_parts(self.system, self.arch)
 
     class Profile(str, BrokenEnum):
-        Debug   = "debug"
+        Develop = "develop"
         Release = "release"
         Small   = "small"
-
-        @property
-        def cargo(self) -> str:
-            return self.value.replace("debug", "dev")
 
     profile: Annotated[Profile, Option("--profile", "-p")] = Profile.Release
     """Build profile to use"""
@@ -258,7 +254,7 @@ class PyaketProject:
 
         try:
             if self.release.zigbuild:
-                import ziglang
+                import ziglang  # pyright: ignore
         except ImportError:
             raise RuntimeError("Missing group 'pip install pyaket[cross]' for cross compilation")
 
@@ -269,11 +265,14 @@ class PyaketProject:
         if shell(
             "cargo", ("zig"*self.release.zigbuild) + "build",
             "--manifest-path", (PYAKET.PACKAGE/"Cargo.toml"),
-            "--profile", self.release.profile.cargo,
+            "--profile", self.release.profile.value,
             "--target", self.release.platform.triple(),
             "--target-dir", Path(target),
         ).returncode != 0:
-            raise RuntimeError(logger.error("Failed to compile Pyaket"))
+            raise RuntimeError(logger.error((
+                "Failed to compile Pyaket, check the logs "
+                "above for information on what went wrong"
+            )))
 
         # Find the compiled binary
         binary = next(

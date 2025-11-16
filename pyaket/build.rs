@@ -76,11 +76,11 @@ fn build() -> Result<()> {
         bail!(logging::error!("Application name cannot be empty"))
     }
 
-    ArchiveAssets::reset()?;
+    ArchiveAssets::clear_files()?;
     manage::python(&project)?;
     manage::astral(&project)?;
 
-    WheelAssets::reset()?;
+    WheelAssets::clear_files()?;
     manage::wheels(&project)?;
     manage::reqtxt(&mut project)?;
 

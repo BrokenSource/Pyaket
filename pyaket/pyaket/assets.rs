@@ -6,6 +6,7 @@ pub static PYAKET_ASSETS: &str = "PYAKET_ASSETS";
 /// - Always overriden by environment variable
 /// - Editable install: `repository/.cache/`
 /// - Python package: `site-packages/.cache/`
+/// - Crates.io build: I don't know.
 #[cfg(not(runtime))]
 fn workspace() -> PathBuf {
 
@@ -41,13 +42,13 @@ pub trait PyaketAssets: RustEmbed {
         workspace().join(Self::name())
     }
 
-    /// Path for final bundled files
+    /// Directory for included files
     #[cfg(not(runtime))]
     fn files_dir() -> PathBuf {
         Self::_root().join("files")
     }
 
-    /// Path for downloads cache
+    /// Directory for downloads cache
     #[cfg(not(runtime))]
     fn cache_dir() -> PathBuf {
         Self::_root().join("cache")
@@ -62,11 +63,18 @@ pub trait PyaketAssets: RustEmbed {
         Ok(bytes)
     }
 
-    /// Delete and recreate the bundle directory
+    /// Delete and recreate the files directory
     #[cfg(not(runtime))]
-    fn reset() -> Result<()> {
+    fn clear_files() -> Result<()> {
         rmdir(Self::files_dir()).ok();
         mkdir(Self::files_dir())?;
+        Ok(())
+    }
+
+    #[cfg(not(runtime))]
+    fn clear_cache() -> Result<()> {
+        rmdir(Self::cache_dir()).ok();
+        mkdir(Self::cache_dir())?;
         Ok(())
     }
 
@@ -83,7 +91,7 @@ pub trait PyaketAssets: RustEmbed {
     /// Compound function to read from bundle or download to a static file at runtime
     fn read_or_download(asset: &str, url: &str, path: &PathBuf) -> Result<Vec<u8>> {
         match Self::read(asset) {
-            None => network::download(url, Some(&path.into())),
+            None => network::download_file(url, &path),
             Some(data) => Ok(data),
         }
     }
