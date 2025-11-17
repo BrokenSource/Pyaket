@@ -2,13 +2,17 @@
 icon: material/git
 ---
 
-You can install latest pyaket git as a package:
+## Directly
 
-```sh title="Command"
-$ pip install git+https://github.com/BrokenSource/Pyaket
+You can install the latest pyaket code as a package:
+
+```sh
+pip install git+https://github.com/BrokenSource/Pyaket
 ```
 
-Or add into your `pyproject.toml`:
+## Dependency
+
+Add into your `pyproject.toml`:
 
 ```toml title="pyproject.toml"
 [project]

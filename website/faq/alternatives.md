@@ -2,7 +2,7 @@
 icon: octicons/versions-16
 ---
 
-Pyaket is not the first project solving the packaging problem. Many alternatives out there served as inspiration for the design choices and features of the project, but ultimately none solved my needs and requirements. Here's my thoughts, differences and similarities on each of them - feel free to reach me out if any feature has been added solving any of these and/or I'm wrong.
+Pyaket is not the first project solving the packaging problem. Many alternatives out there served as inspiration for the design choices and features of the project, but ultimately none solved my needs and requirements. Here's my thoughts, differences and similarities on each of them - feel free to reach out if any feature has been added solving any of these and/or I'm wrong.
 
 <!-- Ordered by how much each item blocked my usage of it -->
 :material-arrow-right: Items are generally ordered by how much each blocked or limited my usage.
@@ -17,16 +17,19 @@ Hands down the most similar solution and major source of inspiration used up unt
 - No safety against partial installs: Instructing Windows users how to open a powershell in a directory, then typing executable name plus `self restore` is annoying to say the least.
 - Variable naming schemes are confusing at times, tries to support everything and nothing at the same time, better to limit the scope, have sane defaults, go all in pip or uv exclusively.
 - Some critical options aren't configurable, such as the installation's root directory.
+- No version management, removing unused previous installations, etc.
 
 ## [PyInstaller](https://github.com/pyinstaller/pyinstaller)
 
-- Mainly, a `--onefile` executable needs to fully unpack itself to the system temp directory each run, not only being slow but wearing out SSDs quickly. Can be improved by extracting once and having mechanisms to detect partial installs.
+- A `--onefile` executable needs to fully unpack itself to the system temp directory each run, not only being slow but wearing out SSDs quickly
 - Compatibility is generally nice, but packages needing to bundle shared libraries are often a huge problem with unecessarily complex build hooks passing the hot potato around.
 - Attempts to bundle a whole virtual environment with a python interpreter, may have issues with platform executable sizes hard limits when including pytorch.
 - Doesn't utilizes a shared cache for wheels as installs don't go through a pip-like tool.
 
+
 ## [Nuitka](https://github.com/nuitka/nuitka)
 
-- Amazing how it works at all,
+Amazing how it works at all
 
-- Generating C code is very slow on a single python thread
+- Generating C code is very slow on a single python thread and might diverge from cpython.
+- Compatibility issues with many packages, especially ones with C extensions. Requires many hooks to bundle shared libraries, of which may not be compatible with all user systems.

@@ -2,8 +2,6 @@
 icon: material/application-braces-outline
 ---
 
-# Application
-
 :material-arrow-right: General metadata of the project
 
 ### <kbd>PYAKET_APP_NAME</kbd> {#app-name}

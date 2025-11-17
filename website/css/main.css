@@ -2,7 +2,18 @@ body {
     text-align: justify;
 }
 
-/* Fixme: https://github.com/zensical/zensical/issues/115 */
-blockquote {
-    display: none;
+/* Better headings */
+h1, h2, h3 {
+  font-family: "Roboto Slab", serif;
+}
+
+/* Spread content tabs to full width */
+.tabbed-labels--linked label {
+  text-align: center;
+  flex: 1;
+}
+
+/* Less bold admonition titles */
+.md-typeset .admonition-title {
+  font-weight: 500;
 }

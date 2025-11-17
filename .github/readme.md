@@ -5,9 +5,9 @@
   <br>
   <br>
     <a href="https://crates.io/crates/pyaket/"><img src="https://img.shields.io/crates/v/pyaket?label=Crates.io&color=orange"></a>
-    <a href="https://crates.io/crates/pyaket/"><img src="https://img.shields.io/crates/d/pyaket?label=Downloads&color=orange"></a>
+    <a href="https://crates.io/crates/pyaket/"><img src="https://img.shields.io/crates/d/pyaket?label=↓&color=orange"></a>
     <a href="https://pypi.org/project/pyaket/"><img src="https://img.shields.io/pypi/v/pyaket?label=PyPI&color=blue"></a>
-    <a href="https://pypi.org/project/pyaket/"><img src="https://img.shields.io/pypi/dw/pyaket?label=Installs&color=blue"></a>
+    <a href="https://pypi.org/project/pyaket/"><img src="https://img.shields.io/pypi/dw/pyaket?label=↓&color=blue"></a>
     <a href="https://github.com/BrokenSource/Pyaket/"><img src="https://img.shields.io/github/v/tag/BrokenSource/BrokenSource?label=GitHub&color=orange"></a>
     <a href="https://github.com/BrokenSource/Pyaket/stargazers/"><img src="https://img.shields.io/github/stars/BrokenSource/Pyaket?label=Stars&style=flat&color=orange"></a>
     <a href="https://discord.gg/KjqvcYwRHm"><img src="https://img.shields.io/discord/1184696441298485370?label=Discord&style=flat&color=purple"></a>
@@ -34,12 +34,6 @@
 > [!IMPORTANT]
 > This project is under active development. Basic functionality works, but some features are incomplete, documentation needs improvement, and more testing is required. Feedback is welcome 🙂
 
-> [!WARNING]
-> The code is going through major changes, most notably:
-> - Linking against uv directly for better reliability. Rust releases are temporarily paused until `uv` is installable on [crates.io](https://crates.io/crates/uv), as git dependencies are not allowed there.
-> - Examples, benchmarks, cross compilation auto-management are yet to be updated.
-> - Porting and individualizing the website to [zensical](https://zensical.org/).
-
 <!-- Todo: Demo video here, as always -->
 
 ## 🔥 Description
@@ -47,8 +41,8 @@
 **📦 Pyaket** is a tool that bundles and generates portable executables of your python projects for all platforms. No more convoluted installation steps, give users the convenience [they want](https://github.com/sherlock-project/sherlock/issues/2011), with maximum compatibility and dev-centric ease of use compared to alternative solutions.
 
 - [x] **Lightning fast** installation that automatically manages python, virtual environments, and dependencies without user intervention that just works, bundle wheels or install from pypi.
-- [x] **Max compatibility** with how the project is run in the user's machine - pyaket does not reinvent the wheel or compile python with an intermediate, use tools that already exists [#](https://pyaket.dev/faq/general/#how-it-works)
-- [x] **Cross compile** from anywhere to most platforms and architectures, no docker or virtual machines required, portable immutable executables - see the table for details! [#](https://pyaket.dev/docs/crosscompile/)
+- [x] **Max compatibility** with how the project is run in the user's machine - pyaket does not _reinvent the wheel_ or compile python with an intermediate, use tools that already exists [#](https://pyaket.dev/faq/general/#how-it-works)
+- [x] **Cross compile** from anywhere to most platforms and architectures, no docker or virtual machines required, portable immutable executables - see the table for details! [#](https://pyaket.dev/docs/crosscompiling/)
 - [x] **Intelligently** detects partial installations, downloads, archive unpacks, and automatically takes appropriate action - making iterative development easy and resilient against users
 - [ ] **Standalone** executables with no network calls at runtime that bundles all dependencies [#](https://github.com/BrokenSource/Pyaket/issues/2)
 - [x] **Monorepo** support in mind, decoupled dependencies and entry point specification
@@ -108,7 +102,7 @@ $ hyperfine "python -m cowsay -t anyhow"
   Range (min … max):    18.2 ms …  19.0 ms    100 runs
 ```
 
-<sup><b>Note:</b> For the keen among you, the actual benchmark command was `nice -20 taskset -c 2 hyperfine -w 50 -r 100 -N (...)`, executed on Python 3.13.3, mainline Linux kernel v6.14.4, R9 5900x ondemand governor stock, 2x3200 MT/s DDR4 CL16 2Rx8 as of May 2025</sup>
+<sup><b>Note:</b> The actual benchmark command was `nice -20 taskset -c 2 hyperfine -w 50 -r 100 -N (...)`</sup>
 
 ### Cross compile
 

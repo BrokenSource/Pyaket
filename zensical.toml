@@ -29,31 +29,35 @@ nav = [
     {"Package"=[
       "get/index.md",
       "get/pypi.md",
-      "get/binaries.md",
+      "get/executables.md",
       "get/crate.md",
       "get/source.md",
       "get/docker.md",
+    ]},
+    {"Workflows"=[
+      "get/ci/github.md",
+      "get/ci/gitlab.md",
     ]},
     {"Tools"=[
       "get/tools/rust.md",
     ]},
   ]},
-  # {"Examples" = [
-  #   "basic.md",
-  # ]},
+  {"Examples" = [
+    "examples/index.md",
+  ]},
   {"Documentation" = [
     {"Configuration"=[
       "docs/config/index.md",
       "docs/config/application.md",
-      "docs/config/python.md",
       "docs/config/dependencies.md",
       "docs/config/directories.md",
+      "docs/config/python.md",
       "docs/config/pytorch.md",
       "docs/config/entry.md",
     ]},
     {"Extra" = [
+      "docs/crosscompiling.md",
       "docs/pinning.md",
-      "docs/crosscompile.md",
     ]},
   ]},
   {"Questions" = [
@@ -89,6 +93,7 @@ features = [
     "announce.dismiss",
 
     # View or edit page source
+    "content.action.edit",
     "content.action.view",
 
     # Code block features

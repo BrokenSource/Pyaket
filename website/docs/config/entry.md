@@ -1,3 +1,6 @@
+---
+icon: material/exit-to-app
+---
 
 ## Entry Points
 

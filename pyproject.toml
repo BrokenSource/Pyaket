@@ -23,9 +23,7 @@ dependencies = [
 cross = ["cargo-zigbuild"]
 
 [dependency-groups]
-dev = [
-    "pyaket[cross]",
-]
+dev = ["pyaket[cross]"]
 
 [project.scripts]
 pyaket = "pyaket.__main__:main"
