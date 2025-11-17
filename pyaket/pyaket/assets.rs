@@ -9,16 +9,13 @@ pub static PYAKET_ASSETS: &str = "PYAKET_ASSETS";
 /// - Crates.io build: I don't know.
 #[cfg(not(runtime))]
 fn workspace() -> PathBuf {
-
-    // Optional custom directory
     if let Some(path) = envy::get(PYAKET_ASSETS, None) {
-        return PathBuf::from(path);
+        PathBuf::from(path)
+    } else {
+        PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .parent().unwrap()
+            .join(".cache")
     }
-
-    // Otherwise the repository root
-    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .parent().unwrap()
-        .join(".cache")
 }
 
 /// All implementations **must** use the following:

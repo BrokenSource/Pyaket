@@ -23,10 +23,10 @@ from pyaket import PYAKET, PYAKET_ABOUT, __version__
 class PyaketApplication(BrokenModel):
     """General metadata and dependencies definitions of the project"""
 
-    name: Annotated[str, Option("--name", "-n")] = "pyaket"
+    name: Annotated[str, Option("--name", "-n")] = "Pyaket"
     """The application name, used for"""
 
-    author: Annotated[str, Option("--author", "-a")] = "brokensource"
+    author: Annotated[str, Option("--author", "-a")] = "BrokenSource"
     """Subdirectory of the platform's user data directory to install the application"""
 
     version: Annotated[str, Option("--version", "-v")] = "0.0.0"

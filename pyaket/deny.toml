@@ -17,6 +17,7 @@ allow = [
     "MPL-2.0",             # https://spdx.org/licenses/MPL-2.0.html
     "Unicode-3.0",         # https://spdx.org/licenses/Unicode-3.0.html
     "Zlib",                # https://spdx.org/licenses/Zlib.html
+    "CC0-1.0",             # https://spdx.org/licenses/CC0-1.0.html
 ]
 exceptions = [
     {allow=["AGPL-3.0"], crate="pyaket"},

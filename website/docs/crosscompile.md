@@ -1,3 +1,6 @@
+---
+icon: material/sword-cross
+---
 
 Thanks to Rust's amazing toolchain, coupled with [cargo-zigbuild](https://github.com/rust-cross/cargo-zigbuild), and using pure crates, Pyaket can pretty much compile executables _from any_ platform _to any_ platform without docker or vms.
 

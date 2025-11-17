@@ -1,6 +1,6 @@
 # Note: Experimental transition to zensical from mkdocs and its plugins
 
-# Fixme: Missing gen-files, mkdocstrings, snippets include, deploying, etc.
+# Fixme: Missing gen-files, mkdocstrings, snippets include, etc.
 # Fixme: Extend from a base configuration when supported
 # Fixme: Build script or `ln .github/readme.md website/index.md`
 
@@ -17,24 +17,42 @@ docs_dir  = "website"
 nav = [
   {"Home" = [
     "index.md",
-    {"Changelog"="about/changelog.md"},
-    {"Roadmap"="about/roadmap.md"},
-    {"Contact"="about/contact.md"},
-    {"License"="about/license.md"},
-    {"Credits"="about/credits.md"},
+    {"About"=[
+      {"Changelog"="about/changelog.md"},
+      {"Roadmap"="about/roadmap.md"},
+      {"Contact"="about/contact.md"},
+      {"License"="about/license.md"},
+      {"Credits"="about/credits.md"},
+    ]}
   ]},
   {"Installation" = [
-    "get/rust.md",
+    {"Package"=[
+      "get/index.md",
+      "get/pypi.md",
+      "get/binaries.md",
+      "get/crate.md",
+      "get/source.md",
+      "get/docker.md",
+    ]},
+    {"Tools"=[
+      "get/tools/rust.md",
+    ]},
   ]},
-  {"Examples" = [
-    "basic.md",
-  ]},
+  # {"Examples" = [
+  #   "basic.md",
+  # ]},
   {"Documentation" = [
-    "docs/index.md",
-    {"Python" = [
-      "docs/pinning.md",
+    {"Configuration"=[
+      "docs/config/index.md",
+      "docs/config/application.md",
+      "docs/config/python.md",
+      "docs/config/dependencies.md",
+      "docs/config/directories.md",
+      "docs/config/pytorch.md",
+      "docs/config/entry.md",
     ]},
     {"Extra" = [
+      "docs/pinning.md",
       "docs/crosscompile.md",
     ]},
   ]},
@@ -51,7 +69,8 @@ nav = [
   ]},
 ]
 
-# extra_css = ["css/extra.css"]
+# Fixme: Common monorepo theme
+extra_css = ["css/main.css"]
 # extra_javascript = [
 #   "javascript/mathjax.js",
 #   "javascript/particles.js",
@@ -64,13 +83,12 @@ nav = [
 [project.theme]
 variant = "modern"
 # custom_dir = "../../website/overrides"
-# favicon = "pyaket/resources/images/logo.png"
+favicon = "logo.png"
 language = "en"
 features = [
     "announce.dismiss",
 
     # View or edit page source
-    "content.action.edit",
     "content.action.view",
 
     # Code block features
@@ -87,6 +105,7 @@ features = [
     # Others
     "navigation.indexes",
     "navigation.expand",
+    # "navigation.sections",
     "navigation.footer",
     "navigation.path",
     "navigation.instant",

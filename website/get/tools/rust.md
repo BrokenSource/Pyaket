@@ -2,6 +2,13 @@
 icon: simple/rust
 ---
 
+!!! warning
+    This section is outdated and needs a cleanup/rewrite:
+
+    - Cross compilation to MacOS needs an SDK
+    - Rust is now auto-provided by [Rustbin](https://github.com/BrokenSource/Rustbin)
+
+
 📦 Pyaket uses the rust programming language for its core functionality.
 
 <b><span class="the">D</span>eveloping</b> or compiling rust projects requires a toolchain - collection of a compiler, project manager, standard library, and other tools. Luckily, the official installation method [rustup](https://www.rust-lang.org/tools/install) manages it all for you, including cross compilation (except for a few external dependencies).

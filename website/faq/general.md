@@ -11,4 +11,4 @@ In short, the rust language supports [build scripts](https://doc.rust-lang.org/c
 - This guarantees _maximum compatibility_ with how the project is run on the user's machine, as we're doing the same steps an experienced python user would do with native tools.
 - There is little runtime overhead, mostly checking if the project is already installed and files are properly unpacked, then calling a python interpreter child process.
 
-There are _a lot_ of configuration options in the [documentation](https://pyaket.dev/docs/)!
+There are lots of configuration options in the documentation.

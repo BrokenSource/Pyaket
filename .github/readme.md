@@ -1,6 +1,7 @@
+<style> blockquote {display: none} </style>
 <div align="center">
   <img src="https://raw.githubusercontent.com/BrokenSource/Pyaket/main/pyaket/resources/images/logo.png" width="210">
-  <h1 style="margin-top: 0">Pyaket</h1>
+  <h1>Pyaket</h1>
   <span>📦 Easy Python to → Fast Executables 📦</span>
   <br>
   <br>

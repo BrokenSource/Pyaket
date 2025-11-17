@@ -17,10 +17,10 @@ pub static PYAKET_KEEP_OPEN:   &str = "PYAKET_KEEP_OPEN";
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct PyaketApplication {
 
-    #[default(envy::uget(PYAKET_APP_NAME, "pyaket"))]
+    #[default(envy::uget(PYAKET_APP_NAME, "Pyaket"))]
     pub name: String,
 
-    #[default(envy::uget(PYAKET_APP_AUTHOR, "brokensource"))]
+    #[default(envy::uget(PYAKET_APP_AUTHOR, "BrokenSource"))]
     pub author: String,
 
     #[default(envy::uget(PYAKET_APP_VERSION, "0.0.0"))]
@@ -72,10 +72,10 @@ pub static PYAKET_VERSIONS_DIR: &str = "PYAKET_VERSIONS_DIR";
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct PyaketDirectories {
 
-    #[default(envy::uget(PYAKET_COMMON_DIR, "pyaket"))]
+    #[default(envy::uget(PYAKET_COMMON_DIR, "Pyaket"))]
     pub common: String,
 
-    #[default(envy::uget(PYAKET_VERSIONS_DIR, "versions"))]
+    #[default(envy::uget(PYAKET_VERSIONS_DIR, "Versions"))]
     pub versions: String,
 }
 
@@ -190,12 +190,6 @@ impl PyaketProject {
             .join(&self.dirs.common)
     }
 
-    /// Mirrored to `$UV_CACHE_DIR`
-    pub fn uv_cache_dir(&self) -> PathBuf {
-        self.workspace_common()
-            .join("packages")
-    }
-
     /// Where to install the Python's virtual environment:
     /// - `$WORKSPACE/versions/1.0.0`
     pub fn installation_dir(&self) -> PathBuf {
@@ -216,12 +210,6 @@ impl PyaketProject {
 /* -------------------------------------------------------------------------- */
 
 impl PyaketProject {
-
-    /// Directory to store many python versions
-    /// - Should mirror `UV_PYTHON_INSTALL_DIR`
-    pub fn python_install_dir(&self) -> PathBuf {
-        self.workspace_common().join("Python")
-    }
 
     /// Get a command starting with uv executable
     pub fn uv(&self) -> Result<Command> {
