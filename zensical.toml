@@ -93,7 +93,7 @@ features = [
     "announce.dismiss",
 
     # View or edit page source
-    "content.action.edit",
+    # "content.action.edit",
     "content.action.view",
 
     # Code block features

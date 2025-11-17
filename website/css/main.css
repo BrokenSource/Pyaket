@@ -1,5 +1,5 @@
 body {
-    text-align: justify;
+  text-align: justify;
 }
 
 /* Better headings */
@@ -16,4 +16,20 @@ h1, h2, h3 {
 /* Less bold admonition titles */
 .md-typeset .admonition-title {
   font-weight: 500;
+}
+
+/* -------------------------------------------------------------------------- */
+
+/* Fixme: View edit floating */
+.md-content__inner {
+  position: relative;
+}
+.md-content__button {
+  position: absolute;
+  top: .2rem;
+  right: .4rem;
+  float: none;
+}
+blockquote {
+  display: none;
 }
