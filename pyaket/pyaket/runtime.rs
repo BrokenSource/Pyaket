@@ -49,11 +49,11 @@ impl PyaketProject {
 
             // Install PyTorch first, as other dependencies might
             // install a platform's default backend
-            if !self.torch.version.is_empty() {
+            if let Some(version) = &self.torch.version {
                 let mut torch = self.uv()?;
 
                 torch.arg("pip").arg("install")
-                    .arg(format!("torch=={}", self.torch.version))
+                    .arg(format!("torch=={}", version))
                     .arg(format!("--torch-backend={}", self.torch.backend))
                     .arg("--preview");
 
@@ -103,32 +103,29 @@ impl PyaketProject {
         main.arg("--no-project");
         main.arg("--active");
 
-        if let Some(module) = &self.entry.module {
-            main.arg("python").arg("-m").arg(module);
-
-        } else if let Some(script) = &self.entry.script {
-            main.arg("run").arg(script);
-
-        } else if let Some(code) = &self.entry.code {
-            main.arg("python").arg("-c").arg(code);
-
-        } else if let Some(command) = &self.entry.command {
-            let args = shlex::split(command)
-                .expect("Failed to parse entry command");
-            main = Command::new(&args[0]);
-            main.args(&args[..]);
-
-        // Effectively pure python without entry points
-        } else {
-            main.arg("python");
+        match &self.entry {
+            PyaketEntry::Command(command) => {
+                let args = shlex::split(&command)
+                    .expect("Failed to parse entry command");
+                main = Command::new(&args[0]);
+                main.args(&args[1..]);
+            },
+            PyaketEntry::Module(module) => {
+                main.arg("python").arg("-m").arg(&module);
+            },
+            PyaketEntry::Code(code) => {
+                main.arg("python").arg("-c").arg(&code);
+            },
+            PyaketEntry::Interpreter => {
+                main.arg("python");
+            },
+            PyaketEntry::Script(script) => {
+                main.arg(&script);
+            },
         }
 
-        // Passthrough incoming arguments
-        for arg in std::env::args().skip(1) {
-            main.arg(arg);
-        }
-
-        // Execute the main program
+        // Passthrough arguments, execute
+        main.args(std::env::args().skip(1));
         main.spawn()?.wait()?;
         Ok(())
     }

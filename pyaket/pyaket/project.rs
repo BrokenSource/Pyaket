@@ -100,8 +100,8 @@ pub static PYAKET_TORCH_BACKEND: &str = "PYAKET_TORCH_BACKEND";
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct PyaketTorch {
 
-    #[default(envy::uget(PYAKET_TORCH_VERSION, ""))]
-    pub version: String,
+    #[default(envy::get(PYAKET_TORCH_VERSION, None))]
+    pub version: Option<String>,
 
     #[default(envy::uget(PYAKET_TORCH_BACKEND, "auto"))]
     pub backend: String,
@@ -112,23 +112,36 @@ pub struct PyaketTorch {
 
 pub static PYAKET_ENTRY_MODULE:  &str = "PYAKET_ENTRY_MODULE";
 pub static PYAKET_ENTRY_SCRIPT:  &str = "PYAKET_ENTRY_SCRIPT";
-pub static PYAKET_ENTRY_CODE:    &str = "PYAKET_ENTRY_CODE";
 pub static PYAKET_ENTRY_COMMAND: &str = "PYAKET_ENTRY_COMMAND";
+pub static PYAKET_ENTRY_CODE:    &str = "PYAKET_ENTRY_CODE";
 
-#[derive(Serialize, Deserialize, SmartDefault)]
-pub struct PyaketEntry {
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all="lowercase")]
+pub enum PyaketEntry {
+    Command(String),
+    Module(String),
+    Script(String),
+    Code(String),
+    Interpreter,
+}
 
-    #[default(envy::get(PYAKET_ENTRY_MODULE, None))]
-    pub module: Option<String>,
+impl Default for PyaketEntry {
+    fn default() -> Self {
+        type G = fn(String) -> PyaketEntry;
 
-    #[default(envy::get(PYAKET_ENTRY_SCRIPT, None))]
-    pub script: Option<String>,
+        for (key, from) in [
+            (PYAKET_ENTRY_COMMAND, Self::Command as G),
+            (PYAKET_ENTRY_MODULE,  Self::Module  as G),
+            (PYAKET_ENTRY_SCRIPT,  Self::Script  as G),
+            (PYAKET_ENTRY_CODE,    Self::Code    as G),
+        ] {
+            if let Some(value) = envy::get(key, None) {
+                return from(value);
+            }
+        }
 
-    #[default(envy::get(PYAKET_ENTRY_CODE, None))]
-    pub code: Option<String>,
-
-    #[default(envy::get(PYAKET_ENTRY_COMMAND, None))]
-    pub command: Option<String>,
+        PyaketEntry::Interpreter
+    }
 }
 
 /* -------------------------------------------- */
