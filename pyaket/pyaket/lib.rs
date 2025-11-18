@@ -48,3 +48,6 @@ pub use project::*;
 
 /// Time at which the program started, used for logging
 pub static START_TIME: LazyLock<Instant> = LazyLock::new(Instant::now);
+
+/// Separator for environment variable lists
+pub static SEPARATOR: &str = ";";

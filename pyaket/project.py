@@ -17,6 +17,9 @@ from broken.typerx import BrokenTyper
 from broken.utils import BrokenCache, shell
 from pyaket import PYAKET, PYAKET_ABOUT, __version__
 
+# Warn: Must match lib.rs
+SEPARATOR: str = ";"
+
 # ---------------------------------------------- #
 # https://pyaket.dev/docs#app
 
@@ -43,13 +46,13 @@ class PyaketApplication(BrokenModel):
     """List of wheels to bundle and install at runtime"""
 
     pypi: Annotated[list[str], Option("--pypi", "-p")] = []
-    """List of dependencies to install at runtime from PyPI, plain or pinned"""
+    """List of dependencies to install at runtime from PyPI"""
 
     reqtxt: Annotated[Path, Option("--requirements", "-r")] = None
     """Path to a requirements.txt to install at runtime (legacy)"""
 
     rolling: Annotated[bool, Option("--rolling")] = False
-    """Always upgrade dependencies at startup for a rolling-release mechanism"""
+    """Always upgrade dependencies at startup"""
 
     keep_open: Annotated[bool, Option("--keep-open", "-k")] = False
     """Keep the terminal open after errors or finish"""
@@ -57,11 +60,11 @@ class PyaketApplication(BrokenModel):
     @property
     def r_wheels(self) -> str:
         """Gets all self.wheels as absolute paths"""
-        return ';'.join(map(str, map(BrokenPath.get, self.wheels)))
+        return SEPARATOR.join(map(str, map(BrokenPath.get, self.wheels))) or None
 
     @property
     def r_pypi(self) -> str:
-        return ';'.join(map(str, self.pypi))
+        return SEPARATOR.join(map(str, self.pypi)) or None
 
 # ---------------------------------------------- #
 # https://pyaket.dev/docs#directories

@@ -34,14 +34,14 @@ pub struct PyaketApplication {
     pub icon: Option<String>,
 
     #[serde(skip)]
-    #[default(envy::uget(PYAKET_APP_WHEELS, ""))]
-    pub wheels: String,
+    #[default(envy::get(PYAKET_APP_WHEELS, None))]
+    pub wheels: Option<String>,
 
-    #[default(envy::uget(PYAKET_APP_PYPI, ""))]
-    pub pypi: String,
+    #[default(envy::get(PYAKET_APP_PYPI, None))]
+    pub pypi: Option<String>,
 
-    #[default(envy::uget(PYAKET_APP_REQTXT, ""))]
-    pub reqtxt: String,
+    #[default(envy::get(PYAKET_APP_REQTXT, None))]
+    pub reqtxt: Option<String>,
 
     #[default(envy::ubool(PYAKET_APP_ROLLING, false))]
     pub rolling: bool,
@@ -118,17 +118,17 @@ pub static PYAKET_ENTRY_COMMAND: &str = "PYAKET_ENTRY_COMMAND";
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct PyaketEntry {
 
-    #[default(envy::uget(PYAKET_ENTRY_MODULE, ""))]
-    pub module: String,
+    #[default(envy::get(PYAKET_ENTRY_MODULE, None))]
+    pub module: Option<String>,
 
-    #[default(envy::uget(PYAKET_ENTRY_SCRIPT, ""))]
-    pub script: String,
+    #[default(envy::get(PYAKET_ENTRY_SCRIPT, None))]
+    pub script: Option<String>,
 
-    #[default(envy::uget(PYAKET_ENTRY_CODE, ""))]
-    pub code: String,
+    #[default(envy::get(PYAKET_ENTRY_CODE, None))]
+    pub code: Option<String>,
 
-    #[default(envy::uget(PYAKET_ENTRY_COMMAND, ""))]
-    pub command: String,
+    #[default(envy::get(PYAKET_ENTRY_COMMAND, None))]
+    pub command: Option<String>,
 }
 
 /* -------------------------------------------- */

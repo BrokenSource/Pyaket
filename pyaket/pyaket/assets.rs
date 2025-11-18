@@ -2,8 +2,8 @@ use crate::*;
 
 pub static PYAKET_ASSETS: &str = "PYAKET_ASSETS";
 
-/// Global path for storing cache and/or final assets in subdirectories
-/// - Always overriden by environment variable
+/// Global path for storing cache and final assets
+/// - Always overriden by $PYAKET_ASSETS variable
 /// - Editable install: `repository/.cache/`
 /// - Python package: `site-packages/.cache/`
 /// - Crates.io build: I don't know.
@@ -23,7 +23,7 @@ fn workspace() -> PathBuf {
 /// ```rust
 /// #[derive(RustEmbed)]
 /// #[allow_missing=true]
-/// #[folder="${PYAKET_ASSETS:-../.cache/name()/files}"]
+/// #[folder="${PYAKET_ASSETS:-../.cache/Self::name()/files}"]
 /// pub struct MyAssets;
 ///
 /// impl PyaketAssets for MyAssets { ... }

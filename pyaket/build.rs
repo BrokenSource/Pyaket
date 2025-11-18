@@ -8,18 +8,15 @@ mod manage {
     use super::*;
 
     pub fn wheels(project: &PyaketProject) -> Result<()> {
-
-        // Don't trust the user on ';'.join(wheels) formatting
-        for wheel in project.app.wheels.split(";")
-            .map(|x| x.trim()).filter(|x| !x.is_empty())
-        {
-            // Interpret as glob pattern to allow `/path/*.whl` sugar
-            for file in glob::glob(wheel)?.map(|x| x.unwrap()) {
-                logging::info!("Wheel: {}", file.display());
-                WheelAssets::write(
-                    file.file_name().unwrap(),
-                    &read(&file).unwrap(),
-                )?;
+        if let Some(wheels) = &project.app.wheels {
+            for pattern in wheels.split(SEPARATOR) {
+                for entry in glob::glob(pattern)?.flatten() {
+                    logging::info!("Wheel: {}", entry.display());
+                    WheelAssets::write(
+                        entry.file_name().unwrap(),
+                        &read(&entry)?,
+                    )?;
+                }
             }
         }
 
@@ -28,8 +25,8 @@ mod manage {
 
     pub fn reqtxt(project: &mut PyaketProject) -> Result<()> {
         // Todo: .read_file_or_keep() sugar
-        if Path::new(&project.app.reqtxt).exists() {
-            project.app.reqtxt = read_string(&project.app.reqtxt)?;
+        if let Some(path) = &project.app.reqtxt {
+            project.app.reqtxt = Some(read_string(path)?);
         }
         Ok(())
     }
@@ -83,7 +80,7 @@ fn build() -> Result<()> {
 
     // Export a const configured project to be loaded at runtime
     envy::rustc_export("PYAKET_PROJECT", project.json());
-    logging::info!("Project: {}", project.json());
+    logging::info!("Configuration: {}", project.json());
 
     Ok(())
 }

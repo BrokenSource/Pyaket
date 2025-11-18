@@ -78,15 +78,15 @@ impl PyaketProject {
             }
 
             // Add PyPI packages to be installed
-            if !self.app.pypi.is_empty() {
-                command.args(self.app.pypi.split(";"));
+            if let Some(packages) = &self.app.pypi {
+                command.args(packages.split(SEPARATOR));
             }
 
             // Add the requirements.txt file to be installed
-            if !self.app.reqtxt.is_empty() {
+            if let Some(content) = &self.app.reqtxt {
                 let file = tempdir.child("requirements.txt");
-                write(&file, &self.app.reqtxt)?;
                 command.arg("-r").arg(&file);
+                write(&file, content)?;
             }
 
             subprocess::run(&mut command)?;
@@ -103,20 +103,17 @@ impl PyaketProject {
         main.arg("--no-project");
         main.arg("--active");
 
-        if !self.entry.module.is_empty() {
-            main.arg("python")
-                .arg("-m").arg(&self.entry.module);
+        if let Some(module) = &self.entry.module {
+            main.arg("python").arg("-m").arg(module);
 
-        } else if !self.entry.script.is_empty() {
-            main.arg("run")
-                .arg(&self.entry.script);
+        } else if let Some(script) = &self.entry.script {
+            main.arg("run").arg(script);
 
-        } else if !self.entry.code.is_empty() {
-            main.arg("python")
-                .arg("-c").arg(&self.entry.code);
+        } else if let Some(code) = &self.entry.code {
+            main.arg("python").arg("-c").arg(code);
 
-        } else if !self.entry.command.is_empty() {
-            let args = shlex::split(&self.entry.command)
+        } else if let Some(command) = &self.entry.command {
+            let args = shlex::split(command)
                 .expect("Failed to parse entry command");
             main = Command::new(&args[0]);
             main.args(&args[..]);
