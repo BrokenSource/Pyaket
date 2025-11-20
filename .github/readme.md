@@ -179,7 +179,7 @@ For now, it is better to install pyaket directly from the source code for the la
 
 ```sh
 # Optional 'cross' feature for cross compilation support with cargo-zigbuild
-python3 -m pip install git+https://github.com/BrokenSource/Pyaket[cross]
+python3 -m pip install git+https://github.com/BrokenSource/Pyaket[zig]
 ```
 
 A PyPI and Rust Crate of the same name are also available, but might lag behind from git main.

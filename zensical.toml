@@ -26,8 +26,8 @@ nav = [
     ]}
   ]},
   {"Installation" = [
+    "get/index.md",
     {"Package"=[
-      "get/index.md",
       "get/pypi.md",
       "get/executables.md",
       "get/crate.md",
@@ -46,6 +46,7 @@ nav = [
     "examples/index.md",
   ]},
   {"Documentation" = [
+    "docs/index.md",
     {"Configuration"=[
       "docs/config/index.md",
       "docs/config/application.md",
@@ -55,8 +56,11 @@ nav = [
       "docs/config/pytorch.md",
       "docs/config/entry.md",
     ]},
+    {"Rust" = [
+      "docs/rust/crosscompiling.md",
+      "docs/rust/profiles.md",
+    ]},
     {"Extra" = [
-      "docs/crosscompiling.md",
       "docs/pinning.md",
     ]},
   ]},
@@ -86,7 +90,7 @@ extra_css = ["css/main.css"]
 
 [project.theme]
 variant = "modern"
-# custom_dir = "../../website/overrides"
+custom_dir = "website/overrides"
 favicon = "logo.png"
 language = "en"
 features = [
@@ -129,7 +133,7 @@ logo = "octicons/package-16"
 repo = "fontawesome/brands/github"
 
 [project.theme.font]
-text = "Roboto"
+text = "Inter"
 code = "Cascadia Code"
 
 [[project.theme.palette]]

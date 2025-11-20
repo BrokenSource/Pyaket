@@ -66,29 +66,39 @@ unexpected_cfgs = {level="warn", check-cfg=["cfg(runtime)", "cfg(rust_analyzer)"
 
 # ---------------------------------------------------------------------------- #
 
-# Note: Anti-pattern in `$target/$triple/debug` not matching the profile name,
-# as such python will always use the `develop` profile, which mirrors this.
+# Note: Not recommended, anti-pattern in `$target/$triple/debug`
+# not matching the profile name in target directory
 [profile.dev]
 opt-level = 1
 panic = "abort"
 strip = true
 
-# Note: Not recommended, as releases can either be 'small' or 'speed', same as
-# the 'speed' profile otherwise, which mirrors this.
+# Note: Not recommended, per release flavors below
 [profile.release]
 codegen-units = 1
-incremental = true
 opt-level = 3
 panic = "abort"
-lto = true
+lto = "thin"
+
+# ---------------------------------------------------------------------------- #
 
 [profile.develop]
 inherits = "dev"
+debug = false
 
-[profile.speed]
+[profile.fast]
 inherits = "release"
+
+# Warn: Long build times!
+[profile.fastest]
+inherits = "fast"
+lto = "fat"
 
 [profile.small]
 inherits = "release"
 opt-level = "s"
-lto = true
+
+# Warn: Long build times!
+[profile.smallest]
+inherits = "small"
+lto = "fat"

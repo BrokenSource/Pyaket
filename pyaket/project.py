@@ -137,9 +137,11 @@ class PyaketRelease(BrokenModel):
         return PlatformEnum.from_parts(self.system, self.arch)
 
     class Profile(str, BrokenEnum):
-        Develop = "develop"
-        Speed   = "speed"
-        Small   = "small"
+        Develop  = "develop"
+        Fast     = "fast"
+        Fastest  = "fastest"
+        Small    = "small"
+        Smallest = "smallest"
 
     profile: Annotated[Profile, Option("--profile", "-p")] = Profile.Small
     """Build profile to use"""
@@ -151,7 +153,10 @@ class PyaketRelease(BrokenModel):
     """(Windows) Use MSVC to build the binary"""
 
     zigbuild: Annotated[bool, Option("--zig", "-z")] = False
-    """Use Cargo zigbuild to build the binary"""
+    """Use cargo-zigbuild to build the binary"""
+
+    xwin: Annotated[bool, Option("--xwin")] = False
+    """Use cargo-xwin to build msvc binaries from non-windows hosts"""
 
     upx: Annotated[bool, Option("--upx", "-u")] = False
     """Use UPX to compress the binary"""
@@ -234,6 +239,7 @@ class PyaketProject:
             Host.OnWindows and (self.release.platform == PlatformEnum.WindowsARM64),
             Host.OnLinux   and (self.release.system.is_macos()),
             Host.OnLinux   and (self.release.platform == PlatformEnum.LinuxARM64),
+            Host.OnMacOS   and (not self.release.system.is_macos()),
         )):
             logger.note((
                 "Enabling zigbuild for easier cross compilation, "
@@ -243,11 +249,25 @@ class PyaketProject:
 
         # Todo: MacOS ulimit
 
+        # Cannot use multiple cargo wrappers at once
+        if sum((self.release.zigbuild, self.release.xwin)) > 1:
+            raise RuntimeError(logger.error((
+                "Cannot use multiple cargo wrappers at the same time"
+            )))
+
         try:
             if self.release.zigbuild:
                 import ziglang  # pyright: ignore
         except ImportError:
-            raise RuntimeError("Missing group 'pip install pyaket[cross]' for cross compilation")
+            raise RuntimeError(logger.error(
+                "Missing group 'pip install pyaket[zig]' "
+                "for cross compilation with ziglang"
+            ))
+
+        if self.release.xwin:
+            raise NotImplementedError(logger.error((
+                "cargo-xwin is not yet implemented."
+            )))
 
         shell("rustup", "default", f"stable-{Host.Platform.triple()}")
         shell("rustup", "target", "add", self.release.platform.triple())
@@ -273,20 +293,20 @@ class PyaketProject:
         logger.info(f"Compiled Pyaket binary at ({binary})")
 
         # Rename the compiled binary to the final release name
-        release_path = (Path(output) / self.release_name)
-        BrokenPath.mkdir(release_path.parent)
-        BrokenPath.move(src=binary, dst=release_path, echo=False)
+        release = (Path(output) / self.release_name)
+        BrokenPath.mkdir(release.parent)
+        BrokenPath.move(src=binary, dst=release, echo=False)
 
         # Compress the final release with upx
-        if self.release.upx and (shell("upx", "--best", "--lzma", release_path).returncode != 0):
+        if self.release.upx and (shell("upx", "--best", "--lzma", release).returncode != 0):
             raise RuntimeError(logger.error("Failed to compress executable with upx"))
 
         # Release a tar.gz to keep chmod +x attributes
         if self.release.tarball and self.release.system.is_unix():
-            release_path = BrokenPath.gzip(release_path, remove=True)
+            release = BrokenPath.gzip(release, remove=True)
 
-        logger.ok(f"Final project release at ({release_path})")
-        return release_path
+        logger.ok(f"Final project release at ({release})")
+        return release
 
     # -------------------------------------------------------------------------------------------- #
 

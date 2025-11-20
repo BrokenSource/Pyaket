@@ -2,6 +2,12 @@
 icon: material/pin
 ---
 
+!!! warning
+    This page needs a cleanup/rewrite:
+
+    - Better options are now known
+
+
 It's a good idea to pin all of your wheels dependencies to a specific version for building the executables, to ensure they'll work after any upstream changes.
 
 <!-- Add example of fastapi, transformers updates causing issues -->

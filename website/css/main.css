@@ -2,11 +2,6 @@ body {
   text-align: justify;
 }
 
-/* Better headings */
-h1, h2, h3 {
-  font-family: "Roboto Slab", serif;
-}
-
 /* Spread content tabs to full width */
 .tabbed-labels--linked label {
   text-align: center;
@@ -15,7 +10,7 @@ h1, h2, h3 {
 
 /* Less bold admonition titles */
 .md-typeset .admonition-title {
-  font-weight: 500;
+  font-weight: 450;
 }
 
 /* -------------------------------------------------------------------------- */
