@@ -8,7 +8,7 @@ mod manage {
     use super::*;
 
     pub fn wheels(project: &PyaketProject) -> Result<()> {
-        if let Some(wheels) = &project.app.wheels {
+        if let Some(wheels) = &project.deps.wheels {
             for pattern in wheels.split(SEPARATOR) {
                 for entry in glob::glob(pattern)?.flatten() {
                     logging::info!("Wheel: {}", entry.display());
@@ -25,8 +25,8 @@ mod manage {
 
     pub fn reqtxt(project: &mut PyaketProject) -> Result<()> {
         // Todo: .read_file_or_keep() sugar
-        if let Some(path) = &project.app.reqtxt {
-            project.app.reqtxt = Some(read_string(path)?);
+        if let Some(path) = &project.deps.reqtxt {
+            project.deps.reqtxt = Some(read_string(path)?);
         }
         Ok(())
     }

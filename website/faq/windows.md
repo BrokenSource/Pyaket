@@ -2,7 +2,7 @@
 icon: material/microsoft
 ---
 
-### **Q:** Virus warnings in Windows Defender or Antivirus {#antivirus}
+## **Q:** Virus warnings in Windows Defender or Antivirus {#antivirus}
 
 This is a complex topic to explain or not sound suspicious, bear with me - [Tremeschin](https://github.com/Tremeschin) - here.
 
@@ -13,7 +13,7 @@ This is a complex topic to explain or not sound suspicious, bear with me - [Trem
 !!! note "**Note:** I have no control or responsibility over what others use the project for"
     Similar to how a streaming platform or messaging app can't be held responsible for the shared content to an extent, other projects using pyaket (why you're reading this) requires your own judgement and benefit of the doubt.
 
-#### Antivirus heuristics {#antivirus-heuristics}
+### Antivirus heuristics {#antivirus-heuristics}
 
 Out of pure necessity for features to work, like bundling uv, python, script files, wheels, etc. some antivirus [heuristics](https://en.wikipedia.org/wiki/Heuristic) may detect the executables as malicious for a couple of reasons:
 
@@ -50,6 +50,3 @@ References:
 [(4)](https://discord.com/channels/518489831232503809/600724122242383894/781166981746655282)
 </small>
 
-<!------------------------------------------------------------------------------------------------->
-
-<br><br>

@@ -2,6 +2,15 @@ body {
   text-align: justify;
 }
 
+/* Slab Headers, colored h2 */
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400&display=swap");
+h2 {
+  color: var(--md-accent-fg-color) !important;
+}
+h1, h2, h3 {
+  font-family: "Roboto Slab", serif;
+}
+
 /* Spread content tabs to full width */
 .tabbed-labels--linked label {
   text-align: center;

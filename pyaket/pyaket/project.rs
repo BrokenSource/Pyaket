@@ -8,10 +8,6 @@ pub static PYAKET_APP_AUTHOR:  &str = "PYAKET_APP_AUTHOR";
 pub static PYAKET_APP_VERSION: &str = "PYAKET_APP_VERSION";
 pub static PYAKET_APP_ABOUT:   &str = "PYAKET_APP_ABOUT";
 pub static PYAKET_APP_ICON:    &str = "PYAKET_APP_ICON";
-pub static PYAKET_APP_WHEELS:  &str = "PYAKET_APP_WHEELS";
-pub static PYAKET_APP_PYPI:    &str = "PYAKET_APP_PYPI";
-pub static PYAKET_APP_REQTXT:  &str = "PYAKET_APP_REQTXT";
-pub static PYAKET_APP_ROLLING: &str = "PYAKET_APP_ROLLING";
 pub static PYAKET_KEEP_OPEN:   &str = "PYAKET_KEEP_OPEN";
 
 #[derive(Serialize, Deserialize, SmartDefault)]
@@ -33,19 +29,6 @@ pub struct PyaketApplication {
     #[default(envy::get(PYAKET_APP_ICON, None))]
     pub icon: Option<String>,
 
-    #[serde(skip)]
-    #[default(envy::get(PYAKET_APP_WHEELS, None))]
-    pub wheels: Option<String>,
-
-    #[default(envy::get(PYAKET_APP_PYPI, None))]
-    pub pypi: Option<String>,
-
-    #[default(envy::get(PYAKET_APP_REQTXT, None))]
-    pub reqtxt: Option<String>,
-
-    #[default(envy::ubool(PYAKET_APP_ROLLING, false))]
-    pub rolling: bool,
-
     #[default(envy::ubool(PYAKET_KEEP_OPEN, false))]
     pub keep_open: bool,
 }
@@ -61,6 +44,30 @@ impl PyaketApplication {
             true  => self.name.clone(),
         }
     }
+}
+
+/* -------------------------------------------- */
+
+pub static PYAKET_APP_WHEELS:  &str = "PYAKET_APP_WHEELS";
+pub static PYAKET_APP_PYPI:    &str = "PYAKET_APP_PYPI";
+pub static PYAKET_APP_REQTXT:  &str = "PYAKET_APP_REQTXT";
+pub static PYAKET_APP_ROLLING: &str = "PYAKET_APP_ROLLING";
+
+#[derive(Serialize, Deserialize, SmartDefault)]
+pub struct PyaketDependencies {
+
+    #[serde(skip)]
+    #[default(envy::get(PYAKET_APP_WHEELS, None))]
+    pub wheels: Option<String>,
+
+    #[default(envy::get(PYAKET_APP_PYPI, None))]
+    pub pypi: Option<String>,
+
+    #[default(envy::get(PYAKET_APP_REQTXT, None))]
+    pub reqtxt: Option<String>,
+
+    #[default(envy::ubool(PYAKET_APP_ROLLING, false))]
+    pub rolling: bool,
 }
 
 /* -------------------------------------------- */
@@ -149,6 +156,7 @@ impl Default for PyaketEntry {
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct PyaketProject {
     pub app:    PyaketApplication,
+    pub deps:   PyaketDependencies,
     pub dirs:   PyaketDirectories,
     pub python: PyaketPython,
     pub torch:  PyaketTorch,

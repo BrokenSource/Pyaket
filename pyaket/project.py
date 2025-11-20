@@ -42,6 +42,14 @@ class PyaketApplication(BrokenModel):
     icon: Annotated[Path, Option("--icon", "-i")] = None
     """Path to an icon file to use for the application"""
 
+    keep_open: Annotated[bool, Option("--keep-open", "-k")] = False
+    """Keep the terminal open after errors or finish"""
+
+# ---------------------------------------------- #
+
+class PyaketDependencies(BrokenModel):
+    """Configuration for the dependencies of the project"""
+
     wheels: Annotated[list[Path], Option("--wheel", "-w")] = []
     """List of wheels to bundle and install at runtime"""
 
@@ -53,9 +61,6 @@ class PyaketApplication(BrokenModel):
 
     rolling: Annotated[bool, Option("--rolling")] = False
     """Always upgrade dependencies at startup"""
-
-    keep_open: Annotated[bool, Option("--keep-open", "-k")] = False
-    """Keep the terminal open after errors or finish"""
 
     @property
     def r_wheels(self) -> str:
@@ -168,12 +173,13 @@ class PyaketRelease(BrokenModel):
 
 @define
 class PyaketProject:
-    app:     PyaketApplication = Factory(PyaketApplication)
-    dirs:    PyaketDirectories = Factory(PyaketDirectories)
-    python:  PyaketPython      = Factory(PyaketPython)
-    torch:   PyaketTorch       = Factory(PyaketTorch)
-    entry:   PyaketEntry       = Factory(PyaketEntry)
-    release: PyaketRelease     = Factory(PyaketRelease)
+    app:     PyaketApplication  = Factory(PyaketApplication)
+    deps:    PyaketDependencies = Factory(PyaketDependencies)
+    dirs:    PyaketDirectories  = Factory(PyaketDirectories)
+    python:  PyaketPython       = Factory(PyaketPython)
+    torch:   PyaketTorch        = Factory(PyaketTorch)
+    entry:   PyaketEntry        = Factory(PyaketEntry)
+    release: PyaketRelease      = Factory(PyaketRelease)
 
     @property
     def release_name(self) -> str:
@@ -215,7 +221,7 @@ class PyaketProject:
         """Build wheels for the project and bundle them on the executable"""
         wheels: Path = BrokenPath.recreate(PYAKET.DIRECTORIES.DATA/"Wheels")
         shell(sys.executable, "-m", "uv", "build", "--wheel", ("--all-packages"*all), "-o", wheels)
-        self.app.wheels.extend(wheels.glob("*.whl"))
+        self.deps.wheels.extend(wheels.glob("*.whl"))
 
     def compile(self,
         target: Annotated[Path, Option("--target", "-t", help="Directory to build the project (target)")]=(Path.cwd()/"target"),
@@ -318,10 +324,10 @@ class PyaketProject:
             PYAKET_APP_AUTHOR     = self.app.author,
             PYAKET_APP_ABOUT      = self.app.about,
             PYAKET_APP_ICON       = self.app.icon,
-            PYAKET_APP_WHEELS     = self.app.r_wheels,
-            PYAKET_APP_PYPI       = self.app.r_pypi,
-            PYAKET_APP_REQTXT     = self.app.reqtxt,
-            PYAKET_APP_ROLLING    = self.app.rolling,
+            PYAKET_APP_WHEELS     = self.deps.r_wheels,
+            PYAKET_APP_PYPI       = self.deps.r_pypi,
+            PYAKET_APP_REQTXT     = self.deps.reqtxt,
+            PYAKET_APP_ROLLING    = self.deps.rolling,
             PYAKET_KEEP_OPEN      = self.app.keep_open,
             PYAKET_COMMON_DIR     = self.dirs.common,
             PYAKET_VERSIONS_DIR   = self.dirs.versions,
@@ -368,4 +374,4 @@ class PyaketProject:
 
         # Standard dependencies
         for package in data.project.dependencies:
-            self.app.pypi.append(_pin(package))
+            self.deps.pypi.append(_pin(package))

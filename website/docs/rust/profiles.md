@@ -6,7 +6,7 @@ Many [cargo profiles](https://github.com/BrokenSource/Pyaket/blob/main/pyaket/Ca
 
 ## Flowchart
 
-As a general rule of thumb for what [profile](#options) to use, you can follow:
+As a general rule of thumb for what [option](#options) to use, you can follow:
 
 ```mermaid
 graph LR
@@ -17,7 +17,7 @@ graph LR
     Release --> |No| UseDevelop([_develop_])
     Release --> |Yes| Flavor(Optimizing)
     Flavor --> |Speed| Speed("`
-        Better size and speeds?
+        Best size and speeds?
         <small>(slower compilation)</small>
     `")
     Flavor --> |Size| Size("`
@@ -33,10 +33,6 @@ graph LR
 <!-- Todo: Better wording, presentation, visual clutter -->
 
 ## Options
-
-=== develop
-    asdasd
-=== fast
 
 ### `develop`
 

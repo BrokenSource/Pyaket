@@ -2,7 +2,7 @@
 icon: octicons/package-16
 ---
 
-### **Q:** How it works {#how-it-works}
+## **Q:** How it works {#how-it-works}
 
 Pyaket is highly inspired by [PyApp](https://github.com/ofek/pyapp), with opinionated and idiosyncratic design choices that makes it easier to use and understand, with improved resiliency, speeds, monorepo support, and a cli.
 

@@ -2,60 +2,123 @@
 icon: material/application-braces-outline
 ---
 
-:material-arrow-right: General metadata of the project
+General metadata about the application being built.
 
-### <kbd>PYAKET_APP_NAME</kbd> {#app-name}
-> 📦 **Type:** string • **Default:** pyaket
+## Name
 
 The name of the application being built.
 
-Currently only used for identifying • flagging successfull installations and recreating the virtual environment shall the binary hash changes. This is purely useful for iterative development.
+=== ":simple-python: Python"
 
-<hr>
+    ```python
+    project.app.name = "Pyaket"
+    ```
 
-### <kbd>PYAKET_APP_AUTHOR</kbd> {#app-author}
-> 📦 **Type:** string • **Default:** brokensource
+=== ":simple-rust: Rust"
+
+    ```bash
+    export PYAKET_APP_NAME="Pyaket"
+    ```
+
+## Author
 
 The author's name, group, organization of the application being built.
 
-The value is mostly used for dictating the [workspace](#workspace) root when dynamic. Centralizes installation paths and caches for a given author, while being independent enough to not interfere with others.
+=== ":simple-python: Python"
 
-<hr>
+    ```python
+    project.app.author = "BrokenSource"
+    ```
 
-### <kbd>PYAKET_APP_VERSION</kbd> {#app-version}
-> 📦 **Type:** string • **Default:** 0.0.0
+=== ":simple-rust: Rust"
+
+    ```bash
+    export PYAKET_APP_AUTHOR="BrokenSource"
+    ```
+
+## Vendor
+
+Always equal to [Author](#author) if set, otherwise [Name](#name).
+
+This value primarily determines the [Workspace Root](./directories.md#workspace) location when dynamic.
+
+!!! tip "Using an empty [Author](#author) is a way to isolate each project virtual environment."
+    - While not recommended due spamming the user data dir, it works for single banner-less projects. For that, set the variable to `#!python None` or _set empty/remove it_ entirely.
+
+## Version
 
 The version of the application being built.
 
-Should follow the version of the project to be released alonside a registry itself. Not necessarily a semantic version, can be a codename, branch, latest, etc. Value is added to [versions dir](#versions-dir), building the full installation path of the venv to be used.
+Should follow the same number of the project to be released alonside a registry. Not necessarily a semantic version, can be a codename, branch name, _"latest"_, etc.
 
-To get the current version in python, use:
+=== ":simple-python: Python"
 
-```python
-from importlib.metadata import version as get_version
+    ```python
+    project.app.version = "0.0.0"
+    ```
 
-version = get_version("package")
-```
+=== ":simple-rust: Rust"
 
-Or better yet, if using [Hatch](https://hatch.pypa.io/latest/)
+    ```bash
+    export PYAKET_APP_VERSION="0.0.0"
+    ```
 
-```python
-[tool.hatch.version]
-path = "package/version.py"
+The value is appended to the [Versions Directory](./directories.md#versions) to build the virtual environment path.
 
-[project]
-dynamic = ["version"]
-```
+!!! tip "Projects with the same version and subdirectories shares the same venv!"
+    - First-class monorepo support with a global versioning scheme.
 
-<hr>
-
-### <kbd>PYAKET_APP_ABOUT</kbd> {#app-about}
-> 📦 **Type:** string • **Default:** No description provided
+## About
 
 A description of the application, exclusively for metadata or banner purposes.
 
-<hr>
+=== ":simple-python: Python"
 
-### <kbd>PYAKET_APP_ICON</kbd> {#app-icon}
-> 📦 **Type:** Path • **Default:** None
+    ```python
+    project.app.about = "No description provided"
+    ```
 
+=== ":simple-rust: Rust"
+
+    ```bash
+    export PYAKET_APP_ABOUT="No description provided"
+    ```
+
+## Icon
+
+!!! warning "Stub: Not implemented"
+
+An image path to use as the application icon.
+
+=== ":simple-python: Python"
+
+    ```python
+    # Can be Path, str, Image, numpy.
+    project.app.icon = Path
+    ```
+
+=== ":simple-rust: Rust"
+
+    ```bash
+    # Must be a Path to an icon file
+    export PYAKET_APP_ICON="/path/to/icon"
+    ```
+
+<br>
+
+:material-arrow-right: **Platform** support:
+
+<!-- Todo: Link against Self CLI documentation -->
+=== ":simple-linux: Linux"
+    !!! success "Supported via [Desktop Entries](https://wiki.archlinux.org/title/Desktop_entries) XDG Specification."
+        - Run `#!ps1 ./project self desktop` to generate one at `#!ps1 ~/.local/share/applications/$project.{desktop,png}`
+    !!! warning "Wayland/X11 does not support icons outside .desktop files"
+        No matter what you do, launching outside a desktop entry won't show an icon.
+
+=== ":material-microsoft: Windows"
+    !!! success "Natively supported and implemented via [crates.io/winresource](https://crates.io/crates/winresource)"
+        - Icon should appear in File Explorer and Task bar.
+
+=== ":simple-apple: MacOS"
+    !!! bug "Not implemented, but [seems to be possible](https://stackoverflow.com/a/65393488)."
+        - Consider [supporting](https://github.com/sponsors/Tremeschin) my work or sending Apple hardware for development!

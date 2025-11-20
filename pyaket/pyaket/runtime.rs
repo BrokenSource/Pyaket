@@ -33,7 +33,7 @@ impl PyaketProject {
         if match read(self.uuid_tracker_file()) {
             Ok(bytes) => {bytes != self.uuid.as_bytes()},
             Err(_)    => true,
-        } || self.app.rolling {
+        } || self.deps.rolling {
 
             /* Create the virtual environment */ {
                 let mut setup = self.uv()?;
@@ -42,7 +42,7 @@ impl PyaketProject {
                     .arg(self.installation_dir())
                     .arg("--python").arg(&self.python.version)
                     .arg("--seed").arg("--quiet");
-                if self.app.rolling {setup
+                if self.deps.rolling {setup
                     .arg("--allow-existing");}
                 subprocess::run(&mut setup)?;
             }
@@ -78,12 +78,12 @@ impl PyaketProject {
             }
 
             // Add PyPI packages to be installed
-            if let Some(packages) = &self.app.pypi {
+            if let Some(packages) = &self.deps.pypi {
                 command.args(packages.split(SEPARATOR));
             }
 
             // Add the requirements.txt file to be installed
-            if let Some(content) = &self.app.reqtxt {
+            if let Some(content) = &self.deps.reqtxt {
                 let file = tempdir.child("requirements.txt");
                 command.arg("-r").arg(&file);
                 write(&file, content)?;
