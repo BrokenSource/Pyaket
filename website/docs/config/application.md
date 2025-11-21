@@ -43,7 +43,7 @@ Always equal to [Author](#author) if set, otherwise [Name](#name).
 This value primarily determines the [Workspace Root](./directories.md#workspace) location when dynamic.
 
 !!! tip "Using an empty [Author](#author) is a way to isolate each project virtual environment."
-    - While not recommended due spamming the user data dir, it works for single banner-less projects. For that, set the variable to `#!python None` or _set empty/remove it_ entirely.
+    - While not recommended due spamming the user data dir, it works for single banner-less projects. For that, set the python field to `#!python None` or unset it entirely.
 
 ## Version
 
