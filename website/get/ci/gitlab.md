@@ -1,8 +1,7 @@
 ---
 icon: material/gitlab
+title: GitLab
 ---
 
-# GitLab
-
 !!! quote ""
-    Contributions or third-parthy templates are welcome to be added here!
+    Community templates are welcome to be added here!

@@ -14,7 +14,7 @@ icon: material/file-document-edit
     - Port the website to [Zensical](https://zensical.org) over [mkdocs-material](https://squidfunk.github.io/mkdocs-material/)
     - Project version is now decoupled and independent from the monorepo
     - Create and use [rustbin](https://github.com/BrokenSource/Rustbin) - the fastest rustup shims provider, written in rust
-    - Use [uv](https://github.com/astral-sh/uv) directly as a crate dependency instead of managing a download externally
+    - Use [uv](https://github.com/astral-sh/uv) directly as a [crate](https://crates.io/crates/uv) dependency instead of managing a download externally
         - This severely improves the resiliency and maintainability of the project
         - Pure-rust releases are halted until uv is available on the registry
         - Keeping an [`external-uv`](https://github.com/BrokenSource/Pyaket/tree/external-uv) branch for future reference if needed

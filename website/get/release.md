@@ -2,8 +2,6 @@
 icon: octicons/package-16
 ---
 
-# Executables
-
 !!! info
     In the future, Pyaket will be usable via pyaket executables themselves! Some things to be done first:
 

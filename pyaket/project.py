@@ -202,6 +202,7 @@ class PyaketProject:
             self.cli.command(self.entry, name="run")
 
         with self.cli.panel("🟡 Dependencies"):
+            self.cli.command(self.deps,   name="deps")
             self.cli.command(self.python, name="python")
             self.cli.command(self.torch,  name="torch")
 

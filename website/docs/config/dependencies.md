@@ -2,74 +2,86 @@
 icon: material/package-variant-closed
 ---
 
-## Dependencies {#dependencies}
+## Wheels
 
-:material-arrow-right: A continuation of the [application](#app) section for listing dependencies.
+Glob patterns of wheels and sdists to bundle and install at runtime.
 
-<!------------------------------------------------------------------------------------------------->
-<hr>
+=== ":simple-python: Python"
+    ```python
+    project.deps.wheels.append("/path/to/foo.whl")
+    project.deps.wheels.append("/path/to/bar.whl")
+    project.deps.wheels.append("/path/to/wheels/*.whl")
+    project.deps.wheels.append("/path/to/sdists/*.tar.gz")
+    ```
+=== ":simple-rust: Rust"
+    ```bash
+    # Warning: Paths must be absolute, as they are relative to `build.rs`
+    export PYAKET_APP_WHEELS="/path/to/foo.whl;/path/to/bar.whl"
+    export PYAKET_APP_WHEELS="/path/to/*.whl;/other/*.whl"
+    export PYAKET_APP_WHEELS="/path/to/sdists/*.tar.gz"
+    ```
 
-### <kbd>PYAKET_APP_WHEELS</kbd> {#app-wheels}
-> 📦 <b>Type:</b> Paths • <b>Default:</b> None
+This is the recommended way to specify dependencies, although third party packages may still be installed at runtime from the dependency chain.
 
-Glob patterns separated by `;` (semi colon) of wheels and sdists to bundle and install at runtime.
-
-```sh title="Example"
-export PYAKET_APP_WHEELS="/path/to/wheel1.whl;/path/to/wheel2.whl"
-export PYAKET_APP_WHEELS="/path/to/*.whl;/other/*.whl"
-export PYAKET_APP_WHEELS="/path/to/sdists/*.tar.gz"
-```
-
-!!! warning "Paths must be absolute, as they are relative to `build.rs`"
-
-This is the recommended way to specify dependencies, although third party packages may still be installed at runtime, comparing to [PyPI](#app-pypi). If we get them all, a standalone install is achieved, with zero network calls to get missing packages at cost of large binary size.
+If we get them all, a standalone install is achieved, with zero network calls to get missing packages at cost of large binary size.
 
 - Beware that sdists may need compilation at runtime in the user's machine, prefer wheels.
 - If you have a monorepo with uv, it's as simple as `uv build --all` and include `dist/*`.
 - This option allows to bundle private wheels without pushing to a registry.
 
-<small>✅ This is the recommended way to specify dependencies</small>
+## Packages
 
-<!------------------------------------------------------------------------------------------------->
-<hr>
+List of PyPI packages to be installed at runtime.
 
-### <kbd>PYAKET_APP_PYPI</kbd> {#app-pypi}
-> 📦 <b>Type:</b> String • <b>Default:</b> None
+!!! tip "For iterative development, make and use local [wheels](#wheels) from your project first!"
 
-List of PyPI packages to be installed at runtime, separated by `;` (semi colon).
+=== ":simple-python: Python"
+    ```python
+    # Solve for latest compatible version
+    project.deps.pypi.append("numpy")
 
-```sh title="Example"
-# Regular dependencies, latest version
-export PYAKET_APP_PYPI="numpy;plotly;pillow"
+    # Specific stable version of a package
+    project.deps.pypi.append("altair==6.0.0")
+    project.deps.pypi.append("pillow>=9.0.0,<10.0.0")
 
-# Specific stable version of a package
-export PYAKET_APP_PYPI="shaderflow==0.9.0"
+    # Or even git dependencies, targetting specific branches or tags
+    project.deps.pypi.append("git+https://github.com/BrokenSource/TurboPipe")
+    project.deps.pypi.append("git+...@main")
+    project.deps.pypi.append("git+...@v1.2.4")
+    ```
+=== ":simple-rust: Rust"
+    ```bash
+    export PYAKET_DEPS_PYPI="numpy;altair==6.0.0"
+    ```
 
-# Or even git dependencies, targetting specific branches or tags
-export PYAKET_APP_PYPI="git+https://github.com/BrokenSource/DepthFlow"
-export PYAKET_APP_PYPI="git+...@develop"
-export PYAKET_APP_PYPI="git+...@v1.0.0"
-```
 
-This option is partially recommended, as it requires a network download at runtime and pushing to a registry for iterative development. [Bundling wheels](#app-wheels) is often a better option if binary size is not a concern, you can test with wheels first then push a stable version to a registry too.
-
-<!------------------------------------------------------------------------------------------------->
-<hr>
-
-### <kbd>PYAKET_APP_REQTXT</kbd> {#app-requirements-txt}
-> 📦 <b>Type:</b> Local Path • <b>Default:</b> None
+## requirements.txt {#requirements-txt}
 
 A local `requirements.txt` file to be installed at runtime.
 
+=== ":simple-python: Python"
+    ```python
+    project.deps.reqtxt = Path("/path/to/requirements.txt")
+    ```
+=== ":simple-rust: Rust"
+    ```bash
+    export PYAKET_DEPS_REQTXT="/path/to/requirements.txt"
+    ```
+
 This option mostly exists for legacy reasons. You really should move to a `pyproject.toml` as it allows easier build backends to create portable wheels for your project that includes your code. The only use I can think of is to run a project-less script with a requirements file alongside it.
 
-<!------------------------------------------------------------------------------------------------->
-<hr>
-
-### <kbd>PYAKET_APP_ROLLING</kbd> {#app-rolling}
-> 📦 <b>Type:</b> Bool • <b>Default:</b> False
+## Rolling
 
 Always reinstall the project's dependencies when running the executable.
+
+=== ":simple-python: Python"
+    ```python
+    project.deps.rolling = True
+    ```
+=== ":simple-rust: Rust"
+    ```bash
+    export PYAKET_DEPS_ROLLING="1"
+    ```
 
 This option is best combined with a `git+` dependency or `package` without a `==version` specifier, to create a one-time binary that self-updates. This is obviously discouraged for any production use, unless very controlled, or in ephemeral runtimes for a couple of reasons:
 

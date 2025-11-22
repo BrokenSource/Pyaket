@@ -12,9 +12,6 @@ readme        = "../.github/readme.md"
 license       = "AGPL-3.0"
 edition       = "2024"
 
-[workspace]
-resolver = "3"
-
 # ---------------------------------------------------------------------------- #
 
 [lib]
@@ -29,7 +26,7 @@ path = "pyaket/main.rs"
 
 [dependencies]
 anyhow        = {version="1.0.100"}
-clap          = {version="4.5.52", features=["derive"]}
+clap          = {version="4.5.53", features=["derive"]}
 directories   = {version="6.0.0"}
 dotenvy       = {version="0.15.7"}
 glob          = {version="0.3.3"}
@@ -44,7 +41,7 @@ uv            = {version="0.9.11", default-features=false}
 
 [build-dependencies]
 anyhow        = {version="1.0.100"}
-clap          = {version="4.5.52", features=["derive"]}
+clap          = {version="4.5.53", features=["derive"]}
 directories   = {version="6.0.0"}
 dotenvy       = {version="0.15.7"}
 glob          = {version="0.3.3"}

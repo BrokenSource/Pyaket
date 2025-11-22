@@ -87,6 +87,6 @@ fn build() -> Result<()> {
 
 fn main() {
     LazyLock::force(&START_TIME);
-    logging::info!("Building pyaket project");
+    logging::info!("Building Pyaket project");
     build().unwrap();
 }

@@ -19,10 +19,18 @@ h1, h2, h3 {
 
 /* Less bold admonition titles */
 .md-typeset .admonition-title {
-  font-weight: 450;
+  font-weight: 450 !important;
+}
+.filename {
+  font-weight: 450 !important;
 }
 
 /* -------------------------------------------------------------------------- */
+
+/* Fix lineno top left border */
+.linenos {
+  border-top-left-radius: 0 !important;
+}
 
 /* Fixme: View edit floating */
 .md-content__inner {
@@ -33,7 +41,4 @@ h1, h2, h3 {
   top: .2rem;
   right: .4rem;
   float: none;
-}
-blockquote {
-  display: none;
 }

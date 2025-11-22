@@ -21,9 +21,9 @@ The version of Python to be used at runtime, from [astral-sh/python-build-standa
     export PYAKET_PYTHON_VERSION="3.13"
     ```
 
-- **Note**: Specific versions support, such as `3.10.17`, depends on the [uv-version](https://github.com/BrokenSource/Pyaket/blob/main/pyaket/Cargo.toml) in use, as the URLs are hard-coded in their binary. For example, `3.13.3` was added in [v0.6.14](https://github.com/astral-sh/uv/releases/tag/0.6.14).
+- **Note**: Specific versions support, such as `3.10.17`, depends on the [uv version](https://github.com/BrokenSource/Pyaket/blob/main/pyaket/Cargo.toml) in use, as the URLs are hard-coded in their binary. For example, `3.13.3` was added in [v0.6.14](https://github.com/astral-sh/uv/releases/tag/0.6.14).
 
-- Please chose carefully to ensure all your wheels and dependencies are compatible with the target version. Users may not have compilers and headers for sdists.
+- Please chose carefully to ensure all your wheels and dependencies are compatible with the target version. Users may not have compilers, headers, git for sdists.
 
 
 ## Bundle

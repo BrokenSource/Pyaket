@@ -18,6 +18,7 @@ nav = [
   {"Home" = [
     "index.md",
     {"About"=[
+      {"Community"="about/community.md"},
       {"Changelog"="about/changelog.md"},
       {"Roadmap"="about/roadmap.md"},
       {"Contact"="about/contact.md"},
@@ -28,11 +29,11 @@ nav = [
   {"Installation" = [
     "get/index.md",
     {"Package"=[
-      "get/pypi.md",
-      "get/executables.md",
-      "get/crate.md",
+      "get/python.md",
+      "get/release.md",
       "get/source.md",
       "get/docker.md",
+      "get/crate.md",
     ]},
     {"Workflows"=[
       "get/ci/github.md",

@@ -20,10 +20,13 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-xwin = ["cargo-xwin", "ninja",]
+xwin = ["cargo-xwin", "ninja"]
 zig  = ["cargo-zigbuild"]
 
 [dependency-groups]
+all = [
+    "pyaket[zig]",
+]
 dev = [
     "pyaket[zig]",
 ]

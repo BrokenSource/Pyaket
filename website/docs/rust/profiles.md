@@ -2,7 +2,7 @@
 icon: material/tag-multiple-outline
 ---
 
-Many [cargo profiles](https://github.com/BrokenSource/Pyaket/blob/main/pyaket/Cargo.toml) are defined to optimize for different use cases.
+Many [:simple-rust: Build Profiles](https://github.com/BrokenSource/Pyaket/blob/main/pyaket/Cargo.toml) are defined to optimize for different use cases.
 
 ## Flowchart
 
@@ -15,7 +15,7 @@ graph LR
         <small>(Slow compilation)</small>
     `")
     Release --> |No| UseDevelop([_develop_])
-    Release --> |Yes| Flavor(Optimizing)
+    Release --> |Yes| Flavor(Optimizing for)
     Flavor --> |Speed| Speed("`
         Best size and speeds?
         <small>(slower compilation)</small>

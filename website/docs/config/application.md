@@ -9,13 +9,11 @@ General metadata about the application being built.
 The name of the application being built.
 
 === ":simple-python: Python"
-
     ```python
     project.app.name = "Pyaket"
     ```
 
 === ":simple-rust: Rust"
-
     ```bash
     export PYAKET_APP_NAME="Pyaket"
     ```
@@ -25,13 +23,11 @@ The name of the application being built.
 The author's name, group, organization of the application being built.
 
 === ":simple-python: Python"
-
     ```python
     project.app.author = "BrokenSource"
     ```
 
 === ":simple-rust: Rust"
-
     ```bash
     export PYAKET_APP_AUTHOR="BrokenSource"
     ```
@@ -52,13 +48,11 @@ The version of the application being built.
 Should follow the same number of the project to be released alonside a registry. Not necessarily a semantic version, can be a codename, branch name, _"latest"_, etc.
 
 === ":simple-python: Python"
-
     ```python
     project.app.version = "0.0.0"
     ```
 
 === ":simple-rust: Rust"
-
     ```bash
     export PYAKET_APP_VERSION="0.0.0"
     ```
@@ -73,13 +67,11 @@ The value is appended to the [Versions Directory](./directories.md#versions) to 
 A description of the application, exclusively for metadata or banner purposes.
 
 === ":simple-python: Python"
-
     ```python
     project.app.about = "No description provided"
     ```
 
 === ":simple-rust: Rust"
-
     ```bash
     export PYAKET_APP_ABOUT="No description provided"
     ```
@@ -91,14 +83,12 @@ A description of the application, exclusively for metadata or banner purposes.
 An image path to use as the application icon.
 
 === ":simple-python: Python"
-
     ```python
     # Can be Path, str, Image, numpy.
     project.app.icon = Path
     ```
 
 === ":simple-rust: Rust"
-
     ```bash
     # Must be a Path to an icon file
     export PYAKET_APP_ICON="/path/to/icon"
