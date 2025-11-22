@@ -30,7 +30,7 @@
   <br>
 </div>
 
-<!-- Todo: Demo video here with asciinema svg -->
+![Asciinema](https://github.com/user-attachments/assets/c16122a6-7c39-45a6-a224-cc8714f12534)
 
 ## 🔥 Description
 
@@ -47,4 +47,8 @@
 
 ## 🚀 Getting Started
 
+Check out the [project website](https://pyaket.dev) below for comprehensive documentation!
 
+<a href="https://pyaket.dev/">
+  <img alt="Website Screenshot" src="https://github.com/user-attachments/assets/86ef953b-f307-41b6-87c8-fcaf9f64be98" />
+</a>
