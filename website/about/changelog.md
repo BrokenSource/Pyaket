@@ -20,6 +20,7 @@ icon: material/file-document-edit
         - Keeping an [`external-uv`](https://github.com/BrokenSource/Pyaket/tree/external-uv) branch for future reference if needed
     - Sketch compiling with [`cargo-xwin`](https://github.com/rust-cross/cargo-xwin) MSVC targets from non-windows hosts
     - Many `PyaketProject` variables are now safer `Option<String>` and idiomatic
+    - Minify the readme, use [mrmarble/termsvg](https://github.com/mrmarble/termsvg) and [screenshot.rocks](https://screenshot.rocks) presentation
 
 ### 📦 v0.9.0 <small>June 2, 2025</small> {#v0.9.0}
 
