@@ -29,6 +29,8 @@ If we get them all, a standalone install is achieved, with zero network calls to
 - If you have a monorepo with uv, it's as simple as `uv build --all` and include `dist/*`.
 - This option allows to bundle private wheels without pushing to a registry.
 
+<hr>
+
 ## Packages
 
 List of PyPI packages to be installed at runtime.
@@ -54,6 +56,7 @@ List of PyPI packages to be installed at runtime.
     export PYAKET_DEPS_PYPI="numpy;altair==6.0.0"
     ```
 
+<hr>
 
 ## requirements.txt {#requirements-txt}
 
@@ -69,6 +72,8 @@ A local `requirements.txt` file to be installed at runtime.
     ```
 
 This option mostly exists for legacy reasons. You really should move to a `pyproject.toml` as it allows easier build backends to create portable wheels for your project that includes your code. The only use I can think of is to run a project-less script with a requirements file alongside it.
+
+<hr>
 
 ## Rolling
 

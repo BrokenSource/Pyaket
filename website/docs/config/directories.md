@@ -20,6 +20,7 @@ This is a special variable that can be overriden at runtime and is _dynamic_ if 
     WORKSPACE=/custom/workspace/path
     ```
 
+<hr>
 
 ## Versions
 

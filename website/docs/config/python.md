@@ -2,8 +2,7 @@
 icon: material/language-python
 ---
 
-
-:material-arrow-right: This section is about the Python interpreter to be used at runtime.
+This section is about the Python interpreter to be used at runtime.
 
 ## Version
 
@@ -25,6 +24,7 @@ The version of Python to be used at runtime, from [astral-sh/python-build-standa
 
 - Please chose carefully to ensure all your wheels and dependencies are compatible with the target version. Users may not have compilers, headers, git for sdists.
 
+<hr>
 
 ## Bundle
 

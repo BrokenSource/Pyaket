@@ -18,6 +18,8 @@ The name of the application being built.
     export PYAKET_APP_NAME="Pyaket"
     ```
 
+<hr>
+
 ## Author
 
 The author's name, group, organization of the application being built.
@@ -32,6 +34,8 @@ The author's name, group, organization of the application being built.
     export PYAKET_APP_AUTHOR="BrokenSource"
     ```
 
+<hr>
+
 ## Vendor
 
 Always equal to [Author](#author) if set, otherwise [Name](#name).
@@ -40,6 +44,8 @@ This value primarily determines the [Workspace Root](./directories.md#workspace)
 
 !!! tip "Using an empty [Author](#author) is a way to isolate each project virtual environment."
     - While not recommended due spamming the user data dir, it works for single banner-less projects. For that, set the python field to `#!python None` or unset it entirely.
+
+<hr>
 
 ## Version
 
@@ -62,6 +68,8 @@ The value is appended to the [Versions Directory](./directories.md#versions) to 
 !!! tip "Projects with the same version and subdirectories shares the same venv!"
     - First-class monorepo support with a global versioning scheme.
 
+<hr>
+
 ## About
 
 A description of the application, exclusively for metadata or banner purposes.
@@ -75,6 +83,8 @@ A description of the application, exclusively for metadata or banner purposes.
     ```bash
     export PYAKET_APP_ABOUT="No description provided"
     ```
+
+<hr>
 
 ## Icon
 
