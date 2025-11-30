@@ -6,20 +6,26 @@ icon: material/heart
 
 ## Supporters
 
-!!! quote "Projects that financially supports my work"
+<span class="md-tag md-tag-icon">
+  Financial support for my work
+</span>
 
-<small><i>Empty, for now...?</i></small>
+<small><i>Empty</i></small>
 
 
 ## Integrations
 
-!!! quote "Community work improving usability"
+<span class="md-tag md-tag-icon">
+  Work improving or extending usability
+</span>
 
-<small><i>Empty, for now...?</i></small>
+<small><i>Empty</i></small>
 
 
 ## Contributors
 
-!!! quote "Notable code, feedback, ideas from the community"
+<span class="md-tag md-tag-icon">
+  Notable code, feedback, and ideas
+</span>
 
-<small><i>Empty, for now...?</i></small>
+<small><i>Empty</i></small>

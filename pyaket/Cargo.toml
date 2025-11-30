@@ -8,7 +8,7 @@ description   = "📦 Easy Python to Fast Executables"
 repository    = "https://github.com/BrokenSource/Pyaket"
 documentation = "https://pyaket.dev/docs/"
 homepage      = "https://pyaket.dev/"
-readme        = "../.github/readme.md"
+readme        = "../readme.md"
 license       = "AGPL-3.0"
 edition       = "2024"
 

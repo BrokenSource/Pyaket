@@ -36,7 +36,7 @@ Following the concepts of [uv](https://docs.astral.sh/uv/) • [tools](https://d
 
 ```sh title="🔴🟡🟢 Command" linenums="1"
 # Choose any version you want
-uv tool install pyaket[all]@latest
+uv tool install pyaket@latest
 
 # Upgrade anytime
 uv tool upgrade pyaket

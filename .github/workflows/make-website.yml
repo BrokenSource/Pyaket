@@ -23,7 +23,7 @@ jobs:
       # Fixme: build script
       - name: Symlink workaround
         run: |
-          ln .github/readme.md website/index.md
+          ln readme.md website/index.md
           ln pyaket/resources/images/logo.png website/logo.png
 
       - name: Build website

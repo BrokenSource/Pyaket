@@ -2,7 +2,7 @@
 
 # Fixme: Missing gen-files, mkdocstrings, snippets include, etc.
 # Fixme: Extend from a base configuration when supported
-# Fixme: Build script or `ln .github/readme.md website/index.md`
+# Fixme: Build script or `ln readme.md website/index.md`
 
 [project]
 site_name = "Pyaket"
@@ -18,8 +18,8 @@ nav = [
   {"Home" = [
     "index.md",
     {"About"=[
-      {"Community"="about/community.md"},
       {"Changelog"="about/changelog.md"},
+      {"Community"="about/community.md"},
       {"Roadmap"="about/roadmap.md"},
       {"Contact"="about/contact.md"},
       {"License"="about/license.md"},
