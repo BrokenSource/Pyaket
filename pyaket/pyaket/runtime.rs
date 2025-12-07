@@ -54,6 +54,8 @@ impl PyaketProject {
 
                 torch.arg("pip").arg("install")
                     .arg(format!("torch=={}", version))
+                    .arg("torchvision")
+                    .arg("torchaudio")
                     .arg(format!("--torch-backend={}", self.torch.backend))
                     .arg("--preview");
 

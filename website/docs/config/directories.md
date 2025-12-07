@@ -22,6 +22,24 @@ This is a special variable that can be overriden at runtime and is _dynamic_ if 
 
 <hr>
 
+## Common
+
+Subdirectory of the [Workspace](#workspace) to use for all Pyaket files.
+
+=== ":simple-python: Python"
+
+    ```python
+    project.directories.common = "Pyaket"
+    ```
+
+=== "":simple-rust: Rust"
+
+    ```bash
+    export PYAKET_COMMON_DIR="Pyaket"
+    ```
+
+<hr>
+
 ## Versions
 
 Subdirectory of the [Workspace](#workspace) to install virtual environments.

@@ -77,10 +77,10 @@ class PyaketDependencies(BrokenModel):
 class PyaketDirectories(BrokenModel):
     """Configuration for the directories used by the project"""
 
-    common: Annotated[str, Option("--common", "-c")] = "pyaket"
+    common: Annotated[str, Option("--common", "-c")] = "Pyaket"
     """Subdirectory of the workspace to use for all installed files"""
 
-    versions: Annotated[str, Option("--versions", "-v")] = "versions"
+    versions: Annotated[str, Option("--versions", "-v")] = "Versions"
     """Subdirectory of the common dir to install versions of the application"""
 
 # ---------------------------------------------- #

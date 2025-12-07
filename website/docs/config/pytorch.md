@@ -25,6 +25,8 @@ An optional version of PyTorch to be installed at runtime.
     export PYAKET_TORCH_VERSION="2.8.0"
     ```
 
+Torchaudio and torchvision will also be installed under any compatible version.
+
 <hr>
 
 ## Backend

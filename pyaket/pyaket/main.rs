@@ -38,7 +38,7 @@ fn main() {
     // Hold the terminal open with any Rust or Python errors for convenience
     // - Opt-out with the same variable that enables the feature
     if project.app.keep_open && envy::ubool(PYAKET_KEEP_OPEN, true) {
-        print!("\nPress enter to exit...");
+        println!("\nPress enter to exit...");
         let _ = std::io::stdin().read_line(&mut String::new());
     }
 }
