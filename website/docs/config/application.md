@@ -13,6 +13,11 @@ The name of the application being built.
     project.app.name = "Pyaket"
     ```
 
+=== ":fontawesome-solid-terminal: Command"
+    ```bash
+    pyaket app --name "Pyaket"
+    ```
+
 === ":simple-rust: Rust"
     ```bash
     export PYAKET_APP_NAME="Pyaket"
@@ -27,6 +32,11 @@ The author's name, group, organization of the application being built.
 === ":simple-python: Python"
     ```python
     project.app.author = "BrokenSource"
+    ```
+
+=== ":fontawesome-solid-terminal: Command"
+    ```bash
+    pyaket app --author "BrokenSource"
     ```
 
 === ":simple-rust: Rust"
@@ -58,6 +68,11 @@ Should follow the same number of the project to be released alonside a registry.
     project.app.version = "0.0.0"
     ```
 
+=== ":fontawesome-solid-terminal: Command"
+    ```bash
+    pyaket app --version 0.0.0
+    ```
+
 === ":simple-rust: Rust"
     ```bash
     export PYAKET_APP_VERSION="0.0.0"
@@ -79,6 +94,11 @@ A description of the application, exclusively for metadata or banner purposes.
     project.app.about = "No description provided"
     ```
 
+=== ":fontawesome-solid-terminal: Command"
+    ```bash
+    pyaket app --about "No description provided"
+    ```
+
 === ":simple-rust: Rust"
     ```bash
     export PYAKET_APP_ABOUT="No description provided"
@@ -96,6 +116,11 @@ An image path to use as the application icon.
     ```python
     # Can be Path, str, Image, numpy.
     project.app.icon = Path
+    ```
+
+=== ":fontawesome-solid-terminal: Command"
+    ```bash
+    pyaket app --icon /path/to/icon
     ```
 
 === ":simple-rust: Rust"

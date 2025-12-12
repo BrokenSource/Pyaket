@@ -15,6 +15,11 @@ A module's name to be called as `python -m module (args)` at runtime.
     project.entry.module = "name"
     ```
 
+=== ":fontawesome-solid-terminal: Command"
+    ```bash
+    pyaket run --module "name"
+    ```
+
 === ":simple-rust: Rust"
     ```bash
     export PYAKET_ENTRY_MODULE="name"
@@ -30,12 +35,17 @@ A local script to be bundled and called as `python script.py (args)` after insta
 
 === ":simple-python: Python"
     ```python
-    project.entry.script = "name"
+    project.entry.script = "/path/to/script.py"
+    ```
+
+=== ":fontawesome-solid-terminal: Command"
+    ```bash
+    pyaket run --script /path/to/script.py
     ```
 
 === ":simple-rust: Rust"
     ```bash
-    export PYAKET_ENTRY_SCRIPT="name"
+    export PYAKET_ENTRY_SCRIPT="/path/to/script.py"
     ```
 
 <hr>
@@ -47,6 +57,11 @@ A command to be executed as `command (args)` after installation.
 === ":simple-python: Python"
     ```python
     project.entry.command = "command"
+    ```
+
+=== ":fontawesome-solid-terminal: Command"
+    ```bash
+    pyaket run --command "command"
     ```
 
 === ":simple-rust: Rust"
@@ -69,6 +84,11 @@ An inline Python code to be executed as `python -c <code>` after installation.
 === ":simple-python: Python"
     ```python
     project.entry.code = "print('Hello, World!')"
+    ```
+
+=== ":fontawesome-solid-terminal: Command"
+    ```bash
+    pyaket run --code "print('Hello, World!')"
     ```
 
 === ":simple-rust: Rust"

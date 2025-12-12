@@ -2,10 +2,7 @@
 title: Get started
 ---
 
-!!! example "Important"
-    This project is under active development. Basic functionality works, but some features are incomplete, documentation needs improvement, and more testing is required. Feedback is welcome 🙂
-
-    - [Get in touch](../about/contact.md) for help and questions, be part of the community!
-    - Things are moving fast, anything may and will change anytime.
+!!! tip "The current recommended installation method is directly [From Source](./source.md)!"
+    - Updated [v0.10](../about/changelog.md) releases are yet to be published [BrokenSource#29](https://github.com/BrokenSource/BrokenSource/issues/29)
 
 After installation, follow any of the [examples](../examples/) or [documentation](../docs/) to get started!

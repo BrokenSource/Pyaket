@@ -27,13 +27,16 @@ This is a special variable that can be overriden at runtime and is _dynamic_ if 
 Subdirectory of the [Workspace](#workspace) to use for all Pyaket files.
 
 === ":simple-python: Python"
-
     ```python
     project.directories.common = "Pyaket"
     ```
 
-=== "":simple-rust: Rust"
+=== ":fontawesome-solid-terminal: Command"
+    ```bash
+    pyaket dir --common Pyaket
+    ```
 
+=== "":simple-rust: Rust"
     ```bash
     export PYAKET_COMMON_DIR="Pyaket"
     ```
@@ -45,13 +48,16 @@ Subdirectory of the [Workspace](#workspace) to use for all Pyaket files.
 Subdirectory of the [Workspace](#workspace) to install virtual environments.
 
 === ":simple-python: Python"
-
     ```python
     project.directories.versions = "Versions"
     ```
 
-=== "":simple-rust: Rust"
+=== ":fontawesome-solid-terminal: Command"
+    ```bash
+    pyaket dir --versions Versions
+    ```
 
+=== "":simple-rust: Rust"
     ```bash
     export PYAKET_VERSIONS_DIR="Versions"
     ```

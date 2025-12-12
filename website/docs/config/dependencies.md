@@ -13,6 +13,12 @@ Glob patterns of wheels and sdists to bundle and install at runtime.
     project.deps.wheels.append("/path/to/wheels/*.whl")
     project.deps.wheels.append("/path/to/sdists/*.tar.gz")
     ```
+
+=== ":fontawesome-solid-terminal: Command"
+    ```bash
+    pyaket deps --wheel /path/to/foo.whl --wheel "dist/*.whl"
+    ```
+
 === ":simple-rust: Rust"
     ```bash
     # Warning: Paths must be absolute, as they are relative to `build.rs`
@@ -51,6 +57,12 @@ List of PyPI packages to be installed at runtime.
     project.deps.pypi.append("git+...@main")
     project.deps.pypi.append("git+...@v1.2.4")
     ```
+
+=== ":fontawesome-solid-terminal: Command"
+    ```bash
+    pyaket deps --pypi "numpy" --pypi "altair==6.0.0" (...)
+    ```
+
 === ":simple-rust: Rust"
     ```bash
     export PYAKET_DEPS_PYPI="numpy;altair==6.0.0"
@@ -66,6 +78,12 @@ A local `requirements.txt` file to be installed at runtime.
     ```python
     project.deps.reqtxt = Path("/path/to/requirements.txt")
     ```
+
+=== ":fontawesome-solid-terminal: Command"
+    ```bash
+    pyaket deps --requirements /path/to/requirements.txt
+    ```
+
 === ":simple-rust: Rust"
     ```bash
     export PYAKET_DEPS_REQTXT="/path/to/requirements.txt"
@@ -83,6 +101,12 @@ Always reinstall the project's dependencies when running the executable.
     ```python
     project.deps.rolling = True
     ```
+
+=== ":fontawesome-solid-terminal: Command"
+    ```bash
+    pyaket deps --rolling
+    ```
+
 === ":simple-rust: Rust"
     ```bash
     export PYAKET_DEPS_ROLLING="1"

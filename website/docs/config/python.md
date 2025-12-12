@@ -9,13 +9,16 @@ This section is about the Python interpreter to be used at runtime.
 The version of Python to be used at runtime, from [astral-sh/python-build-standalone](https://github.com/astral-sh/python-build-standalone/).
 
 === ":simple-python: Python"
-
     ```python
     project.python.version = "3.13"
     ```
 
-=== ":simple-rust: Rust"
+=== ":fontawesome-solid-terminal: Command"
+    ```bash
+    pyaket python --version 3.13
+    ```
 
+=== ":simple-rust: Rust"
     ```bash
     export PYAKET_PYTHON_VERSION="3.13"
     ```
@@ -33,13 +36,16 @@ The version of Python to be used at runtime, from [astral-sh/python-build-standa
 Whether to embed the python distribution in the executable, instead of a runtime download.
 
 === ":simple-python: Python"
-
     ```python
     project.python.bundle = False
     ```
 
-=== ":simple-rust: Rust"
+=== ":fontawesome-solid-terminal: Command"
+    ```bash
+    pyaket python --bundle
+    ```
 
+=== ":simple-rust: Rust"
     ```bash
     export PYAKET_PYTHON_BUNDLE="0"
     ```

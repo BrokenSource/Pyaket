@@ -3,8 +3,26 @@
 !!! warning "Work in Progress"
     Section yet to be actually written 😉
 
+📦 Pyaket's configuration is done via environment variables read by rust at compile time, which are processed and passed through to the executable to load at runtime.
 
+```python
+from pyaket import PyaketProject
 
+for target in ("windows", "linux", "macos"):
+    project = PyaketProject()
+
+    project.app.name   = "MyApp"
+    project.app.author = "MyName"
+
+    project.python.version = "3.11"
+    project.deps.pypi.append("numpy")
+    project.deps.wheels.append("./dist/project-0.0.1-py3-none-any.whl")
+
+    project.release.target = target
+    executable = project.compile()
+```
+
+**Note:** It's recommended to always recreate a `PyaketProject` class for each build.
 
 
 

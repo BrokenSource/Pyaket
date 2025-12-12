@@ -199,6 +199,7 @@ class PyaketProject:
 
         with self.cli.panel("🔴 Project"):
             self.cli.command(self.app,   name="app")
+            self.cli.command(self.dirs,  name="dir")
             self.cli.command(self.entry, name="run")
 
         with self.cli.panel("🟡 Dependencies"):

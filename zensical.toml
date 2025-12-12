@@ -49,7 +49,6 @@ nav = [
   {"Documentation" = [
     "docs/index.md",
     {"Configuration"=[
-      "docs/config/index.md",
       "docs/config/application.md",
       "docs/config/dependencies.md",
       "docs/config/directories.md",

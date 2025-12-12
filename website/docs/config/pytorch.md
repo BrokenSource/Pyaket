@@ -20,6 +20,11 @@ An optional version of PyTorch to be installed at runtime.
     project.torch.version = "2.8.0"
     ```
 
+=== ":fontawesome-solid-terminal: Command"
+    ```bash
+    pyaket torch --version 2.8.0
+    ```
+
 === ":simple-rust: Rust"
     ```bash
     export PYAKET_TORCH_VERSION="2.8.0"
@@ -36,6 +41,11 @@ The hardware acceleration backend to use.
 === ":simple-python: Python"
     ```python
     project.torch.backend = "auto"
+    ```
+
+=== ":fontawesome-solid-terminal: Command"
+    ```bash
+    pyaket torch --backend auto
     ```
 
 === ":simple-rust: Rust"

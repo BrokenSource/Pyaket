@@ -2,6 +2,8 @@
 icon: material/language-python
 ---
 
+!!! warning "Updated [v0.10](../about/changelog.md) releases are yet to be published!"
+
 ## Dependency
 
 Simply add or install the [`pyaket` package](https://pypi.org/project/pyaket/) in your project _as a development dependency_[^development]:
