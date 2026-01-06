@@ -1,4 +1,5 @@
 use crate::*;
+use temp_dir::TempDir;
 
 impl PyaketProject {
 
@@ -107,22 +108,22 @@ impl PyaketProject {
 
         match &self.entry {
             PyaketEntry::Command(command) => {
-                let args = shlex::split(&command)
+                let args = shlex::split(command)
                     .expect("Failed to parse entry command");
                 main = Command::new(&args[0]);
                 main.args(&args[1..]);
             },
             PyaketEntry::Module(module) => {
-                main.arg("python").arg("-m").arg(&module);
+                main.arg("python").arg("-m").arg(module);
             },
             PyaketEntry::Code(code) => {
-                main.arg("python").arg("-c").arg(&code);
+                main.arg("python").arg("-c").arg(code);
             },
             PyaketEntry::Interpreter => {
                 main.arg("python");
             },
             PyaketEntry::Script(script) => {
-                main.arg(&script);
+                main.arg(script);
             },
         }
 

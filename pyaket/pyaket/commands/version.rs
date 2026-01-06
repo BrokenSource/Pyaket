@@ -1,5 +1,8 @@
 use crate::*;
 
+use clap::Args;
+use clap::ValueEnum;
+
 #[derive(Default, Clone, ValueEnum)]
 enum Query {
     #[default]

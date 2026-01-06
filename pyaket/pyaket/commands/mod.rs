@@ -1,5 +1,8 @@
 use crate::*;
-pub mod version;
+use clap::Parser;
+
+mod version;
+
 
 #[derive(Parser)]
 #[command(author, about, long_about=None)]
@@ -21,6 +24,6 @@ pub trait PyaketCommand {
 
 impl Commands {
     pub fn run(self, project: &PyaketProject) -> Result<()> {
-        self.as_dyn().run(&project)
+        self.as_dyn().run(project)
     }
 }

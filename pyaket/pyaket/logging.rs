@@ -22,13 +22,13 @@ macro_rules! make_log {
 }
 #[macro_export]
 macro_rules! info  {($($tokens:tt)*) =>
-    {$crate::make_log!("INFO ", 39, $($tokens)*)}}
+    {$crate::make_log!("INFO ", 4, $($tokens)*)}}
 #[macro_export]
 macro_rules! warn  {($($tokens:tt)*) =>
-    {$crate::make_log!("WARN ", 33, $($tokens)*)}}
+    {$crate::make_log!("WARN ", 3, $($tokens)*)}}
 #[macro_export]
 macro_rules! note  {($($tokens:tt)*) =>
-    {$crate::make_log!("NOTE ", 34, $($tokens)*)}}
+    {$crate::make_log!("NOTE ", 2, $($tokens)*)}}
 #[macro_export]
 macro_rules! error {($($tokens:tt)*) =>
-    {$crate::make_log!("ERROR", 31, $($tokens)*)}}
+    {$crate::make_log!("ERROR", 1, $($tokens)*)}}

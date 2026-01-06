@@ -1,4 +1,5 @@
 use crate::*;
+use rust_embed::Embed;
 
 pub static PYAKET_ASSETS: &str = "PYAKET_ASSETS";
 
@@ -23,7 +24,7 @@ fn workspace() -> PathBuf {
 /// ```rust
 /// use pyaket::*;
 ///
-/// #[derive(RustEmbed)]
+/// #[derive(Embed)]
 /// #[allow_missing=true]
 /// #[folder="${PYAKET_ASSETS:-../.cache/<name>/files}"]
 /// pub struct MyAssets;
@@ -34,7 +35,7 @@ fn workspace() -> PathBuf {
 ///     }
 /// }
 /// ```
-pub trait PyaketAssets: RustEmbed {
+pub trait PyaketAssets: Embed {
 
     /// Subdirectory for this instance
     fn name() -> &'static str;
@@ -111,13 +112,13 @@ pub trait PyaketAssets: RustEmbed {
     fn glob(pattern: &str) -> Result<Vec<(String, Vec<u8>)>> {
         let files = Self::glob_files(pattern)?;
         let data  = Self::glob_data(pattern)?;
-        Ok(files.into_iter().zip(data.into_iter()).collect())
+        Ok(files.into_iter().zip(data).collect())
     }
 }
 
 /* -------------------------------------------------------------------------- */
 
-#[derive(RustEmbed)]
+#[derive(Embed)]
 #[allow_missing=true]
 #[folder="${PYAKET_ASSETS:-../.cache/wheels/files}"]
 pub struct WheelAssets;
@@ -128,7 +129,7 @@ impl PyaketAssets for WheelAssets {
     }
 }
 
-#[derive(RustEmbed)]
+#[derive(Embed)]
 #[allow_missing=true]
 #[folder="${PYAKET_ASSETS:-../.cache/archives/files}"]
 pub struct ArchiveAssets;

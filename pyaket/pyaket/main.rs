@@ -1,19 +1,23 @@
 use pyaket::*;
 
+use clap::Parser;
+
+mod commands;
+use commands::*;
+
 fn main() {
     LazyLock::force(&START_TIME);
 
-    // Todo: Move to CLI?
+    // Todo: Move to CLI
     #[cfg(feature="uv")]
-    match envy::uget("PYAKET_SHIM", "").as_str() {
-        "uv" => unsafe {
+    if envy::uget("PYAKET_UV", "").as_str() == "1" {
+        unsafe {
             match uv::main(std::env::args()) {
                 ExitCode::SUCCESS => std::process::exit(0),
                 ExitCode::FAILURE => std::process::exit(1),
                 _ => std::process::exit(1),
             }
         }
-        _ => {}
     }
 
     // Read the project configurion sent at the end of build.rs
@@ -29,10 +33,7 @@ fn main() {
         }
     } else {
         // Actually execute the project
-        match project.run() {
-            Err(e) => eprintln!("\nError: {}", e),
-            Ok(_) => {},
-        }
+        project.run().expect("Failed to run project");
 
         // Hold the terminal open with any Rust or Python errors for convenience
         // - Opt-out with the same variable that enables the feature
