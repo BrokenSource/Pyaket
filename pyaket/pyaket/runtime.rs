@@ -1,6 +1,61 @@
 use crate::*;
 use temp_dir::TempDir;
 
+use directories::BaseDirs;
+
+/* -------------------------------------------------------------------------- */
+
+static WORKSPACE_ROOT: OnceLock<PathBuf> = OnceLock::new();
+
+impl PyaketProject {
+
+    /// Centralized working directory for all pyaket files
+    ///
+    /// | Platform | Path                                        |
+    /// | :------- | :------------------------------------------ |
+    /// | Windows  | `%LocalAppData%\<vendor>\`                  |
+    /// | Linux    | `~/.local/share/<vendor>/`                  |
+    /// | MacOS    | `~/Library/Application Support/<vendor>/`   |
+    /// | Custom   | `$WORKSPACE/`                               |
+    ///
+    pub fn workspace_root(&self) -> &'static PathBuf {
+        WORKSPACE_ROOT.get_or_init(|| {
+            if let Some(path) = envy::get("WORKSPACE") {
+                PathBuf::from(path)
+            } else {
+                BaseDirs::new().unwrap()
+                    .data_local_dir()
+                    .join(self.app.vendor())
+            }
+        })
+    }
+
+    /// A common directory to store shared data
+    pub fn workspace_common(&self) -> PathBuf {
+        self.workspace_root()
+            .join(&self.dirs.common)
+    }
+
+    /// Where to install the Python's virtual environment:
+    /// - `$WORKSPACE/versions/1.0.0`
+    pub fn installation_dir(&self) -> PathBuf {
+        self.workspace_common()
+            .join(&self.dirs.versions)
+            .join(&self.app.version)
+    }
+
+    // Fixme: Shared installation shouldn't be wiped
+    /// A file that tracks installs from unique binaries for a few purposes:
+    /// - Flags if the installation was successful to skip bootstrapping
+    /// - Triggers a reinstall if the hash differs for same versions
+    pub fn uuid_tracker_file(&self) -> PathBuf {
+        self.installation_dir()
+            .join(format!("{}.uuid", self.app.name))
+    }
+}
+
+/* -------------------------------------------------------------------------- */
+
 impl PyaketProject {
 
     pub fn run(&self) -> Result<()> {
@@ -30,7 +85,7 @@ impl PyaketProject {
         Ok(())
     }
 
-    fn _install(&self) -> Result<()> {
+    pub fn _install(&self) -> Result<()> {
         if match read(self.uuid_tracker_file()) {
             Ok(bytes) => {bytes != self.uuid.as_bytes()},
             Err(_)    => true,
@@ -100,7 +155,7 @@ impl PyaketProject {
         Ok(())
     }
 
-    fn _entry(&self) -> Result<()> {
+    pub fn _entry(&self) -> Result<()> {
         let mut main = crate::uv()?;
         main.arg("run");
         main.arg("--no-project");

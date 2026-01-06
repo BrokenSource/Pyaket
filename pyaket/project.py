@@ -226,8 +226,10 @@ class PyaketProject:
         self.deps.wheels.extend(wheels.glob("*.whl"))
 
     def compile(self,
-        target: Annotated[Path, Option("--target", "-t", help="Directory to build the project (target)")]=(Path.cwd()/"target"),
-        output: Annotated[Path, Option("--output", "-o", help="Directory to output the compiled binary")]=(Path.cwd()/"release"),
+        target: Annotated[Path, Option("--target", "-t", help="Directory to build the project (target)")]=
+            Path(Environment.get("CARGO_TARGET_DIR") or (Path.cwd()/"target")),
+        output: Annotated[Path, Option("--output", "-o", help="Directory to output the compiled binary")]=
+            Path(Environment.get("PYAKET_RELEASE_DIR") or (Path.cwd()/"release")),
     ) -> Path:
         Environment.set("MSVC", self.release.msvc)
 

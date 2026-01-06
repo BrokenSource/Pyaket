@@ -34,14 +34,15 @@ mod manage {
 
 /* -------------------------------------------------------------------------- */
 
-fn build() -> Result<()> {
+fn main() -> Result<()> {
+    LazyLock::force(&START_TIME);
+    logging::info!("Building Pyaket executable");
 
     // Workaround to always trigger a rebuild
     println!("cargo:rerun-if-changed=NULL");
 
     // Workaround for conditional compilation in build.rs, where
     // code marked as `#[cfg(not(runtime))]` is disabled
-    #[cfg(rust_analyzer)]
     println!("cargo:rustc-cfg=runtime");
 
     // Get options from environment variables
@@ -84,10 +85,4 @@ fn build() -> Result<()> {
     logging::info!("Configuration: {}", project.json());
 
     Ok(())
-}
-
-fn main() {
-    LazyLock::force(&START_TIME);
-    logging::info!("Building Pyaket executable");
-    build().unwrap();
 }

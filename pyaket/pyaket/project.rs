@@ -1,6 +1,5 @@
 use crate::*;
 
-use directories::BaseDirs;
 use serde::Deserialize;
 use serde::Serialize;
 use smart_default::SmartDefault;
@@ -174,7 +173,7 @@ pub struct PyaketProject {
     pub uuid: String,
 
     /// The platform target triple of the build
-    #[default(std::env::var("TARGET").unwrap())]
+    #[default(envy::get("TARGET").unwrap())]
     pub triple: String,
 }
 
@@ -185,57 +184,5 @@ impl PyaketProject {
 
     pub fn from_json(json: &str) -> Self {
         serde_json::from_str(json).unwrap()
-    }
-}
-
-/* -------------------------------------------------------------------------- */
-// Workspace
-
-static WORKSPACE_ROOT: OnceLock<PathBuf> = OnceLock::new();
-
-impl PyaketProject {
-
-    /// Centralized working directory for all pyaket files
-    ///
-    /// | Platform | Path                                        |
-    /// | :------- | :------------------------------------------ |
-    /// | Windows  | `%LocalAppData%\<vendor>\`                  |
-    /// | Linux    | `~/.local/share/<vendor>/`                  |
-    /// | MacOS    | `~/Library/Application Support/<vendor>/`   |
-    /// | Custom   | `$WORKSPACE/`                               |
-    ///
-    pub fn workspace_root(&self) -> &'static PathBuf {
-        WORKSPACE_ROOT.get_or_init(|| {
-            if let Some(path) = envy::get("WORKSPACE") {
-                PathBuf::from(path)
-            } else {
-                BaseDirs::new().unwrap()
-                    .data_local_dir()
-                    .join(self.app.vendor())
-            }
-        })
-    }
-
-    /// A common directory to store shared data
-    pub fn workspace_common(&self) -> PathBuf {
-        self.workspace_root()
-            .join(&self.dirs.common)
-    }
-
-    /// Where to install the Python's virtual environment:
-    /// - `$WORKSPACE/versions/1.0.0`
-    pub fn installation_dir(&self) -> PathBuf {
-        self.workspace_common()
-            .join(&self.dirs.versions)
-            .join(&self.app.version)
-    }
-
-    // Fixme: Shared installation shouldn't be wiped
-    /// A file that tracks installs from unique binaries for a few purposes:
-    /// - Flags if the installation was successful to skip bootstrapping
-    /// - Triggers a reinstall if the hash differs for same versions
-    pub fn uuid_tracker_file(&self) -> PathBuf {
-        self.installation_dir()
-            .join(format!("{}.uuid", self.app.name))
     }
 }

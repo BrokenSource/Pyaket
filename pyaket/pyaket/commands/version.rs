@@ -3,9 +3,8 @@ use crate::*;
 use clap::Args;
 use clap::ValueEnum;
 
-#[derive(Default, Clone, ValueEnum)]
+#[derive(Clone, ValueEnum)]
 enum Query {
-    #[default]
     Project,
     Pyaket,
     Python,
