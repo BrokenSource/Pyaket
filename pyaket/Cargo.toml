@@ -26,28 +26,28 @@ path = "pyaket/main.rs"
 
 [dependencies]
 anyhow        = {version="1.0.100"}
-clap          = {version="4.5.53", features=["derive"]}
+clap          = {version="4.5.54", features=["derive"]}
 directories   = {version="6.0.0"}
 dotenvy       = {version="0.15.7"}
 glob          = {version="0.3.3"}
 rust-embed    = {version="8.9.0", features=["interpolate-folder-path"]}
 serde         = {version="1.0.228", features=["derive"]}
-serde_json    = {version="1.0.145"}
+serde_json    = {version="1.0.148"}
 shlex         = {version="1.3.0"}
 smart-default = {version="0.7.1"}
 temp-dir      = {version="0.1.16"}
 uuid          = {version="1.19.0", features=["v4"]}
-uv            = {version="0.9.16", default-features=false}
+uv            = {version="0.9.21", default-features=false}
 
 [build-dependencies]
 anyhow        = {version="1.0.100"}
-clap          = {version="4.5.53", features=["derive"]}
+clap          = {version="4.5.54", features=["derive"]}
 directories   = {version="6.0.0"}
 dotenvy       = {version="0.15.7"}
 glob          = {version="0.3.3"}
 rust-embed    = {version="8.9.0", features=["interpolate-folder-path"]}
 serde         = {version="1.0.228", features=["derive"]}
-serde_json    = {version="1.0.145"}
+serde_json    = {version="1.0.148"}
 shlex         = {version="1.3.0"}
 smart-default = {version="0.7.1"}
 temp-dir      = {version="0.1.16"}
@@ -78,6 +78,7 @@ panic = "abort"
 lto = "thin"
 
 # ---------------------------------------------------------------------------- #
+# https://pyaket.dev/docs/rust/profiles/
 
 [profile.develop]
 inherits = "dev"
@@ -86,7 +87,6 @@ debug = false
 [profile.fast]
 inherits = "release"
 
-# Warn: Long build times!
 [profile.fastest]
 inherits = "fast"
 lto = "fat"
@@ -95,7 +95,6 @@ lto = "fat"
 inherits = "release"
 opt-level = "s"
 
-# Warn: Long build times!
 [profile.smallest]
 inherits = "small"
 lto = "fat"

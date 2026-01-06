@@ -73,6 +73,7 @@ fn build() -> Result<()> {
         }
         meta.compile()?;
     } else {
+        // Linux: .desktop points to a file
         if let Some(icon) = &project.app.icon {
             ArchiveAssets::write(ASSET_ICON, &read(icon)?)?;
         }
@@ -87,6 +88,6 @@ fn build() -> Result<()> {
 
 fn main() {
     LazyLock::force(&START_TIME);
-    logging::info!("Building Pyaket project");
+    logging::info!("Building Pyaket executable");
     build().unwrap();
 }

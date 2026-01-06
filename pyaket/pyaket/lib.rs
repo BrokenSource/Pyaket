@@ -51,3 +51,9 @@ pub static START_TIME: LazyLock<Instant> = LazyLock::new(Instant::now);
 
 /// Separator for environment variable lists
 pub static SEPARATOR: &str = ";";
+
+pub fn uv() -> Result<Command> {
+    let mut cmd = Command::new(std::env::current_exe()?);
+    cmd.env("PYAKET_SHIM", "uv");
+    Ok(cmd)
+}

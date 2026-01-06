@@ -2,7 +2,7 @@
 icon: material/tag-multiple-outline
 ---
 
-Many [:simple-rust: Build Profiles](https://github.com/BrokenSource/Pyaket/blob/main/pyaket/Cargo.toml) are defined to optimize for different use cases.
+Many [:simple-rust: Build Profiles](https://doc.rust-lang.org/cargo/reference/profiles.html) are defined to optimize for different use cases.
 
 ## Flowchart
 

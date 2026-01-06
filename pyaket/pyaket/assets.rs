@@ -21,12 +21,18 @@ fn workspace() -> PathBuf {
 /// All implementations **must** use the following:
 ///
 /// ```rust
+/// use pyaket::*;
+///
 /// #[derive(RustEmbed)]
 /// #[allow_missing=true]
-/// #[folder="${PYAKET_ASSETS:-../.cache/Self::name()/files}"]
+/// #[folder="${PYAKET_ASSETS:-../.cache/<name>/files}"]
 /// pub struct MyAssets;
 ///
-/// impl PyaketAssets for MyAssets { ... }
+/// impl PyaketAssets for MyAssets {
+///     fn name() -> &'static str {
+///         "MyAssets"
+///     }
+/// }
 /// ```
 pub trait PyaketAssets: RustEmbed {
 

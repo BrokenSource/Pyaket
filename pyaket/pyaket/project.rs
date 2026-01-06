@@ -1,7 +1,7 @@
 use crate::*;
 
 /* -------------------------------------------- */
-// https://pyaket.dev/docs#app
+// https://pyaket.dev/docs/config/application/
 
 pub static PYAKET_APP_NAME:    &str = "PYAKET_APP_NAME";
 pub static PYAKET_APP_AUTHOR:  &str = "PYAKET_APP_AUTHOR";
@@ -47,6 +47,7 @@ impl PyaketApplication {
 }
 
 /* -------------------------------------------- */
+// https://pyaket.dev/docs/config/dependencies/
 
 pub static PYAKET_APP_WHEELS:  &str = "PYAKET_APP_WHEELS";
 pub static PYAKET_APP_PYPI:    &str = "PYAKET_APP_PYPI";
@@ -71,7 +72,7 @@ pub struct PyaketDependencies {
 }
 
 /* -------------------------------------------- */
-// https://pyaket.dev/docs#directories
+// https://pyaket.dev/docs/config/directories/
 
 pub static PYAKET_COMMON_DIR:   &str = "PYAKET_COMMON_DIR";
 pub static PYAKET_VERSIONS_DIR: &str = "PYAKET_VERSIONS_DIR";
@@ -87,7 +88,7 @@ pub struct PyaketDirectories {
 }
 
 /* -------------------------------------------- */
-// https://pyaket.dev/docs#python
+// https://pyaket.dev/docs/config/python
 
 pub static PYAKET_PYTHON_VERSION: &str = "PYAKET_PYTHON_VERSION";
 
@@ -99,7 +100,7 @@ pub struct PyaketPython {
 }
 
 /* -------------------------------------------- */
-// https://pyaket.dev/docs#pytorch
+// https://pyaket.dev/docs/config/pytorch
 
 pub static PYAKET_TORCH_VERSION: &str = "PYAKET_TORCH_VERSION";
 pub static PYAKET_TORCH_BACKEND: &str = "PYAKET_TORCH_BACKEND";
@@ -115,7 +116,7 @@ pub struct PyaketTorch {
 }
 
 /* -------------------------------------------- */
-// https://pyaket.dev/docs#entry-points
+// https://pyaket.dev/docs/config/entry
 
 pub static PYAKET_ENTRY_MODULE:  &str = "PYAKET_ENTRY_MODULE";
 pub static PYAKET_ENTRY_SCRIPT:  &str = "PYAKET_ENTRY_SCRIPT";
@@ -162,7 +163,7 @@ pub struct PyaketProject {
     pub torch:  PyaketTorch,
     pub entry:  PyaketEntry,
 
-    /// A unique identifier to this compiled binary
+    /// Unique identifier for any compiled binary
     #[default(Uuid::new_v4().to_string())]
     pub uuid: String,
 
@@ -188,11 +189,15 @@ static WORKSPACE_ROOT: OnceLock<PathBuf> = OnceLock::new();
 
 impl PyaketProject {
 
-    /// Centralized working directory:
-    /// - Windows: `%LocalAppData%/$vendor/`
-    /// - Linux:   `~/.local/share/$vendor/`
-    /// - MacOS:   `~/Library/Application Support/$vendor/`
-    /// - Custom:  `$WORKSPACE/`
+    /// Centralized working directory for all pyaket files
+    ///
+    /// | Platform | Path                                        |
+    /// | :------- | :------------------------------------------ |
+    /// | Windows  | `%LocalAppData%\<vendor>\`                  |
+    /// | Linux    | `~/.local/share/<vendor>/`                  |
+    /// | MacOS    | `~/Library/Application Support/<vendor>/`   |
+    /// | Custom   | `$WORKSPACE/`                               |
+    ///
     pub fn workspace_root(&self) -> &'static PathBuf {
         WORKSPACE_ROOT.get_or_init(|| {
             if let Some(path) = envy::get("WORKSPACE", None) {
@@ -219,23 +224,12 @@ impl PyaketProject {
             .join(&self.app.version)
     }
 
+    // Fixme: Shared installation shouldn't be wiped
     /// A file that tracks installs from unique binaries for a few purposes:
     /// - Flags if the installation was successful to skip bootstrapping
     /// - Triggers a reinstall if the hash differs for same versions
     pub fn uuid_tracker_file(&self) -> PathBuf {
         self.installation_dir()
             .join(format!("{}.uuid", self.app.name))
-    }
-}
-
-/* -------------------------------------------------------------------------- */
-
-impl PyaketProject {
-
-    /// Get a command starting with uv executable
-    pub fn uv(&self) -> Result<Command> {
-        let mut cmd = Command::new(std::env::current_exe()?);
-        cmd.env("PYAKET_SHIM", "uv");
-        Ok(cmd)
     }
 }
