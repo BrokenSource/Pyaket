@@ -32,7 +32,7 @@ pub struct PyaketApplication {
     pub about: String,
 
     #[serde(skip)]
-    #[default(envy::get(PYAKET_APP_ICON, None))]
+    #[default(envy::get(PYAKET_APP_ICON))]
     pub icon: Option<String>,
 
     #[default(envy::ubool(PYAKET_KEEP_OPEN, false))]
@@ -64,13 +64,13 @@ pub static PYAKET_APP_ROLLING: &str = "PYAKET_APP_ROLLING";
 pub struct PyaketDependencies {
 
     #[serde(skip)]
-    #[default(envy::get(PYAKET_APP_WHEELS, None))]
+    #[default(envy::get(PYAKET_APP_WHEELS))]
     pub wheels: Option<String>,
 
-    #[default(envy::get(PYAKET_APP_PYPI, None))]
+    #[default(envy::get(PYAKET_APP_PYPI))]
     pub pypi: Option<String>,
 
-    #[default(envy::get(PYAKET_APP_REQTXT, None))]
+    #[default(envy::get(PYAKET_APP_REQTXT))]
     pub reqtxt: Option<String>,
 
     #[default(envy::ubool(PYAKET_APP_ROLLING, false))]
@@ -114,7 +114,7 @@ pub static PYAKET_TORCH_BACKEND: &str = "PYAKET_TORCH_BACKEND";
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct PyaketTorch {
 
-    #[default(envy::get(PYAKET_TORCH_VERSION, None))]
+    #[default(envy::get(PYAKET_TORCH_VERSION))]
     pub version: Option<String>,
 
     #[default(envy::uget(PYAKET_TORCH_BACKEND, "auto"))]
@@ -149,7 +149,7 @@ impl Default for PyaketEntry {
             (PYAKET_ENTRY_SCRIPT,  Self::Script  as G),
             (PYAKET_ENTRY_CODE,    Self::Code    as G),
         ] {
-            if let Some(value) = envy::get(key, None) {
+            if let Some(value) = envy::get(key) {
                 return from(value);
             }
         }
@@ -206,7 +206,7 @@ impl PyaketProject {
     ///
     pub fn workspace_root(&self) -> &'static PathBuf {
         WORKSPACE_ROOT.get_or_init(|| {
-            if let Some(path) = envy::get("WORKSPACE", None) {
+            if let Some(path) = envy::get("WORKSPACE") {
                 PathBuf::from(path)
             } else {
                 BaseDirs::new().unwrap()

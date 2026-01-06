@@ -4,13 +4,13 @@ use rust_embed::Embed;
 pub static PYAKET_ASSETS: &str = "PYAKET_ASSETS";
 
 /// Global path for storing cache and final assets
-/// - Always overriden by $PYAKET_ASSETS variable
+/// - Always overridden by $PYAKET_ASSETS variable
 /// - Editable install: `repository/.cache/`
 /// - Python package: `site-packages/.cache/`
 /// - Crates.io build: I don't know.
 #[cfg(not(runtime))]
 fn workspace() -> PathBuf {
-    if let Some(path) = envy::get(PYAKET_ASSETS, None) {
+    if let Some(path) = envy::get(PYAKET_ASSETS) {
         PathBuf::from(path)
     } else {
         PathBuf::from(env!("CARGO_MANIFEST_DIR"))

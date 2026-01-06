@@ -3,9 +3,14 @@ use crate::*;
 /* -------------------------------------------------------------------------- */
 // String
 
-/// Get a string from the environment, optional default
-pub fn get(name: &str, default: Option<&str>) -> Option<String> {
-    std::env::var(name).ok().or(default.map(|x| x.to_string()))
+/// Get a string from an environment variable
+pub fn get(name: &str) -> Option<String> {
+    std::env::var(name).ok()
+}
+
+/// Get a string from an environment variable with a default
+pub fn uget(name: &str, default: &str) -> String {
+    self::get(name).unwrap_or_else(|| default.to_string())
 }
 
 /// Set an environment variable to a value
@@ -25,29 +30,24 @@ pub fn setdefault(name: &str, value: impl Display) {
     }
 }
 
-/// Get a string from the environment, required default
-pub fn uget(name: &str, default: &str) -> String {
-    self::get(name, Some(default)).unwrap()
-}
-
 /* -------------------------------------------------------------------------- */
 // Boolean
 
-/// Parse a bool from an environment variable, optional default
-pub fn bool(name: &str, default: Option<bool>) -> Option<bool> {
+/// Parse a bool from an environment variable
+pub fn bool(name: &str) -> Option<bool> {
     match std::env::var(name).ok() {
         Some(value) => match value.to_lowercase().as_str() {
             "false" | "0" | "no"  | "off" => Some(false),
             "true"  | "1" | "yes" | "on"  => Some(true),
             _ => None,
         },
-        None => default,
+        None => None,
     }
 }
 
-/// Parse a bool from an environment variable, required default
+/// Parse a bool from an environment variable with a default
 pub fn ubool(name: &str, default: bool) -> bool {
-    self::bool(name, Some(default)).unwrap()
+    self::bool(name).unwrap_or(default)
 }
 
 /* -------------------------------------------------------------------------- */
