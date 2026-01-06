@@ -4,6 +4,7 @@ fn main() {
     LazyLock::force(&START_TIME);
 
     // Todo: Move to CLI?
+    #[cfg(feature="uv")]
     match envy::uget("PYAKET_SHIM", "").as_str() {
         "uv" => unsafe {
             match uv::main(std::env::args()) {

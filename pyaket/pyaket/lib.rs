@@ -53,7 +53,11 @@ pub static START_TIME: LazyLock<Instant> = LazyLock::new(Instant::now);
 pub static SEPARATOR: &str = ";";
 
 pub fn uv() -> Result<Command> {
-    let mut cmd = Command::new(std::env::current_exe()?);
-    cmd.env("PYAKET_SHIM", "uv");
-    Ok(cmd)
+    if cfg!(feature="uv") {
+        let mut cmd = Command::new(std::env::current_exe()?);
+        cmd.env("PYAKET_SHIM", "uv");
+        Ok(cmd)
+    } else {
+        Ok(Command::new("uv"))
+    }
 }
