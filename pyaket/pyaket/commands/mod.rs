@@ -1,29 +1,79 @@
 use crate::*;
+pub mod version;
+pub mod uv;
+
 use clap::Parser;
+use clap::Subcommand;
 
-mod version;
-
-
-#[derive(Parser)]
-#[command(author, about, long_about=None)]
-pub enum Commands {
-    Version(version::VersionCommand),
+pub trait PyaketCommand {
+    fn run(&self, project: &PyaketProject) -> Result<()>;
 }
 
-impl Commands {
-    pub fn as_dyn(&self) -> &dyn PyaketCommand {
-        match self {
-            Commands::Version(x) => x,
+/* -------------------------------------------------------------------------- */
+// Main command parser, where the lack of a command
+// implies launching the python project itself.
+
+#[derive(Parser)]
+#[command(allow_hyphen_values=true)]
+#[command(disable_help_flag=true)]
+pub struct PyaketCLI {
+
+    #[command(subcommand)]
+    pub command: Option<Commands>,
+
+    #[arg(trailing_var_arg=true)]
+    pub default: Vec<String>,
+}
+
+impl PyaketCLI {
+    pub fn run(self, project: &PyaketProject) -> Result<()> {
+        match self.command {
+            Some(cmd) => cmd.run(project),
+            None => project.run(),
         }
     }
 }
 
-pub trait PyaketCommand {
-    fn run(&self, project: &PyaketProject) -> Result<(), anyhow::Error>;
+/* -------------------------------------------------------------------------- */
+// Self command namespace
+
+#[derive(Subcommand)]
+pub enum Commands {
+
+    #[command(name="self")]
+    Selfy {
+        #[command(subcommand)]
+        command: Manager,
+    },
 }
 
-impl Commands {
-    pub fn run(self, project: &PyaketProject) -> Result<()> {
-        self.as_dyn().run(project)
+impl PyaketCommand for Commands {
+    fn run(&self, project: &PyaketProject) -> Result<()> {
+        match self {
+            Commands::Selfy{command} => command.run(project),
+        }
+    }
+}
+
+/* -------------------------------------------------------------------------- */
+// Commands under 'pyaket self ...'
+
+#[derive(Subcommand)]
+#[command(
+    // about="Special management commands",
+    long_about=env!("CARGO_PKG_DESCRIPTION"),
+)]
+pub enum Manager {
+    Version(version::VersionCommand),
+    Uv(uv::UvCommand),
+}
+
+impl PyaketCommand for Manager {
+    fn run(&self, project: &PyaketProject) -> Result<()> {
+        match self {
+            Manager::Version(cmd) => cmd.run(project)?,
+            Manager::Uv(cmd) => cmd.run(),
+        }
+        Ok(())
     }
 }

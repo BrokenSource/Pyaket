@@ -4,18 +4,20 @@ use clap::Args;
 use clap::ValueEnum;
 
 #[derive(Clone, ValueEnum)]
-enum Query {
+pub enum Query {
     Project,
     Pyaket,
     Python,
     Torch,
+    Uv,
 }
 
+/// Query the project, python, pyaket or torch versions
 #[derive(Args)]
 pub struct VersionCommand {
 
     #[arg(short, long, value_enum, default_value_t=Query::Project)]
-    query: Query,
+    pub query: Query,
 }
 
 impl PyaketCommand for VersionCommand {
@@ -32,9 +34,15 @@ impl PyaketCommand for VersionCommand {
 
             Query::Torch =>
                 match &project.torch.version {
-                    Some(v) => println!("{}+{}", v, project.torch.backend),
+                    Some(ver) => println!("{}+{}", ver, project.torch.backend),
                     None => println!("None"),
                 },
+
+            Query::Uv => {
+                super::uv::UvCommand {
+                    args: vec!("--version".to_string()),
+                }.run();
+            }
         }
         Ok(())
     }

@@ -2,7 +2,6 @@
 mod lib;
 use lib::*;
 
-
 fn main() -> Result<()> {
     LazyLock::force(&START_TIME);
     logging::info!("Building Pyaket executable");

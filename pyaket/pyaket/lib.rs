@@ -38,11 +38,7 @@ pub static START_TIME: LazyLock<Instant> = LazyLock::new(Instant::now);
 pub static SEPARATOR: &str = ";";
 
 pub fn uv() -> Result<Command> {
-    if cfg!(feature="uv") {
-        let mut cmd = Command::new(std::env::current_exe()?);
-        cmd.env("PYAKET_UV", "1");
-        Ok(cmd)
-    } else {
-        Ok(Command::new("uv"))
-    }
+    let mut cmd = Command::new(std::env::current_exe()?);
+    cmd.arg("self").arg("uv");
+    Ok(cmd)
 }
