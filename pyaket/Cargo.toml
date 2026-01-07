@@ -30,7 +30,7 @@ clap          = {version="4.5.54", features=["derive"]}
 directories   = {version="6.0.0"}
 dotenvy       = {version="0.15.7"}
 glob          = {version="0.3.3"}
-rust-embed    = {version="8.9.0", features=["interpolate-folder-path"]}
+rust-embed    = {version="8.9.0"}
 serde         = {version="1.0.228", features=["derive"]}
 serde_json    = {version="1.0.149"}
 shlex         = {version="1.3.0"}
@@ -56,12 +56,12 @@ default = ["uv"]
 
 # Compile against and use astral-sh/uv as a dependency.
 #
-# Should always be enabled on releases for actual functionality, otherwise use
-# any 'uv' binary found on PATH - useful for quick iterative development.
+# Should always be enabled on releases for actual functionality, otherwise
+# use any 'uv' binary found on PATH - for quick iterative development.
 uv = ["dep:uv"]
 
 [lints.rust]
-unexpected_cfgs = {level="warn", check-cfg=["cfg(runtime)", "cfg(build)", "cfg(rust_analyzer)"]}
+unexpected_cfgs = {level="warn", check-cfg=["cfg(runtime)", "cfg(rust_analyzer)"]}
 
 # ---------------------------------------------------------------------------- #
 

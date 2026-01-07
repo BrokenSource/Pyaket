@@ -2,37 +2,6 @@
 mod lib;
 use lib::*;
 
-/* -------------------------------------------------------------------------- */
-
-mod manage {
-    use super::*;
-
-    pub fn wheels(project: &PyaketProject) -> Result<()> {
-        if let Some(wheels) = &project.deps.wheels {
-            for pattern in wheels.split(SEPARATOR) {
-                for entry in glob::glob(pattern)?.flatten() {
-                    logging::info!("Wheel: {}", entry.display());
-                    WheelAssets::write(
-                        entry.file_name().unwrap(),
-                        &read(&entry)?,
-                    )?;
-                }
-            }
-        }
-
-        Ok(())
-    }
-
-    pub fn reqtxt(project: &mut PyaketProject) -> Result<()> {
-        // Todo: .read_file_or_keep() sugar
-        if let Some(path) = &project.deps.reqtxt {
-            project.deps.reqtxt = Some(read_string(path)?);
-        }
-        Ok(())
-    }
-}
-
-/* -------------------------------------------------------------------------- */
 
 fn main() -> Result<()> {
     LazyLock::force(&START_TIME);
@@ -41,8 +10,10 @@ fn main() -> Result<()> {
     // Workaround to always trigger a rebuild
     println!("cargo:rerun-if-changed=NULL");
 
-    // Workaround for conditional compilation in build.rs, where
-    // code marked as `#[cfg(not(runtime))]` is disabled
+    // Workaround for conditional compilation build.rs shared lib:
+    // - Code marked as `#[cfg(not(runtime))]` is build-only
+    // - Code marked as `#[cfg(runtime)]` is runtime-only
+    #[cfg(not(rust_analyzer))]
     println!("cargo:rustc-cfg=runtime");
 
     // Get options from environment variables
@@ -54,10 +25,25 @@ fn main() -> Result<()> {
     }
 
     ArchiveAssets::clear_files()?;
-
     WheelAssets::clear_files()?;
-    manage::wheels(&project)?;
-    manage::reqtxt(&mut project)?;
+
+    // Bundle wheel files
+    if let Some(wheels) = &project.deps.wheels {
+        for pattern in wheels.split(SEPARATOR) {
+            for entry in glob::glob(pattern)?.flatten() {
+                logging::info!("Wheel: {}", entry.display());
+                WheelAssets::write(
+                    entry.file_name().unwrap(),
+                    &read(&entry)?,
+                )?;
+            }
+        }
+    }
+
+    // Bundle requirements.txt content
+    if let Some(path) = &project.deps.reqtxt {
+        project.deps.reqtxt = Some(read_string(path)?);
+    }
 
     // Executable resources (icon, metadata, etc)
     if project.triple.contains("windows") {

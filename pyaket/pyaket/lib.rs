@@ -28,7 +28,6 @@ pub mod subprocess;
 pub use assets::*;
 pub use project::*;
 
-// Neat: Extended on binary crate only!
 #[cfg(runtime)]
 pub mod runtime;
 
