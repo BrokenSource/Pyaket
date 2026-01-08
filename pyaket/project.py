@@ -21,7 +21,7 @@ from pyaket import PYAKET, PYAKET_ABOUT, __version__
 SEPARATOR: str = ";"
 
 # ---------------------------------------------- #
-# https://pyaket.dev/docs#app
+# https://pyaket.dev/docs/config/application/
 
 class PyaketApplication(BrokenModel):
     """General metadata and dependencies definitions of the project"""
@@ -46,6 +46,7 @@ class PyaketApplication(BrokenModel):
     """Keep the terminal open after errors or finish"""
 
 # ---------------------------------------------- #
+# https://pyaket.dev/docs/config/dependencies/
 
 class PyaketDependencies(BrokenModel):
     """Configuration for the dependencies of the project"""
@@ -72,7 +73,7 @@ class PyaketDependencies(BrokenModel):
         return SEPARATOR.join(map(str, self.pypi)) or None
 
 # ---------------------------------------------- #
-# https://pyaket.dev/docs#directories
+# https://pyaket.dev/docs/config/directories/
 
 class PyaketDirectories(BrokenModel):
     """Configuration for the directories used by the project"""
@@ -84,7 +85,7 @@ class PyaketDirectories(BrokenModel):
     """Subdirectory of the common dir to install versions of the application"""
 
 # ---------------------------------------------- #
-# https://pyaket.dev/docs#python
+# https://pyaket.dev/docs/config/python/
 
 class PyaketPython(BrokenModel):
     """Configuration for a Python interpreter to use for the project"""
@@ -96,7 +97,7 @@ class PyaketPython(BrokenModel):
     """Whether to bundle python in the executable"""
 
 # ---------------------------------------------- #
-# https://pyaket.dev/docs#pytorch
+# https://pyaket.dev/docs/config/pytorch/
 
 class PyaketTorch(BrokenModel):
     """Optional configuration to install PyTorch at runtime"""
@@ -108,7 +109,7 @@ class PyaketTorch(BrokenModel):
     """The backend to use for PyTorch, auto, cpu, xpu, cu128, cu118, etc"""
 
 # ---------------------------------------------- #
-# https://pyaket.dev/docs#entry-points
+# https://pyaket.dev/docs/config/entry/
 
 class PyaketEntry(BrokenModel):
     """Configuration for the entry point of the application"""
@@ -126,7 +127,6 @@ class PyaketEntry(BrokenModel):
     """A command to run at runtime (command ...)"""
 
 # ---------------------------------------------- #
-# https://pyaket.dev/docs#release
 
 class PyaketRelease(BrokenModel):
     """Release configuration for the application"""

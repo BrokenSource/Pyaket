@@ -2,6 +2,7 @@
 #![allow(unused_imports)]
 #![allow(dead_code)]
 
+pub use std::env::current_exe;
 pub use std::fmt::Display;
 pub use std::fs::create_dir_all as mkdir;
 pub use std::fs::read_to_string as read_string;
@@ -38,7 +39,7 @@ pub static START_TIME: LazyLock<Instant> = LazyLock::new(Instant::now);
 pub static SEPARATOR: &str = ";";
 
 pub fn uv() -> Result<Command> {
-    let mut cmd = Command::new(std::env::current_exe()?);
+    let mut cmd = Command::new(current_exe()?);
     cmd.arg("self").arg("uv");
     Ok(cmd)
 }

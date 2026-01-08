@@ -13,7 +13,6 @@ pub static PYAKET_APP_AUTHOR:  &str = "PYAKET_APP_AUTHOR";
 pub static PYAKET_APP_VERSION: &str = "PYAKET_APP_VERSION";
 pub static PYAKET_APP_ABOUT:   &str = "PYAKET_APP_ABOUT";
 pub static PYAKET_APP_ICON:    &str = "PYAKET_APP_ICON";
-pub static PYAKET_KEEP_OPEN:   &str = "PYAKET_KEEP_OPEN";
 
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct PyaketApplication {
@@ -33,9 +32,6 @@ pub struct PyaketApplication {
     #[serde(skip)]
     #[default(envy::get(PYAKET_APP_ICON))]
     pub icon: Option<String>,
-
-    #[default(envy::ubool(PYAKET_KEEP_OPEN, false))]
-    pub keep_open: bool,
 }
 
 impl PyaketApplication {
@@ -159,6 +155,8 @@ impl Default for PyaketEntry {
 
 /* -------------------------------------------- */
 
+pub static PYAKET_KEEP_OPEN: &str = "PYAKET_KEEP_OPEN";
+
 #[derive(Serialize, Deserialize, SmartDefault)]
 pub struct PyaketProject {
     pub app:    PyaketApplication,
@@ -168,6 +166,9 @@ pub struct PyaketProject {
     pub torch:  PyaketTorch,
     pub entry:  PyaketEntry,
 
+    #[default(envy::ubool(PYAKET_KEEP_OPEN, false))]
+    pub keep_open: bool,
+
     /// Unique identifier for any compiled binary
     #[default(Uuid::new_v4().to_string())]
     pub uuid: String,
@@ -176,6 +177,8 @@ pub struct PyaketProject {
     #[default(envy::get("TARGET").unwrap())]
     pub triple: String,
 }
+
+/* -------------------------------------------- */
 
 impl PyaketProject {
     pub fn json(&self) -> String {

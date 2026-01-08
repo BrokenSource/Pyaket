@@ -27,6 +27,7 @@ path = "pyaket/main.rs"
 [dependencies]
 anyhow        = {version="1.0.100"}
 clap          = {version="4.5.54", features=["derive"]}
+dialoguer     = {version="0.12.0", default-features=false}
 directories   = {version="6.0.0"}
 dotenvy       = {version="0.15.7"}
 glob          = {version="0.3.3"}

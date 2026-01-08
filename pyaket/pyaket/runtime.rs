@@ -1,6 +1,6 @@
 use crate::*;
-use temp_dir::TempDir;
 
+use temp_dir::TempDir;
 use directories::BaseDirs;
 
 /* -------------------------------------------------------------------------- */
@@ -59,9 +59,17 @@ impl PyaketProject {
 impl PyaketProject {
 
     pub fn run(&self) -> Result<()> {
+        self._export()?;
+        self._install()?;
+        self._entry()?;
+        Ok(())
+    }
+
+    /// Export base environment variables
+    pub fn _export(&self) -> Result<()> {
 
         // Send the executable path to Python, also flags a Pyaket app
-        let executable = std::env::current_exe()?.canonicalize()?;
+        let executable = current_exe()?.canonicalize()?;
         envy::set("PYAKET", executable.display());
 
         // Load environment variables where the shell (executable) is
@@ -80,8 +88,6 @@ impl PyaketProject {
             envy::setdefault("PYTHON_GIL", 0);
         }
 
-        self._install()?;
-        self._entry()?;
         Ok(())
     }
 
@@ -104,7 +110,7 @@ impl PyaketProject {
             }
 
             // Install PyTorch first, as other dependencies might
-            // install a platform's default backend
+            // use a platform's default backend than specified
             if let Some(version) = &self.torch.version {
                 let mut torch = crate::uv()?;
 
@@ -118,9 +124,9 @@ impl PyaketProject {
                 subprocess::run(&mut torch)?;
             }
 
-            // Gets cleaned up when out of scope
             let tempdir = TempDir::with_prefix("pyaket-").unwrap();
 
+            // Must have at least one package
             let mut command = crate::uv()?;
             command.arg("pip").arg("install");
             command.arg("--upgrade");
@@ -158,7 +164,6 @@ impl PyaketProject {
     pub fn _entry(&self) -> Result<()> {
         let mut main = crate::uv()?;
         main.arg("run");
-        main.arg("--no-project");
         main.arg("--active");
 
         match &self.entry {

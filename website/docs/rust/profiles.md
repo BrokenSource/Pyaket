@@ -47,6 +47,8 @@ Development mode, ideal for iterative development.
     - Slower runtime
 </div>
 
+<sup><b>Base Size:</b> ~58.01 MB</sup>
+
 ### `fast`
 
 Optimizes for speed, similar to rust's default `release` profile.
@@ -58,6 +60,8 @@ Optimizes for speed, similar to rust's default `release` profile.
 - 🔴 **Trade-offs**
     - Slower build times
 </div>
+
+<sup><b>Base Size:</b> ~45.44 MB</sup>
 
 ### `fastest`
 
@@ -71,6 +75,8 @@ Same as [fast](#fast), but with [Fat LTO](https://doc.rust-lang.org/cargo/refere
     - Slowest build times
 </div>
 
+<sup><b>Base Size:</b> ~40.70 MB</sup>
+
 ### `small`
 
 Optimizes for smaller binary sizes.
@@ -83,6 +89,8 @@ Optimizes for smaller binary sizes.
     - Slower execution speed
 </div>
 
+<sup><b>Base Size:</b> ~37.23 MB</sup>
+
 ### `smallest`
 
 Same as [small](#small), but with [Fat LTO](https://doc.rust-lang.org/cargo/reference/profiles.html#lto) enabled, vs it:
@@ -93,6 +101,8 @@ Same as [small](#small), but with [Fat LTO](https://doc.rust-lang.org/cargo/refe
 - 🔴 **Trade-offs**
     - Slowest build times
 </div>
+
+<sup><b>Size:</b> 29.94 MB</sup>
 
 ## Using a profile
 

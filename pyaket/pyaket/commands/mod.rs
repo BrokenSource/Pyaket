@@ -1,6 +1,5 @@
 use crate::*;
-pub mod version;
-pub mod uv;
+pub mod manager;
 
 use clap::Parser;
 use clap::Subcommand;
@@ -10,12 +9,9 @@ pub trait PyaketCommand {
 }
 
 /* -------------------------------------------------------------------------- */
-// Main command parser, where the lack of a command
-// implies launching the python project itself.
 
 #[derive(Parser)]
 #[command(allow_hyphen_values=true)]
-#[command(disable_help_flag=true)]
 pub struct PyaketCLI {
 
     #[command(subcommand)]
@@ -25,9 +21,9 @@ pub struct PyaketCLI {
     pub default: Vec<String>,
 }
 
-impl PyaketCLI {
-    pub fn run(self, project: &PyaketProject) -> Result<()> {
-        match self.command {
+impl PyaketCommand for PyaketCLI {
+    fn run(&self, project: &PyaketProject) -> Result<()> {
+        match &self.command {
             Some(cmd) => cmd.run(project),
             None => project.run(),
         }
@@ -58,21 +54,18 @@ impl PyaketCommand for Commands {
 /* -------------------------------------------------------------------------- */
 // Commands under 'pyaket self ...'
 
+/// Special executable management commands from Pyaket
 #[derive(Subcommand)]
-#[command(
-    // about="Special management commands",
-    long_about=env!("CARGO_PKG_DESCRIPTION"),
-)]
 pub enum Manager {
-    Version(version::VersionCommand),
-    Uv(uv::UvCommand),
+    Uv     (manager::UvCommand),
+    Version(manager::VersionCommand),
 }
 
 impl PyaketCommand for Manager {
     fn run(&self, project: &PyaketProject) -> Result<()> {
         match self {
+            Manager::Uv(cmd)      => cmd.run(),
             Manager::Version(cmd) => cmd.run(project)?,
-            Manager::Uv(cmd) => cmd.run(),
         }
         Ok(())
     }

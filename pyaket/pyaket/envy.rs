@@ -54,7 +54,7 @@ pub fn ubool(name: &str, default: bool) -> bool {
 // Exporting and printing
 
 /// Print an environment variable
-pub fn print(name: &str) {
+pub fn printenv(name: &str) {
     println!("{}={}", name, self::uget(name, "#Unset#"))
 }
 
