@@ -31,7 +31,7 @@ dev = [
 ]
 
 [project.scripts]
-pyaket = "pyaket.__main__:main"
+pyaket = "pyaket.__main__:packer"
 
 # ---------------------------------------------------------------------------- #
 

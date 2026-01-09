@@ -7,7 +7,7 @@ pub static PYAKET_ASSETS: &str = "PYAKET_ASSETS";
 /// - Always overridden by $PYAKET_ASSETS variable
 /// - Editable install: `repository/.cache/`
 /// - Python package: `site-packages/.cache/`
-/// - Crates.io build: I don't know.
+/// - Crates.io: I don't know.
 #[cfg(not(runtime))]
 fn workspace() -> PathBuf {
     if let Some(path) = envy::get(PYAKET_ASSETS) {

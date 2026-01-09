@@ -1,4 +1,5 @@
-use crate::*;
+use std::fmt::Display;
+use std::path::PathBuf;
 
 /* -------------------------------------------------------------------------- */
 // String
@@ -58,8 +59,8 @@ pub fn printenv(name: &str) {
     println!("{}={}", name, self::uget(name, "#Unset#"))
 }
 
-/// Pass a compile time environment variable to the binary
-/// - Warn: Must be acessed via env!(literal) at runtime
+/// Pass a compile time environment variable to the binary,
+/// acessed via env!(string literal) at runtime
 #[cfg(not(runtime))]
 pub fn rustc_export(name: &str, value: impl Display) {
     println!("cargo:rustc-env={}={}", name, value);

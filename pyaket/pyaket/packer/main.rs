@@ -1,0 +1,141 @@
+use pyaket::*;
+
+use clap::Parser;
+
+pub static PYAKET_ROOT: OnceLock<PathBuf> = OnceLock::new();
+
+/// Path where Cargo.toml is (Python package)
+pub fn pyaket_root() -> &'static PathBuf {
+    PYAKET_ROOT.get_or_init(|| {
+        std::env::var_os("PYAKET_ROOT")
+            .map(PathBuf::from)
+            .unwrap_or_else(|| {
+                current_dir().expect("Couldn't find cwd")
+            })
+    })
+}
+
+#[derive(Parser)]
+pub struct PackerCLI {
+
+    /// Path to a base pyaket.toml configuration file
+    #[arg(env="PYAKET_CONFIG")]
+    #[arg(short, long, default_value="pyaket.toml")]
+    pub config: PathBuf,
+
+    #[arg(env="CARGO_TARGET_DIR")]
+    #[arg(short, long, default_value="target")]
+    pub target_dir: PathBuf,
+
+    #[arg(env="PYAKET_RELEASE_DIR")]
+    #[arg(short, long, default_value="release")]
+    pub output: PathBuf,
+
+    #[arg(long)]
+    pub target: Option<Vec<String>>,
+}
+
+impl PackerCLI {
+    fn compile(&self) -> Result<()> {
+
+        // Todo: Proper CLI, merging?
+        let mut project = match &read_string(&self.config) {
+            Ok(toml) => PyaketProject::from_toml(&toml),
+            Err(_) => bail!("Could not read pyaket.toml"),
+        };
+
+        println!("App: {}", project.toml());
+
+        // ArchiveAssets::clear_files()?;
+        // WheelAssets::clear_files()?;
+
+        // Todo: Bundle wheel files
+        // if let Some(wheels) = &project.deps.wheels {
+        //     for pattern in wheels.split(SEPARATOR) {
+        //         for entry in glob::glob(pattern)?.flatten() {
+        //             logging::info!("Wheel: {}", entry.display());
+        //             WheelAssets::write(
+        //                 entry.file_name().unwrap(),
+        //                 &read(&entry)?,
+        //             )?;
+        //         }
+        //     }
+        // }
+
+        // Bundle requirements.txt content
+        if let Some(path) = &project.dependencies.reqtxt {
+            project.dependencies.reqtxt = Some(read_string(path)?);
+        }
+
+        // --------------------------------|
+
+        /* Install host's toolchain */ {
+            let mut rustup = crate::rustup()?;
+            rustup.arg("default").arg("stable");
+            subprocess::run(&mut rustup)?;
+        }
+
+        /* Install target toolchain */ {
+            let mut rustup = crate::rustup()?;
+            rustup.arg("target").arg("add");
+            rustup.arg(&project.release.target);
+            subprocess::run(&mut rustup)?;
+        }
+
+        // Export configuration for packer
+        envy::set("PYAKET_PROJECT", &project.json());
+        logging::info!("Configuration: {}", project.json());
+
+        /* Compile a pyaket executable */ {
+            let mut packer = Command::new("cargo");
+            packer.arg(&project.release.cargo.to_string());
+            packer.arg("--manifest-path").arg(pyaket_root().join("Cargo.toml"));
+            packer.arg("--profile").arg(&project.release.profile.to_string());
+            packer.arg("--target").arg(&project.release.target);
+            packer.arg("--target-dir").arg(&self.target_dir);
+            // packer.arg("--features").arg("uv");
+            subprocess::run(&mut packer)?;
+        }
+
+        /* Find the compiled binary */
+        let compiled = self.target_dir
+            .join(&project.release.target)
+            .join(&project.release.profile.to_string())
+            .join("pyaket")
+            .with_extension(project.release.extension());
+
+        // Ensure the binary exists
+        if !compiled.exists() {
+            bail!(logging::error!("Missing compiled binary {}", compiled.display()));
+        } else {
+            logging::info!("Built binary at {}", compiled.display());
+        }
+
+        // Create output directory
+        let release = self.output.join(project.release_name());
+        mkdir(&self.output)?;
+        copy(&compiled, &release)?;
+        remove_file(&compiled)?;
+
+        // Optional upx compression
+        if project.release.upx {
+            let mut cmd = Command::new("upx");
+            cmd.arg("--best").arg("--lzma");
+            cmd.arg(&release);
+            subprocess::run(&mut cmd)?;
+        }
+
+        // Optional tar.gz to keep chmod +x attributes
+        if project.release.tarball && !project.release.target.contains("windows") {
+            todo!("Should use external command or a crate for .tar.gz creation?");
+        }
+
+        logging::info!("Final project release at {}", release.display());
+        Ok(())
+    }
+
+}
+
+fn main() -> Result<()> {
+    PackerCLI::try_parse()?.compile()
+}

@@ -27,7 +27,7 @@ impl PyaketCommand for VersionCommand {
                 println!("{}", env!("CARGO_PKG_VERSION")),
 
             Query::Project =>
-                println!("{}", project.app.version),
+                println!("{}", project.application.version),
 
             Query::Python =>
                 println!("{}", project.python.version),

@@ -1,5 +1,7 @@
-from pyaket import _pyaket
+import sys
+
+import pyaket
 
 
-def main():
-    _pyaket.cli()
+def packer():
+    pyaket.packer(*sys.argv[1:])

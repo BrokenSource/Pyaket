@@ -25,7 +25,7 @@ impl PyaketProject {
             } else {
                 BaseDirs::new().unwrap()
                     .data_local_dir()
-                    .join(self.app.vendor())
+                    .join(self.application.vendor())
             }
         })
     }
@@ -33,15 +33,15 @@ impl PyaketProject {
     /// A common directory to store shared data
     pub fn workspace_common(&self) -> PathBuf {
         self.workspace_root()
-            .join(&self.dirs.common)
+            .join(&self.directories.common)
     }
 
     /// Where to install the Python's virtual environment:
     /// - `$WORKSPACE/versions/1.0.0`
     pub fn installation_dir(&self) -> PathBuf {
         self.workspace_common()
-            .join(&self.dirs.versions)
-            .join(&self.app.version)
+            .join(&self.directories.versions)
+            .join(&self.application.version)
     }
 
     // Fixme: Shared installation shouldn't be wiped
@@ -50,7 +50,7 @@ impl PyaketProject {
     /// - Triggers a reinstall if the hash differs for same versions
     pub fn uuid_tracker_file(&self) -> PathBuf {
         self.installation_dir()
-            .join(format!("{}.uuid", self.app.name))
+            .join(format!("{}.uuid", self.application.name))
     }
 }
 
@@ -95,7 +95,7 @@ impl PyaketProject {
         if match read(self.uuid_tracker_file()) {
             Ok(bytes) => {bytes != self.uuid.as_bytes()},
             Err(_)    => true,
-        } || self.deps.rolling {
+        } || self.dependencies.rolling {
 
             /* Create the virtual environment */ {
                 let mut setup = crate::uv()?;
@@ -104,7 +104,7 @@ impl PyaketProject {
                     .arg(self.installation_dir())
                     .arg("--python").arg(&self.python.version)
                     .arg("--seed").arg("--quiet");
-                if self.deps.rolling {setup
+                if self.dependencies.rolling {setup
                     .arg("--allow-existing");}
                 subprocess::run(&mut setup)?;
             }
@@ -142,12 +142,12 @@ impl PyaketProject {
             }
 
             // Add PyPI packages to be installed
-            if let Some(packages) = &self.deps.pypi {
+            if let Some(packages) = &self.dependencies.pypi {
                 command.args(packages.split(SEPARATOR));
             }
 
             // Add the requirements.txt file to be installed
-            if let Some(content) = &self.deps.reqtxt {
+            if let Some(content) = &self.dependencies.reqtxt {
                 let file = tempdir.child("requirements.txt");
                 command.arg("-r").arg(&file);
                 write(&file, content)?;
@@ -168,7 +168,7 @@ impl PyaketProject {
 
         match &self.entry {
             PyaketEntry::Command(command) => {
-                let args = shlex::split(command)
+                let args = shlex::split(&command)
                     .expect("Failed to parse entry command");
                 main = Command::new(&args[0]);
                 main.args(&args[1..]);

@@ -6,7 +6,6 @@ mod commands;
 use commands::*;
 
 fn main() -> Result<()> {
-    LazyLock::force(&START_TIME);
 
     // Read the project configuration sent at the end of build.rs
     let project = PyaketProject::from_json(env!("PYAKET_PROJECT"));
