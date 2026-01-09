@@ -23,6 +23,14 @@ pub fn vec(name: &str, separator: &str) -> Vec<String> {
         .collect()
 }
 
+pub fn uvec(name: &str, separator: &str, default: &str) -> Vec<String> {
+    self::uget(name, default)
+        .split(separator)
+        .map(|s| s.to_string())
+        .filter(|s| !s.is_empty())
+        .collect()
+}
+
 /// Set an environment variable to a value
 pub fn set(name: &str, value: impl Display) {
     unsafe {std::env::set_var(name, format!("{}", value))}

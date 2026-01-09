@@ -73,7 +73,7 @@ pub static PYAKET_APP_ROLLING: &str = "PYAKET_APP_ROLLING";
 pub struct PyaketDependencies {
 
     /// Glob of wheels to bundle and install at runtime
-    #[default(envy::vec(PYAKET_APP_WHEELS, SEPARATOR))]
+    #[default(envy::uvec(PYAKET_APP_WHEELS, SEPARATOR, "dist/*.whl"))]
     pub wheels: Vec<String>,
 
     /// List of dependencies to install at runtime from PyPI
@@ -207,14 +207,13 @@ pub enum CargoProfile {
 
 impl Display for CargoProfile {
     fn fmt(&self, pipe: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let profile = match self {
+        write!(pipe, "{}", match self {
             CargoProfile::Develop  => "develop",
             CargoProfile::Fast     => "fast",
             CargoProfile::Fastest  => "fastest",
             CargoProfile::Small    => "small",
             CargoProfile::Smallest => "smallest",
-        };
-        write!(pipe, "{}", profile)
+        })
     }
 }
 
@@ -232,12 +231,11 @@ pub enum CargoType {
 
 impl Display for CargoType {
     fn fmt(&self, pipe: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let cargo = match self {
+        write!(pipe, "{}", match self {
             CargoType::Build    => "build",
             CargoType::Zigbuild => "zigbuild",
             CargoType::Xwin     => "xwin",
-        };
-        write!(pipe, "{}", cargo)
+        })
     }
 }
 
@@ -248,9 +246,6 @@ impl Display for CargoType {
 #[serde(default)]
 pub struct PyaketRelease {
 
-    #[default(envy::uget("PYAKET_RELEASE_TARGET", ""))]
-    pub target: String,
-
     // Fixme: How to enum env?
     pub profile: CargoProfile,
     pub cargo: CargoType,
@@ -260,16 +255,6 @@ pub struct PyaketRelease {
 
     #[default(envy::ubool("PYAKET_RELEASE_TARBALL", false))]
     pub tarball: bool,
-}
-
-impl PyaketRelease {
-    pub fn extension(&self) -> &str {
-        if self.target.contains("windows") {
-            "exe"
-        } else {
-            ""
-        }
-    }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -297,23 +282,29 @@ pub struct PyaketProject {
     pub uuid: String,
 
     /// The platform target triple of the build
-    #[cfg(not(runtime))]
-    #[default(envy::get("TARGET").unwrap())]
+    #[serde(skip)]
+    #[default(envy::uget("TARGET", ""))]
     pub triple: String,
 }
 
 impl PyaketProject {
+    pub fn extension(&self) -> &str {
+        if self.triple.contains("windows") {
+            "exe"
+        } else {
+            ""
+        }
+    }
+
     pub fn release_name(&self) -> String {
         let mut name = String::new();
         name.push_str(&self.application.name.to_lowercase());
-        name.push_str(&format!("-{}", self.release.target));
+        name.push_str(&format!("-{}", self.triple));
         name.push_str(&format!("-v{}", self.application.version));
         if let Some(_) = &self.torch.version {
             name.push_str(&format!("-{}", self.torch.backend));
         }
-        if self.release.target.contains("windows") {
-            name.push_str(".exe");
-        }
+        name.push_str(self.extension());
         return name;
     }
 }

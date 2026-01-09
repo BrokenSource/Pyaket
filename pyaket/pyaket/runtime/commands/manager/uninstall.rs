@@ -15,7 +15,7 @@ pub enum What {
 
 impl What {
     fn cache(&self, project: &PyaketProject) -> Result<()> {
-        let mut uv = crate::uv()?;
+        let mut uv = subprocess::uv()?;
         uv.arg("cache").arg("clear");
         subprocess::run(&mut uv)
     }

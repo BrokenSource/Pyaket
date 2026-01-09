@@ -98,7 +98,7 @@ impl PyaketProject {
         } || self.dependencies.rolling {
 
             /* Create the virtual environment */ {
-                let mut setup = crate::uv()?;
+                let mut setup = subprocess::uv()?;
 
                 setup.arg("venv")
                     .arg(self.installation_dir())
@@ -112,7 +112,7 @@ impl PyaketProject {
             // Install PyTorch first, as other dependencies might
             // use a platform's default backend than specified
             if let Some(version) = &self.torch.version {
-                let mut torch = crate::uv()?;
+                let mut torch = subprocess::uv()?;
 
                 torch.arg("pip").arg("install")
                     .arg(format!("torch=={}", version))
@@ -127,7 +127,7 @@ impl PyaketProject {
             let tempdir = TempDir::with_prefix("pyaket-").unwrap();
 
             // Must have at least one package
-            let mut command = crate::uv()?;
+            let mut command = subprocess::uv()?;
             command.arg("pip").arg("install");
             command.arg("--upgrade");
             command.arg("pip");
@@ -160,7 +160,7 @@ impl PyaketProject {
     }
 
     pub fn _entry(&self) -> Result<()> {
-        let mut main = crate::uv()?;
+        let mut main = subprocess::uv()?;
         main.arg("run");
         main.arg("--active");
 

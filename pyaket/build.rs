@@ -32,9 +32,8 @@ fn main() -> Result<()> {
     // Export a const configured project to be loaded at runtime
     if let Some(project) = envy::get("PYAKET_PROJECT") {
         envy::rustc_export("PYAKET_PROJECT", &project);
-        logging::info!("Runtime configuration: {}", &project);
     } else {
-        logging::note!("No project configuration set (expected in maturin)");
+        logging::warn!("No project configuration set (expected in maturin or packer)");
     }
 
     // Executable resources (icon, metadata, etc)

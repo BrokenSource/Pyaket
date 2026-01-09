@@ -38,18 +38,6 @@ pub mod runtime;
 /// Separator for environment variable lists
 pub static SEPARATOR: &str = ";";
 
-pub fn uv() -> Result<Command> {
-    let mut cmd = Command::new(current_exe()?);
-    cmd.arg("self").arg("uv");
-    Ok(cmd)
-}
-
-// Idea: Bundle rustup on packer?
-pub fn rustup() -> Result<Command> {
-    let cmd = Command::new("rustup");
-    Ok(cmd)
-}
-
 /* -------------------------------------------------------------------------- */
 
 #[cfg(feature="pyo3")]

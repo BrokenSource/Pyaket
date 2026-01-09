@@ -6,7 +6,7 @@ from pathlib import Path
 from ._pyaket import *
 
 PACKAGE: Path = Path(__file__).parent.resolve()
-"""Path to the pyaket package root"""
+"""Path to the pyaket python package root"""
 
 # Warn: Must export for the rust packer
 os.environ["PYAKET_ROOT"] = str(PACKAGE)
