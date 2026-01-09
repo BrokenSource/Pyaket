@@ -1,0 +1,8 @@
+[application]
+name = "Pyaket"
+author = "BrokenSource"
+version = "0.10.0"
+about = "📦 Easy Python to Fast Executables"
+
+[release]
+profile = "smallest"

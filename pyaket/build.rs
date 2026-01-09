@@ -16,11 +16,9 @@ fn main() -> Result<()> {
     println!("cargo:rustc-cfg=runtime");
 
     // Get options from environment variables
-    let mut project = PyaketProject::default();
-
-    // Common assertions
-    if project.app.name.is_empty() {
-        bail!(logging::error!("Application name cannot be empty"))
+    let mut project = match envy::get("PYAKET_PROJECT") {
+        Some(x) => PyaketProject::from_json(&x)?,
+        None    => PyaketProject::default(),
     }
 
     ArchiveAssets::clear_files()?;
