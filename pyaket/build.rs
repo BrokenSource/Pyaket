@@ -7,6 +7,9 @@ use anyhow::bail;
 #[path="pyaket/logging.rs"]
 mod logging;
 
+#[path="pyaket/assets.rs"]
+mod assets;
+
 #[path="pyaket/envy.rs"]
 mod envy;
 
@@ -29,7 +32,7 @@ fn main() -> Result<()> {
     // Export a const configured project to be loaded at runtime
     if let Some(project) = envy::get("PYAKET_PROJECT") {
         envy::rustc_export("PYAKET_PROJECT", &project);
-        logging::info!("Configuration: {}", &project);
+        logging::info!("Runtime configuration: {}", &project);
     } else {
         logging::note!("No project configuration set (expected in maturin)");
     }

@@ -142,9 +142,7 @@ impl PyaketProject {
             }
 
             // Add PyPI packages to be installed
-            if let Some(packages) = &self.dependencies.pypi {
-                command.args(packages.split(SEPARATOR));
-            }
+            command.args(&self.dependencies.pypi);
 
             // Add the requirements.txt file to be installed
             if let Some(content) = &self.dependencies.reqtxt {

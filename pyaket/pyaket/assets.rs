@@ -1,23 +1,14 @@
-use crate::*;
 use rust_embed::Embed;
+use std::fs::create_dir_all as mkdir;
+use std::fs::remove_dir_all as rmdir;
+use std::fs::write;
+use std::path::Path;
+use std::path::PathBuf;
+use anyhow::Result;
+use crate::envy;
 
 pub static PYAKET_ASSETS: &str = "PYAKET_ASSETS";
 
-/// Global path for storing cache and final assets
-/// - Always overridden by $PYAKET_ASSETS variable
-/// - Editable install: `repository/.cache/`
-/// - Python package: `site-packages/.cache/`
-/// - Crates.io: I don't know.
-#[cfg(not(runtime))]
-fn workspace() -> PathBuf {
-    if let Some(path) = envy::get(PYAKET_ASSETS) {
-        PathBuf::from(path)
-    } else {
-        PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .parent().unwrap()
-            .join(".cache")
-    }
-}
 
 /// All implementations **must** use the following:
 ///
@@ -40,14 +31,30 @@ pub trait PyaketAssets: Embed {
     /// Subdirectory for this instance
     fn name() -> &'static str;
 
-    // Unique workspace for this instance
-    #[cfg(not(runtime))]
-    fn _root() -> PathBuf {
-        workspace().join(Self::name())
+    // Note: Non-runtime
+    /// Global path for storing cache and final assets
+    /// - Always overridden by $PYAKET_ASSETS variable
+    /// - Editable install: `repository/.cache/`
+    /// - Python package: `site-packages/.cache/`
+    /// - Crates.io: I don't know.
+    fn workspace() -> PathBuf {
+        if let Some(path) = envy::get(PYAKET_ASSETS) {
+            PathBuf::from(path)
+        } else {
+            PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+                .parent().unwrap()
+                .join(".cache")
+        }
     }
 
+    // Note: Non-runtime
+    // Unique workspace for this instance
+    fn _root() -> PathBuf {
+        Self::workspace().join(Self::name())
+    }
+
+    // Note: Non-runtime
     /// Directory for included files
-    #[cfg(not(runtime))]
     fn files_dir() -> PathBuf {
         Self::_root().join("files")
     }
@@ -58,8 +65,8 @@ pub trait PyaketAssets: Embed {
         Self::_root().join("cache")
     }
 
+    // Note: Non-runtime
     /// Delete and recreate the files directory
-    #[cfg(not(runtime))]
     fn clear_files() -> Result<()> {
         rmdir(Self::files_dir()).ok();
         mkdir(Self::files_dir())?;
@@ -83,8 +90,8 @@ pub trait PyaketAssets: Embed {
         Self::get(asset).map(|file| file.data.to_vec())
     }
 
+    // Note: Non-runtime
     /// Write a file to be bundled
-    #[cfg(not(runtime))]
     fn write(path: impl AsRef<Path>, data: &Vec<u8>) -> Result<()> {
         let file = Self::files_dir().join(path);
         mkdir(file.parent().unwrap())?;

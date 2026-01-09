@@ -14,6 +14,15 @@ pub fn uget(name: &str, default: &str) -> String {
     self::get(name).unwrap_or_else(|| default.to_string())
 }
 
+/// Get a vector of strings from a separator
+pub fn vec(name: &str, separator: &str) -> Vec<String> {
+    self::uget(name, "")
+        .split(separator)
+        .map(|s| s.to_string())
+        .filter(|s| !s.is_empty())
+        .collect()
+}
+
 /// Set an environment variable to a value
 pub fn set(name: &str, value: impl Display) {
     unsafe {std::env::set_var(name, format!("{}", value))}

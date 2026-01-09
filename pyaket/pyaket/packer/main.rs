@@ -44,21 +44,21 @@ impl PackerCLI {
             Err(_) => bail!("Could not read pyaket.toml"),
         };
 
-        // ArchiveAssets::clear_files()?;
-        // WheelAssets::clear_files()?;
+        logging::info!("Packer configuration: {}", project.json());
 
-        // Todo: Bundle wheel files
-        // if let Some(wheels) = &project.deps.wheels {
-        //     for pattern in wheels.split(SEPARATOR) {
-        //         for entry in glob::glob(pattern)?.flatten() {
-        //             logging::info!("Wheel: {}", entry.display());
-        //             WheelAssets::write(
-        //                 entry.file_name().unwrap(),
-        //                 &read(&entry)?,
-        //             )?;
-        //         }
-        //     }
-        // }
+        ArchiveAssets::clear_files()?;
+        WheelAssets::clear_files()?;
+
+        // Copy wheels to assets
+        for pattern in &project.dependencies.wheels {
+            for entry in glob::glob(&pattern)?.flatten() {
+                logging::info!("Wheel: {}", entry.display());
+                WheelAssets::write(
+                    entry.file_name().unwrap(),
+                    &read(&entry)?,
+                )?;
+            }
+        }
 
         // Bundle requirements.txt content
         if let Some(path) = &project.dependencies.reqtxt {

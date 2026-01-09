@@ -73,13 +73,12 @@ pub static PYAKET_APP_ROLLING: &str = "PYAKET_APP_ROLLING";
 pub struct PyaketDependencies {
 
     /// Glob of wheels to bundle and install at runtime
-    #[serde(skip)]
-    #[default(envy::get(PYAKET_APP_WHEELS))]
-    pub wheels: Option<String>,
+    #[default(envy::vec(PYAKET_APP_WHEELS, SEPARATOR))]
+    pub wheels: Vec<String>,
 
     /// List of dependencies to install at runtime from PyPI
-    #[default(envy::get(PYAKET_APP_PYPI))]
-    pub pypi: Option<String>,
+    #[default(envy::vec(PYAKET_APP_PYPI, SEPARATOR))]
+    pub pypi: Vec<String>,
 
     /// Path to a requirements.txt to install at runtime (legacy)
     #[default(envy::get(PYAKET_APP_REQTXT))]
@@ -294,7 +293,6 @@ pub struct PyaketProject {
     pub keep_open: bool,
 
     /// Unique identifier for any compiled binary
-    #[serde(skip_deserializing)]
     #[default(Uuid::new_v4().to_string())]
     pub uuid: String,
 

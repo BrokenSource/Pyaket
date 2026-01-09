@@ -49,6 +49,8 @@ uv            = {version="0.9.22", default-features=false, optional=true}
 
 [build-dependencies]
 anyhow      = {version="1.0.100"}
+glob        = {version="0.3.3"}
+rust-embed  = {version="8.9.0"}
 winresource = {version="0.1.28", default-features=false}
 
 # ---------------------------------------------------------------------------- #
