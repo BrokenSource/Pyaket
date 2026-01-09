@@ -1,4 +1,6 @@
 .cache
 *.pyc
+*.so
 site
 target
+temp

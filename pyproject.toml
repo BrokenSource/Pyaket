@@ -9,13 +9,11 @@ Homepage  = "https://pyaket.dev"
 name        = "pyaket"
 description = "📦 Easy Python to Fast Executables"
 authors     = [{name="Tremeschin"}]
-dynamic     = ["keywords"]
-version     = "0.10.0"
+dynamic     = ["version"]
 readme      = "readme.md"
 license     = "AGPL-3.0"
 requires-python = ">=3.10"
 dependencies = [
-    "broken-source @ git+https://github.com/BrokenSource/BrokenSource",
     "rustbin",
 ]
 
@@ -29,19 +27,33 @@ all = [
 ]
 dev = [
     "pyaket[zig]",
+    "maturin",
 ]
 
 [project.scripts]
 pyaket = "pyaket.__main__:main"
 
+# ---------------------------------------------------------------------------- #
+
 [build-system]
-requires = ["hatchling", "hook@git+https://github.com/BrokenSource/Hook/"]
-build-backend = "hatchling.build"
+requires = ["maturin>=1.11,<2.0"]
+build-backend = "maturin"
 
-[tool.hatch.metadata.hooks.plugin]
+[tool.maturin]
+python-source   = ""
+python-packages = ["pyaket"]
+bindings        = "pyo3"
+features        = ["pyo3"]
+manifest-path   = "pyaket/Cargo.toml"
+module-name     = "pyaket._pyaket"
 
-[tool.hatch.build.targets.wheel]
-packages = ["pyaket"]
+# ---------------------------------------------------------------------------- #
 
-[tool.hatch.metadata]
-allow-direct-references = true
+[tool.ruff.format]
+exclude = ["*"]
+
+[tool.ruff.lint]
+ignore = [
+    "F403",
+    "F405",
+]

@@ -2,9 +2,9 @@
 mod lib;
 use lib::*;
 
+pub static PYAKET_PACKAGING: &str = "PYAKET_PACKAGING";
+
 fn main() -> Result<()> {
-    LazyLock::force(&START_TIME);
-    logging::info!("Building Pyaket executable");
 
     // Workaround to always trigger a rebuild
     println!("cargo:rerun-if-changed=NULL");
@@ -14,6 +14,15 @@ fn main() -> Result<()> {
     // - Code marked as `#[cfg(runtime)]` is runtime-only
     #[cfg(not(rust_analyzer))]
     println!("cargo:rustc-cfg=runtime");
+
+    // Skip build script if not in packaging mode
+    if !envy::ubool(PYAKET_PACKAGING, false) {
+        logging::info!("Skipping build script per non-packaging mode");
+        return Ok(());
+    }
+
+    LazyLock::force(&START_TIME);
+    logging::info!("Building Pyaket executable");
 
     // Get options from environment variables
     let mut project = PyaketProject::default();

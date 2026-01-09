@@ -43,3 +43,25 @@ pub fn uv() -> Result<Command> {
     cmd.arg("self").arg("uv");
     Ok(cmd)
 }
+
+/* -------------------------------------------------------------------------- */
+
+// Fixme: No clap for maturin build
+
+#[cfg(feature="pyo3")]
+use pyo3::prelude::*;
+
+#[cfg(feature="pyo3")]
+mod builder;
+
+#[pymodule]
+#[cfg(feature="pyo3")]
+mod _pyaket {
+    use super::*;
+
+    #[pyfunction]
+    fn cli() -> PyResult<()> {
+        builder::main();
+        Ok(())
+    }
+}
