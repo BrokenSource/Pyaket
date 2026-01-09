@@ -59,7 +59,7 @@ pub fn printenv(name: &str) {
     println!("{}={}", name, self::uget(name, "#Unset#"))
 }
 
-/// Pass a compile time environment variable to the binary,
+/// Set a compile time environment variable to the binary,
 /// acessed via env!(string literal) at runtime
 #[cfg(not(runtime))]
 pub fn rustc_export(name: &str, value: impl Display) {

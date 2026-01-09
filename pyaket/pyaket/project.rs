@@ -69,6 +69,7 @@ pub static PYAKET_APP_ROLLING: &str = "PYAKET_APP_ROLLING";
 
 #[derive(SmartDefault)]
 #[derive(Serialize, Deserialize)]
+#[serde(default)]
 pub struct PyaketDependencies {
 
     /// Glob of wheels to bundle and install at runtime
@@ -97,6 +98,7 @@ pub static PYAKET_VERSIONS_DIR: &str = "PYAKET_VERSIONS_DIR";
 
 #[derive(SmartDefault)]
 #[derive(Serialize, Deserialize)]
+#[serde(default)]
 pub struct PyaketDirectories {
 
     /// Subdirectory of the workspace to use for all installed files
@@ -115,6 +117,7 @@ pub static PYAKET_PYTHON_VERSION: &str = "PYAKET_PYTHON_VERSION";
 
 #[derive(SmartDefault)]
 #[derive(Serialize, Deserialize)]
+#[serde(default)]
 pub struct PyaketPython {
 
     /// Configuration for a Python interpreter to use for the project
@@ -130,6 +133,7 @@ pub static PYAKET_TORCH_BACKEND: &str = "PYAKET_TORCH_BACKEND";
 
 #[derive(SmartDefault)]
 #[derive(Serialize, Deserialize)]
+#[serde(default)]
 pub struct PyaketTorch {
 
     /// A target torch version to install at runtime
@@ -242,9 +246,10 @@ impl Display for CargoType {
 
 #[derive(SmartDefault)]
 #[derive(Serialize, Deserialize)]
+#[serde(default)]
 pub struct PyaketRelease {
 
-    #[default(envy::uget("PYAKET_RELEASE_TARGET", "native"))]
+    #[default(envy::uget("PYAKET_RELEASE_TARGET", ""))]
     pub target: String,
 
     // Fixme: How to enum env?
@@ -254,7 +259,7 @@ pub struct PyaketRelease {
     #[default(envy::ubool("PYAKET_RELEASE_UPX", false))]
     pub upx: bool,
 
-    #[default(envy::ubool("PYAKET_RELEASE_TARBALL", true))]
+    #[default(envy::ubool("PYAKET_RELEASE_TARBALL", false))]
     pub tarball: bool,
 }
 

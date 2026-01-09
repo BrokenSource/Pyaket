@@ -44,8 +44,6 @@ impl PackerCLI {
             Err(_) => bail!("Could not read pyaket.toml"),
         };
 
-        println!("App: {}", project.toml());
-
         // ArchiveAssets::clear_files()?;
         // WheelAssets::clear_files()?;
 
@@ -67,6 +65,14 @@ impl PackerCLI {
             project.dependencies.reqtxt = Some(read_string(path)?);
         }
 
+        // Export WinResources variables
+        envy::set("ProductName",      &project.application.name);
+        envy::set("CompanyName",      &project.application.author);
+        envy::set("FileVersion",      &project.application.version);
+        envy::set("FileDescription",  &project.application.about);
+        envy::set("OriginalFilename", &project.release_name());
+        envy::set("LegalCopyright",   &envy::uget("LegalCopyright", "Unknown"));
+
         // --------------------------------|
 
         /* Install host's toolchain */ {
@@ -84,7 +90,6 @@ impl PackerCLI {
 
         // Export configuration for packer
         envy::set("PYAKET_PROJECT", &project.json());
-        logging::info!("Configuration: {}", project.json());
 
         /* Compile a pyaket executable */ {
             let mut packer = Command::new("cargo");
@@ -93,7 +98,8 @@ impl PackerCLI {
             packer.arg("--profile").arg(&project.release.profile.to_string());
             packer.arg("--target").arg(&project.release.target);
             packer.arg("--target-dir").arg(&self.target_dir);
-            // packer.arg("--features").arg("uv");
+            packer.arg("--features").arg("uv");
+            packer.arg("--bin").arg("pyaket");
             subprocess::run(&mut packer)?;
         }
 
