@@ -25,15 +25,11 @@ pub mod assets;
 pub mod envy;
 pub mod logging;
 pub mod project;
+pub mod runtime;
 pub mod subprocess;
 pub use assets::*;
+pub use logging::*;
 pub use project::*;
-
-#[cfg(runtime)]
-pub mod runtime;
-
-/// Time at which the program started
-pub static START_TIME: LazyLock<Instant> = LazyLock::new(Instant::now);
 
 /// Separator for environment variable lists
 pub static SEPARATOR: &str = ";";

@@ -1,19 +1,12 @@
 import importlib.metadata
+import os
 import site
 from pathlib import Path
 
-from broken.envy import Environment
-from broken.project import BrokenProject
-
 __version__ = importlib.metadata.version(__package__)
 
-PYAKET_ABOUT = "📦 Easy Python to Fast Executables"
-
-PYAKET = BrokenProject(
-    PACKAGE=__file__,
-    APP_NAME="Pyaket",
-    ABOUT=PYAKET_ABOUT,
-)
+PYAKET_PATH: Path = Path(__file__).parent.resolve()
+"""Path to the pyaket python package"""
 
 from pyaket.project import PyaketProject
 
@@ -21,4 +14,4 @@ from pyaket.project import PyaketProject
 
 # Ensure zig binary can be found for zigbuild
 for path in map(Path, site.getsitepackages()):
-    Environment.add_to_path(path/"ziglang")
+    os.environ["PATH"] += f"{os.pathsep}{path/'ziglang'}"

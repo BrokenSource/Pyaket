@@ -9,13 +9,14 @@ Homepage  = "https://pyaket.dev"
 name        = "pyaket"
 description = "📦 Easy Python to Fast Executables"
 authors     = [{name="Tremeschin"}]
-dynamic     = ["keywords"]
 version     = "0.10.0"
 readme      = "readme.md"
 license     = "AGPL-3.0"
 requires-python = ">=3.10"
 dependencies = [
-    "broken-source @ git+https://github.com/BrokenSource/BrokenSource",
+    "dotmap~=1.3",
+    "pydantic~=2.12",
+    "tomlkit~=0.13",
     "rustbin",
 ]
 
@@ -31,17 +32,9 @@ dev = [
     "pyaket[zig]",
 ]
 
-[project.scripts]
-pyaket = "pyaket.__main__:main"
-
 [build-system]
-requires = ["hatchling", "hook@git+https://github.com/BrokenSource/Hook/"]
+requires = ["hatchling"]
 build-backend = "hatchling.build"
-
-[tool.hatch.metadata.hooks.plugin]
 
 [tool.hatch.build.targets.wheel]
 packages = ["pyaket"]
-
-[tool.hatch.metadata]
-allow-direct-references = true

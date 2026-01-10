@@ -1,23 +1,7 @@
-use crate::*;
 use rust_embed::Embed;
+use anyhow::Result;
 
 pub static PYAKET_ASSETS: &str = "PYAKET_ASSETS";
-
-/// Global path for storing cache and final assets
-/// - Always overridden by $PYAKET_ASSETS variable
-/// - Editable install: `repository/.cache/`
-/// - Python package: `site-packages/.cache/`
-/// - Crates.io build: I don't know.
-#[cfg(not(runtime))]
-fn workspace() -> PathBuf {
-    if let Some(path) = envy::get(PYAKET_ASSETS) {
-        PathBuf::from(path)
-    } else {
-        PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .parent().unwrap()
-            .join(".cache")
-    }
-}
 
 /// All implementations **must** use the following:
 ///
@@ -29,49 +13,9 @@ fn workspace() -> PathBuf {
 /// #[folder="${PYAKET_ASSETS:-../.cache/<name>/files}"]
 /// pub struct MyAssets;
 ///
-/// impl PyaketAssets for MyAssets {
-///     fn name() -> &'static str {
-///         "MyAssets"
-///     }
-/// }
+/// impl PyaketAssets for MyAssets {}
 /// ```
 pub trait PyaketAssets: Embed {
-
-    /// Subdirectory for this instance
-    fn name() -> &'static str;
-
-    // Unique workspace for this instance
-    #[cfg(not(runtime))]
-    fn _root() -> PathBuf {
-        workspace().join(Self::name())
-    }
-
-    /// Directory for included files
-    #[cfg(not(runtime))]
-    fn files_dir() -> PathBuf {
-        Self::_root().join("files")
-    }
-
-    /// Directory for downloads cache
-    #[cfg(not(runtime))]
-    fn cache_dir() -> PathBuf {
-        Self::_root().join("cache")
-    }
-
-    /// Delete and recreate the files directory
-    #[cfg(not(runtime))]
-    fn clear_files() -> Result<()> {
-        rmdir(Self::files_dir()).ok();
-        mkdir(Self::files_dir())?;
-        Ok(())
-    }
-
-    #[cfg(not(runtime))]
-    fn clear_cache() -> Result<()> {
-        rmdir(Self::cache_dir()).ok();
-        mkdir(Self::cache_dir())?;
-        Ok(())
-    }
 
     /// Check if a file exists in the bundle
     fn exists(asset: &str) -> bool {
@@ -81,15 +25,6 @@ pub trait PyaketAssets: Embed {
     /// Read a single known file from the bundle
     fn read(asset: &str) -> Option<Vec<u8>> {
         Self::get(asset).map(|file| file.data.to_vec())
-    }
-
-    /// Write a file to be bundled
-    #[cfg(not(runtime))]
-    fn write(path: impl AsRef<Path>, data: &Vec<u8>) -> Result<()> {
-        let file = Self::files_dir().join(path);
-        mkdir(file.parent().unwrap())?;
-        write(file, data)?;
-        Ok(())
     }
 
     /// Query all files in the bundle matching a path pattern
@@ -120,25 +55,17 @@ pub trait PyaketAssets: Embed {
 
 #[derive(Embed)]
 #[allow_missing=true]
-#[folder="${PYAKET_ASSETS:-../.cache/wheels/files}"]
+#[folder="${PYAKET_ASSETS:-../.cache/wheels}"]
 pub struct WheelAssets;
 
-impl PyaketAssets for WheelAssets {
-    fn name() -> &'static str {
-        "wheels"
-    }
-}
+impl PyaketAssets for WheelAssets {}
 
 #[derive(Embed)]
 #[allow_missing=true]
-#[folder="${PYAKET_ASSETS:-../.cache/archives/files}"]
+#[folder="${PYAKET_ASSETS:-../.cache/archives}"]
 pub struct ArchiveAssets;
 
-impl PyaketAssets for ArchiveAssets {
-    fn name() -> &'static str {
-        "archives"
-    }
-}
+impl PyaketAssets for ArchiveAssets {}
 
 /* -------------------------------------------------------------------------- */
 // Common assets names

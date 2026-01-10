@@ -1,4 +1,5 @@
 use crate::*;
+use std::fmt::Display;
 
 /* -------------------------------------------------------------------------- */
 // String
@@ -60,13 +61,6 @@ pub fn printenv(name: &str) {
 
 /// Pass a compile time environment variable to the binary
 /// - Warn: Must be acessed via env!(literal) at runtime
-#[cfg(not(runtime))]
 pub fn rustc_export(name: &str, value: impl Display) {
     println!("cargo:rustc-env={}={}", name, value);
-}
-
-/// Path where Cargo.toml is located
-#[cfg(not(runtime))]
-pub fn cargo_root() -> PathBuf {
-    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
 }
