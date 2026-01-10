@@ -5,7 +5,7 @@ use serde::Serialize;
 use smart_default::SmartDefault;
 
 /* -------------------------------------------- */
-// https://pyaket.dev/docs/config/application/
+// https://pyaket.dev/docs/project/application/
 
 #[derive(SmartDefault)]
 #[derive(Serialize, Deserialize)]
@@ -35,7 +35,7 @@ impl PyaketApplication {
 }
 
 /* -------------------------------------------- */
-// https://pyaket.dev/docs/config/dependencies/
+// https://pyaket.dev/docs/project/dependencies/
 
 // Note: Wheels go in assets glob
 #[derive(SmartDefault)]
@@ -47,7 +47,7 @@ pub struct PyaketDependencies {
 }
 
 /* -------------------------------------------- */
-// https://pyaket.dev/docs/config/directories/
+// https://pyaket.dev/docs/project/directories/
 
 #[derive(SmartDefault)]
 #[derive(Serialize, Deserialize)]
@@ -57,7 +57,7 @@ pub struct PyaketDirectories {
 }
 
 /* -------------------------------------------- */
-// https://pyaket.dev/docs/config/python
+// https://pyaket.dev/docs/project/python
 
 #[derive(SmartDefault)]
 #[derive(Serialize, Deserialize)]
@@ -72,7 +72,7 @@ impl PyaketPython {
 }
 
 /* -------------------------------------------- */
-// https://pyaket.dev/docs/config/pytorch
+// https://pyaket.dev/docs/project/pytorch
 
 #[derive(SmartDefault)]
 #[derive(Serialize, Deserialize)]
@@ -82,7 +82,7 @@ pub struct PyaketTorch {
 }
 
 /* -------------------------------------------- */
-// https://pyaket.dev/docs/config/entry
+// https://pyaket.dev/docs/project/entry
 
 // Fixme: Should be enum, teach pydantic variants
 #[derive(SmartDefault)]

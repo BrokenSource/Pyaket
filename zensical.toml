@@ -49,12 +49,12 @@ nav = [
   {"Documentation" = [
     "docs/index.md",
     {"Configuration"=[
-      "docs/config/application.md",
-      "docs/config/dependencies.md",
-      "docs/config/directories.md",
-      "docs/config/python.md",
-      "docs/config/pytorch.md",
-      "docs/config/entry.md",
+      "docs/project/application.md",
+      "docs/project/dependencies.md",
+      "docs/project/directories.md",
+      "docs/project/python.md",
+      "docs/project/pytorch.md",
+      "docs/project/entry.md",
     ]},
     {"Rust" = [
       "docs/rust/crosscompiling.md",

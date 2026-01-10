@@ -17,7 +17,7 @@ class PyaketModel(BaseModel):
     model_config = ConfigDict(use_attribute_docstrings=True)
 
 # ---------------------------------------------- #
-# https://pyaket.dev/docs/config/application/
+# https://pyaket.dev/docs/project/application/
 
 class PyaketApplication(PyaketModel):
     """General metadata and dependencies definitions of the project"""
@@ -45,7 +45,7 @@ class PyaketApplication(PyaketModel):
     """Keep the terminal open after errors or finish"""
 
 # ---------------------------------------------- #
-# https://pyaket.dev/docs/config/dependencies/
+# https://pyaket.dev/docs/project/dependencies/
 
 class PyaketDependencies(PyaketModel):
     """Configuration for the dependencies of the project"""
@@ -80,7 +80,7 @@ class PyaketDependencies(PyaketModel):
         raise NotImplementedError
 
 # ---------------------------------------------- #
-# https://pyaket.dev/docs/config/directories/
+# https://pyaket.dev/docs/project/directories/
 
 class PyaketDirectories(PyaketModel):
     """Configuration for the directories used by the project"""
@@ -92,7 +92,7 @@ class PyaketDirectories(PyaketModel):
     """Subdirectory of the common dir to install versions of the application"""
 
 # ---------------------------------------------- #
-# https://pyaket.dev/docs/config/python/
+# https://pyaket.dev/docs/project/python/
 
 class PyaketPython(PyaketModel):
     """Configuration for a Python interpreter to use for the project"""
@@ -104,7 +104,7 @@ class PyaketPython(PyaketModel):
     """Whether to bundle python in the executable"""
 
 # ---------------------------------------------- #
-# https://pyaket.dev/docs/config/pytorch/
+# https://pyaket.dev/docs/project/pytorch/
 
 class PyaketTorch(PyaketModel):
     """Optional configuration to install PyTorch at runtime"""
@@ -116,7 +116,7 @@ class PyaketTorch(PyaketModel):
     """The backend to use for PyTorch, auto, cpu, xpu, cu128, cu118, etc"""
 
 # ---------------------------------------------- #
-# https://pyaket.dev/docs/config/entry/
+# https://pyaket.dev/docs/project/entry/
 
 class PyaketEntry(PyaketModel):
     """Configuration for the entry point of the application"""

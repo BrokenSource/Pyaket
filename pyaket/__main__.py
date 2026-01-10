@@ -35,6 +35,7 @@ def main():
     app: Typer = Typer(
         chain=True,
         no_args_is_help=True,
+        add_completion=False,
         epilog=(
             f"• Made by [green][link=https://github.com/Tremeschin/]Tremeschin[/link][/] [yellow]v{__version__}[/]\n\n"
             "[italic grey53]→ Consider [blue][link=https://github.com/sponsors/Tremeschin/]Supporting[/link][/blue] my work [red]:heart:[/]"
