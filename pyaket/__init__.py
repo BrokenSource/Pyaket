@@ -10,8 +10,6 @@ PYAKET_PATH: Path = Path(__file__).parent.resolve()
 
 from pyaket.project import PyaketProject
 
-# ---------------------------------------------------------------------------- #
-
 # Ensure zig binary can be found for zigbuild
 for path in map(Path, site.getsitepackages()):
     os.environ["PATH"] += f"{os.pathsep}{path/'ziglang'}"

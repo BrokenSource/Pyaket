@@ -1,7 +1,3 @@
-// Shared code in build.rs
-#![allow(unused_imports)]
-#![allow(dead_code)]
-
 pub use std::env::current_exe;
 pub use std::fmt::Display;
 pub use std::fs::create_dir_all as mkdir;
@@ -30,12 +26,3 @@ pub mod subprocess;
 pub use assets::*;
 pub use logging::*;
 pub use project::*;
-
-/// Separator for environment variable lists
-pub static SEPARATOR: &str = ";";
-
-pub fn uv() -> Result<Command> {
-    let mut cmd = Command::new(current_exe()?);
-    cmd.arg("self").arg("uv");
-    Ok(cmd)
-}
