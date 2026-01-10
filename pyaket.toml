@@ -1,8 +1,11 @@
 [application]
-name = "Pyaket"
-author = "BrokenSource"
+name    = "Pyaket"
+author  = "BrokenSource"
+about   = "📦 Easy Python to Fast Executables"
 version = "0.10.0"
-about = "📦 Easy Python to Fast Executables"
 
 [release]
 profile = "develop"
+
+[entry]
+module = "this"

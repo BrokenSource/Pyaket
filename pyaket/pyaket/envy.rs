@@ -57,9 +57,3 @@ pub fn ubool(name: &str, default: bool) -> bool {
 pub fn printenv(name: &str) {
     println!("{}={}", name, self::uget(name, "#Unset#"))
 }
-
-/// Pass a compile time environment variable to the binary
-/// - Warn: Must be acessed via env!(literal) at runtime
-pub fn rustc_export(name: &str, value: impl Display) {
-    println!("cargo:rustc-env={}={}", name, value);
-}

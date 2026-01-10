@@ -1,5 +1,4 @@
 #![allow(dead_code)]
-#![allow(unused_imports)]
 
 #[path="pyaket/assets.rs"]
 mod assets;
@@ -7,15 +6,13 @@ mod assets;
 use anyhow::Result;
 use std::env::var;
 
-pub static PYAKET_PROJECT: &str = "PYAKET_PROJECT";
-
 fn main() -> Result<()> {
 
     // Workaround to always trigger a rebuild
     println!("cargo:rerun-if-changed=NULL");
 
     // Passthrough project configuration
-    println!("cargo:rustc-env={}={}", PYAKET_PROJECT, var(PYAKET_PROJECT)?);
+    println!("cargo:rustc-env={}={}", "PYAKET_PROJECT", var("PYAKET_PROJECT")?);
 
     // Executable resources (icon, metadata, etc)
     if var("TARGET")?.contains("windows") {

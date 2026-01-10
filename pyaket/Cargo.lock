@@ -2642,7 +2642,6 @@ dependencies = [
  "shlex",
  "smart-default",
  "temp-dir",
- "uuid",
  "uv",
  "winresource",
 ]

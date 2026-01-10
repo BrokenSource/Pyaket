@@ -3,7 +3,6 @@ use crate::*;
 use serde::Deserialize;
 use serde::Serialize;
 use smart_default::SmartDefault;
-use uuid::Uuid;
 
 /* -------------------------------------------- */
 // https://pyaket.dev/docs/config/application/
@@ -13,6 +12,7 @@ use uuid::Uuid;
 pub struct PyaketApplication {
     pub name: String,
     pub author: String,
+    pub vendor: Option<String>,
     pub version: String,
     pub about: String,
 }
@@ -23,9 +23,13 @@ impl PyaketApplication {
     /// - Makes having an author name optional
     /// - Disallows root being the data local
     pub fn vendor(&self) -> String {
-        match self.author.is_empty() {
-            false => self.author.clone(),
-            true  => self.name.clone(),
+        if let Some(vendor) = &self.vendor {
+            vendor.clone()
+        } else {
+            match self.author.is_empty() {
+                false => self.author.clone(),
+                true  => self.name.clone(),
+            }
         }
     }
 }
@@ -61,6 +65,12 @@ pub struct PyaketPython {
     pub version: String,
 }
 
+impl PyaketPython {
+    pub fn is_freethreaded(&self) -> bool {
+        self.version.contains("t")
+    }
+}
+
 /* -------------------------------------------- */
 // https://pyaket.dev/docs/config/pytorch
 
@@ -74,16 +84,12 @@ pub struct PyaketTorch {
 /* -------------------------------------------- */
 // https://pyaket.dev/docs/config/entry
 
+// Fixme: Should be enum, teach pydantic variants
 #[derive(SmartDefault)]
 #[derive(Serialize, Deserialize)]
-#[serde(rename_all="lowercase")]
-pub enum PyaketEntry {
-    #[default]
-    Interpreter,
-    Command(String),
-    Module(String),
-    Script(String),
-    Code(String),
+pub struct PyaketEntry {
+    pub module:  Option<String>,
+    pub command: Option<String>,
 }
 
 /* -------------------------------------------- */
@@ -91,19 +97,20 @@ pub enum PyaketEntry {
 #[derive(SmartDefault)]
 #[derive(Serialize, Deserialize)]
 pub struct PyaketProject {
-    pub app:    PyaketApplication,
-    pub deps:   PyaketDependencies,
-    pub dirs:   PyaketDirectories,
-    pub python: PyaketPython,
-    pub torch:  PyaketTorch,
-    pub entry:  PyaketEntry,
+    pub application:  PyaketApplication,
+    pub dependencies: PyaketDependencies,
+    pub directories:  PyaketDirectories,
+    pub python:       PyaketPython,
+    pub torch:        PyaketTorch,
+    pub entry:        PyaketEntry,
+    pub uuid:         String,
+
+    #[default(false)]
+    #[serde(default)]
     pub keep_open: bool,
 
-    /// Unique identifier for any compiled binary
-    #[default(Uuid::new_v4().to_string())]
-    pub uuid: String,
-
     /// The platform target triple of the build
+    #[serde(default)]
     #[default(envy::get("TARGET").unwrap())]
     pub triple: String,
 }

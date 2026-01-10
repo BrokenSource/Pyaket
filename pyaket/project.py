@@ -1,5 +1,6 @@
 import os
 import subprocess
+import uuid
 from enum import Enum
 from pathlib import Path
 from typing import Optional, Self
@@ -21,6 +22,9 @@ class PyaketApplication(BaseModel):
 
     author: str = "BrokenSource"
     """Subdirectory of the platform's user data directory to install the application"""
+
+    vendor: Optional[str] = None
+    """Overrides platform directory workspace"""
 
     version: str = "0.0.0"
     """The release version matching PyPI, codename, branch, latest, etc"""
@@ -115,12 +119,6 @@ class PyaketEntry(BaseModel):
     module: str = None
     """A module to run at runtime as (python -m module ...)"""
 
-    script: str = None
-    """A script to bundle and run at runtime (python script.py ...)"""
-
-    code: str = None
-    """A inline code snippet to run at runtime (python -c "code")"""
-
     command: str = None
     """A command to run at runtime (command ...)"""
 
@@ -177,6 +175,8 @@ class PyaketProject(BaseModel):
     entry:        PyaketEntry        = Field(default_factory=PyaketEntry)
     release:      PyaketRelease      = Field(default_factory=PyaketRelease)
 
+    uuid: str = None
+
     def release_name(self) -> str:
         return ''.join((
             f"{self.application.name.lower()}",
@@ -218,6 +218,9 @@ class PyaketProject(BaseModel):
 
         # Must have target toolchain for (cross)compilation
         subprocess.check_call(("rustup", "target", "add", self.release.target))
+
+        # All binaries must have a unique uuid
+        self.uuid = str(uuid.uuid4())
 
         # Fixme (standalone)
         if self.release.standalone:

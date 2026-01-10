@@ -29,27 +29,6 @@ A module's name to be called as `python -m module (args)` at runtime.
 
 <hr>
 
-## Script
-
-A local script to be bundled and called as `python script.py (args)` after installation.
-
-=== ":simple-python: Python"
-    ```python
-    project.entry.script = "/path/to/script.py"
-    ```
-
-=== ":fontawesome-solid-terminal: Command"
-    ```bash
-    pyaket run --script /path/to/script.py
-    ```
-
-=== ":simple-rust: Rust"
-    ```bash
-    export PYAKET_ENTRY_SCRIPT="/path/to/script.py"
-    ```
-
-<hr>
-
 ## Command
 
 A command to be executed as `command (args)` after installation.
@@ -74,24 +53,3 @@ A command to be executed as `command (args)` after installation.
 - It may be used if you have multiple entry points, like `depthflow {main,gradio}`, and want to hardcode pin one to be used, or set fixed arguments to some command.
 
 !!! warning "**Discouraged**: Security implications, man in the middle attack, may use wrong executable"
-
-<hr>
-
-## Code
-
-An inline Python code to be executed as `python -c <code>` after installation.
-
-=== ":simple-python: Python"
-    ```python
-    project.entry.code = "print('Hello, World!')"
-    ```
-
-=== ":fontawesome-solid-terminal: Command"
-    ```bash
-    pyaket run --code "print('Hello, World!')"
-    ```
-
-=== ":simple-rust: Rust"
-    ```bash
-    export PYAKET_ENTRY_CODE="print('Hello, World!')"
-    ```
