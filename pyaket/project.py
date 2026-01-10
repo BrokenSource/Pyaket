@@ -1,4 +1,5 @@
 import os
+import shutil
 import subprocess
 import uuid
 from enum import Enum
@@ -152,7 +153,7 @@ class PyaketRelease(PyaketModel):
     msvc: Annotated[bool, Option("--msvc")] = False
     """(Windows) Use MSVC to build the binary"""
 
-    zigbuild: Annotated[bool, Option("--zigbuild", "-z")] = False
+    zigbuild: Annotated[bool, Option("--zig", "-z")] = False
     """Use cargo-zigbuild to build the binary"""
 
     xwin: Annotated[bool, Option("--xwin", "-x")] = False
@@ -210,7 +211,7 @@ class PyaketProject(PyaketModel):
             Path(os.environ.get("PYAKET_RELEASE_DIR") or (Path.cwd()/"release")),
     ) -> Path:
 
-        # Must have host toolchain for any rustup shim commands
+        # Must have the host toolchain for any rustup shim commands
         subprocess.run(("rustup", "default", "stable"), check=True)
 
         # Use host target if not specified
@@ -221,6 +222,7 @@ class PyaketProject(PyaketModel):
             ).stdout.splitlines():
                 if line.startswith("host:"):
                     self.release.target = line.split("host:")[1].strip()
+                    break
 
         # Must have target toolchain for (cross)compilation
         subprocess.check_call(("rustup", "target", "add", self.release.target))
@@ -241,10 +243,7 @@ class PyaketProject(PyaketModel):
         if sum((self.release.zigbuild, self.release.xwin)) > 1:
             raise RuntimeError("Cannot use multiple cargo wrappers at the same time")
 
-        try:
-            if self.release.zigbuild:
-                import ziglang  # pyright: ignore
-        except ImportError:
+        if self.release.zigbuild and (shutil.which("zig") is None):
             raise RuntimeError(
                 "Missing group 'pip install pyaket[zig]' "
                 "for cross compilation with ziglang"

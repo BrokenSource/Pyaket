@@ -73,7 +73,7 @@ Should follow the same number of the project to be released alonside a registry.
     project.application.version = "0.0.0"
     ```
 
-=== "simple-toml: Toml"
+=== ":simple-toml: Toml"
     ```toml
     [application]
     version = "0.0.0"
@@ -129,8 +129,7 @@ An image path to use as the application icon.
 === ":simple-linux: Linux"
     !!! success "Supported via [Desktop Entries](https://wiki.archlinux.org/title/Desktop_entries) XDG Specification."
         - Run `#!ps1 ./project self desktop` to generate one at `#!ps1 ~/.local/share/applications/$project.{desktop,png}`
-    !!! warning "Wayland/X11 does not support icons outside .desktop files"
-        No matter what you do, launching outside a desktop entry won't show an icon.
+    !!! warning "Wayland does not support icons outside .desktop files"
 
 === ":material-microsoft: Windows"
     !!! success "Natively supported and implemented via [crates.io/winresource](https://crates.io/crates/winresource)"

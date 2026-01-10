@@ -13,8 +13,8 @@ from pyaket import PyaketProject, __version__
 def pydantic2typer(cls: BaseModel) -> callable:
     signature = type(cls)
 
-    def wrapper(**kwargs):
-        for name, value in kwargs.items():
+    def wrapper(**options):
+        for name, value in options.items():
             setattr(cls, name, value)
 
     # Copy the signatures to the wrapper function
