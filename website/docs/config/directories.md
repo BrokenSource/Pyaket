@@ -31,14 +31,10 @@ Subdirectory of the [Workspace](#workspace) to use for all Pyaket files.
     project.directories.common = "Pyaket"
     ```
 
-=== ":fontawesome-solid-terminal: Command"
-    ```bash
-    pyaket dir --common Pyaket
-    ```
-
-=== "":simple-rust: Rust"
-    ```bash
-    export PYAKET_COMMON_DIR="Pyaket"
+=== ":simple-toml: Toml"
+    ```toml
+    [directories]
+    common = "Pyaket"
     ```
 
 <hr>
@@ -52,14 +48,10 @@ Subdirectory of the [Workspace](#workspace) to install virtual environments.
     project.directories.versions = "Versions"
     ```
 
-=== ":fontawesome-solid-terminal: Command"
-    ```bash
-    pyaket dir --versions Versions
-    ```
-
-=== "":simple-rust: Rust"
-    ```bash
-    export PYAKET_VERSIONS_DIR="Versions"
+=== ":simple-toml: Toml"
+    ```toml
+    [directories]
+    versions = "Versions"
     ```
 
 | System                       | Path |

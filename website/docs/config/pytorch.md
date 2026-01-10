@@ -20,14 +20,10 @@ An optional version of PyTorch to be installed at runtime.
     project.torch.version = "2.8.0"
     ```
 
-=== ":fontawesome-solid-terminal: Command"
-    ```bash
-    pyaket torch --version 2.8.0
-    ```
-
-=== ":simple-rust: Rust"
-    ```bash
-    export PYAKET_TORCH_VERSION="2.8.0"
+=== ":simple-toml: Toml"
+    ```toml
+    [torch]
+    version = "2.8.0"
     ```
 
 Torchaudio and torchvision will also be installed under any compatible version.
@@ -43,14 +39,10 @@ The hardware acceleration backend to use.
     project.torch.backend = "auto"
     ```
 
-=== ":fontawesome-solid-terminal: Command"
-    ```bash
-    pyaket torch --backend auto
-    ```
-
-=== ":simple-rust: Rust"
-    ```bash
-    export PYAKET_TORCH_BACKEND="auto"
+=== ":simple-toml: Toml"
+    ```toml
+    [torch]
+    backend = "auto"
     ```
 
 - When set to auto, uv will decide the best one ([experimental](https://docs.astral.sh/uv/guides/integration/pytorch/#automatic-backend-selection))

@@ -22,7 +22,7 @@ impl PyaketProject {
             } else {
                 BaseDirs::new().unwrap()
                     .data_local_dir()
-                    .join(self.application.vendor())
+                    .join(self.app.vendor())
             }
         })
     }
@@ -30,15 +30,15 @@ impl PyaketProject {
     /// A common directory to store shared data
     pub fn workspace_common(&self) -> PathBuf {
         self.workspace_root()
-            .join(&self.directories.common)
+            .join(&self.dirs.common)
     }
 
     /// Where to install the Python's virtual environment:
     /// - `$WORKSPACE/versions/1.0.0`
     pub fn installation_dir(&self) -> PathBuf {
         self.workspace_common()
-            .join(&self.directories.versions)
-            .join(&self.application.version)
+            .join(&self.dirs.versions)
+            .join(&self.app.version)
     }
 
     // Fixme: Shared installation shouldn't be wiped
@@ -47,7 +47,7 @@ impl PyaketProject {
     /// - Triggers a reinstall if the hash differs for same versions
     pub fn uuid_tracker_file(&self) -> PathBuf {
         self.installation_dir()
-            .join(format!("{}.uuid", self.application.name))
+            .join(format!("{}.uuid", self.app.name))
     }
 }
 
@@ -92,7 +92,7 @@ impl PyaketProject {
         if match read(self.uuid_tracker_file()) {
             Ok(bytes) => {bytes != self.uuid.as_bytes()},
             Err(_)    => true,
-        } || self.dependencies.rolling {
+        } || self.deps.rolling {
 
             /* Create the virtual environment */ {
                 let mut setup = subprocess::uv()?;
@@ -101,7 +101,7 @@ impl PyaketProject {
                     .arg(self.installation_dir())
                     .arg("--python").arg(&self.python.version)
                     .arg("--seed").arg("--quiet");
-                if self.dependencies.rolling {setup
+                if self.deps.rolling {setup
                     .arg("--allow-existing");}
                 subprocess::run(&mut setup)?;
             }
@@ -139,10 +139,10 @@ impl PyaketProject {
             }
 
             // Add PyPI packages to be installed
-            command.args(&self.dependencies.pypi);
+            command.args(&self.deps.pypi);
 
             // Add the requirements.txt file to be installed
-            if let Some(content) = &self.dependencies.reqtxt {
+            if let Some(content) = &self.deps.reqtxt {
                 let file = tempdir.child("requirements.txt");
                 command.arg("-r").arg(&file);
                 write(&file, content)?;

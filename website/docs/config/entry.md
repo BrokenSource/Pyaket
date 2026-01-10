@@ -15,14 +15,10 @@ A module's name to be called as `python -m module (args)` at runtime.
     project.entry.module = "name"
     ```
 
-=== ":fontawesome-solid-terminal: Command"
-    ```bash
-    pyaket run --module "name"
-    ```
-
-=== ":simple-rust: Rust"
-    ```bash
-    export PYAKET_ENTRY_MODULE="name"
+=== ":simple-toml: Toml"
+    ```toml
+    [entry]
+    module = "name"
     ```
 
 !!! tip "The actual file called must exist `module/__main__.py`"
@@ -38,14 +34,10 @@ A command to be executed as `command (args)` after installation.
     project.entry.command = "command"
     ```
 
-=== ":fontawesome-solid-terminal: Command"
-    ```bash
-    pyaket run --command "command"
-    ```
-
-=== ":simple-rust: Rust"
-    ```bash
-    export PYAKET_ENTRY_COMMAND="command"
+=== ":simple-toml: Toml"
+    ```toml
+    [entry]
+    command = "command"
     ```
 
 - The venv is activated and the bin directory is added to PATH, so this can be a script defined in your `pyproject.toml` • `[project.scripts]` section.

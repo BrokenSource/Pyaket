@@ -3,58 +3,63 @@ import subprocess
 import uuid
 from enum import Enum
 from pathlib import Path
-from typing import Optional, Self
+from typing import Annotated, Optional, Self
 
 import tomlkit
 from dotmap import DotMap
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
+from typer import Option
 
 from pyaket import PYAKET_PATH, __version__
+
+
+class PyaketModel(BaseModel):
+    model_config = ConfigDict(use_attribute_docstrings=True)
 
 # ---------------------------------------------- #
 # https://pyaket.dev/docs/config/application/
 
-class PyaketApplication(BaseModel):
+class PyaketApplication(PyaketModel):
     """General metadata and dependencies definitions of the project"""
 
-    name: str = "Pyaket"
+    name: Annotated[str, Option("--name", "-n")] = "Pyaket"
     """The application name, used for"""
 
-    author: str = "BrokenSource"
+    author: Annotated[str, Option("--author", "-a")] = "BrokenSource"
     """Subdirectory of the platform's user data directory to install the application"""
 
-    vendor: Optional[str] = None
+    vendor: Annotated[Optional[str], Option("--vendor")] = None
     """Overrides platform directory workspace"""
 
-    version: str = "0.0.0"
+    version: Annotated[str, Option("--version", "-v")] = "0.0.0"
     """The release version matching PyPI, codename, branch, latest, etc"""
 
-    about: str = "No description provided"
+    about: Annotated[str, Option("--about", "-d")] = "No description provided"
     """A short description of the application, used for metadata, shortcuts"""
 
     # Todo: Ensure PNG for Unix, 256x256 .ico for Windows
-    icon: Optional[Path] = None
+    icon: Annotated[Optional[Path], Option("--icon", "-i")] = None
     """Path to an icon file to use for the application"""
 
-    keep_open: bool = False
+    keep_open: Annotated[bool, Option("--keep-open")] = False
     """Keep the terminal open after errors or finish"""
 
 # ---------------------------------------------- #
 # https://pyaket.dev/docs/config/dependencies/
 
-class PyaketDependencies(BaseModel):
+class PyaketDependencies(PyaketModel):
     """Configuration for the dependencies of the project"""
 
-    wheels: list[Path] = []
+    wheels: Annotated[list[Path], Option("--wheel", "-w")] = []
     """List of wheels to bundle and install at runtime"""
 
-    pypi: list[str] = []
+    pypi: Annotated[list[str], Option("--pypi", "-p")] = []
     """List of dependencies to install at runtime from PyPI"""
 
-    reqtxt: Optional[Path] = None
+    reqtxt: Annotated[Optional[Path], Option("--requirements", "-r")] = None
     """Path to a requirements.txt to install at runtime (legacy)"""
 
-    rolling: bool = False
+    rolling: Annotated[bool, Option("--rolling")] = False
     """Always upgrade dependencies at startup"""
 
     def resolve_wheels(self) -> None:
@@ -77,58 +82,58 @@ class PyaketDependencies(BaseModel):
 # ---------------------------------------------- #
 # https://pyaket.dev/docs/config/directories/
 
-class PyaketDirectories(BaseModel):
+class PyaketDirectories(PyaketModel):
     """Configuration for the directories used by the project"""
 
-    common: str = "Pyaket"
+    common: Annotated[str, Option("--common")] = "Pyaket"
     """Subdirectory of the workspace to use for all installed files"""
 
-    versions: str = "Versions"
+    versions: Annotated[str, Option("--versions")] = "Versions"
     """Subdirectory of the common dir to install versions of the application"""
 
 # ---------------------------------------------- #
 # https://pyaket.dev/docs/config/python/
 
-class PyaketPython(BaseModel):
+class PyaketPython(PyaketModel):
     """Configuration for a Python interpreter to use for the project"""
 
-    version: str = "3.13"
+    version: Annotated[str, Option("--version", "-v")] = "3.13"
     """A target python version to use at runtime"""
 
-    bundle: bool = False
+    bundle: Annotated[bool, Option("--bundle", "-b")] = False
     """Whether to bundle python in the executable"""
 
 # ---------------------------------------------- #
 # https://pyaket.dev/docs/config/pytorch/
 
-class PyaketTorch(BaseModel):
+class PyaketTorch(PyaketModel):
     """Optional configuration to install PyTorch at runtime"""
 
-    version: str = None
+    version: Annotated[Optional[str], Option("--version", "-v")] = None
     """A target torch version to use at runtime, empty disables it"""
 
-    backend: str = "auto"
+    backend: Annotated[str, Option("--backend", "-b")] = "auto"
     """The backend to use for PyTorch, auto, cpu, xpu, cu128, cu118, etc"""
 
 # ---------------------------------------------- #
 # https://pyaket.dev/docs/config/entry/
 
-class PyaketEntry(BaseModel):
+class PyaketEntry(PyaketModel):
     """Configuration for the entry point of the application"""
 
-    module: str = None
+    module: Annotated[Optional[str], Option("--module", "-m")] = None
     """A module to run at runtime as (python -m module ...)"""
 
-    command: str = None
+    command: Annotated[Optional[str], Option("--command", "-c")] = None
     """A command to run at runtime (command ...)"""
 
 # ---------------------------------------------- #
 
-class PyaketRelease(BaseModel):
+class PyaketRelease(PyaketModel):
     """Release configuration for the application"""
 
     # From: https://doc.rust-lang.org/stable/rustc/platform-support.html
-    target: str = None
+    target: Annotated[Optional[str], Option("--target", "-t")] = None
     """A rust target platform triple to compile for (passed as-is)"""
 
     class Profile(str, Enum):
@@ -138,25 +143,25 @@ class PyaketRelease(BaseModel):
         Small    = "small"
         Smallest = "smallest"
 
-    profile: Profile = Profile.Small
+    profile: Annotated[Profile, Option("--profile", "-p")] = Profile.Small
     """Build profile to use"""
 
-    standalone: bool = False
+    standalone: Annotated[bool, Option("--standalone")] = False
     """Create a standalone offline executable"""
 
-    msvc: bool = False
+    msvc: Annotated[bool, Option("--msvc")] = False
     """(Windows) Use MSVC to build the binary"""
 
-    zigbuild: bool = False
+    zigbuild: Annotated[bool, Option("--zigbuild", "-z")] = False
     """Use cargo-zigbuild to build the binary"""
 
-    xwin: bool = False
+    xwin: Annotated[bool, Option("--xwin", "-x")] = False
     """Use cargo-xwin to build msvc binaries from non-windows hosts"""
 
-    upx: bool = False
+    upx: Annotated[bool, Option("--upx")] = False
     """Use UPX to compress the binary"""
 
-    tarball: bool = False
+    tarball: Annotated[bool, Option("--tarball")] = False
     """(Unix   ) Create a .tar.gz for unix releases (preserves chmod +x)"""
 
     def extension(self) -> str:
@@ -166,22 +171,21 @@ class PyaketRelease(BaseModel):
 
 # ---------------------------------------------- #
 
-class PyaketProject(BaseModel):
-    application:  PyaketApplication  = Field(default_factory=PyaketApplication)
-    dependencies: PyaketDependencies = Field(default_factory=PyaketDependencies)
-    directories:  PyaketDirectories  = Field(default_factory=PyaketDirectories)
-    python:       PyaketPython       = Field(default_factory=PyaketPython)
-    torch:        PyaketTorch        = Field(default_factory=PyaketTorch)
-    entry:        PyaketEntry        = Field(default_factory=PyaketEntry)
-    release:      PyaketRelease      = Field(default_factory=PyaketRelease)
-
+class PyaketProject(PyaketModel):
+    app:     PyaketApplication  = Field(default_factory=PyaketApplication)
+    deps:    PyaketDependencies = Field(default_factory=PyaketDependencies)
+    dirs:    PyaketDirectories  = Field(default_factory=PyaketDirectories)
+    python:  PyaketPython       = Field(default_factory=PyaketPython)
+    torch:   PyaketTorch        = Field(default_factory=PyaketTorch)
+    entry:   PyaketEntry        = Field(default_factory=PyaketEntry)
+    release: PyaketRelease      = Field(default_factory=PyaketRelease)
     uuid: str = None
 
     def release_name(self) -> str:
         return ''.join((
-            f"{self.application.name.lower()}",
+            f"{self.app.name.lower()}",
             f"-{self.release.target}",
-            f"-v{self.application.version}",
+            f"-v{self.app.version}",
             f"-{self.torch.backend}" if (self.torch.version) else "",
             self.release.extension()
         ))
@@ -200,8 +204,10 @@ class PyaketProject(BaseModel):
     # -------------------------------------------------------------------------------------------- #
 
     def compile(self,
-        target: Path=Path(os.getenv("CARGO_TARGET_DIR") or (Path.cwd()/"target")),
-        output: Path=Path(os.getenv("PYAKET_RELEASE_DIR") or (Path.cwd()/"release")),
+        target: Annotated[Path, Option("--target", "-t", help="Directory to build the project (target)")]=
+            Path(os.environ.get("CARGO_TARGET_DIR") or (Path.cwd()/"target")),
+        output: Annotated[Path, Option("--output", "-o", help="Directory to output the compiled binary")]=
+            Path(os.environ.get("PYAKET_RELEASE_DIR") or (Path.cwd()/"release")),
     ) -> Path:
 
         # Must have host toolchain for any rustup shim commands
@@ -288,10 +294,10 @@ class PyaketProject(BaseModel):
     def export(self) -> None:
         os.environ.update(
             PYAKET_PROJECT   = self.json(),
-            ProductName      = self.application.name,
-            CompanyName      = self.application.author,
-            FileVersion      = self.application.version,
-            FileDescription  = self.application.about,
+            ProductName      = self.app.name,
+            CompanyName      = self.app.author,
+            FileVersion      = self.app.version,
+            FileDescription  = self.app.about,
             OriginalFilename = self.release_name(),
         )
 
@@ -303,8 +309,8 @@ class PyaketProject(BaseModel):
     ) -> None:
         """Update project metadata from a pyproject.toml file"""
         data = DotMap(tomlkit.loads(Path(path).read_text(encoding="utf-8")))
-        self.application.name   = data.project.get("name", self.application.name)
-        self.application.author = "" # Secret mode for independent projects
+        self.app.name   = data.project.get("name", self.app.name)
+        self.app.author = "" # Secret mode for independent projects
 
         def _pin(package: str) -> str:
             """"""
@@ -325,4 +331,4 @@ class PyaketProject(BaseModel):
 
         # Standard dependencies
         for package in data.project.dependencies:
-            self.dependencies.pypi.append(_pin(package))
+            self.deps.pypi.append(_pin(package))

@@ -10,17 +10,13 @@ The name of the application being built.
 
 === ":simple-python: Python"
     ```python
-    project.app.name = "Pyaket"
+    project.application.name = "Pyaket"
     ```
 
-=== ":fontawesome-solid-terminal: Command"
-    ```bash
-    pyaket app --name "Pyaket"
-    ```
-
-=== ":simple-rust: Rust"
-    ```bash
-    export PYAKET_APP_NAME="Pyaket"
+=== ":simple-toml: Toml"
+    ```toml
+    [application]
+    name = "Pyaket"
     ```
 
 <hr>
@@ -31,17 +27,13 @@ The author's name, group, organization of the application being built.
 
 === ":simple-python: Python"
     ```python
-    project.app.author = "BrokenSource"
+    project.application.author = "BrokenSource"
     ```
 
-=== ":fontawesome-solid-terminal: Command"
-    ```bash
-    pyaket app --author "BrokenSource"
-    ```
-
-=== ":simple-rust: Rust"
-    ```bash
-    export PYAKET_APP_AUTHOR="BrokenSource"
+=== ":simple-toml: Toml"
+    ```toml
+    [application]
+    author = "BrokenSource"
     ```
 
 <hr>
@@ -55,6 +47,19 @@ This value primarily determines the [Workspace Root](./directories.md#workspace)
 !!! tip "Using an empty [Author](#author) is a way to isolate each project virtual environment."
     - While not recommended due spamming the user data dir, it works for single banner-less projects. For that, set the python field to `#!python None` or unset it entirely.
 
+**Overriding**:
+
+=== ":simple-python: Python"
+    ```python
+    project.application.vendor = "Tremeschin"
+    ```
+
+=== ":simple-toml: Toml"
+    ```toml
+    [application]
+    vendor = "Tremeschin"
+    ```
+
 <hr>
 
 ## Version
@@ -65,17 +70,13 @@ Should follow the same number of the project to be released alonside a registry.
 
 === ":simple-python: Python"
     ```python
-    project.app.version = "0.0.0"
+    project.application.version = "0.0.0"
     ```
 
-=== ":fontawesome-solid-terminal: Command"
-    ```bash
-    pyaket app --version 0.0.0
-    ```
-
-=== ":simple-rust: Rust"
-    ```bash
-    export PYAKET_APP_VERSION="0.0.0"
+=== "simple-toml: Toml"
+    ```toml
+    [application]
+    version = "0.0.0"
     ```
 
 The value is appended to the [Versions Directory](./directories.md#versions) to build the virtual environment path.
@@ -91,17 +92,13 @@ A description of the application, exclusively for metadata or banner purposes.
 
 === ":simple-python: Python"
     ```python
-    project.app.about = "No description provided"
+    project.application.about = "No description provided"
     ```
 
-=== ":fontawesome-solid-terminal: Command"
-    ```bash
-    pyaket app --about "No description provided"
-    ```
-
-=== ":simple-rust: Rust"
-    ```bash
-    export PYAKET_APP_ABOUT="No description provided"
+=== ":simple-toml: Toml"
+    ```toml
+    [application]
+    about = "No description provided"
     ```
 
 <hr>
@@ -115,18 +112,13 @@ An image path to use as the application icon.
 === ":simple-python: Python"
     ```python
     # Can be Path, str, Image, numpy.
-    project.app.icon = Path
+    project.application.icon = Path
     ```
 
-=== ":fontawesome-solid-terminal: Command"
-    ```bash
-    pyaket app --icon /path/to/icon
-    ```
-
-=== ":simple-rust: Rust"
-    ```bash
-    # Must be a Path to an icon file
-    export PYAKET_APP_ICON="/path/to/icon"
+=== ":simple-toml: Toml"
+    ```toml
+    [application]
+    icon = "path/to/icon.png"
     ```
 
 <br>

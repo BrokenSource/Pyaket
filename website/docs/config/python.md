@@ -13,14 +13,10 @@ The version of Python to be used at runtime, from [astral-sh/python-build-standa
     project.python.version = "3.13"
     ```
 
-=== ":fontawesome-solid-terminal: Command"
-    ```bash
-    pyaket python --version 3.13
-    ```
-
-=== ":simple-rust: Rust"
-    ```bash
-    export PYAKET_PYTHON_VERSION="3.13"
+=== ":simple-toml: Toml"
+    ```toml
+    [python]
+    version = "3.13"
     ```
 
 - **Note**: Specific versions support, such as `3.10.17`, depends on the [uv version](https://github.com/BrokenSource/Pyaket/blob/main/pyaket/Cargo.toml) in use, as the URLs are hard-coded in their binary. For example, `3.13.3` was added in [v0.6.14](https://github.com/astral-sh/uv/releases/tag/0.6.14).
@@ -37,15 +33,11 @@ Whether to embed the python distribution in the executable, instead of a runtime
 
 === ":simple-python: Python"
     ```python
-    project.python.bundle = False
+    project.python.bundle = True
     ```
 
-=== ":fontawesome-solid-terminal: Command"
-    ```bash
-    pyaket python --bundle
-    ```
-
-=== ":simple-rust: Rust"
-    ```bash
-    export PYAKET_PYTHON_BUNDLE="0"
+=== ":simple-toml: Toml"
+    ```toml
+    [python]
+    bundle = true
     ```

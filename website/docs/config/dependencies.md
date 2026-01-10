@@ -8,23 +8,19 @@ Glob patterns of wheels and sdists to bundle and install at runtime.
 
 === ":simple-python: Python"
     ```python
-    project.deps.wheels.append("/path/to/foo.whl")
-    project.deps.wheels.append("/path/to/bar.whl")
-    project.deps.wheels.append("/path/to/wheels/*.whl")
-    project.deps.wheels.append("/path/to/sdists/*.tar.gz")
+    project.dependencies.wheels.append("dist/*.whl")
+    project.dependencies.wheels.append("/path/to/foo.whl")
+    project.dependencies.wheels.append("/path/to/sdists/*.tar.gz")
     ```
 
-=== ":fontawesome-solid-terminal: Command"
-    ```bash
-    pyaket deps --wheel /path/to/foo.whl --wheel "dist/*.whl"
-    ```
-
-=== ":simple-rust: Rust"
-    ```bash
-    # Warning: Paths must be absolute, as they are relative to `build.rs`
-    export PYAKET_APP_WHEELS="/path/to/foo.whl;/path/to/bar.whl"
-    export PYAKET_APP_WHEELS="/path/to/*.whl;/other/*.whl"
-    export PYAKET_APP_WHEELS="/path/to/sdists/*.tar.gz"
+=== ":simple-toml: Toml"
+    ```toml
+    [dependencies]
+    wheels = [
+        "dist/*.whl",
+        "/path/to/foo.whl",
+        "/path/to/sdists/*.tar.gz",
+    ]
     ```
 
 This is the recommended way to specify dependencies, although third party packages may still be installed at runtime from the dependency chain.
@@ -46,26 +42,28 @@ List of PyPI packages to be installed at runtime.
 === ":simple-python: Python"
     ```python
     # Solve for latest compatible version
-    project.deps.pypi.append("numpy")
+    project.dependencies.pypi.append("numpy")
 
     # Specific stable version of a package
-    project.deps.pypi.append("altair==6.0.0")
-    project.deps.pypi.append("pillow>=9.0.0,<10.0.0")
+    project.dependencies.pypi.append("altair==6.0.0")
+    project.dependencies.pypi.append("pillow>=9.0.0,<10.0.0")
 
     # Or even git dependencies, targetting specific branches or tags
-    project.deps.pypi.append("git+https://github.com/BrokenSource/TurboPipe")
-    project.deps.pypi.append("git+...@main")
-    project.deps.pypi.append("git+...@v1.2.4")
+    project.dependencies.pypi.append("git+https://github.com/BrokenSource/TurboPipe")
+    project.dependencies.pypi.append("git+...@main")
+    project.dependencies.pypi.append("git+...@v1.2.4")
     ```
 
-=== ":fontawesome-solid-terminal: Command"
-    ```bash
-    pyaket deps --pypi "numpy" --pypi "altair==6.0.0" (...)
-    ```
-
-=== ":simple-rust: Rust"
-    ```bash
-    export PYAKET_DEPS_PYPI="numpy;altair==6.0.0"
+=== ":simple-toml: Toml"
+    ```toml
+    [dependencies]
+    pypi = [
+        "numpy",
+        "altair==6.0.0",
+        "pillow>=9.0.0,<10.0.0",
+        "git+...@main",
+        "git+...@v1.2.4",
+    ]
     ```
 
 <hr>
@@ -76,17 +74,13 @@ A local `requirements.txt` file to be installed at runtime.
 
 === ":simple-python: Python"
     ```python
-    project.deps.reqtxt = Path("/path/to/requirements.txt")
+    project.dependencies.reqtxt = Path("/path/to/requirements.txt")
     ```
 
-=== ":fontawesome-solid-terminal: Command"
-    ```bash
-    pyaket deps --requirements /path/to/requirements.txt
-    ```
-
-=== ":simple-rust: Rust"
-    ```bash
-    export PYAKET_DEPS_REQTXT="/path/to/requirements.txt"
+=== ":simple-toml: Toml"
+    ```toml
+    [dependencies]
+    reqtxt = "/path/to/requirements.txt"
     ```
 
 This option mostly exists for legacy reasons. You really should move to a `pyproject.toml` as it allows easier build backends to create portable wheels for your project that includes your code. The only use I can think of is to run a project-less script with a requirements file alongside it.
@@ -99,17 +93,13 @@ Always reinstall the project's dependencies when running the executable.
 
 === ":simple-python: Python"
     ```python
-    project.deps.rolling = True
+    project.dependencies.rolling = True
     ```
 
-=== ":fontawesome-solid-terminal: Command"
-    ```bash
-    pyaket deps --rolling
-    ```
-
-=== ":simple-rust: Rust"
-    ```bash
-    export PYAKET_DEPS_ROLLING="1"
+=== ":simple-toml: Toml"
+    ```toml
+    [dependencies]
+    rolling = true
     ```
 
 This option is best combined with a `git+` dependency or `package` without a `==version` specifier, to create a one-time binary that self-updates. This is obviously discouraged for any production use, unless very controlled, or in ephemeral runtimes for a couple of reasons:

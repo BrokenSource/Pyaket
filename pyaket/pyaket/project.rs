@@ -97,13 +97,13 @@ pub struct PyaketEntry {
 #[derive(SmartDefault)]
 #[derive(Serialize, Deserialize)]
 pub struct PyaketProject {
-    pub application:  PyaketApplication,
-    pub dependencies: PyaketDependencies,
-    pub directories:  PyaketDirectories,
-    pub python:       PyaketPython,
-    pub torch:        PyaketTorch,
-    pub entry:        PyaketEntry,
-    pub uuid:         String,
+    pub app:    PyaketApplication,
+    pub deps:   PyaketDependencies,
+    pub dirs:   PyaketDirectories,
+    pub python: PyaketPython,
+    pub torch:  PyaketTorch,
+    pub entry:  PyaketEntry,
+    pub uuid:   String,
 
     #[default(false)]
     #[serde(default)]
