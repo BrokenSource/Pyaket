@@ -212,7 +212,7 @@ class PyaketProject(PyaketModel):
     ) -> Path:
 
         # Must have the host toolchain for any rustup shim commands
-        subprocess.run(("rustup", "default", "stable"), check=True)
+        subprocess.check_call(("rustup", "default", "stable"))
 
         # Use host target if not specified
         if self.release.target is None:

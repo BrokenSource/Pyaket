@@ -27,14 +27,10 @@ pyaket = "pyaket.__main__:main"
 [project.optional-dependencies]
 xwin = ["cargo-xwin", "ninja"]
 zig  = ["cargo-zigbuild"]
+all  = ["pyaket[zig]"]
 
 [dependency-groups]
-all = [
-    "pyaket[zig]",
-]
-dev = [
-    "pyaket[zig]",
-]
+dev = ["pyaket[all]"]
 
 [build-system]
 requires = ["hatchling"]

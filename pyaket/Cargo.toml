@@ -37,7 +37,7 @@ serde_json    = {version="1.0.149"}
 shlex         = {version="1.3.0"}
 smart-default = {version="0.7.1"}
 temp-dir      = {version="0.1.16"}
-uv            = {version="0.9.22", optional=true, default-features=false}
+uv            = {version="0.9.24", optional=true, default-features=false}
 
 [build-dependencies]
 anyhow      = {version="1.0.100"}
