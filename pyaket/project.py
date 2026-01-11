@@ -1,6 +1,7 @@
 import os
 import shutil
 import subprocess
+import sys
 import uuid
 from enum import Enum
 from pathlib import Path
@@ -251,6 +252,10 @@ class PyaketProject(PyaketModel):
 
         if self.release.xwin:
             raise NotImplementedError("cargo-xwin is not yet implemented")
+
+        # https://github.com/rust-cross/cargo-zigbuild/issues/329
+        if sys.platform == "darwin":
+            subprocess.run(("ulimit", "-n", "8192"))
 
         self.export()
 
