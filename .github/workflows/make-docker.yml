@@ -1,6 +1,10 @@
 name: make-docker
 on:
   workflow_dispatch:
+    inputs:
+      publish:
+        required: true
+        type: boolean
 
 jobs:
   main:
@@ -35,7 +39,7 @@ jobs:
           tags: |
             ghcr.io/brokensource/pyaket:latest
             ghcr.io/brokensource/pyaket:${{ env.VERSION }}
-          push: true
-          file: dockerfile
+          push: ${{ github.event.inputs.publish }}
           platforms: linux/amd64
+          file: Dockerfile
           context: .

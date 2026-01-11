@@ -53,9 +53,13 @@ RUN uv run rustup target add aarch64-unknown-linux-gnu
 RUN uv run rustup target add aarch64-apple-darwin
 
 # Install MacOS SDKs for cargo-zigbuild
-RUN curl -L "https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX10.9.sdk.tar.xz" | tar -Jx -C /opt
 RUN curl -L "https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX11.3.sdk.tar.xz" | tar -Jx -C /opt
 ENV SDKROOT="/opt/MacOSX11.3.sdk"
+
+# Fixme: Works, but seems like a ziglang bug
+# - https://github.com/ziglang/zig/issues/23179
+# - https://github.com/rust-cross/cargo-zigbuild/issues/324
+RUN ln -s $SDKROOT/System /System
 
 # Install mingw for windows builds
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \

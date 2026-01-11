@@ -25,5 +25,5 @@ jobs:
           path: dist/*
 
       - name: Publish wheel
-        if: ${{inputs.publish == true}}
+        if: ${{ inputs.publish == true }}
         run: uv publish
