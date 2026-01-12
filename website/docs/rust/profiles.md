@@ -30,7 +30,7 @@ graph LR
     Size --> |Yes| UseSmallest([_smallest_])
 ```
 
-!!! tip "**Suggestion:** Use smallest for releases, and develop for local testing."
+!!! tip "**Suggestion:** Always use smallest for releases, plenty fast and portable 😉"
 
 ## Usage
 
@@ -51,21 +51,21 @@ graph LR
 
 ## Benchmarks
 
-<!-- Note: Feel free to run scripts/benchmark-profile.py and submit results! -->
+<!-- Note: Feel free to run scripts/benchmark-profiles.py and submit results! -->
 
 - **Size:** Base compiled binary size, only including the uv runtime.
-- **Overhead:** Startup overhead time added by Pyaket until Python runs an empty command.
-- **Cold build:** Time to build without any prior build cache.
-- **Rebuild:** Time to rebuild after a prior build cache exists.
+- **Statup:** Startup overhead time added by Pyaket until Python runs an empty command.
+- **Cold:** Time to build without any prior build cache.
+- **Warm:** Time to rebuild after a prior build cache exists.
 
 ### x86_64-unknown-linux-gnu
 
-| Profile    | Size     | Startup | Cold    | Warm    |
-| :--------- | --------:| ------: | ------: | ------: |
-| develop  | 59.03 MB | 93.3 ms |  70.2 s |   9.3 s |
-| fast     | 45.44 MB | 32.2 ms | 166.0 s | 108.0 s |
-| fastest  | 40.70 MB | 31.0 ms | 274.0 s | 212.0 s |
-| small    | 37.23 MB | 34.8 ms | 104.0 s |  61.0 s |
-| smallest | 29.94 MB | 33.4 ms | 180.0 s | 136.0 s |
+| Profile  | Size     | Startup | Cold    | Warm    |
+| :------- | -------: | ------: | ------: | ------: |
+| develop  | 59.03 MB | 89.3 ms |  66.0 s |   8.9 s |
+| fast     | 45.10 MB | 82.6 ms | 157.7 s | 100.3 s |
+| fastest  | 40.54 MB | 82.2 ms | 258.3 s | 206.0 s |
+| small    | 36.87 MB | 85.8 ms |  99.8 s |  58.1 s |
+| smallest | 29.74 MB | 84.0 ms | 173.5 s | 132.3 s |
 
 <sup><b>System:</b> Ryzen 9 5900X, 2x3200 MT/s DDR4 CL16 2Rx8<sup>

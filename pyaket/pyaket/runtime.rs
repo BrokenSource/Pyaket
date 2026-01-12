@@ -121,6 +121,7 @@ impl PyaketProject {
                 subproc::run(&mut torch)?;
             }
 
+            // Cleaned when dropped
             let tempdir = TempDir::with_prefix("pyaket-").unwrap();
 
             // Must have at least one package

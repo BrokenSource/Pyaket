@@ -33,15 +33,16 @@ def stopwatch(self) -> callable:
 @define
 class Benchmark:
     profile: PyaketRelease.Profile
+    hyper: dict = Factory(dict)
     cold: float = 0.0
     warm: float = 0.0
-    over: float = 0.0
     size: float = 0.0
 
     def run(self, warmup: int=50, runs: int=100) -> Self:
         project = PyaketProject()
         project.release.profile = self.profile
         subprocess.check_call(("rustup", "default", "stable"))
+        subprocess.check_call(("cargo", "fetch", "--manifest-path", str(PYAKET_CARGO)))
         subprocess.check_call(("cargo", "clean", "--manifest-path", str(PYAKET_CARGO)))
 
         # # Cold compilation
@@ -69,9 +70,9 @@ class Benchmark:
             command += ("nice", "-20")
 
         # Linux can pin to a specific core
-        # - Reduce jitter by avoiding core/ccd migrations
+        # - Reduce jitter by avoiding migrations (core, ccd)
         # - Avoid core 0 as it may handle kernel interrupts
-        # - Find physical second core, as core 1 might be SMT/HT
+        # - Find second physical core, as core 1 might be SMT/HT
         if sys.platform == "linux":
             for cpu in Path("/sys/devices/system/cpu").glob("cpu[0-9]*"):
                 if int((cpu/"topology"/"core_id").read_text()) == 1:
@@ -83,22 +84,25 @@ class Benchmark:
             prefix="pyaket-benchmark-",
             suffix=".json",
             mode="w+b",
-        ) as result:
+        ) as results:
             subprocess.check_call(command + (
                 "hyperfine",
                 "--warmup", str(warmup),
                 "--runs", str(runs),
                 "--shell=none",
                 "--export-json",
-                str(result.name),
-                str(release),
+                str(results.name),
+                f"{str(release)} -c ''",
             ))
 
-            result.seek(0)
-            result: dict = json.load(result)
-            self.over = result["results"][0]["mean"]
+            results.seek(0)
+            self.hyper = json.load(results)
 
         return self
+
+    @property
+    def mean(self) -> float:
+        return self.hyper["results"][0]["mean"]
 
 @define
 class Benchmarker:
@@ -114,14 +118,14 @@ class Benchmarker:
         print(f"### {PyaketRelease.host()}")
         print("")
         print("| Profile  | Size     | Startup | Cold    | Warm    |")
-        print("| :------- | --------:| ------: | ------: | ------: |")
+        print("| :------- | -------: | ------: | ------: | ------: |")
         for sample in self.samples:
             print((
-                f"| {sample.profile.value.ljust(8)} |"
-                f" {sample.size:5.2f} MB |"
-                f" {sample.over*1000:4.1f} ms |"
-                f" {sample.cold:5.1f} s |"
-                f" {sample.warm:5.1f} s |"
+                f"| {sample.profile.value.ljust(8)} "
+                f"| {sample.size:5.2f} MB "
+                f"| {sample.mean*1000:4.1f} ms "
+                f"| {sample.cold:5.1f} s "
+                f"| {sample.warm:5.1f} s |"
             ))
 
 if __name__ == "__main__":
