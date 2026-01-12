@@ -22,7 +22,7 @@ pub mod envy;
 pub mod logging;
 pub mod project;
 pub mod runtime;
-pub mod subprocess;
+pub mod subproc;
 pub use assets::*;
 pub use logging::*;
 pub use project::*;

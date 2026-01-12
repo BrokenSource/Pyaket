@@ -5,7 +5,7 @@ about   = "📦 Easy Python to Fast Executables"
 version = "0.10.0"
 
 [release]
-profile = "develop"
+profile = "smallest"
 
 [entry]
 module = "this"

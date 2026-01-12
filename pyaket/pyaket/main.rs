@@ -6,6 +6,19 @@ mod commands;
 use commands::*;
 
 fn main() -> Result<()> {
+
+    // Short circuit on uv mode, bypass cli
+    #[cfg(feature="uv")]
+    if envy::flag(subproc::PYAKET_UV) {
+        unsafe {
+            match ::uv::main(std::env::args()) {
+                ExitCode::SUCCESS => std::process::exit(0),
+                ExitCode::FAILURE => std::process::exit(1),
+                _ => std::process::exit(1),
+            }
+        }
+    }
+
     LazyLock::force(&START_TIME);
 
     // Read the project configuration sent from build.rs

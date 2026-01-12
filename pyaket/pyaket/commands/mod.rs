@@ -64,7 +64,7 @@ pub enum Manager {
 impl PyaketCommand for Manager {
     fn run(&self, project: &PyaketProject) -> Result<()> {
         match self {
-            Manager::Uv(cmd)      => cmd.run(),
+            Manager::Uv(cmd)      => cmd.run()?,
             Manager::Version(cmd) => cmd.run(project)?,
         }
         Ok(())

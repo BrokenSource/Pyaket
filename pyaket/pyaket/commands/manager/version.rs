@@ -39,9 +39,9 @@ impl PyaketCommand for VersionCommand {
                 },
 
             Query::Uv => {
-                super::uv::UvCommand {
-                    args: vec!("--version".to_string()),
-                }.run();
+                subproc::uv()?
+                    .arg("--version")
+                    .spawn()?.wait()?;
             }
         }
         Ok(())

@@ -11,8 +11,9 @@ fn main() -> Result<()> {
     // Workaround to always trigger a rebuild
     println!("cargo:rerun-if-changed=NULL");
 
-    // Passthrough project configuration
-    println!("cargo:rustc-env={}={}", "PYAKET_PROJECT", var("PYAKET_PROJECT")?);
+    // Passthrough project configuration (empty for rust-analyzer)
+    let project = var("PYAKET_PROJECT").unwrap_or_default();
+    println!("cargo:rustc-env={}={}", "PYAKET_PROJECT", project);
 
     // Executable resources (icon, metadata, etc)
     if var("TARGET")?.contains("windows") {

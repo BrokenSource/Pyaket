@@ -95,7 +95,7 @@ impl PyaketProject {
         } || self.deps.rolling {
 
             /* Create the virtual environment */ {
-                let mut setup = subprocess::uv()?;
+                let mut setup = subproc::uv()?;
 
                 setup.arg("venv")
                     .arg(self.installation_dir())
@@ -103,13 +103,13 @@ impl PyaketProject {
                     .arg("--seed").arg("--quiet");
                 if self.deps.rolling {setup
                     .arg("--allow-existing");}
-                subprocess::run(&mut setup)?;
+                subproc::run(&mut setup)?;
             }
 
             // Install PyTorch first, as other dependencies might
             // use a platform's default backend than specified
             if let Some(version) = &self.torch.version {
-                let mut torch = subprocess::uv()?;
+                let mut torch = subproc::uv()?;
 
                 torch.arg("pip").arg("install")
                     .arg(format!("torch=={}", version))
@@ -118,13 +118,13 @@ impl PyaketProject {
                     .arg(format!("--torch-backend={}", self.torch.backend))
                     .arg("--preview");
 
-                subprocess::run(&mut torch)?;
+                subproc::run(&mut torch)?;
             }
 
             let tempdir = TempDir::with_prefix("pyaket-").unwrap();
 
             // Must have at least one package
-            let mut command = subprocess::uv()?;
+            let mut command = subproc::uv()?;
             command.arg("pip").arg("install");
             command.arg("--upgrade");
             command.arg("pip");
@@ -148,7 +148,7 @@ impl PyaketProject {
                 write(&file, content)?;
             }
 
-            subprocess::run(&mut command)?;
+            subproc::run(&mut command)?;
         }
 
         // Flag this was a successful install
@@ -157,7 +157,7 @@ impl PyaketProject {
     }
 
     pub fn _entry(&self) -> Result<()> {
-        let mut main = subprocess::uv()?;
+        let mut main = subproc::uv()?;
         main.arg("run");
         main.arg("--active");
 

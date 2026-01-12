@@ -43,7 +43,7 @@ uv            = {version="0.9.24", optional=true, default-features=false}
 anyhow      = {version="1.0.100"}
 glob        = {version="0.3.3"}
 rust-embed  = {version="8.9.0", features=["interpolate-folder-path"]}
-winresource = {version="0.1.28", default-features=false}
+winresource = {version="0.1.29", default-features=false}
 
 # ---------------------------------------------------------------------------- #
 

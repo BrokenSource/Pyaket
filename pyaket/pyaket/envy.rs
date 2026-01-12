@@ -50,6 +50,10 @@ pub fn ubool(name: &str, default: bool) -> bool {
     self::bool(name).unwrap_or(default)
 }
 
+pub fn flag(name: &str) -> bool {
+    self::ubool(name, false)
+}
+
 /* -------------------------------------------------------------------------- */
 // Exporting and printing
 
