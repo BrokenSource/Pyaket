@@ -6,7 +6,7 @@ Many [:simple-rust: Build Profiles](https://doc.rust-lang.org/cargo/reference/pr
 
 ## Flowchart
 
-As a general rule of thumb for what [option](#options) to use, you can follow:
+As a general rule of thumb for what option to use, you can follow:
 
 ```mermaid
 graph LR
@@ -30,81 +30,9 @@ graph LR
     Size --> |Yes| UseSmallest([_smallest_])
 ```
 
-<!-- Todo: Better wording, presentation, visual clutter -->
+!!! tip "**Suggestion:** Use smallest for releases, and develop for local testing."
 
-## Options
-
-### `develop`
-
-Development mode, ideal for iterative development.
-
-<div class="grid cards" markdown>
-- 🟢 **Strengths**
-    - Iterative development
-    - Fastest build times
-- 🔴 **Trade-offs**
-    - Larger binary size
-    - Slower runtime
-</div>
-
-<sup><b>Base Size:</b> ~58.01 MB</sup>
-
-### `fast`
-
-Optimizes for speed, similar to rust's default `release` profile.
-
-<div class="grid cards" markdown>
-- 🟢 **Strengths**
-    - Balanced binary size
-    - Fast execution speed
-- 🔴 **Trade-offs**
-    - Slower build times
-</div>
-
-<sup><b>Base Size:</b> ~45.44 MB</sup>
-
-### `fastest`
-
-Same as [fast](#fast), but with [Fat LTO](https://doc.rust-lang.org/cargo/reference/profiles.html#lto) enabled, vs it:
-
-<div class="grid cards" markdown>
-- 🟢 **Strengths**
-    - Slightly smaller binaries
-    - Slightly faster binaries
-- 🔴 **Trade-offs**
-    - Slowest build times
-</div>
-
-<sup><b>Base Size:</b> ~40.70 MB</sup>
-
-### `small`
-
-Optimizes for smaller binary sizes.
-
-<div class="grid cards" markdown>
-- 🟢 **Strengths**
-    - Smaller binary sizes
-- 🔴 **Trade-offs**
-    - Slower build times
-    - Slower execution speed
-</div>
-
-<sup><b>Base Size:</b> ~37.23 MB</sup>
-
-### `smallest`
-
-Same as [small](#small), but with [Fat LTO](https://doc.rust-lang.org/cargo/reference/profiles.html#lto) enabled, vs it:
-
-<div class="grid cards" markdown>
-- 🟢 **Strengths**
-    - Smallest binary sizes
-- 🔴 **Trade-offs**
-    - Slowest build times
-</div>
-
-<sup><b>Size:</b> 29.94 MB</sup>
-
-## Using a profile
+## Usage
 
 === ":simple-python: Python"
     ```python
@@ -121,4 +49,23 @@ Same as [small](#small), but with [Fat LTO](https://doc.rust-lang.org/cargo/refe
     cargo build --profile fast
     ```
 
+## Benchmarks
 
+<!-- Note: Feel free to run scripts/benchmark-profile.py and submit results! -->
+
+- **Size:** Base compiled binary size, only including the uv runtime.
+- **Overhead:** Startup overhead time added by Pyaket until Python runs an empty command.
+- **Cold build:** Time to build without any prior build cache.
+- **Rebuild:** Time to rebuild after a prior build cache exists.
+
+### x86_64-unknown-linux-gnu
+
+| Profile    | Size     | Startup | Cold    | Warm    |
+| :--------- | --------:| ------: | ------: | ------: |
+| develop  | 59.03 MB | 93.3 ms |  70.2 s |   9.3 s |
+| fast     | 45.44 MB | 32.2 ms | 166.0 s | 108.0 s |
+| fastest  | 40.70 MB | 31.0 ms | 274.0 s | 212.0 s |
+| small    | 37.23 MB | 34.8 ms | 104.0 s |  61.0 s |
+| smallest | 29.94 MB | 33.4 ms | 180.0 s | 136.0 s |
+
+<sup><b>System:</b> Ryzen 9 5900X, 2x3200 MT/s DDR4 CL16 2Rx8<sup>

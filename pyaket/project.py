@@ -12,7 +12,7 @@ from dotmap import DotMap
 from pydantic import BaseModel, ConfigDict, Field
 from typer import Option
 
-from pyaket import PYAKET_PATH, __version__
+from pyaket import PYAKET_CARGO, PYAKET_ROOT, __version__
 
 
 class PyaketModel(BaseModel):
@@ -171,6 +171,16 @@ class PyaketRelease(PyaketModel):
             return ".exe"
         return ""
 
+    @staticmethod
+    def host() -> str:
+        for line in subprocess.run(
+            ("rustc", "--version", "--verbose"),
+            capture_output=True, text=True,
+        ).stdout.splitlines():
+            if line.startswith(mark := "host:"):
+                return line.removeprefix(mark).strip()
+        raise RuntimeError("Failed to determine host target triple")
+
 # ---------------------------------------------- #
 
 class PyaketProject(PyaketModel):
@@ -217,14 +227,7 @@ class PyaketProject(PyaketModel):
         subprocess.check_call(("rustup", "default", "stable"))
 
         # Use host target if not specified
-        if self.release.target is None:
-            for line in subprocess.run(
-                ("rustc", "--version", "--verbose"),
-                capture_output=True, text=True,
-            ).stdout.splitlines():
-                if line.startswith("host:"):
-                    self.release.target = line.split("host:")[1].strip()
-                    break
+        self.release.target = (self.release.target or self.release.host())
 
         # Must have target toolchain for (cross)compilation
         subprocess.check_call(("rustup", "target", "add", self.release.target))
@@ -262,7 +265,7 @@ class PyaketProject(PyaketModel):
 
         subprocess.check_call((
             "cargo", ("zig"*self.release.zigbuild) + "build",
-            "--manifest-path", str(PYAKET_PATH/"Cargo.toml"),
+            "--manifest-path", str(PYAKET_CARGO),
             "--profile", self.release.profile.value,
             "--target", self.release.target,
             "--target-dir", str(target),

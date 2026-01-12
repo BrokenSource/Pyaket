@@ -5,10 +5,21 @@ from pathlib import Path
 
 __version__ = importlib.metadata.version(__package__)
 
-PYAKET_PATH: Path = Path(__file__).parent.resolve()
+PYAKET_ROOT: Path = Path(__file__).parent.resolve()
 """Path to the pyaket python package"""
 
-from pyaket.project import PyaketProject
+PYAKET_CARGO: Path = (PYAKET_ROOT/"Cargo.toml")
+
+from pyaket.project import (
+    PyaketApplication,
+    PyaketDependencies,
+    PyaketDirectories,
+    PyaketEntry,
+    PyaketProject,
+    PyaketPython,
+    PyaketRelease,
+    PyaketTorch,
+)
 
 # Ensure zig binary can be found for zigbuild
 for path in map(Path, site.getsitepackages()):
