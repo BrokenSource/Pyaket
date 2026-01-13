@@ -12,7 +12,7 @@ from dotmap import DotMap
 from pydantic import BaseModel, ConfigDict, Field
 from typer import Option
 
-from pyaket import PYAKET_CARGO, PYAKET_ROOT, __version__
+from pyaket import PYAKET_CARGO, __version__
 
 
 class PyaketModel(BaseModel):
@@ -79,6 +79,7 @@ class PyaketDependencies(PyaketModel):
         self.wheels = list(globinator())
 
     def copy_wheels(self) -> None:
+        self.resolve_wheels()
         raise NotImplementedError
 
 # ---------------------------------------------- #

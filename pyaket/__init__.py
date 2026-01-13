@@ -9,6 +9,7 @@ PYAKET_ROOT: Path = Path(__file__).parent.resolve()
 """Path to the pyaket python package"""
 
 PYAKET_CARGO: Path = (PYAKET_ROOT/"Cargo.toml")
+"""Path to pyaket's rust cargo manifest"""
 
 from pyaket.project import (
     PyaketApplication,

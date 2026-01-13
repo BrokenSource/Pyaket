@@ -33,36 +33,44 @@ def stopwatch(self) -> callable:
 @define
 class Benchmark:
     profile: PyaketRelease.Profile
-    hyper: dict = Factory(dict)
     cold: float = 0.0
     warm: float = 0.0
     size: float = 0.0
 
-    def run(self, warmup: int=50, runs: int=100) -> Self:
+    baseline: dict = Factory(dict)
+    overhead: dict = Factory(dict)
+
+    def run(self) -> Self:
         project = PyaketProject()
         project.release.profile = self.profile
         subprocess.check_call(("rustup", "default", "stable"))
         subprocess.check_call(("cargo", "fetch", "--manifest-path", str(PYAKET_CARGO)))
         subprocess.check_call(("cargo", "clean", "--manifest-path", str(PYAKET_CARGO)))
 
-        # # Cold compilation
-
+        # Cold compilation
         with stopwatch(self) as took:
             release = project.compile()
         self.cold = took()
 
-        # # # Warm compilation
-
+        # Warm compilation
         with stopwatch(self) as took:
             release = project.compile()
         self.warm = took()
 
-        # # Measure size (Yes, 1000 for MB, 1024 for MiB)
-
+        # Measure size (Yes, 1000 for MB, 1024 for MiB)
         self.size = len(release.read_bytes()) / (1000 * 1000)
 
-        # # Measure overhead
+        # Measure overhead
+        self.baseline = self.hyperfine(sys.executable, "-c", "")
+        self.overhead = self.hyperfine(release, "-c", "")
 
+        return self
+
+    def hyperfine(self,
+        *benchmark: str,
+        warmup: int=50,
+        runs: int=100
+    ) -> dict:
         command = tuple()
 
         # Linux/macOS can set niceness
@@ -79,30 +87,33 @@ class Benchmark:
                     command += ("taskset", "--cpu", cpu.name.removeprefix("cpu"))
                     break
 
-        # Actual benchmark
+        # Convert arguments to shell string
+        benchmark = ' '.join(f'"{x}"' for x in benchmark)
+
         with tempfile.NamedTemporaryFile(
-            prefix="pyaket-benchmark-",
+            prefix="pyaket-hyperfine-",
             suffix=".json",
             mode="w+b",
         ) as results:
-            subprocess.check_call(command + (
+            subprocess.check_call((
                 "hyperfine",
                 "--warmup", str(warmup),
                 "--runs", str(runs),
                 "--shell=none",
                 "--export-json",
                 str(results.name),
-                f"{str(release)} -c ''",
+                benchmark
             ))
 
             results.seek(0)
-            self.hyper = json.load(results)
-
-        return self
+            return json.load(results)
 
     @property
     def mean(self) -> float:
-        return self.hyper["results"][0]["mean"]
+        return sum((
+            self.overhead["results"][0]["mean"],
+            self.baseline["results"][0]["mean"]*(-1),
+        ))
 
 @define
 class Benchmarker:
