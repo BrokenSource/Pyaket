@@ -20,12 +20,6 @@ jobs:
       - name: Setup uv
         uses: astral-sh/setup-uv@v6
 
-      # Fixme: build script
-      - name: Symlink workaround
-        run: |
-          ln readme.md website/index.md
-          ln pyaket/resources/images/logo.png website/logo.png
-
       - name: Build website
         run: uvx zensical build --clean
 

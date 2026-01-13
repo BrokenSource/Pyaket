@@ -91,7 +91,7 @@ extra_css = ["css/main.css"]
 [project.theme]
 variant = "modern"
 custom_dir = "website/overrides"
-favicon = "logo.png"
+favicon = "images/logo.png"
 language = "en"
 features = [
     "announce.dismiss",
@@ -125,6 +125,10 @@ features = [
     "search.highlight",
     "toc.follow",
 ]
+
+# ---------------------------------------------------------------------------- #
+
+[project.markdown_extensions.pymdownx.snippets]
 
 # ---------------------------------------------------------------------------- #
 
