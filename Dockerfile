@@ -56,7 +56,7 @@ RUN uv run rustup target add aarch64-apple-darwin
 RUN curl -L "https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX11.3.sdk.tar.xz" | tar -Jx -C /opt
 ENV SDKROOT="/opt/MacOSX11.3.sdk"
 
-# Fixme: Works, but seems like a ziglang bug
+# Fixme: Stinkingly works, but seems like a ziglang bug
 # - https://github.com/ziglang/zig/issues/23179
 # - https://github.com/rust-cross/cargo-zigbuild/issues/324
 RUN ln -s $SDKROOT/System /System
@@ -69,9 +69,10 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 
 # Note: Lazy and dislike copying or mounting local files
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv pip install "git+https://github.com/BrokenSource/Pyaket@declarative#egg=pyaket[all]"
+    uv pip install "git+https://github.com/BrokenSource/Pyaket#egg=pyaket[all]"
 
 # Fetch and include locked crates
 RUN cargo fetch --manifest-path $(find $VIRTUAL_ENV -path '*/pyaket/Cargo.toml')
 
 # Fixme: Share artifacts without root ownership
+# Fixme: Mount wheel directories in container

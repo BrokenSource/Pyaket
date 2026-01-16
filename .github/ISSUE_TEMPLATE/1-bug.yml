@@ -1,0 +1,68 @@
+name: 🐞 Submit a bug report
+description: Facing errors or unexpected behavior?
+type: bug
+
+body:
+
+- type: markdown
+  attributes:
+    value: <div align="center"><h2>📦 Basic Information 📦</h2></div>
+
+- type: input
+  id: version
+  attributes:
+    label: Pyaket version
+    description: |
+      - Find it with `pyaket --version`
+  validations:
+    required: true
+
+- type: input
+  id: host
+  attributes:
+    label: Host system (if applicable)
+    description: |
+      - [Rust triple](https://doc.rust-lang.org/stable/rustc/platform-support.html) you are building on
+      - **Tip**: Find it with `rustc --version --verbose`
+    placeholder: eg: x86_64-unknown-linux-gnu, etc.
+  validations:
+    required: false
+
+- type: input
+  id: target
+  attributes:
+    label: Target system (if applicable)
+    description: |
+      - [Rust triple](https://doc.rust-lang.org/stable/rustc/platform-support.html)(s) you are building for
+      - **Tip**: Same as `project.build.target`
+    placeholder: eg: aarch64-apple-darwin, n/a, etc.
+  validations:
+    required: false
+
+- type: textarea
+  id: description
+  attributes:
+    label: Description
+    description: |
+      - ✅ Report which parts of the code or features are failing, or your best guess of what went wrong
+      - ✅ If you have anything to contribute, like a workaround or fix, feel free to share them too!
+      - **Tip:** You can provide a Python script, commands, links, steps to reproduce the issue
+      - **Tip:** You can <kbd>CTRL+V</kbd> screenshots, videos, to help explain the issue
+  validations:
+    required: true
+
+- type: textarea
+  id: traceback
+  attributes:
+    label: Traceback
+    description: |
+      - **If relevant**, paste the full traceback, error message, or log file here
+      - **Tip:** You can use [**GitHub Gists**](https://gist.github.com/) to share multiple files
+    render: shell
+  validations:
+    required: false
+
+- type: markdown
+  attributes:
+    value: |
+      ###### © CC-BY-4.0, Issue Template by [**Tremeschin**](https://github.com/Tremeschin) 🇧🇷

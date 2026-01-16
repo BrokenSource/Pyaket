@@ -36,12 +36,12 @@ graph LR
 
 === ":simple-python: Python"
     ```python
-    project.release.profile = "fast"
+    project.build.profile = "fast"
     ```
 
 === ":fontawesome-solid-terminal: Command"
     ```bash
-    pyaket release --profile fast
+    pyaket build --profile fast
     ```
 
 === ":simple-rust: Rust"
@@ -62,7 +62,23 @@ Tests are made with this [script](https://github.com/BrokenSource/Pyaket/blob/ma
 
 [^startup]: Difference between system's `python -c ''` and `pyaket -c ''`
 
-### x86_64-unknown-linux-gnu
+### Apple
+
+#### aarch64-apple-darwin
+
+| Profile  | Size     | Startup | Cold    | Warm    |
+| :------- | -------: | ------: | ------: | ------: |
+| develop  | 45.11 MB | 15.4 ms |  99.2 s |  11.2 s |
+| fast     | 33.78 MB | 10.9 ms | 183.5 s | 118.7 s |
+| fastest  | 29.88 MB | 10.3 ms | 290.1 s | 225.4 s |
+| small    | 29.69 MB | 11.1 ms | 113.3 s |  67.5 s |
+| smallest | 23.23 MB | 10.7 ms | 190.1 s | 145.2 s |
+
+<sup><b>System:</b> Macbook M2 Pro<sup>
+
+### Linux
+
+#### x86_64-unknown-linux-gnu
 
 | Profile  | Size     | Startup | Cold    | Warm    |
 | :------- | -------: | ------: | ------: | ------: |

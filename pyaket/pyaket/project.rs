@@ -42,7 +42,6 @@ impl PyaketApplication {
 #[derive(Serialize, Deserialize)]
 pub struct PyaketDependencies {
     pub pypi: Vec<String>,
-    pub reqtxt: Option<String>,
     pub rolling: bool,
 }
 

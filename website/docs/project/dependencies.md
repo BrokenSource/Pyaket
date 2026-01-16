@@ -68,25 +68,6 @@ List of PyPI packages to be installed at runtime.
 
 <hr>
 
-## requirements.txt {#requirements-txt}
-
-A local `requirements.txt` file to be installed at runtime.
-
-=== ":simple-python: Python"
-    ```python
-    project.dependencies.reqtxt = Path("/path/to/requirements.txt")
-    ```
-
-=== ":simple-toml: Toml"
-    ```toml
-    [dependencies]
-    reqtxt = "/path/to/requirements.txt"
-    ```
-
-This option mostly exists for legacy reasons. You really should move to a `pyproject.toml` as it allows easier build backends to create portable wheels for your project that includes your code. The only use I can think of is to run a project-less script with a requirements file alongside it.
-
-<hr>
-
 ## Rolling
 
 Always reinstall the project's dependencies when running the executable.

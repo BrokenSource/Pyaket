@@ -1,12 +1,17 @@
 """
-Please ensure your idle cpu usage is minimal before benchmarking:
-- Set power mode/governor to 'performance'
-- Close all unnecessary applications
+1. Please ensure your idle cpu usage is minimal before benchmarking:
+  - Set power profile/cpu governor to 'performance' mode
+  - Close all unnecessary applications
+
+2. Required tools:
+  - [hyperfine](https://github.com/sharkdp/hyperfine)
+  - Host-specific rust compiling dependencies
 
 Tests are made and run for the host target only
 
 Estimated total time:
 - Ryzen 9 5900X: ~25 minutes
+- Apple M2 Pro:  ~30 minutes
 """
 import contextlib
 import json
@@ -20,8 +25,8 @@ from typing import Self
 from attrs import Factory, define
 from pyaket import (
     PYAKET_CARGO,
+    PyaketBuild,
     PyaketProject,
-    PyaketRelease,
 )
 
 
@@ -32,7 +37,7 @@ def stopwatch(self) -> callable:
 
 @define
 class Benchmark:
-    profile: PyaketRelease.Profile
+    profile: PyaketBuild.Profile
     cold: float = 0.0
     warm: float = 0.0
     size: float = 0.0
@@ -42,8 +47,9 @@ class Benchmark:
 
     def run(self) -> Self:
         project = PyaketProject()
-        project.release.profile = self.profile
+        project.build.profile = self.profile
         subprocess.check_call(("rustup", "default", "stable"))
+        subprocess.check_call(("rustup", "update", "stable"))
         subprocess.check_call(("cargo", "fetch", "--manifest-path", str(PYAKET_CARGO)))
         subprocess.check_call(("cargo", "clean", "--manifest-path", str(PYAKET_CARGO)))
 
@@ -120,13 +126,13 @@ class Benchmarker:
     samples: list[Benchmark] = Factory(list)
 
     def run(self) -> None:
-        for profile in PyaketRelease.Profile:
+        for profile in PyaketBuild.Profile:
             benchmark =Benchmark(profile=profile).run()
             self.samples.append(benchmark)
             self.table()
 
     def table(self) -> str:
-        print(f"### {PyaketRelease.host()}")
+        print(f"### {PyaketBuild.host()}")
         print("")
         print("| Profile  | Size     | Startup | Cold    | Warm    |")
         print("| :------- | -------: | ------: | ------: | ------: |")

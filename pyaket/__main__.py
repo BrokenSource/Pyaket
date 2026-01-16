@@ -36,10 +36,6 @@ def main():
         chain=True,
         no_args_is_help=True,
         add_completion=False,
-        epilog=(
-            f"• Made by [green][link=https://github.com/Tremeschin/]Tremeschin[/link][/] [yellow]v{__version__}[/]\n\n"
-            "[italic grey53]→ Consider [blue][link=https://github.com/sponsors/Tremeschin/]Supporting[/link][/blue] my work [red]:heart:[/]"
-        )
     )
 
     pyaket = PyaketProject()
@@ -63,7 +59,7 @@ def main():
         app.command(name="torch",  **common())(pydantic2typer(pyaket.torch))
 
     with nullcontext("🟢 Building") as panel:
-        app.command(name="release", **common())(pydantic2typer(pyaket.release))
+        app.command(name="build", **common())(pydantic2typer(pyaket.build))
         app.command(name="compile", rich_help_panel=panel)(pyaket.compile)
 
     with contextlib.suppress(SystemExit):

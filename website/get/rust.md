@@ -1,12 +1,13 @@
 ---
 icon: simple/rust
+status: deprecated
 ---
 
 !!! warning
     This section is outdated and needs a cleanup/rewrite:
 
+    - Rustup is now auto-provided by [Rustbin](https://github.com/BrokenSource/Rustbin)
     - Cross compilation to MacOS needs an SDK
-    - Rust is now auto-provided by [Rustbin](https://github.com/BrokenSource/Rustbin)
 
 
 📦 Pyaket uses the rust programming language for its core functionality.

@@ -18,7 +18,7 @@ for target in ("windows", "linux", "macos"):
     project.deps.pypi.append("numpy")
     project.deps.wheels.append("./dist/project-0.0.1-py3-none-any.whl")
 
-    project.release.target = target
+    project.build.target = target
     executable = project.compile()
 ```
 

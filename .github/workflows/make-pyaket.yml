@@ -1,0 +1,40 @@
+name: make-pyaket
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        required: true
+        type: boolean
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Get version
+        run: echo "VERSION=$(uv version --short)" >> "$GITHUB_ENV"
+
+      - name: Make executables
+        run: uv run pyaket packer.py
+
+      - name: Upload executables
+        uses: actions/upload-artifact@v4
+        with:
+          name: executables
+          path: release/*
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        if: ${{ inputs.publish == true }}
+        with:
+          name: Release v${{ env.VERSION }}
+          tag_name: v${{ env.VERSION }}
+          files: release/*

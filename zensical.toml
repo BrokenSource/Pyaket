@@ -2,7 +2,6 @@
 
 # Fixme: Missing gen-files, mkdocstrings, snippets include, etc.
 # Fixme: Extend from a base configuration when supported
-# Fixme: Build script or `ln readme.md website/index.md`
 
 [project]
 site_name = "Pyaket"
@@ -18,10 +17,12 @@ nav = [
   {"Home" = [
     "index.md",
     {"About"=[
-      {"Changelog"="about/changelog.md"},
       {"Community"="about/community.md"},
+      {"Contributing"="about/contributing.md"},
+      {"Changelog"="about/changelog.md"},
       {"Roadmap"="about/roadmap.md"},
       {"Contact"="about/contact.md"},
+      {"Mission"="about/mission.md"},
       {"License"="about/license.md"},
       {"Credits"="about/credits.md"},
     ]}
@@ -33,14 +34,13 @@ nav = [
       "get/release.md",
       "get/source.md",
       "get/docker.md",
-      "get/crate.md",
     ]},
     {"Workflows"=[
       "get/ci/github.md",
       "get/ci/gitlab.md",
     ]},
     {"Tools"=[
-      "get/tools/rust.md",
+      "get/rust.md",
     ]},
   ]},
   {"Examples" = [
@@ -79,56 +79,84 @@ nav = [
 
 # Fixme: Common monorepo theme
 extra_css = ["css/main.css"]
-# extra_javascript = [
-#   "javascript/mathjax.js",
-#   "javascript/particles.js",
-#   "https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js",
-#   "https://cdn.jsdelivr.net/npm/tsparticles@2.9.3/tsparticles.bundle.min.js",
-# ]
 
 # ----------------------------------------------------------------------------
 
 [project.theme]
 variant = "modern"
 custom_dir = "website/overrides"
-favicon = "images/logo.png"
+favicon = "assets/images/logo.png"
 language = "en"
 features = [
-    "announce.dismiss",
+  "announce.dismiss",
 
-    # View or edit page source
-    # "content.action.edit",
-    "content.action.view",
+  # View or edit page source
+  # "content.action.edit",
+  "content.action.view",
 
-    # Code block features
-    "content.code.annotate",
-    "content.code.copy",
+  # Code block features
+  "content.code.annotate",
+  "content.code.copy",
 
-    # Footnote preview
-    "content.footnote.tooltips",
-    "content.tooltips",
+  # Footnote preview
+  "content.footnote.tooltips",
+  "content.tooltips",
 
-    # Switch all tabs with the same name at once
-    "content.tabs.link",
+  # Switch all tabs with the same name at once
+  "content.tabs.link",
 
-    # Others
-    "navigation.indexes",
-    "navigation.expand",
-    # "navigation.sections",
-    "navigation.footer",
-    "navigation.path",
-    "navigation.instant",
-    "navigation.instant.prefetch",
-    "navigation.instant.progress",
-    "navigation.tabs",
-    "navigation.top",
-    "search.highlight",
-    "toc.follow",
+  # Others
+  "navigation.indexes",
+  "navigation.expand",
+  # "navigation.sections",
+  "navigation.footer",
+  "navigation.path",
+  "navigation.instant",
+  "navigation.instant.prefetch",
+  "navigation.instant.progress",
+  "navigation.tabs",
+  "navigation.top",
+  "search.highlight",
+  "toc.follow",
 ]
+
+[project.extra.status]
+wip = "Work in Progress"
+deprecated = "Deprecated"
 
 # ---------------------------------------------------------------------------- #
 
 [project.markdown_extensions.pymdownx.snippets]
+
+# Fixme: Extend from default preset (snippets)
+# https://zensical.org/docs/setup/extensions/#default-configuration
+[project.markdown_extensions.abbr]
+[project.markdown_extensions.admonition]
+[project.markdown_extensions.attr_list]
+[project.markdown_extensions.def_list]
+[project.markdown_extensions.footnotes]
+[project.markdown_extensions.md_in_html]
+[project.markdown_extensions.pymdownx.betterem]
+smart_enable = "all"
+[project.markdown_extensions.pymdownx.caret]
+[project.markdown_extensions.pymdownx.details]
+[project.markdown_extensions.pymdownx.emoji]
+emoji_generator = "zensical.extensions.emoji.to_svg"
+emoji_index = "zensical.extensions.emoji.twemoji"
+[project.markdown_extensions.pymdownx.highlight]
+[project.markdown_extensions.pymdownx.inlinehilite]
+[project.markdown_extensions.pymdownx.keys]
+[project.markdown_extensions.pymdownx.mark]
+[project.markdown_extensions.pymdownx.smartsymbols]
+[project.markdown_extensions.pymdownx.superfences]
+custom_fences = [
+  {name="mermaid", class="mermaid", format="pymdownx.superfences.fence_code_format"}
+]
+[project.markdown_extensions.pymdownx.tabbed]
+alternate_style = true
+[project.markdown_extensions.pymdownx.tasklist]
+custom_checkbox = true
+[project.markdown_extensions.pymdownx.tilde]
 
 # ---------------------------------------------------------------------------- #
 

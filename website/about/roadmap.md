@@ -14,23 +14,28 @@ Pyaket is under heavy development and experimentation. Features are being added,
 Currently porting over to [Zensical](https://zensical.org/) and improving the documentation.
 
 - [x] **Deployment**: Setup a GitHub Actions workflow to publish the site (you are reading it now!)
-- [ ] **Content**: Find a visually pleasing and organized way to present the many options pyaket provides for application, python, torch, directories, etc. configuration.
-- [ ] **Examples**: Create a set of examples for common use-cases and configurations.
+- [ ] **Content**: Find a visually pleasing and organized way to present the many options pyaket provides for application, python, torch, directories, etc. configuration
+- [ ] **Examples**: Create a set of examples for common use-cases and configurations
+    - [ ] Reference build scripts
+    - [ ] GitHub Actions workflows
+    - [ ] Docker setups
 
 ## Deployment
 
-- [ ] **Build Scripts**: Find a nice way to automate and manage the build pipeline from either a command line interface or a configuration file, most likely a python script itself.
-- [ ] **Lockfiles**: Setup a project from locked dependencies file instead of pyproject complexity.
-- [ ] **Versioning**: Rethink how to version all projects vs main library and packages.
-    - [ ] [**Hook**](https://github.com/BrokenSource/Hook): Make pyaket wheels buildable outside the monorepo
+- [ ] **Build Scripts**: Find a nice way to automate and manage the build pipeline from either a command line interface or a configuration file, most likely a python script itself
+- [ ] **Lockfiles**: Setup a project from locked dependencies file instead of pyproject complexity
+- [ ] **Versioning**: Rethink how to version all projects vs main library and packages
+- [ ] Make a template repository with a minimal pyaket project structure
+- [x] Make pyaket wheels buildable outside the monorepo
 
 ## Easier Compilation
 
-- [ ] **Target MacOS**: Automatically download an SDK and set `SDKROOT` for [`cargo-zigbuild`](https://github.com/rust-cross/cargo-zigbuild) to link against System Foundations and other required libraries, include it by default in Docker images.
-- [ ] Figure out and implement [rootless docker](https://docs.docker.com/engine/security/rootless/) for easier use and security.
+- [ ] **Target MacOS**: Automatically download an SDK and set `SDKROOT` for [`cargo-zigbuild`](https://github.com/rust-cross/cargo-zigbuild) to link against System Foundations and other required libraries
+    - [x] Include on Docker images
+- [ ] Figure out and implement [rootless docker](https://docs.docker.com/engine/security/rootless/) for easier use and security, as well as sharing files host :material-arrow-left-right: container without a root user
 
 **Windows**:
 
-- [ ] **MSVC Toolchain**: Automate a [Visual Studio Build Tools](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2026) installation with winget for compiling msvc rust targets, add documentation about it.
+- [ ] **MSVC Toolchain**: Automate a [Visual Studio Build Tools](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2026) installation with winget for compiling msvc rust targets, add documentation about it
 - [ ] **MSYS2**: Automate a [MSYS2](https://www.msys2.org/) installation with winget and use [`mingw-w64-ucrt-x86_64-gcc`](https://packages.msys2.org/packages/mingw-w64-ucrt-x86_64-gcc?repo=ucrt64)
 

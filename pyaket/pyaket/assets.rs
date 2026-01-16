@@ -1,8 +1,6 @@
 use rust_embed::Embed;
 use anyhow::Result;
 
-pub static PYAKET_ASSETS: &str = "PYAKET_ASSETS";
-
 /// All implementations **must** use the following:
 ///
 /// ```rust
@@ -10,12 +8,12 @@ pub static PYAKET_ASSETS: &str = "PYAKET_ASSETS";
 ///
 /// #[derive(Embed)]
 /// #[allow_missing=true]
-/// #[folder="${PYAKET_ASSETS:-../.cache/<name>/files}"]
+/// #[folder="${PYAKET_<NAME>:-../.cache/<name>}"]
 /// pub struct MyAssets;
 ///
-/// impl PyaketAssets for MyAssets {}
+/// impl PyaketEmbed for MyAssets {}
 /// ```
-pub trait PyaketAssets: Embed {
+pub trait PyaketEmbed: Embed {
 
     /// Check if a file exists in the bundle
     fn exists(asset: &str) -> bool {
@@ -38,7 +36,7 @@ pub trait PyaketAssets: Embed {
 
     /// Returns the data of an `Self::glob_files()` query
     fn glob_data(pattern: &str) -> Result<Vec<Vec<u8>>> {
-        Ok(Self::glob_files(pattern)?.iter()
+        Ok(Self::glob_files(pattern).unwrap().iter()
             .map(|file| Self::get(file).unwrap().data.to_vec())
             .collect())
     }
@@ -55,17 +53,10 @@ pub trait PyaketAssets: Embed {
 
 #[derive(Embed)]
 #[allow_missing=true]
-#[folder="${PYAKET_ASSETS:-../.cache/wheels}"]
-pub struct WheelAssets;
+#[folder="${PYAKET_ASSETS:-../.cache/assets}"]
+pub struct PyaketAssets;
 
-impl PyaketAssets for WheelAssets {}
-
-#[derive(Embed)]
-#[allow_missing=true]
-#[folder="${PYAKET_ASSETS:-../.cache/archives}"]
-pub struct ArchiveAssets;
-
-impl PyaketAssets for ArchiveAssets {}
+impl PyaketEmbed for PyaketAssets {}
 
 /* -------------------------------------------------------------------------- */
 // Common assets names

@@ -1,13 +1,13 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/BrokenSource/Pyaket/main/pyaket/resources/images/logo.png" width="210">
+  <img src="https://raw.githubusercontent.com/BrokenSource/Pyaket/main/pyaket/website/assets/images/logo.png" width="210">
   <h1>Pyaket</h1>
   <span>📦 Easy Python to → Fast Executables 📦</span>
   <br>
   <br>
-    <a href="https://crates.io/crates/pyaket/"><img src="https://img.shields.io/crates/v/pyaket?label=Crates.io&color=orange"></a>
-    <a href="https://crates.io/crates/pyaket/"><img src="https://img.shields.io/crates/d/pyaket?label=%E2%86%93&color=orange"></a>
     <a href="https://pypi.org/project/pyaket/"><img src="https://img.shields.io/pypi/v/pyaket?label=PyPI&color=blue"></a>
     <a href="https://pypi.org/project/pyaket/"><img src="https://img.shields.io/pypi/dw/pyaket?label=%E2%86%93&color=blue"></a>
+    <a href="https://crates.io/crates/pyaket/"><img src="https://img.shields.io/crates/v/pyaket?label=Crates.io&color=orange"></a>
+    <a href="https://crates.io/crates/pyaket/"><img src="https://img.shields.io/crates/d/pyaket?label=%E2%86%93&color=orange"></a>
     <a href="https://github.com/BrokenSource/Pyaket/"><img src="https://img.shields.io/github/v/tag/BrokenSource/BrokenSource?label=GitHub&color=orange"></a>
     <a href="https://github.com/BrokenSource/Pyaket/stargazers/"><img src="https://img.shields.io/github/stars/BrokenSource/Pyaket?label=Stars&style=flat&color=orange"></a>
     <a href="https://discord.gg/KjqvcYwRHm"><img src="https://img.shields.io/discord/1184696441298485370?label=Discord&style=flat&color=purple"></a>
@@ -54,3 +54,12 @@ Check out the [project website](https://pyaket.dev) below for comprehensive info
 </a>
 
 <sup><b>Warning:</b> Documentation <i>may include</i> unreleased or breaking changes, check changelog when in doubt 🙂</sup>
+
+<br><br><br>
+
+<div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=BrokenSource/Pyaket&theme=dark"/>
+    <img src="https://api.star-history.com/svg?repos=BrokenSource/Pyaket"/>
+  </picture>
+</div>

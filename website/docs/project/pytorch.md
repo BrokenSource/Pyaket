@@ -1,5 +1,5 @@
 ---
-icon: material/robot
+icon: simple/pytorch
 ---
 
 # PyTorch

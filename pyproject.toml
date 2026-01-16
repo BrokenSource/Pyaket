@@ -18,9 +18,10 @@ dependencies = [
     "dotmap~=1.3",
     "pillow~=12.0",
     "pydantic~=2.12",
-    "tomlkit~=0.13",
+    "rich~=14.2",
+    "rustbin~=1.28",
+    "structlog~=25.5",
     "typer~=0.21",
-    "rustbin",
 ]
 
 [project.scripts]
@@ -28,7 +29,7 @@ pyaket = "pyaket.__main__:main"
 
 [project.optional-dependencies]
 xwin = ["cargo-xwin", "ninja"]
-zig  = ["cargo-zigbuild"]
+zig  = ["cargo-zigbuild", "ziglang"]
 all  = ["pyaket[zig]"]
 
 [dependency-groups]

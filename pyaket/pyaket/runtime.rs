@@ -69,8 +69,8 @@ impl PyaketProject {
         let executable = current_exe()?.canonicalize()?;
         envy::set("PYAKET", executable.display());
 
-        // Load environment variables where the shell (executable) is
-        for file in glob::glob("*.env").unwrap().map(|x| x.unwrap()) {
+        // Load environment variables where the shell is
+        for file in glob::glob("*.env")?.map(|x| x.unwrap()) {
             dotenvy::from_path(file)?;
         }
 
@@ -106,6 +106,7 @@ impl PyaketProject {
                 subproc::run(&mut setup)?;
             }
 
+            // Todo: Nightly support
             // Install PyTorch first, as other dependencies might
             // use a platform's default backend than specified
             if let Some(version) = &self.torch.version {
@@ -121,32 +122,30 @@ impl PyaketProject {
                 subproc::run(&mut torch)?;
             }
 
-            // Cleaned when dropped
-            let tempdir = TempDir::with_prefix("pyaket-").unwrap();
-
             // Must have at least one package
             let mut command = subproc::uv()?;
             command.arg("pip").arg("install");
             command.arg("--upgrade");
+            command.args(&self.deps.pypi);
             command.arg("pip");
 
-            // Write temp wheel/sdist packages and mark to install
-            for (name, bytes) in ["*.whl", "*.tar.gz"].into_iter()
-                .flat_map(|x| WheelAssets::glob(x).unwrap())
-            {
-                let file = tempdir.child(name);
+            // Cleaned when dropped
+            let tempdir = TempDir::with_prefix("pyaket-")?;
+
+            // Installable files
+            for (name, bytes) in [
+                "dist/*.whl",
+                "dist/*.tar.gz",
+                "dist/*.txt"
+            ].iter().flat_map(|x| PyaketAssets::glob(x).unwrap()) {
+                let file = tempdir.child(&name);
                 write(&file, bytes)?;
+
+                if name.ends_with(".txt") {
+                    command.arg("-r");
+                }
+
                 command.arg(&file);
-            }
-
-            // Add PyPI packages to be installed
-            command.args(&self.deps.pypi);
-
-            // Add the requirements.txt file to be installed
-            if let Some(content) = &self.deps.reqtxt {
-                let file = tempdir.child("requirements.txt");
-                command.arg("-r").arg(&file);
-                write(&file, content)?;
             }
 
             subproc::run(&mut command)?;

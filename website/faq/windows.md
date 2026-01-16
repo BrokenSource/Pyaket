@@ -25,7 +25,7 @@ Out of pure necessity for features to work, like bundling uv, python, script fil
 
 - Pyaket bundles compressed files with code and tools, then calls external programs to install the project and run python. While this is something to **always** lookout for, as it can be seen as obfuscation or red flags, it's unavoidable for the scope and technology of the project.
 
-#### Code signing
+### Code signing
 
 !!! quote "How stuff like a browser, a game, steam, discord, etc. don't get flagged?"
 

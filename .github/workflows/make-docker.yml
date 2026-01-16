@@ -18,9 +18,9 @@ jobs:
         uses: astral-sh/setup-uv@v7
 
       - name: Get version
-        run: echo "VERSION=$(uv version --short --color never)" >> "$GITHUB_ENV"
+        run: echo "VERSION=$(uv version --short)" >> "$GITHUB_ENV"
 
-      - name: Login to ghcr.io
+      - name: Login ghcr.io
         uses: docker/login-action@v3
         with:
           registry: ghcr.io

@@ -1,25 +1,29 @@
 import os
-import shutil
 import subprocess
 import sys
 import uuid
 from enum import Enum
 from pathlib import Path
-from typing import Annotated, Optional, Self
+from tempfile import TemporaryDirectory
+from typing import Annotated, Iterable, Optional, Self
 
-import tomlkit
+import tomllib
 from dotmap import DotMap
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, PrivateAttr
 from typer import Option
 
-from pyaket import PYAKET_CARGO, __version__
+from pyaket import (
+    HOST_TRIPLE,
+    PYAKET_CARGO,
+    __version__,
+    logger,
+)
 
 
 class PyaketModel(BaseModel):
     model_config = ConfigDict(use_attribute_docstrings=True)
 
-# ---------------------------------------------- #
-# https://pyaket.dev/docs/project/application/
+# ---------------------------------------------------------------------------- #
 
 class PyaketApplication(PyaketModel):
     """General metadata and dependencies definitions of the project"""
@@ -46,7 +50,7 @@ class PyaketApplication(PyaketModel):
     keep_open: Annotated[bool, Option("--keep-open")] = False
     """Keep the terminal open after errors or finish"""
 
-# ---------------------------------------------- #
+# ---------------------------------------------------------------------------- #
 # https://pyaket.dev/docs/project/dependencies/
 
 class PyaketDependencies(PyaketModel):
@@ -58,31 +62,20 @@ class PyaketDependencies(PyaketModel):
     pypi: Annotated[list[str], Option("--pypi", "-p")] = []
     """List of dependencies to install at runtime from PyPI"""
 
-    reqtxt: Annotated[Optional[Path], Option("--requirements", "-r")] = None
-    """Path to a requirements.txt to install at runtime (legacy)"""
-
     rolling: Annotated[bool, Option("--rolling")] = False
     """Always upgrade dependencies at startup"""
 
-    def resolve_wheels(self) -> None:
-        def globinator():
-            for path in map(Path, self.wheels):
-                if path.is_file():
-                    yield path
-                elif path.is_dir():
-                    yield from path.glob("*.tar.gz")
-                    yield from path.glob("*.whl")
-                elif "*" in path.name:
-                    yield from Path(path.parent).glob(path.name)
-                else:
-                    raise Warning(f"Wheel pattern ({path}) did not match any files")
-        self.wheels = list(globinator())
+    def unwheel(self) -> Iterable[Path]:
+        for path in map(Path, self.wheels):
+            if path.is_file():
+                yield path
+            elif path.is_dir():
+                yield from path.glob("*.tar.gz")
+                yield from path.glob("*.whl")
+            elif "*" in path.name:
+                yield from Path(path.parent).glob(path.name)
 
-    def copy_wheels(self) -> None:
-        self.resolve_wheels()
-        raise NotImplementedError
-
-# ---------------------------------------------- #
+# ---------------------------------------------------------------------------- #
 # https://pyaket.dev/docs/project/directories/
 
 class PyaketDirectories(PyaketModel):
@@ -94,7 +87,7 @@ class PyaketDirectories(PyaketModel):
     versions: Annotated[str, Option("--versions")] = "Versions"
     """Subdirectory of the common dir to install versions of the application"""
 
-# ---------------------------------------------- #
+# ---------------------------------------------------------------------------- #
 # https://pyaket.dev/docs/project/python/
 
 class PyaketPython(PyaketModel):
@@ -106,7 +99,7 @@ class PyaketPython(PyaketModel):
     bundle: Annotated[bool, Option("--bundle", "-b")] = False
     """Whether to bundle python in the executable"""
 
-# ---------------------------------------------- #
+# ---------------------------------------------------------------------------- #
 # https://pyaket.dev/docs/project/pytorch/
 
 class PyaketTorch(PyaketModel):
@@ -118,7 +111,7 @@ class PyaketTorch(PyaketModel):
     backend: Annotated[str, Option("--backend", "-b")] = "auto"
     """The backend to use for PyTorch, auto, cpu, xpu, cu128, cu118, etc"""
 
-# ---------------------------------------------- #
+# ---------------------------------------------------------------------------- #
 # https://pyaket.dev/docs/project/entry/
 
 class PyaketEntry(PyaketModel):
@@ -130,14 +123,19 @@ class PyaketEntry(PyaketModel):
     command: Annotated[Optional[str], Option("--command", "-c")] = None
     """A command to run at runtime (command ...)"""
 
-# ---------------------------------------------- #
+# ---------------------------------------------------------------------------- #
 
-class PyaketRelease(PyaketModel):
+class PyaketBuild(PyaketModel):
     """Release configuration for the application"""
 
     # From: https://doc.rust-lang.org/stable/rustc/platform-support.html
-    target: Annotated[Optional[str], Option("--target", "-t")] = None
+    target: Annotated[Optional[str], Option("--target", "-t")] = HOST_TRIPLE
     """A rust target platform triple to compile for (passed as-is)"""
+
+    def extension(self) -> str:
+        if "windows" in str(self.target):
+            return ".exe"
+        return ""
 
     class Profile(str, Enum):
         Develop  = "develop"
@@ -152,14 +150,21 @@ class PyaketRelease(PyaketModel):
     standalone: Annotated[bool, Option("--standalone")] = False
     """Create a standalone offline executable"""
 
-    msvc: Annotated[bool, Option("--msvc")] = False
-    """(Windows) Use MSVC to build the binary"""
+    class Cargo(str, Enum):
+        Build = "build"
+        Zig   = "zigbuild"
+        Xwin  = "xwin"
 
-    zigbuild: Annotated[bool, Option("--zig", "-z")] = False
-    """Use cargo-zigbuild to build the binary"""
+        @property
+        def xwin(self) -> bool:
+            return (self == PyaketBuild.Cargo.Xwin)
 
-    xwin: Annotated[bool, Option("--xwin", "-x")] = False
-    """Use cargo-xwin to build msvc binaries from non-windows hosts"""
+        @property
+        def zig(self) -> bool:
+            return (self == PyaketBuild.Cargo.Zig)
+
+    cargo: Annotated[Cargo, Option("--cargo", "-c")] = Cargo.Build
+    """Cargo wrapper to use to build the binary"""
 
     upx: Annotated[bool, Option("--upx")] = False
     """Use UPX to compress the binary"""
@@ -167,22 +172,22 @@ class PyaketRelease(PyaketModel):
     tarball: Annotated[bool, Option("--tarball")] = False
     """(Unix   ) Create a .tar.gz for unix releases (preserves chmod +x)"""
 
-    def extension(self) -> str:
-        if "windows" in str(self.target):
-            return ".exe"
-        return ""
+# ---------------------------------------------------------------------------- #
 
-    @staticmethod
-    def host() -> str:
-        for line in subprocess.run(
-            ("rustc", "--version", "--verbose"),
-            capture_output=True, text=True,
-        ).stdout.splitlines():
-            if line.startswith(mark := "host:"):
-                return line.removeprefix(mark).strip()
-        raise RuntimeError("Failed to determine host target triple")
+class PyaketAssets(PyaketModel):
+    _root = PrivateAttr(default_factory=lambda:
+        TemporaryDirectory(prefix="pyaket-assets-"))
 
-# ---------------------------------------------- #
+    @property
+    def root(self) -> Path:
+        return Path(self._root.name)
+
+    def write(self, path: Path, data: bytes) -> None:
+        path = (self.root / path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(data)
+
+# ---------------------------------------------------------------------------- #
 
 class PyaketProject(PyaketModel):
     app:     PyaketApplication  = Field(default_factory=PyaketApplication)
@@ -191,91 +196,81 @@ class PyaketProject(PyaketModel):
     python:  PyaketPython       = Field(default_factory=PyaketPython)
     torch:   PyaketTorch        = Field(default_factory=PyaketTorch)
     entry:   PyaketEntry        = Field(default_factory=PyaketEntry)
-    release: PyaketRelease      = Field(default_factory=PyaketRelease)
+    build:   PyaketBuild        = Field(default_factory=PyaketBuild)
+    assets:  PyaketAssets       = Field(default_factory=PyaketAssets)
+
+    environ: dict = Field(default_factory=os.environ.copy, exclude=True)
+    """Safe and isolated environment variables for the build process"""
+
     uuid: str = None
+
+    # ------------------------------------------------------------------------ #
 
     def release_name(self) -> str:
         return ''.join((
             f"{self.app.name.lower()}",
-            f"-{self.release.target}",
+            f"-{self.build.target}",
             f"-v{self.app.version}",
             f"-{self.torch.backend}" if (self.torch.version) else "",
-            self.release.extension()
+            self.build.extension()
         ))
 
-    def dict(self) -> dict:
-        return self.model_dump()
-
-    def json(self) -> str:
-        return self.model_dump_json()
-
-    @staticmethod
-    def from_toml(path: Path="pyaket.toml") -> Self:
-        data = tomlkit.loads(Path(path).read_text("utf-8"))
-        return PyaketProject.model_validate(data)
-
-    # -------------------------------------------------------------------------------------------- #
-
     def compile(self,
-        target: Annotated[Path, Option("--target", "-t", help="Directory to build the project (target)")]=
+        cache: Annotated[Path, Option("--cache", "-c", help="Directory to build the project (target)")]=
             Path(os.environ.get("CARGO_TARGET_DIR") or (Path.cwd()/"target")),
         output: Annotated[Path, Option("--output", "-o", help="Directory to output the compiled binary")]=
             Path(os.environ.get("PYAKET_RELEASE_DIR") or (Path.cwd()/"release")),
     ) -> Path:
 
-        # Must have the host toolchain for any rustup shim commands
+        # Must have the host and target toolchain
         subprocess.check_call(("rustup", "set", "profile", "minimal"))
         subprocess.check_call(("rustup", "default", "stable"))
+        subprocess.check_call(("rustup", "target", "add", self.build.target))
 
-        # Use host target if not specified
-        self.release.target = (self.release.target or self.release.host())
-
-        # Must have target toolchain for (cross)compilation
-        subprocess.check_call(("rustup", "target", "add", self.release.target))
-
-        # All binaries must have a unique uuid
+        # All binaries are unique
         self.uuid = str(uuid.uuid4())
 
         # Fixme (standalone)
-        if self.release.standalone:
+        if self.build.standalone:
             raise NotImplementedError((
                 "Standalone releases aren't implemented, awaiting:\n"
                 "• https://github.com/astral-sh/uv/issues/1681"
             ))
 
-        # Todo: MacOS ulimit
-
-        # Cannot use multiple cargo wrappers at once
-        if sum((self.release.zigbuild, self.release.xwin)) > 1:
-            raise RuntimeError("Cannot use multiple cargo wrappers at the same time")
-
-        if self.release.zigbuild and (shutil.which("zig") is None):
-            raise RuntimeError(
-                "Missing group 'pip install pyaket[zig]' "
-                "for cross compilation with ziglang"
-            )
-
-        if self.release.xwin:
-            raise NotImplementedError("cargo-xwin is not yet implemented")
-
         # https://github.com/rust-cross/cargo-zigbuild/issues/329
         if sys.platform == "darwin":
             subprocess.run(("ulimit", "-n", "8192"))
 
-        self.export()
+        for wheel in self.deps.unwheel():
+            logger.info(f"Bundling wheel: {wheel.name}")
+            self.assets.write(
+                path=f"{wheel.name}",
+                data=wheel.read_bytes()
+            )
+
+        # Export isolated environment
+        self.environ.update(dict(
+            PYAKET_PROJECT   = self.json(),
+            PYAKET_ASSETS    = str(self.assets.root),
+            ProductName      = self.app.name,
+            CompanyName      = self.app.author,
+            FileVersion      = self.app.version,
+            FileDescription  = self.app.about,
+            OriginalFilename = self.release_name(),
+        ))
 
         subprocess.check_call((
-            "cargo", ("zig"*self.release.zigbuild) + "build",
+            "cargo", self.build.cargo.value,
             "--manifest-path", str(PYAKET_CARGO),
-            "--profile", self.release.profile.value,
-            "--target", self.release.target,
-            "--target-dir", str(target),
-        ))
+            "--profile", self.build.profile.value,
+            "--target", self.build.target,
+            "--target-dir", str(cache),
+        ), env=self.environ)
 
         # Find the compiled binary
         binary = next(
-            (Path(target)/self.release.target/self.release.profile.value)
-            .glob(("pyaket" + self.release.extension())),
+            (Path(cache)/self.build.target/self.build.profile.value)
+            .glob(("pyaket" + self.build.extension())),
         )
 
         # Rename the compiled binary to the final release name
@@ -286,38 +281,37 @@ class PyaketProject(PyaketModel):
         binary.unlink()
 
         # Compress the final release with upx
-        if self.release.upx and subprocess.run(("upx", "--best", "--lzma", str(release))).returncode != 0:
+        if self.build.upx and subprocess.run(("upx", "--best", "--lzma", str(release))).returncode != 0:
             raise RuntimeError("Failed to compress executable with upx")
 
         # Release a tar.gz to keep chmod +x attributes
-        if self.release.tarball and self.release.system.is_unix():
-            subprocess.run((
+        if self.build.tarball:
+            subprocess.check_call((
                 "tar", "-czf", f"{release}.tar.gz",
                 "-C", release.parent, release.name
-            ), check=True)
+            ))
 
         return release
 
-    # -------------------------------------------------------------------------------------------- #
+    # ------------------------------------------------------------------------ #
 
-    def export(self) -> None:
-        os.environ.update(
-            PYAKET_PROJECT   = self.json(),
-            ProductName      = self.app.name,
-            CompanyName      = self.app.author,
-            FileVersion      = self.app.version,
-            FileDescription  = self.app.about,
-            OriginalFilename = self.release_name(),
-        )
+    def dict(self) -> dict:
+        return self.model_dump()
 
-    # -------------------------------------------------------------------------------------------- #
+    def json(self) -> str:
+        return self.model_dump_json()
+
+    @staticmethod
+    def from_toml(path: Path="pyaket.toml") -> Self:
+        data = tomllib.loads(Path(path).read_text("utf-8"))
+        return PyaketProject.model_validate(data)
 
     def pyproject(self,
         path: Path=Path("pyproject.toml"),
         pin:  bool=False,
     ) -> None:
         """Update project metadata from a pyproject.toml file"""
-        data = DotMap(tomlkit.loads(Path(path).read_text(encoding="utf-8")))
+        data = DotMap(tomllib.load(open(path, "r", encoding="utf-8")))
         self.app.name   = data.project.get("name", self.app.name)
         self.app.author = "" # Secret mode for independent projects
 
