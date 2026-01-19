@@ -46,11 +46,11 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv pip install rustbin
 RUN uv run rustup set profile minimal
 RUN uv run rustup default stable
+RUN uv run rustup target add aarch64-apple-darwin
+RUN uv run rustup target add aarch64-unknown-linux-gnu
+RUN uv run rustup target add x86_64-apple-darwin
 RUN uv run rustup target add x86_64-pc-windows-gnu
 RUN uv run rustup target add x86_64-unknown-linux-gnu
-RUN uv run rustup target add x86_64-apple-darwin
-RUN uv run rustup target add aarch64-unknown-linux-gnu
-RUN uv run rustup target add aarch64-apple-darwin
 
 # Install MacOS SDKs for cargo-zigbuild
 RUN curl -L "https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX11.3.sdk.tar.xz" | tar -Jx -C /opt

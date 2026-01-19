@@ -1,5 +1,18 @@
-from pyaket import PyaketProject
+from pyaket import (
+    PyaketBuild,
+    PyaketProject,
+    Target,
+    __about__,
+    __version__,
+)
 
-project = PyaketProject.from_toml("pyaket.toml")
-project.python.version = "3.14"
-project.compile()
+for target in Target.pyaket_list():
+    project = PyaketProject()
+    project.app.name      = "Pyaket"
+    project.app.author    = "BrokenSource"
+    project.app.about     = __about__
+    project.app.version   = __version__
+    project.build.target  = target
+    project.build.profile = PyaketBuild.Profile.Develop
+    project.entry.module  = "pyaket"
+    project.compile()

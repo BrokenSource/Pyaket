@@ -4,8 +4,8 @@ author  = "BrokenSource"
 about   = "📦 Easy Python to Fast Executables"
 version = "0.10.0"
 
-[release]
+[build]
 profile = "smallest"
 
 [entry]
-module = "this"
+module = "pyaket"

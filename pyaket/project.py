@@ -13,11 +13,11 @@ from pydantic import BaseModel, ConfigDict, Field, PrivateAttr
 from typer import Option
 
 from pyaket import (
-    HOST_TRIPLE,
     PYAKET_CARGO,
     __version__,
     logger,
 )
+from pyaket.targets import Target
 
 
 class PyaketModel(BaseModel):
@@ -129,8 +129,8 @@ class PyaketBuild(PyaketModel):
     """Release configuration for the application"""
 
     # From: https://doc.rust-lang.org/stable/rustc/platform-support.html
-    target: Annotated[Optional[str], Option("--target", "-t")] = HOST_TRIPLE
-    """A rust target platform triple to compile for (passed as-is)"""
+    target: Annotated[Target, Option("--target", "-t", show_choices=False)] = Target.host()
+    """A rust target platform to compile for"""
 
     def extension(self) -> str:
         if "windows" in str(self.target):
@@ -209,9 +209,9 @@ class PyaketProject(PyaketModel):
     def release_name(self) -> str:
         return ''.join((
             f"{self.app.name.lower()}",
-            f"-{self.build.target}",
+            f"-{self.build.target.value}",
             f"-v{self.app.version}",
-            f"-{self.torch.backend}" if (self.torch.version) else "",
+            f"-{self.torch.backend}" * bool(self.torch.version),
             self.build.extension()
         ))
 
@@ -221,11 +221,24 @@ class PyaketProject(PyaketModel):
         output: Annotated[Path, Option("--output", "-o", help="Directory to output the compiled binary")]=
             Path(os.environ.get("PYAKET_RELEASE_DIR") or (Path.cwd()/"release")),
     ) -> Path:
+        logger.info(f"Compiling for {self.build.target.description}")
+
+        # Complaints session
+        if self.build.target.tier == 2:
+            logger.warning(f"Rust doesn't guarantee a working build for {self.build.target.value} (tier=2)")
+        if self.build.target.tier == 3:
+            logger.warning(f"Rust support for {self.build.target.value} is very limited (tier=3)")
+        if not self.build.target.stdlib:
+            logger.critical(f"No stdlib available for {self.build.target.value}, build might fail")
+        if not self.build.target.host_tools:
+            logger.critical(f"No host tools available for {self.build.target.value}, get rust on your own!")
+
+        # Todo: Auto zigbuild, xwin method
 
         # Must have the host and target toolchain
         subprocess.check_call(("rustup", "set", "profile", "minimal"))
         subprocess.check_call(("rustup", "default", "stable"))
-        subprocess.check_call(("rustup", "target", "add", self.build.target))
+        subprocess.check_call(("rustup", "target", "add", self.build.target.value))
 
         # All binaries are unique
         self.uuid = str(uuid.uuid4())
@@ -263,13 +276,13 @@ class PyaketProject(PyaketModel):
             "cargo", self.build.cargo.value,
             "--manifest-path", str(PYAKET_CARGO),
             "--profile", self.build.profile.value,
-            "--target", self.build.target,
+            "--target", self.build.target.value,
             "--target-dir", str(cache),
         ), env=self.environ)
 
         # Find the compiled binary
         binary = next(
-            (Path(cache)/self.build.target/self.build.profile.value)
+            (Path(cache)/self.build.target.value/self.build.profile.value)
             .glob(("pyaket" + self.build.extension())),
         )
 
@@ -280,9 +293,8 @@ class PyaketProject(PyaketModel):
         release.chmod(0o755)
         binary.unlink()
 
-        # Compress the final release with upx
-        if self.build.upx and subprocess.run(("upx", "--best", "--lzma", str(release))).returncode != 0:
-            raise RuntimeError("Failed to compress executable with upx")
+        if self.build.upx:
+            subprocess.check_call(("upx", "--best", "--lzma", str(release)))
 
         # Release a tar.gz to keep chmod +x attributes
         if self.build.tarball:

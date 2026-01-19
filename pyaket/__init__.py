@@ -1,5 +1,6 @@
 import time
 
+# Reference precise start time
 if not hasattr(time, "start"):
     time.start = time.perf_counter()
 
@@ -8,15 +9,15 @@ import sys
 
 __version__: str = "0.10.0"
 __author__:  str = "Tremeschin"
+__about__:   str = "📦 Easy Python to Fast Executables"
 
 # Simple and early version flag
 with contextlib.suppress(IndexError):
-    if sys.argv[1] in {"--version", "-v"}:
+    if sys.argv[1] in ("--version", "-v"):
         print(__version__)
         sys.exit(0)
 
 import os
-import subprocess
 from pathlib import Path
 
 PYAKET_ROOT: Path = Path(__file__).parent.resolve()
@@ -25,11 +26,8 @@ PYAKET_ROOT: Path = Path(__file__).parent.resolve()
 PYAKET_CARGO: Path = (PYAKET_ROOT/"Cargo.toml")
 """Path to pyaket's rust cargo manifest"""
 
-HOST_TRIPLE: str = subprocess.run(
-    ("rustc", "--print", "host-tuple"),
-    capture_output=True, text=True
-).stdout.strip()
-"""The host platform rust target triple"""
+PYAKET_RESOURCES: Path = (PYAKET_ROOT/"resources")
+"""Path to pyaket's resources directory"""
 
 import structlog
 
@@ -45,6 +43,7 @@ from pyaket.project import (
     PyaketPython,
     PyaketTorch,
 )
+from pyaket.targets import Target
 
 # Ensure ziglang binary can be found
 with contextlib.suppress(ImportError):
