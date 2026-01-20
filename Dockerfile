@@ -52,6 +52,12 @@ RUN uv run rustup target add x86_64-apple-darwin
 RUN uv run rustup target add x86_64-pc-windows-gnu
 RUN uv run rustup target add x86_64-unknown-linux-gnu
 
+# Install mingw for windows builds
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt install -y --no-install-recommends \
+    mingw-w64
+
 # Install MacOS SDKs for cargo-zigbuild
 RUN curl -L "https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX11.3.sdk.tar.xz" | tar -Jx -C /opt
 ENV SDKROOT="/opt/MacOSX11.3.sdk"
@@ -60,12 +66,6 @@ ENV SDKROOT="/opt/MacOSX11.3.sdk"
 # - https://github.com/ziglang/zig/issues/23179
 # - https://github.com/rust-cross/cargo-zigbuild/issues/324
 RUN ln -s $SDKROOT/System /System
-
-# Install mingw for windows builds
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked \
-    apt install -y --no-install-recommends \
-    mingw-w64
 
 # Note: Lazy and dislike copying or mounting local files
 RUN --mount=type=cache,target=/root/.cache/uv \

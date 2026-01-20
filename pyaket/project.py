@@ -14,6 +14,7 @@ from typer import Option
 
 from pyaket import (
     PYAKET_CARGO,
+    PYAKET_ROOT,
     __version__,
     logger,
 )
@@ -128,7 +129,9 @@ class PyaketEntry(PyaketModel):
 class PyaketBuild(PyaketModel):
     """Release configuration for the application"""
 
-    # From: https://doc.rust-lang.org/stable/rustc/platform-support.html
+    host: Annotated[Target, Option("--host", show_choices=False)] = Target.host()
+    """Host platform building the application"""
+
     target: Annotated[Target, Option("--target", "-t", show_choices=False)] = Target.host()
     """A rust target platform to compile for"""
 
@@ -166,11 +169,20 @@ class PyaketBuild(PyaketModel):
     cargo: Annotated[Cargo, Option("--cargo", "-c")] = Cargo.Build
     """Cargo wrapper to use to build the binary"""
 
+    def autocargo(self) -> None:
+        if (os.getenv(_FLAG := "AUTO_ZIGBUILD", "1") == "1") and any((
+            self.host.is_windows() and (not self.target.is_windows()),
+            self.host.is_linux() and self.target.is_macos(),
+        )):
+            logger.info("Enabling cargo-zigbuild for easier cross compilation")
+            logger.info(f"• You can opt-out of it by setting {_FLAG}=0")
+            self.cargo = PyaketBuild.Cargo.Zig
+
     upx: Annotated[bool, Option("--upx")] = False
     """Use UPX to compress the binary"""
 
     tarball: Annotated[bool, Option("--tarball")] = False
-    """(Unix   ) Create a .tar.gz for unix releases (preserves chmod +x)"""
+    """Create a .tar.gz for unix releases (preserves chmod +x)"""
 
 # ---------------------------------------------------------------------------- #
 
@@ -273,17 +285,17 @@ class PyaketProject(PyaketModel):
         ))
 
         # Safety list known assets
-        logger.info(f"Assets to be included:")
         for file in self.assets.root.rglob("*"):
-            logger.info(f"• {file}")
+            logger.info(f"Asset: {file}")
 
+        self.build.autocargo()
         subprocess.check_call((
             "cargo", self.build.cargo.value,
             "--manifest-path", str(PYAKET_CARGO),
             "--profile", self.build.profile.value,
             "--target", self.build.target.value,
             "--target-dir", str(cache),
-        ), env=self.environ)
+        ), env=self.environ, cwd=PYAKET_ROOT)
 
         # Find the compiled binary
         binary = next(
@@ -323,7 +335,7 @@ class PyaketProject(PyaketModel):
         data = tomllib.loads(Path(path).read_text("utf-8"))
         return PyaketProject.model_validate(data)
 
-    def pyproject(self,
+    def from_pyproject(self,
         path: Path=Path("pyproject.toml"),
         pin:  bool=False,
     ) -> None:

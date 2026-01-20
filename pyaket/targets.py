@@ -527,4 +527,4 @@ if __name__ == "__main__":
 
     for target in targets:
         key: str = re.sub(r"[-\.]", "_", target).ljust(longest)
-        print(f'{key} = "{target}"')
+        print(f'    {key} = "{target}"')
