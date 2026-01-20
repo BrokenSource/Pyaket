@@ -1,5 +1,4 @@
 from pyaket import (
-    PyaketBuild,
     PyaketProject,
     Target,
     __about__,
@@ -13,6 +12,6 @@ for target in Target.recommended():
     project.app.about     = __about__
     project.app.version   = __version__
     project.build.target  = target
-    project.build.profile = PyaketBuild.Profile.Develop
+    project.build.profile = "smallest"
     project.entry.module  = "pyaket"
     project.compile()

@@ -22,7 +22,10 @@ from pyaket.targets import Target
 
 
 class PyaketModel(BaseModel):
-    model_config = ConfigDict(use_attribute_docstrings=True)
+    model_config = ConfigDict(
+        use_attribute_docstrings=True,
+        validate_assignment=True,
+    )
 
 # ---------------------------------------------------------------------------- #
 
@@ -330,37 +333,28 @@ class PyaketProject(PyaketModel):
     def json(self) -> str:
         return self.model_dump_json()
 
-    @staticmethod
-    def from_toml(path: Path="pyaket.toml") -> Self:
+    def from_toml(self, path: Path="pyaket.toml") -> None:
         data = tomllib.loads(Path(path).read_text("utf-8"))
-        return PyaketProject.model_validate(data)
+        self.__dict__.update(data)
 
     def from_pyproject(self,
         path: Path=Path("pyproject.toml"),
         pin:  bool=False,
     ) -> None:
         """Update project metadata from a pyproject.toml file"""
-        data = DotMap(tomllib.load(open(path, "r", encoding="utf-8")))
-        self.app.name   = data.project.get("name", self.app.name)
-        self.app.vendor = self.app.name
+        data = DotMap(tomllib.loads(path.read_text("utf-8")))
 
-        def _pin(package: str) -> str:
-            """"""
-            if (not pin):
-                return package
+        # Multiple heuristics and assumptions:
+        # - Project 'name' same as 'python -m name'
+        self.app.name    = data.project.get("name", self.app.name)
+        self.app.entry   = self.app.name
+        self.app.version = data.project.get("version", "0.0.0")
+        self.app.about   = data.project.get("description", self.app.about)
 
-            package = package.replace(" ", "")
-
-            # Todo: Pin @git+ dependencies
-
-            # Simple known
-            for marker in ("~=", ">=", "<=", "=="):
-                if marker in package:
-                    package = package.replace(marker, "==")
-                    return
-
-            # Todo: Get the latest version from PyPI dynamically
-
-        # Standard dependencies
+        # Todo: Pin @git+ dependencies
+        # Todo: Load from a lockfile?
         for package in data.project.dependencies:
-            self.deps.pypi.append(_pin(package))
+            self.deps.pypi.append(package)
+
+        # Tools section takes precedence
+        self.__dict__.update(data.tool.pyaket)

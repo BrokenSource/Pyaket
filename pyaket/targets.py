@@ -179,7 +179,7 @@ class Target(str, Enum):
     @classmethod
     def recommended(cls) -> Iterable[Self]:
         """
-        Recommended targets for pyaket binaries distributions
+        Recommended targets for pyaket binary distributions
         - Covers all major desktop platforms (OSs, Archs)
         - Known to be easily buildable in workflows
         """
