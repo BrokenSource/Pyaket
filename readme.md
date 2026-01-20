@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/BrokenSource/Pyaket/main/pyaket/website/assets/images/logo.png" width="210">
+  <img src="https://raw.githubusercontent.com/BrokenSource/Pyaket/main/website/assets/images/logo.png" width="210">
   <h1>Pyaket</h1>
   <span>📦 Easy Python to → Fast Executables 📦</span>
   <br>
