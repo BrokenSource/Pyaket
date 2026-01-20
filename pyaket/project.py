@@ -342,7 +342,7 @@ class PyaketProject(PyaketModel):
         """Update project metadata from a pyproject.toml file"""
         data = DotMap(tomllib.load(open(path, "r", encoding="utf-8")))
         self.app.name   = data.project.get("name", self.app.name)
-        self.app.author = "" # Secret mode for independent projects
+        self.app.vendor = self.app.name
 
         def _pin(package: str) -> str:
             """"""

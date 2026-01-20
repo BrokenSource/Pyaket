@@ -2,11 +2,9 @@
 icon: material/language-python
 ---
 
-!!! warning "Updated v0.10.0 wheels are soon to be published!"
-
 ## Dependency
 
-Simply add or install the [`pyaket` package](https://pypi.org/project/pyaket/) in your project as a _development dependency_[^development]:
+Simply add or install the [`pyaket`](https://pypi.org/project/pyaket/) package in your project as a _development dependency_[^development]:
 
 [^development]: Users shouldn't need `pyaket` installed to run your application, only during development and packaging.
 
@@ -26,6 +24,8 @@ Simply add or install the [`pyaket` package](https://pypi.org/project/pyaket/) i
     ```sh linenums="1"
     pdm add pyaket --dev
     ```
+
+After syncing dependencies, simply run `pyaket` or import it in build scripts!
 
 !!! tip "Suggestions"
     - Pin the version `pyaket==x.y.z` for extra stability
