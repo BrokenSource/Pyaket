@@ -7,20 +7,24 @@ exclude = ["redox_users"]
 [licenses]
 confidence-threshold = 0.8
 allow = [
+    "0BSD",                # https://spdx.org/licenses/0BSD.html
     "Apache-2.0",          # https://spdx.org/licenses/Apache-2.0.html
     "BSD-3-Clause",        # https://spdx.org/licenses/BSD-3-Clause.html
     "BSL-1.0",             # https://spdx.org/licenses/BSL-1.0.html
-    "bzip2-1.0.6",         # https://spdx.org/licenses/bzip2-1.0.6.html
+    "CC0-1.0",             # https://spdx.org/licenses/CC0-1.0.html
     "CDLA-Permissive-2.0", # https://spdx.org/licenses/CDLA-Permissive-2.0.html
     "ISC",                 # https://spdx.org/licenses/ISC.html
     "MIT",                 # https://spdx.org/licenses/MIT.html
     "MPL-2.0",             # https://spdx.org/licenses/MPL-2.0.html
     "Unicode-3.0",         # https://spdx.org/licenses/Unicode-3.0.html
     "Zlib",                # https://spdx.org/licenses/Zlib.html
-    "CC0-1.0",             # https://spdx.org/licenses/CC0-1.0.html
+
+    # https://spdx.org/licenses/Apache-2.0.html
+    # https://spdx.org/licenses/LLVM-exception.html
+    "Apache-2.0 WITH LLVM-exception",
 ]
 exceptions = [
-    {allow=["AGPL-3.0"], crate="pyaket"},
+    {allow=["AGPL-3.0-only"], crate="pyaket"},
 ]
 
 [bans]
