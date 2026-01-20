@@ -22,9 +22,9 @@ body:
   attributes:
     label: Host system (if applicable)
     description: |
-      - [Rust triple](https://doc.rust-lang.org/stable/rustc/platform-support.html) you are building on
-      - **Tip**: Find it with `rustc --version --verbose`
-    placeholder: eg: x86_64-unknown-linux-gnu, etc.
+      - [Rust triple](https://doc.rust-lang.org/stable/rustc/platform-support.html) you are building on, for rust/compiling issues
+      - **Tip**: Find with `rustc --version --verbose`
+    placeholder: eg. x86_64-unknown-linux-gnu, n/a, etc.
   validations:
     required: false
 
@@ -33,11 +33,15 @@ body:
   attributes:
     label: Target system (if applicable)
     description: |
-      - [Rust triple](https://doc.rust-lang.org/stable/rustc/platform-support.html)(s) you are building for
+      - [Rust triple](https://doc.rust-lang.org/stable/rustc/platform-support.html)(s) you are building for, for rust/compiling issues
       - **Tip**: Same as `project.build.target`
-    placeholder: eg: aarch64-apple-darwin, n/a, etc.
+    placeholder: eg. x86_64-pc-windows-msvc, aarch64-apple-darwin (zigbuild), n/a, etc.
   validations:
     required: false
+
+- type: markdown
+  attributes:
+    value: <div align="center"><h2>🔥 Report Details 🔥</h2></div>
 
 - type: textarea
   id: description
