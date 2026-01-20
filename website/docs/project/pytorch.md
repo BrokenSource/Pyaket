@@ -20,6 +20,11 @@ An optional version of PyTorch to be installed at runtime.
     project.torch.version = "2.8.0"
     ```
 
+=== ":material-console: CLI"
+    ```sh
+    pyaket torch --version "2.8.0" (...)
+    ```
+
 === ":simple-toml: Toml"
     ```toml
     [torch]
@@ -37,6 +42,11 @@ The hardware acceleration backend to use.
 === ":simple-python: Python"
     ```python
     project.torch.backend = "auto"
+    ```
+
+=== ":material-console: CLI"
+    ```sh
+    pyaket torch --backend "auto" (...)
     ```
 
 === ":simple-toml: Toml"

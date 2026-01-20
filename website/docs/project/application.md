@@ -13,6 +13,11 @@ The name of the application being built.
     project.application.name = "Pyaket"
     ```
 
+=== ":material-console: CLI"
+    ```sh
+    pyaket app --name "Pyaket" (...)
+    ```
+
 === ":simple-toml: Toml"
     ```toml
     [application]
@@ -28,6 +33,11 @@ The author's name, group, organization of the application being built.
 === ":simple-python: Python"
     ```python
     project.application.author = "BrokenSource"
+    ```
+
+=== ":material-console: CLI"
+    ```sh
+    pyaket app --author "BrokenSource" (...)
     ```
 
 === ":simple-toml: Toml"
@@ -54,6 +64,11 @@ This value primarily determines the [Workspace Root](./directories.md#workspace)
     project.application.vendor = "Tremeschin"
     ```
 
+=== ":material-console: CLI"
+    ```sh
+    pyaket app --vendor "Tremeschin" (...)
+    ```
+
 === ":simple-toml: Toml"
     ```toml
     [application]
@@ -70,13 +85,18 @@ Should follow the same number of the project to be released alonside a registry.
 
 === ":simple-python: Python"
     ```python
-    project.application.version = "0.0.0"
+    project.application.version = "1.2.3"
+    ```
+
+=== ":material-console: CLI"
+    ```sh
+    pyaket app --version "1.2.3" (...)
     ```
 
 === ":simple-toml: Toml"
     ```toml
     [application]
-    version = "0.0.0"
+    version = "1.2.3"
     ```
 
 The value is appended to the [Versions Directory](./directories.md#versions) to build the virtual environment path.
@@ -93,6 +113,11 @@ A description of the application, exclusively for metadata or banner purposes.
 === ":simple-python: Python"
     ```python
     project.application.about = "No description provided"
+    ```
+
+=== ":material-console: CLI"
+    ```sh
+    pyaket app --about "No description provided" (...)
     ```
 
 === ":simple-toml: Toml"
@@ -113,6 +138,11 @@ An image path to use as the application icon.
     ```python
     # Can be Path, str, Image, numpy.
     project.application.icon = Path
+    ```
+
+=== ":material-console: CLI"
+    ```sh
+    pyaket app --icon "path/to/icon.png" (...)
     ```
 
 === ":simple-toml: Toml"

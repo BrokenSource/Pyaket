@@ -1,1 +1,1 @@
-See https://pyaket.dev/about/security
+https://pyaket.dev/about/security

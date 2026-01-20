@@ -57,8 +57,8 @@ nav = [
       "docs/project/entry.md",
     ]},
     {"Rust" = [
-      "docs/rust/crosscompiling.md",
       "docs/rust/profiles.md",
+      "docs/rust/crosscompiling.md",
     ]},
     {"Extra" = [
       "docs/pinning.md",

@@ -176,7 +176,7 @@ class Target(str, Enum):
         return self in self.uv_list()
 
     @classmethod
-    def pyaket_list(cls) -> Iterable[Self]:
+    def recommended(cls) -> Iterable[Self]:
         """
         Recommended targets for pyaket binaries distributions
         - Covers all major desktop platforms (OSs, Archs)
@@ -191,8 +191,8 @@ class Target(str, Enum):
         )
 
     @cache
-    def in_pyaket_list(self) -> bool:
-        return self in self.pyaket_list()
+    def in_recommended_list(self) -> bool:
+        return self in self.recommended()
 
     # ------------------------------------------------------------------------ #
     # Last generation: Rust 1.92.0

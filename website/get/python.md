@@ -2,11 +2,13 @@
 icon: material/language-python
 ---
 
+!!! warning "Updated v0.10.0 wheels are soon to be published!"
+
 ## Dependency
 
-Simply add or install the [`pyaket` package](https://pypi.org/project/pyaket/) in your project _as a development dependency_[^development]:
+Simply add or install the [`pyaket` package](https://pypi.org/project/pyaket/) in your project as a _development dependency_[^development]:
 
-[^development]: Users should not need `pyaket` installed to run your application, only during development and packaging.
+[^development]: Users shouldn't need `pyaket` installed to run your application, only during development and packaging.
 
 === ":simple-astral: uv"
     ```sh linenums="1"
@@ -26,7 +28,7 @@ Simply add or install the [`pyaket` package](https://pypi.org/project/pyaket/) i
     ```
 
 !!! tip "Suggestions"
-    - Pin the latest version as in `pyaket==x.y.z` for extra stability
+    - Pin the version `pyaket==x.y.z` for extra stability
     - Install with `pyaket[all]` groups for [cross-compilation](../docs/rust/crosscompiling.md)
 
 

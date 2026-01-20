@@ -31,6 +31,11 @@ Subdirectory of the [Workspace](#workspace) to use for all Pyaket files.
     project.directories.common = "Pyaket"
     ```
 
+=== ":material-console: CLI"
+    ```sh
+    pyaket dir --common "Pyaket" (...)
+    ```
+
 === ":simple-toml: Toml"
     ```toml
     [directories]
@@ -46,6 +51,11 @@ Subdirectory of the [Workspace](#workspace) to install virtual environments.
 === ":simple-python: Python"
     ```python
     project.directories.versions = "Versions"
+    ```
+
+=== ":material-console: CLI"
+    ```sh
+    pyaket dir --versions "Versions" (...)
     ```
 
 === ":simple-toml: Toml"

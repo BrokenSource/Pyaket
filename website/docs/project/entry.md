@@ -15,6 +15,11 @@ A module's name to be called as `python -m module (args)` at runtime.
     project.entry.module = "name"
     ```
 
+=== ":material-console: CLI"
+    ```sh
+    pyaket run --module "name" (...)
+    ```
+
 === ":simple-toml: Toml"
     ```toml
     [entry]
@@ -32,6 +37,11 @@ A command to be executed as `command (args)` after installation.
 === ":simple-python: Python"
     ```python
     project.entry.command = "command"
+    ```
+
+=== ":material-console: CLI"
+    ```sh
+    pyaket run --command "command" (...)
     ```
 
 === ":simple-toml: Toml"

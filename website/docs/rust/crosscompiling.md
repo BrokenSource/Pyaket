@@ -2,7 +2,7 @@
 icon: material/sword-cross
 ---
 
-Under certain conditions[^conditions], Pyaket automatically uses [cargo-zigbuild](https://github.com/rust-cross/cargo-zigbuild) for an easier and streamlined cross-compilation experience, where [Zig](https://ziglang.org/) is used in the final -- and complex -- linking stage.
+Under certain conditions[^conditions], Pyaket automatically uses [cargo-zigbuild](https://github.com/rust-cross/cargo-zigbuild) for an easier and streamlined cross-compilation experience, where [Zig](https://ziglang.org/) is used in the final linking stage.
 
 [^conditions]: Most often when the target operating system differs from the host one.
 
@@ -48,7 +48,7 @@ Compiling to a Windows target is easier done via `*-pc-windows-gnu`, which requi
 
 ## Compatibility table
 
-Thanks to Rust's amazing toolchain, coupled with [cargo-zigbuild](https://github.com/rust-cross/cargo-zigbuild), and using pure crates, Pyaket can pretty much compile executables _from any_ platform _to any_ platform without docker or vms.
+Thanks to Rust's amazing toolchain, coupled with [cargo-zigbuild](https://github.com/rust-cross/cargo-zigbuild), Pyaket can pretty much compile executables _from any_ platform _to any_ platform without docker or vms.
 
 <div align="center" markdown>
   | From / To | <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/linux.svg" width="70"> <p> N/A | <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/apple.svg" width="70"> <p> N/A | <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/windows.svg" width="70"> <p> GNU| <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/refs/heads/master/images/svg/windows.svg" width="70"> <p> MSVC |

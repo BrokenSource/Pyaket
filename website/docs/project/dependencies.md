@@ -13,6 +13,11 @@ Glob patterns of wheels and sdists to bundle and install at runtime.
     project.dependencies.wheels.append("/path/to/sdists/*.tar.gz")
     ```
 
+=== ":material-console: CLI"
+    ```sh
+    pyaket dep --wheel "dist/*.whl" (...)
+    ```
+
 === ":simple-toml: Toml"
     ```toml
     [dependencies]
@@ -54,6 +59,11 @@ List of PyPI packages to be installed at runtime.
     project.dependencies.pypi.append("git+...@v1.2.4")
     ```
 
+=== ":material-console: CLI"
+    ```sh
+    pyaket dep --pypi numpy (...)
+    ```
+
 === ":simple-toml: Toml"
     ```toml
     [dependencies]
@@ -75,6 +85,10 @@ Always reinstall the project's dependencies when running the executable.
 === ":simple-python: Python"
     ```python
     project.dependencies.rolling = True
+    ```
+=== ":material-console: CLI"
+    ```sh
+    pyaket dep --rolling (...)
     ```
 
 === ":simple-toml: Toml"

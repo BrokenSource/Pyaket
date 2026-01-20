@@ -18,7 +18,7 @@ graph LR
     Release --> |Yes| Flavor(Optimizing for)
     Flavor --> |Speed| Speed("`
         Best size and speeds?
-        <small>(slower compilation)</small>
+        <small>(slowest compilation)</small>
     `")
     Flavor --> |Size| Size("`
         Smallest binary

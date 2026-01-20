@@ -6,7 +6,7 @@ from pyaket import (
     __version__,
 )
 
-for target in Target.pyaket_list():
+for target in Target.recommended():
     project = PyaketProject()
     project.app.name      = "Pyaket"
     project.app.author    = "BrokenSource"

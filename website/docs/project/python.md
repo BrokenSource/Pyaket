@@ -13,6 +13,11 @@ The version of Python to be used at runtime, from [astral-sh/python-build-standa
     project.python.version = "3.13"
     ```
 
+=== ":material-console: CLI"
+    ```sh
+    pyaket python --version "3.13" (...)
+    ```
+
 === ":simple-toml: Toml"
     ```toml
     [python]
@@ -34,6 +39,11 @@ Whether to embed the python distribution in the executable, instead of a runtime
 === ":simple-python: Python"
     ```python
     project.python.bundle = True
+    ```
+
+=== ":material-console: CLI"
+    ```sh
+    pyaket python --bundle (...)
     ```
 
 === ":simple-toml: Toml"

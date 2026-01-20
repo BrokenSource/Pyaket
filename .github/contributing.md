@@ -1,1 +1,1 @@
-See https://pyaket.dev/about/contributing
+https://pyaket.dev/about/contributing

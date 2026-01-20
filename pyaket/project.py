@@ -209,9 +209,9 @@ class PyaketProject(PyaketModel):
     def release_name(self) -> str:
         return ''.join((
             f"{self.app.name.lower()}",
-            f"-{self.build.target.value}",
             f"-v{self.app.version}",
-            f"-{self.torch.backend}" * bool(self.torch.version),
+            f"+{self.torch.backend}" * bool(self.torch.version),
+            f"-{self.build.target.value}",
             self.build.extension()
         ))
 

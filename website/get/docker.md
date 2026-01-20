@@ -4,4 +4,4 @@ status: wip
 ---
 
 !!! info
-    Prebuilt docker images [exists on ghcr](https://github.com/BrokenSource/Pyaket/pkgs/container/pyaket), updated ones to [v0.10](../about/changelog.md) are coming soon!
+    Updated docker images are yet to be published on [ghcr.io/brokensource/pyaket](https://github.com/BrokenSource/Pyaket/pkgs/container/pyaket), stay tuned!
