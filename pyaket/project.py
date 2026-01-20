@@ -176,14 +176,14 @@ class PyaketBuild(PyaketModel):
 
 class PyaketAssets(PyaketModel):
     _root = PrivateAttr(default_factory=lambda:
-        TemporaryDirectory(prefix="pyaket-assets-"))
+        TemporaryDirectory(prefix="pyaket-"))
 
     @property
     def root(self) -> Path:
         return Path(self._root.name)
 
-    def write(self, path: Path, data: bytes) -> None:
-        path = (self.root / path)
+    def write(self, relative: Path, data: bytes) -> None:
+        path = (self.root / relative)
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(data)
 
@@ -199,6 +199,7 @@ class PyaketProject(PyaketModel):
     build:   PyaketBuild        = Field(default_factory=PyaketBuild)
     assets:  PyaketAssets       = Field(default_factory=PyaketAssets)
 
+    # Warn: Must use this for environment and parallel builds support
     environ: dict = Field(default_factory=os.environ.copy, exclude=True)
     """Safe and isolated environment variables for the build process"""
 
@@ -255,10 +256,9 @@ class PyaketProject(PyaketModel):
             subprocess.run(("ulimit", "-n", "8192"))
 
         for wheel in self.deps.unwheel():
-            logger.info(f"Bundling wheel: {wheel.name}")
             self.assets.write(
-                path=f"{wheel.name}",
-                data=wheel.read_bytes()
+                relative=f"dist/{wheel.name}",
+                data=wheel.read_bytes(),
             )
 
         # Export isolated environment
@@ -271,6 +271,11 @@ class PyaketProject(PyaketModel):
             FileDescription  = self.app.about,
             OriginalFilename = self.release_name(),
         ))
+
+        # Safety list known assets
+        logger.info(f"Assets to be included:")
+        for file in self.assets.root.rglob("*"):
+            logger.info(f"• {file}")
 
         subprocess.check_call((
             "cargo", self.build.cargo.value,

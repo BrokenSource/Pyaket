@@ -10,7 +10,7 @@ from dotmap import DotMap
 
 from pyaket import PYAKET_RESOURCES
 
-# Last sync (json + enum): Rust 1.95.0-nightly (2026-01-18)
+# Last sync (json + enum): Rust 1.95.0-nightly (2026-01-19)
 
 TARGET_SPECS_JSON: Path = (PYAKET_RESOURCES/"targets.json")
 """Json file with all rust target specs"""
@@ -196,7 +196,6 @@ class Target(str, Enum):
         return self in self.recommended()
 
     # ------------------------------------------------------------------------ #
-    # Last generation: Rust 1.92.0
 
     aarch64_apple_darwin                 = "aarch64-apple-darwin"
     aarch64_apple_ios                    = "aarch64-apple-ios"

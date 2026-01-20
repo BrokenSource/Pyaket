@@ -131,21 +131,20 @@ impl PyaketProject {
 
             // Cleaned when dropped
             let tempdir = TempDir::with_prefix("pyaket-")?;
+            mkdir(tempdir.child("dist"))?;
 
-            // Installable files
-            for (name, bytes) in [
-                "dist/*.whl",
-                "dist/*.tar.gz",
-                "dist/*.txt"
-            ].iter().flat_map(|x| PyaketAssets::glob(x).unwrap()) {
-                let file = tempdir.child(&name);
-                write(&file, bytes)?;
+            // Copy and add all installable files
+            for pattern in ["dist/*.whl", "dist/*.tar.gz", "dist/*.txt"] {
+                for (name, bytes) in PyaketAssets::glob(pattern)? {
+                    let file = tempdir.child(&name);
+                    write(&file, bytes)?;
 
-                if name.ends_with(".txt") {
-                    command.arg("-r");
+                    if name.ends_with(".txt") {
+                        command.arg("-r");
+                    }
+
+                    command.arg(&file);
                 }
-
-                command.arg(&file);
             }
 
             subproc::run(&mut command)?;

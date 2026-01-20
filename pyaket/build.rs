@@ -1,12 +1,6 @@
-#![allow(dead_code)]
-
-#[path="pyaket/assets.rs"]
-mod assets;
-
-use anyhow::Result;
 use std::env::var;
 
-fn main() -> Result<()> {
+fn main() {
 
     // Workaround to always trigger a rebuild
     println!("cargo:rerun-if-changed=NULL");
@@ -16,7 +10,7 @@ fn main() -> Result<()> {
     println!("cargo:rustc-env={}={}", "PYAKET_PROJECT", project);
 
     // Executable resources (icon, metadata, etc)
-    if var("TARGET")?.contains("windows") {
+    if var("TARGET").unwrap().contains("windows") {
         let mut meta = winresource::WindowsResource::new();
 
         // Passthrough
@@ -34,8 +28,6 @@ fn main() -> Result<()> {
             meta.set_icon(&icon);
         }
 
-        meta.compile()?;
+        meta.compile().unwrap();
     }
-
-    Ok(())
 }
