@@ -67,6 +67,10 @@ class Target(str, Enum):
         """Does this target support compiling rust?"""
         return bool(self.spec.metadata.host_tools)
 
+    @property
+    def exe_suffix(self) -> str:
+        return (self.spec.exe_suffix or "")
+
     # -------------------------------- #
     # Operating Systems
 

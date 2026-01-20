@@ -138,11 +138,6 @@ class PyaketBuild(PyaketModel):
     target: Annotated[Target, Option("--target", "-t", show_choices=False)] = Target.host()
     """A rust target platform to compile for"""
 
-    def extension(self) -> str:
-        if "windows" in str(self.target):
-            return ".exe"
-        return ""
-
     class Profile(str, Enum):
         Develop  = "develop"
         Fast     = "fast"
@@ -228,7 +223,7 @@ class PyaketProject(PyaketModel):
             f"-v{self.app.version}",
             f"+{self.torch.backend}" * bool(self.torch.version),
             f"-{self.build.target.value}",
-            self.build.extension()
+            self.build.target.exe_suffix,
         ))
 
     def compile(self,
@@ -303,7 +298,7 @@ class PyaketProject(PyaketModel):
         # Find the compiled binary
         binary = next(
             (Path(cache)/self.build.target.value/self.build.profile.value)
-            .glob(("pyaket" + self.build.extension())),
+            .glob(("pyaket" + self.build.target.exe_suffix))
         )
 
         # Rename the compiled binary to the final release name
