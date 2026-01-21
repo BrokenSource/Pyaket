@@ -10,7 +10,7 @@ fn main() {
     println!("cargo:rustc-env={}={}", "PYAKET_PROJECT", project);
 
     // Executable resources (icon, metadata, etc)
-    if var("TARGET").unwrap().contains("windows") {
+    if std::env::var("CARGO_CFG_TARGET_OS").unwrap() == "windows" {
         let mut meta = winresource::WindowsResource::new();
 
         // Passthrough

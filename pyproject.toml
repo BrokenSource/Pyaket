@@ -9,7 +9,7 @@ Homepage  = "https://pyaket.dev"
 name        = "pyaket"
 description = "📦 Easy Python to Fast Executables"
 authors     = [{name="Tremeschin"}]
-version     = "0.10.0"
+version     = "0.10.1"
 readme      = "readme.md"
 license     = "AGPL-3.0"
 requires-python = ">=3.10"

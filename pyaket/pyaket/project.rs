@@ -1,5 +1,3 @@
-use crate::*;
-
 use serde::Deserialize;
 use serde::Serialize;
 use smart_default::SmartDefault;
@@ -107,11 +105,6 @@ pub struct PyaketProject {
     #[default(false)]
     #[serde(default)]
     pub keep_open: bool,
-
-    /// The platform target triple of the build
-    #[serde(default)]
-    #[default(envy::get("TARGET").unwrap())]
-    pub triple: String,
 }
 
 /* -------------------------------------------- */

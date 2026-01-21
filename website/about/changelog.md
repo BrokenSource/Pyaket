@@ -9,6 +9,8 @@ icon: material/file-document-edit
 !!! quote ""
     - Improve `from_pyproject` heuristics, look for `[tool.pyaket]` overrides
     - Enable `ConfigDict.validate_assignment` to prevent mistakes
+    - Enable true parallel builds by namespacing target directories
+    - Fix tarball should only be enabled for unix targets
 
 ### 📦 v0.10.0 <small>January 20, 2025</small> {#v0.10.0}
 

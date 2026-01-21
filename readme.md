@@ -43,7 +43,7 @@
 - [ ] **Standalone** executables with no network calls at runtime that bundles all dependencies [#](https://github.com/BrokenSource/Pyaket/issues/2)
 - [x] **Monorepo** support in mind, decoupled dependencies and entry point specification
 - [x] **Rolling** releases where a single binary always runs latest pypi or git branch/tag [#](https://pyaket.dev/docs/rust/#rolling)
-- [x] **PyTorch** installation at runtime, automatic backend detection (optional). [#](https://pyaket.dev/docs/rust/#torch-backend)
+- [x] **PyTorch** installation at runtime, automatic backend detection (optional) [#](https://pyaket.dev/docs/rust/#torch-backend)
 
 ## 🚀 Getting Started
 

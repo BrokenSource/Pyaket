@@ -23,7 +23,7 @@ jobs:
         run: echo "VERSION=$(uv version --short)" >> "$GITHUB_ENV"
 
       - name: Make executables
-        run: uv run pyaket packer.py
+        run: uv run packer.py
 
       - name: Upload executables
         uses: actions/upload-artifact@v4

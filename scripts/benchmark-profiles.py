@@ -25,6 +25,7 @@ from typing import Self
 from attrs import Factory, define
 from pyaket import (
     PYAKET_CARGO,
+    CargoProfile,
     PyaketBuild,
     PyaketProject,
 )
@@ -37,7 +38,7 @@ def stopwatch(self) -> callable:
 
 @define
 class Benchmark:
-    profile: PyaketBuild.Profile
+    profile: CargoProfile
     cold: float = 0.0
     warm: float = 0.0
     size: float = 0.0
@@ -126,7 +127,7 @@ class Benchmarker:
     samples: list[Benchmark] = Factory(list)
 
     def run(self) -> None:
-        for profile in PyaketBuild.Profile:
+        for profile in CargoProfile:
             benchmark =Benchmark(profile=profile).run()
             self.samples.append(benchmark)
             self.table()

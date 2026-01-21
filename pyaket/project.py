@@ -5,7 +5,7 @@ import uuid
 from enum import Enum
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Annotated, Iterable, Optional, Self
+from typing import Annotated, Iterable, Optional
 
 import tomllib
 from dotmap import DotMap
@@ -55,7 +55,6 @@ class PyaketApplication(PyaketModel):
     """Keep the terminal open after errors or finish"""
 
 # ---------------------------------------------------------------------------- #
-# https://pyaket.dev/docs/project/dependencies/
 
 class PyaketDependencies(PyaketModel):
     """Configuration for the dependencies of the project"""
@@ -80,7 +79,6 @@ class PyaketDependencies(PyaketModel):
                 yield from Path(path.parent).glob(path.name)
 
 # ---------------------------------------------------------------------------- #
-# https://pyaket.dev/docs/project/directories/
 
 class PyaketDirectories(PyaketModel):
     """Configuration for the directories used by the project"""
@@ -92,7 +90,6 @@ class PyaketDirectories(PyaketModel):
     """Subdirectory of the common dir to install versions of the application"""
 
 # ---------------------------------------------------------------------------- #
-# https://pyaket.dev/docs/project/python/
 
 class PyaketPython(PyaketModel):
     """Configuration for a Python interpreter to use for the project"""
@@ -104,7 +101,6 @@ class PyaketPython(PyaketModel):
     """Whether to bundle python in the executable"""
 
 # ---------------------------------------------------------------------------- #
-# https://pyaket.dev/docs/project/pytorch/
 
 class PyaketTorch(PyaketModel):
     """Optional configuration to install PyTorch at runtime"""
@@ -116,7 +112,6 @@ class PyaketTorch(PyaketModel):
     """The backend to use for PyTorch, auto, cpu, xpu, cu128, cu118, etc"""
 
 # ---------------------------------------------------------------------------- #
-# https://pyaket.dev/docs/project/entry/
 
 class PyaketEntry(PyaketModel):
     """Configuration for the entry point of the application"""
@@ -128,6 +123,27 @@ class PyaketEntry(PyaketModel):
     """A command to run at runtime (command ...)"""
 
 # ---------------------------------------------------------------------------- #
+# Todo: Refactor rust compilation logic?
+
+class CargoProfile(str, Enum):
+    Develop  = "develop"
+    Fast     = "fast"
+    Fastest  = "fastest"
+    Small    = "small"
+    Smallest = "smallest"
+
+class CargoWrapper(str, Enum):
+    Build = "build"
+    Zig   = "zigbuild"
+    Xwin  = "xwin"
+
+    @property
+    def xwin(self) -> bool:
+        return (self == PyaketBuild.Cargo.Xwin)
+
+    @property
+    def zig(self) -> bool:
+        return (self == PyaketBuild.Cargo.Zig)
 
 class PyaketBuild(PyaketModel):
     """Release configuration for the application"""
@@ -138,33 +154,13 @@ class PyaketBuild(PyaketModel):
     target: Annotated[Target, Option("--target", "-t", show_choices=False)] = Target.host()
     """A rust target platform to compile for"""
 
-    class Profile(str, Enum):
-        Develop  = "develop"
-        Fast     = "fast"
-        Fastest  = "fastest"
-        Small    = "small"
-        Smallest = "smallest"
-
-    profile: Annotated[Profile, Option("--profile", "-p")] = Profile.Small
+    profile: Annotated[CargoProfile, Option("--profile", "-p")] = CargoProfile.Small
     """Build profile to use"""
 
     standalone: Annotated[bool, Option("--standalone")] = False
     """Create a standalone offline executable"""
 
-    class Cargo(str, Enum):
-        Build = "build"
-        Zig   = "zigbuild"
-        Xwin  = "xwin"
-
-        @property
-        def xwin(self) -> bool:
-            return (self == PyaketBuild.Cargo.Xwin)
-
-        @property
-        def zig(self) -> bool:
-            return (self == PyaketBuild.Cargo.Zig)
-
-    cargo: Annotated[Cargo, Option("--cargo", "-c")] = Cargo.Build
+    cargo: Annotated[CargoWrapper, Option("--cargo", "-c")] = CargoWrapper.Build
     """Cargo wrapper to use to build the binary"""
 
     def autocargo(self) -> None:
@@ -175,6 +171,16 @@ class PyaketBuild(PyaketModel):
             logger.info("Enabling cargo-zigbuild for easier cross compilation")
             logger.info(f"• You can opt-out of it by setting {_FLAG}=0")
             self.cargo = PyaketBuild.Cargo.Zig
+
+    target_dir: Annotated[Path, Option("--target-dir")] = Field(
+        default=Path(os.getenv("CARGO_TARGET_DIR") or (Path.cwd()/"target")),
+        exclude=True)
+    """Cargo target directory for cache build files"""
+
+    output: Annotated[Path, Option("--output", "-o")] = Field(
+        default=(Path.cwd()/"release"),
+        exclude=True)
+    """Output directory for the compiled renamed binary"""
 
     upx: Annotated[bool, Option("--upx")] = False
     """Use UPX to compress the binary"""
@@ -226,12 +232,7 @@ class PyaketProject(PyaketModel):
             self.build.target.exe_suffix,
         ))
 
-    def compile(self,
-        cache: Annotated[Path, Option("--cache", "-c", help="Directory to build the project (target)")]=
-            Path(os.environ.get("CARGO_TARGET_DIR") or (Path.cwd()/"target")),
-        output: Annotated[Path, Option("--output", "-o", help="Directory to output the compiled binary")]=
-            Path(os.environ.get("PYAKET_RELEASE_DIR") or (Path.cwd()/"release")),
-    ) -> Path:
+    def compile(self) -> Path:
         logger.info(f"Compiling for {self.build.target.description}")
 
         # Complaints session
@@ -292,17 +293,17 @@ class PyaketProject(PyaketModel):
             "--manifest-path", str(PYAKET_CARGO),
             "--profile", self.build.profile.value,
             "--target", self.build.target.value,
-            "--target-dir", str(cache),
+            "--target-dir", str(self.build.target_dir),
         ), env=self.environ, cwd=PYAKET_ROOT)
 
         # Find the compiled binary
         binary = next(
-            (Path(cache)/self.build.target.value/self.build.profile.value)
+            (self.build.target_dir/self.build.target.value/self.build.profile.value)
             .glob(("pyaket" + self.build.target.exe_suffix))
         )
 
         # Rename the compiled binary to the final release name
-        release = (Path(output) / self.release_name())
+        release = (self.build.output / self.release_name())
         release.parent.mkdir(parents=True, exist_ok=True)
         release.write_bytes(binary.read_bytes())
         release.chmod(0o755)

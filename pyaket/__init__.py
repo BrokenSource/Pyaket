@@ -34,6 +34,8 @@ import structlog
 logger = structlog.get_logger(__package__)
 
 from pyaket.project import (
+    CargoProfile,
+    CargoWrapper,
     PyaketApplication,
     PyaketBuild,
     PyaketDependencies,

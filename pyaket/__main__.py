@@ -36,6 +36,7 @@ def main():
         chain=True,
         no_args_is_help=True,
         add_completion=False,
+        pretty_exceptions_show_locals=False,
     )
 
     pyaket = PyaketProject()
