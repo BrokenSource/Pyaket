@@ -69,7 +69,7 @@ class Target(str, Enum):
 
     @property
     def exe_suffix(self) -> str:
-        return (self.spec.exe_suffix or "")
+        return self.spec.get("exe-suffix", "")
 
     # -------------------------------- #
     # Operating Systems

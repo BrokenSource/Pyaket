@@ -11,7 +11,7 @@ site_url  = "https://pyaket.dev/"
 repo_url  = "https://github.com/BrokenSource/Pyaket/"
 repo_name = "BrokenSource/Pyaket"
 edit_uri  = "edit/main/website/"
-copyright = "© CC BY-SA 4.0, <a href='https://github.com/Tremeschin/'>Tremeschin</a> 🇧🇷"
+copyright = "&copy; CC BY-SA 4.0, <a href='https://github.com/Tremeschin/'>Tremeschin</a> 🇧🇷"
 docs_dir  = "website"
 nav = [
   {"Home" = [
@@ -169,8 +169,8 @@ text = "Inter"
 code = "Cascadia Code"
 
 [[project.theme.palette]]
-toggle.name = "Switch to dark mode"
 toggle.icon = "lucide/sun"
+toggle.name = "Switch to dark mode"
 media       = "(prefers-color-scheme: light)"
 scheme      = "default"
 primary     = "blue"

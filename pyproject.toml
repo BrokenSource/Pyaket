@@ -30,7 +30,10 @@ pyaket = "pyaket.__main__:main"
 [project.optional-dependencies]
 xwin = ["cargo-xwin", "ninja"]
 zig  = ["cargo-zigbuild", "ziglang"]
-all  = ["pyaket[zig]"]
+all  = [
+    "pyaket[xwin]",
+    "pyaket[zig]",
+]
 
 [dependency-groups]
 dev = ["pyaket[all]"]

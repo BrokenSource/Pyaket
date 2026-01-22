@@ -11,6 +11,7 @@ icon: material/file-document-edit
     - Enable `ConfigDict.validate_assignment` to prevent mistakes
     - Enable true parallel builds by namespacing target directories
     - Fix tarball should only be enabled for unix targets
+    - Fix compiling with [cargo-xwin](https://github.com/rust-cross/cargo-xwin)
 
 ### 📦 v0.10.0 <small>January 20, 2025</small> {#v0.10.0}
 

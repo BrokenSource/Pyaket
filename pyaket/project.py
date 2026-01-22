@@ -138,12 +138,18 @@ class CargoWrapper(str, Enum):
     Xwin  = "xwin"
 
     @property
-    def xwin(self) -> bool:
-        return (self == PyaketBuild.Cargo.Xwin)
+    def build(self) -> Iterable[str]:
+        """
+        Get base command:
+        - `cargo build ...`
+        - `cargo zigbuild ...`
+        - `cargo xwin build ...`
+        """
+        yield self.value
 
-    @property
-    def zig(self) -> bool:
-        return (self == PyaketBuild.Cargo.Zig)
+        if (self is self.Xwin):
+            yield "build"
+
 
 class PyaketBuild(PyaketModel):
     """Release configuration for the application"""
@@ -274,7 +280,7 @@ class PyaketProject(PyaketModel):
 
         # Export isolated environment
         self.environ.update(dict(
-            PYAKET_PROJECT   = self.json(),
+            PYAKET_PROJECT   = self.model_dump_json(),
             PYAKET_ASSETS    = str(self.assets.root),
             ProductName      = self.app.name,
             CompanyName      = self.app.author,
@@ -289,7 +295,7 @@ class PyaketProject(PyaketModel):
 
         self.build.autocargo()
         subprocess.check_call((
-            "cargo", self.build.cargo.value,
+            "cargo", *self.build.cargo.build,
             "--manifest-path", str(PYAKET_CARGO),
             "--profile", self.build.profile.value,
             "--target", self.build.target.value,
@@ -322,12 +328,6 @@ class PyaketProject(PyaketModel):
         return release
 
     # ------------------------------------------------------------------------ #
-
-    def dict(self) -> dict:
-        return self.model_dump()
-
-    def json(self) -> str:
-        return self.model_dump_json()
 
     def from_toml(self, path: Path="pyaket.toml") -> None:
         data = tomllib.loads(Path(path).read_text("utf-8"))
