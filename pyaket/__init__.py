@@ -1,9 +1,3 @@
-import time
-
-# Reference precise start time
-if not hasattr(time, "start"):
-    time.start = time.perf_counter()
-
 import contextlib
 import sys
 

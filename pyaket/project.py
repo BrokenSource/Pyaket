@@ -1,6 +1,7 @@
 import os
 import subprocess
 import sys
+import tarfile
 import uuid
 from enum import Enum
 from pathlib import Path
@@ -319,11 +320,11 @@ class PyaketProject(PyaketModel):
             subprocess.check_call(("upx", "--best", "--lzma", str(release)))
 
         # Release a tar.gz to keep chmod +x attributes
-        if self.build.tarball:
-            subprocess.check_call((
-                "tar", "-czf", f"{release}.tar.gz",
-                "-C", release.parent, release.name
-            ))
+        if self.build.tarball and self.build.target.is_unix():
+            with tarfile.open(f"{release}.tar.gz", "w:gz") as archive:
+                archive.add(release, arcname=release.name)
+                release.unlink()
+            release = Path(archive.name)
 
         return release
 

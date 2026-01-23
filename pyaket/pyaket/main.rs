@@ -7,7 +7,7 @@ use commands::*;
 
 fn main() -> Result<()> {
 
-    // Short circuit on uv mode, bypass cli
+    // Short circuit on uv mode
     #[cfg(feature="uv")]
     if envy::flag(subproc::PYAKET_UV) {
         unsafe {

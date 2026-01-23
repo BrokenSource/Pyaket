@@ -8,8 +8,7 @@ icon: material/file-document-edit
 
 !!! quote ""
     - Improve `from_pyproject` heuristics, look for `[tool.pyaket]` overrides
-    - Enable `ConfigDict.validate_assignment` to prevent mistakes
-    - Enable true parallel builds by namespacing target directories
+    - Enable `ConfigDict.validate_assignment` in PyaketModel for stricter values
     - Fix tarball should only be enabled for unix targets
     - Fix compiling with [cargo-xwin](https://github.com/rust-cross/cargo-xwin)
 

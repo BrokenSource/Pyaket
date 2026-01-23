@@ -33,8 +33,8 @@ from pyaket import (
 
 @contextlib.contextmanager
 def stopwatch(self) -> callable:
-    start = time.perf_counter()
-    yield lambda: time.perf_counter() - start
+    start = time.monotonic()
+    yield lambda: time.monotonic() - start
 
 @define
 class Benchmark:
