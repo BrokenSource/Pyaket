@@ -199,7 +199,7 @@ class PyaketBuild(PyaketModel):
 
 class PyaketAssets(PyaketModel):
     _root = PrivateAttr(default_factory=lambda:
-        TemporaryDirectory(prefix="pyaket-"))
+        TemporaryDirectory(prefix=f"{__package__}-"))
 
     @property
     def root(self) -> Path:
