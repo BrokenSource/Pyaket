@@ -69,6 +69,9 @@ impl PyaketProject {
         let executable = current_exe()?.canonicalize()?;
         envy::set("PYAKET", executable.display());
 
+        // Send the project configuration
+        envy::set("PYAKET_PROJECT", env!("PYAKET_PROJECT"));
+
         // Load environment variables where the shell is
         for file in glob::glob("*.env")?.map(|x| x.unwrap()) {
             dotenvy::from_path(file)?;
