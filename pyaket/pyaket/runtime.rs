@@ -78,7 +78,6 @@ impl PyaketProject {
         }
 
         envy::setdefault("VIRTUAL_ENV",      self.installation_dir().display());
-        envy::setdefault("UV_VENV_CLEAR",    1); // Skip destructive confirmation prompt
         envy::setdefault("UV_SYSTEM_PYTHON", 0); // Always use a managed distribution
         envy::setdefault("UV_NO_CONFIG",     1); // Do not look for a pyproject.toml
 
@@ -103,7 +102,7 @@ impl PyaketProject {
                 setup.arg("venv")
                     .arg(self.installation_dir())
                     .arg("--python").arg(&self.python.version)
-                    .arg("--seed").arg("--quiet");
+                    .arg("--seed").arg("--quiet").arg("--clear");
                 if self.deps.rolling {setup
                     .arg("--allow-existing");}
                 subproc::run(&mut setup)?;

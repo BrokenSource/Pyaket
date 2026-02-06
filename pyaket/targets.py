@@ -516,7 +516,7 @@ if __name__ == "__main__":
     import re
     import subprocess
 
-    # Must have nightly toolchain for print all-target-specs-json
+    # Must have nightly toolchain to print all-target-specs-json
     subprocess.check_call(("rustup", "set", "profile", "minimal"))
     subprocess.check_call(("rustup", "default", "nightly"))
     subprocess.check_call((
