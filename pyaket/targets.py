@@ -166,7 +166,6 @@ class Target(str, Enum):
             cls.i686_pc_windows_msvc,
             cls.i686_unknown_linux_gnu,
             cls.i686_unknown_linux_musl,
-            cls.powerpc64_unknown_linux_gnu,
             cls.powerpc64le_unknown_linux_gnu,
             cls.riscv64gc_unknown_linux_gnu,
             cls.s390x_unknown_linux_gnu,

@@ -102,7 +102,9 @@ impl PyaketProject {
                 setup.arg("venv")
                     .arg(self.installation_dir())
                     .arg("--python").arg(&self.python.version)
-                    .arg("--seed").arg("--quiet").arg("--clear");
+                    .arg("--seed")
+                    .arg("--clear")
+                    .arg("--quiet");
                 if self.deps.rolling {setup
                     .arg("--allow-existing");}
                 subproc::run(&mut setup)?;
