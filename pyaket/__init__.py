@@ -2,10 +2,12 @@ from dearlog import logger  # isort: split
 
 import contextlib
 import sys
+from importlib.metadata import metadata
 
-__version__: str = "0.10.0"
-__author__:  str = "Tremeschin"
-__about__:   str = "📦 Easy Python to Fast Executables"
+__meta__:   dict = metadata(__package__)
+__about__:   str = __meta__["Summary"]
+__author__:  str = __meta__["Author"]
+__version__: str = __meta__["Version"]
 
 # Simple and early version flag
 with contextlib.suppress(IndexError):
@@ -42,5 +44,5 @@ from pyaket.targets import Target
 # Ensure ziglang binary can be found
 with contextlib.suppress(ImportError):
     import ziglang
-    _ziglang = Path(ziglang.__file__).parent
-    os.environ["PATH"] += f"{os.pathsep}{_ziglang}"
+    _package = Path(ziglang.__file__).parent
+    os.environ["PATH"] += f"{os.pathsep}{_package}"

@@ -42,7 +42,7 @@ class PyaketApplication(PyaketModel):
     vendor: Annotated[Optional[str], Option("--vendor")] = None
     """Overrides platform directory workspace"""
 
-    version: Annotated[str, Option("--version", "-v")] = "0.0.0"
+    version: Annotated[str, Option("--version", "-v")] = __version__
     """The release version matching PyPI, codename, branch, latest, etc"""
 
     about: Annotated[str, Option("--about", "-d")] = "No description provided"
