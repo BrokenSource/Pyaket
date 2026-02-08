@@ -1,4 +1,5 @@
 ---
+title: Alternatives
 icon: octicons/versions-16
 ---
 

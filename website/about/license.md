@@ -1,4 +1,5 @@
 ---
+title: License
 icon: material/license
 status: wip
 ---

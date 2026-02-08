@@ -1,4 +1,5 @@
 ---
+title: Rust
 icon: simple/rust
 status: deprecated
 ---

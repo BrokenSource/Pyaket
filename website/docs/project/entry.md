@@ -1,4 +1,5 @@
 ---
+title: Entry Points
 icon: material/exit-to-app
 ---
 

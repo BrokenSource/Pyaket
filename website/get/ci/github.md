@@ -1,6 +1,6 @@
 ---
+title: GitHub Workflows
 icon: material/github
-title: GitHub
 status: wip
 ---
 

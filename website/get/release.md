@@ -1,4 +1,5 @@
 ---
+title: Release
 icon: octicons/package-16
 ---
 

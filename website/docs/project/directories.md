@@ -1,4 +1,5 @@
 ---
+title: Directories
 icon: material/folder-outline
 ---
 

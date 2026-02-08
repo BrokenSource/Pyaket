@@ -1,4 +1,5 @@
 ---
+title: Application
 icon: material/application-braces-outline
 ---
 

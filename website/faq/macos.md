@@ -1,4 +1,5 @@
 ---
+title: macOS
 icon: simple/apple
 ---
 

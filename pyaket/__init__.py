@@ -1,13 +1,14 @@
 from dearlog import logger  # isort: split
 
-import contextlib
-import sys
 from importlib.metadata import metadata
 
 __meta__:   dict = metadata(__package__)
 __about__:   str = __meta__["Summary"]
 __author__:  str = __meta__["Author"]
 __version__: str = __meta__["Version"]
+
+import contextlib
+import sys
 
 # Simple and early version flag
 with contextlib.suppress(IndexError):

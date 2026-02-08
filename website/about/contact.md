@@ -1,4 +1,5 @@
 ---
+title: Contact
 icon: material/chat-processing-outline
 ---
 

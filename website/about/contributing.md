@@ -1,4 +1,5 @@
 ---
+title: Contributing
 icon: material/source-pull
 status: wip
 ---

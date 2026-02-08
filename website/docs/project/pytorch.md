@@ -1,4 +1,5 @@
 ---
+title: PyTorch
 icon: simple/pytorch
 ---
 

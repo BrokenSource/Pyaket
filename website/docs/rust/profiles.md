@@ -1,4 +1,5 @@
 ---
+title: Build Profiles
 icon: material/tag-multiple-outline
 ---
 

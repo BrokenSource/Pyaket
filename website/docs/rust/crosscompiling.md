@@ -1,4 +1,5 @@
 ---
+title: Crosscompiling
 icon: material/sword-cross
 ---
 

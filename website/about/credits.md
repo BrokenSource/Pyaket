@@ -1,4 +1,5 @@
 ---
+title: Credits
 icon: material/recycle
 status: wip
 ---

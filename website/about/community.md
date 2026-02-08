@@ -1,4 +1,5 @@
 ---
+title: Community
 icon: material/heart
 ---
 

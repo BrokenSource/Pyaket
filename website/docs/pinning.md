@@ -1,4 +1,5 @@
 ---
+title: Pinning
 icon: material/pin
 status: deprecated
 ---

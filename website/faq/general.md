@@ -1,4 +1,5 @@
 ---
+title: General
 icon: octicons/package-16
 ---
 

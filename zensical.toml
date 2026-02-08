@@ -16,15 +16,15 @@ docs_dir  = "website"
 nav = [
   {"Home" = [
     "index.md",
-    {"About"=[
-      {"Community"="about/community.md"},
-      {"Contributing"="about/contributing.md"},
-      {"Changelog"="about/changelog.md"},
-      {"Roadmap"="about/roadmap.md"},
-      {"Contact"="about/contact.md"},
-      {"Mission"="about/mission.md"},
-      {"License"="about/license.md"},
-      {"Credits"="about/credits.md"},
+    {"About" = [
+      "about/community.md",
+      "about/contributing.md",
+      "about/changelog.md",
+      "about/roadmap.md",
+      "about/contact.md",
+      "about/mission.md",
+      "about/license.md",
+      "about/credits.md",
     ]}
   ]},
   {"Installation" = [

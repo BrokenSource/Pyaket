@@ -1,4 +1,5 @@
 ---
+title: Changelog
 icon: material/file-document-edit
 ---
 

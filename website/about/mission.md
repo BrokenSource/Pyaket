@@ -1,4 +1,5 @@
 ---
+title: Mission
 icon: material/rocket-launch
 status: wip
 ---

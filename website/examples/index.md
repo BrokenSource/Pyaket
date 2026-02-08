@@ -1,3 +1,9 @@
+---
+title: Examples
+icon: material/wrench
+status: wip
+---
+
 # Examples
 
 !!! warning "Work in Progress"

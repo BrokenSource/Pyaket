@@ -1,4 +1,5 @@
 ---
+title: Dependencies
 icon: material/package-variant-closed
 ---
 
