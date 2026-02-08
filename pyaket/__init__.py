@@ -1,3 +1,5 @@
+from dearlog import logger  # isort: split
+
 import contextlib
 import sys
 
@@ -22,10 +24,6 @@ PYAKET_CARGO: Path = (PYAKET_ROOT/"Cargo.toml")
 
 PYAKET_RESOURCES: Path = (PYAKET_ROOT/"resources")
 """Path to pyaket's resources directory"""
-
-import structlog
-
-logger = structlog.get_logger(__package__)
 
 from pyaket.project import (
     CargoProfile,
