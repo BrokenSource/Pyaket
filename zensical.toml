@@ -14,9 +14,9 @@ edit_uri  = "edit/main/website/"
 copyright = "&copy; CC BY-SA 4.0, <a href='https://github.com/Tremeschin/'>Tremeschin</a> 🇧🇷"
 docs_dir  = "website"
 nav = [
-  {"Home" = [
+  {Home = [
     "index.md",
-    {"About" = [
+    {About = [
       "about/community.md",
       "about/contributing.md",
       "about/changelog.md",
@@ -27,28 +27,28 @@ nav = [
       "about/credits.md",
     ]}
   ]},
-  {"Installation" = [
+  {Installation = [
     "get/index.md",
-    {"Package"=[
+    {Packages = [
       "get/python.md",
       "get/release.md",
       "get/source.md",
       "get/docker.md",
     ]},
-    {"Workflows"=[
+    {Workflows = [
       "get/ci/github.md",
       "get/ci/gitlab.md",
     ]},
-    {"Tools"=[
+    {Tools = [
       "get/rust.md",
     ]},
   ]},
-  {"Examples" = [
+  {Examples = [
     "examples/index.md",
   ]},
-  {"Documentation" = [
+  {Documentation = [
     "docs/index.md",
-    {"Configuration"=[
+    {Configuration = [
       "docs/project/application.md",
       "docs/project/dependencies.md",
       "docs/project/directories.md",
@@ -56,20 +56,20 @@ nav = [
       "docs/project/pytorch.md",
       "docs/project/entry.md",
     ]},
-    {"Rust" = [
+    {Rust = [
       "docs/rust/profiles.md",
       "docs/rust/crosscompiling.md",
     ]},
-    {"Extra" = [
+    {Extra = [
       "docs/pinning.md",
     ]},
   ]},
-  {"Questions" = [
-    {"General" = [
+  {Questions = [
+    {General = [
       "faq/general.md",
       "faq/alternatives.md",
     ]},
-    {"Systems" = [
+    {Systems = [
       "faq/windows.md",
       "faq/linux.md",
       "faq/macos.md",
@@ -80,7 +80,7 @@ nav = [
 # Fixme: Common monorepo theme
 extra_css = ["css/main.css"]
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------- #
 
 [project.theme]
 variant = "modern"
@@ -184,7 +184,7 @@ scheme      = "slate"
 primary     = "orange"
 accent      = "orange"
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------- #
 
 [[project.extra.social]]
 icon = "fontawesome/brands/discord"
