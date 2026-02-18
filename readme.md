@@ -26,7 +26,9 @@
     <a href="https://pyaket.dev/about/changelog/">Changelog</a> •
     <a href="https://pyaket.dev/about/license">License</a>
   </sub>
+  <br>
   <sub><small>⭐️ Consider starring the project to help it grow! ⭐️</small></sub>
+  <br>
   <br>
 </div>
 
