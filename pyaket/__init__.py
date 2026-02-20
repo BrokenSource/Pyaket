@@ -8,24 +8,16 @@ __author__:  str = __meta__.get("Author")
 __version__: str = __meta__.get("Version")
 
 import contextlib
-import sys
-
-# Simple and early version flag
-with contextlib.suppress(IndexError):
-    if sys.argv[1] in ("--version", "-v"):
-        print(__version__)
-        sys.exit(0)
-
 import os
 from pathlib import Path
 
-PYAKET_ROOT: Path = Path(__file__).parent.resolve()
+package: Path = Path(__file__).parent.resolve()
 """Path to the pyaket python package"""
 
-PYAKET_CARGO: Path = (PYAKET_ROOT/"Cargo.toml")
+manifest: Path = (package/"Cargo.toml")
 """Path to pyaket's rust cargo manifest"""
 
-PYAKET_RESOURCES: Path = (PYAKET_ROOT/"resources")
+resources: Path = (package/"resources")
 """Path to pyaket's resources directory"""
 
 from pyaket.project import (

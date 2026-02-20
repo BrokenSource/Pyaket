@@ -8,11 +8,11 @@ from typing import Iterable, Optional, Self
 
 from dotmap import DotMap
 
-from pyaket import PYAKET_RESOURCES
+import pyaket
 
 # Last sync (json + enum): Rust 1.95.0-nightly (2026-01-19)
 
-TARGET_SPECS_JSON: Path = (PYAKET_RESOURCES/"targets.json")
+TARGET_SPECS_JSON: Path = (pyaket.resources/"targets.json")
 """Json file with all rust target specs"""
 
 TARGET_SPECS: DotMap = DotMap(json.loads(TARGET_SPECS_JSON.read_text("utf-8")))

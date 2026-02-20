@@ -13,12 +13,8 @@ from dotmap import DotMap
 from pydantic import BaseModel, ConfigDict, Field, PrivateAttr
 from typer import Option
 
-from pyaket import (
-    PYAKET_CARGO,
-    PYAKET_ROOT,
-    __version__,
-    logger,
-)
+import pyaket
+from pyaket import logger
 from pyaket.targets import Target
 
 
@@ -42,7 +38,7 @@ class PyaketApplication(PyaketModel):
     vendor: Annotated[Optional[str], Option("--vendor")] = None
     """Overrides platform directory workspace"""
 
-    version: Annotated[str, Option("--version", "-v")] = __version__
+    version: Annotated[str, Option("--version", "-v")] = pyaket.__version__
     """The release version matching PyPI, codename, branch, latest, etc"""
 
     about: Annotated[str, Option("--about", "-d")] = "No description provided"
@@ -297,11 +293,11 @@ class PyaketProject(PyaketModel):
         self.build.autocargo()
         subprocess.check_call((
             "cargo", *self.build.cargo.build,
-            "--manifest-path", str(PYAKET_CARGO),
+            "--manifest-path", str(pyaket.manifest),
             "--profile", self.build.profile.value,
             "--target", self.build.target.value,
             "--target-dir", str(self.build.target_dir),
-        ), env=self.environ, cwd=PYAKET_ROOT)
+        ), env=self.environ, cwd=pyaket.package)
 
         # Find the compiled binary
         binary = next(

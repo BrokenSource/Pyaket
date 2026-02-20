@@ -22,9 +22,9 @@ import time
 from pathlib import Path
 from typing import Self
 
+import pyaket
 from attrs import Factory, define
 from pyaket import (
-    PYAKET_CARGO,
     CargoProfile,
     PyaketBuild,
     PyaketProject,
@@ -51,8 +51,8 @@ class Benchmark:
         project.build.profile = self.profile
         subprocess.check_call(("rustup", "default", "stable"))
         subprocess.check_call(("rustup", "update", "stable"))
-        subprocess.check_call(("cargo", "fetch", "--manifest-path", str(PYAKET_CARGO)))
-        subprocess.check_call(("cargo", "clean", "--manifest-path", str(PYAKET_CARGO)))
+        subprocess.check_call(("cargo", "fetch", "--manifest-path", str(pyaket.manifest)))
+        subprocess.check_call(("cargo", "clean", "--manifest-path", str(pyaket.manifest)))
 
         # Cold compilation
         with stopwatch(self) as took:
