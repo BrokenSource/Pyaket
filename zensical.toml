@@ -89,31 +89,19 @@ favicon = "assets/images/logo.png"
 language = "en"
 features = [
   "announce.dismiss",
-
-  # View or edit page source
-  # "content.action.edit",
   "content.action.view",
-
-  # Code block features
   "content.code.annotate",
   "content.code.copy",
-
-  # Footnote preview
   "content.footnote.tooltips",
-  "content.tooltips",
-
-  # Switch all tabs with the same name at once
   "content.tabs.link",
-
-  # Others
-  "navigation.indexes",
+  "content.tooltips",
   "navigation.expand",
-  # "navigation.sections",
   "navigation.footer",
-  "navigation.path",
-  "navigation.instant",
+  "navigation.indexes",
   "navigation.instant.prefetch",
   "navigation.instant.progress",
+  "navigation.instant",
+  "navigation.path",
   "navigation.tabs",
   "navigation.top",
   "search.highlight",
@@ -184,34 +172,18 @@ scheme      = "slate"
 primary     = "orange"
 accent      = "orange"
 
-# ---------------------------------------------------------------------------- #
-
 [[project.extra.social]]
 icon = "fontawesome/brands/discord"
 link = "https://discord.gg/KjqvcYwRHm"
-name = "Discord"
-
-[[project.extra.social]]
-icon = "fontawesome/brands/telegram"
-link = "https://t.me/BrokenSource"
-name = "Telegram"
 
 [[project.extra.social]]
 icon = "fontawesome/brands/patreon"
 link = "https://www.patreon.com/Tremeschin"
-name = "Patreon"
 
 [[project.extra.social]]
 icon = "fontawesome/brands/github"
 link = "https://github.com/Tremeschin"
-name = "GitHub"
 
 [[project.extra.social]]
 icon = "fontawesome/brands/youtube"
 link = "https://www.youtube.com/@Tremeschin"
-name = "YouTube"
-
-[[project.extra.social]]
-icon = "fontawesome/brands/x-twitter"
-link = "https://twitter.com/Tremeschine"
-name = "Twitter"

@@ -22,7 +22,7 @@ Commercial use, including, but not limited to, selling executables, for-profit d
 
 [^get-started]: Using the future revenue made by your project to sponsor is perfectly fine!
 
-- Feel free to [Get in Touch](./contact.md) for custom agreements, questions, discounts, grants, features you'd need to make it work for you, or anything else really, the customer is always right!
+- Feel free to [Get in Touch](./contact.md) for custom agreements, questions, discounts, grants, features you'd need to make it work for you, or anything else really!
 
 ### Educational
 

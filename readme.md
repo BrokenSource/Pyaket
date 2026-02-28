@@ -1,7 +1,7 @@
 <div align="center">
   <img src="https://raw.githubusercontent.com/BrokenSource/Pyaket/main/website/assets/images/logo.png" width="210">
   <h1>Pyaket</h1>
-  <span>📦 Easy Python to → Fast Executables 📦</span>
+  <span>📦 Easy Python to Fast Executables 📦</span>
   <br>
   <br>
     <a href="https://pypi.org/project/pyaket/"><img src="https://img.shields.io/pypi/v/pyaket?label=PyPI&color=blue"></a>
@@ -14,18 +14,11 @@
   <br>
   <b>
     Links •
-    <a href="https://pyaket.dev/get/">Installation</a> •
-    <a href="https://pyaket.dev/examples/">Examples</a> •
-    <a href="https://pyaket.dev/docs/">Documentation</a> •
-    <a href="https://github.com/BrokenSource/Pyaket/issues/">Issues</a>
-  </b>
-  <br>
-  <sub>
     <a href="https://github.com/BrokenSource/Pyaket/">GitHub</a> •
-    <a href="https://pyaket.dev/about/contact/">Contact</a> •
-    <a href="https://pyaket.dev/about/changelog/">Changelog</a> •
+    <a href="https://pyaket.dev/">Documentation</a> •
+    <a href="https://pyaket.dev/about/changelog">Changelog</a> •
     <a href="https://pyaket.dev/about/license">License</a>
-  </sub>
+  </b>
   <br>
   <sub><small>⭐️ Consider starring the project to help it grow! ⭐️</small></sub>
   <br>
