@@ -322,6 +322,9 @@ class PyaketProject(PyaketModel):
                 release.unlink()
             release = Path(archive.name)
 
+        # Ignore all binaries in version control
+        self.build.output.joinpath(".gitignore").write_text("*")
+
         return release
 
     # ------------------------------------------------------------------------ #

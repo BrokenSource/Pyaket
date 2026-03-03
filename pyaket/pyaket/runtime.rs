@@ -96,6 +96,16 @@ impl PyaketProject {
             Err(_)    => true,
         } || self.deps.rolling {
 
+            /* Download Python */ {
+                let mut download = subproc::uv()?;
+
+                download.arg("python").arg("download")
+                    .arg("--mirror").arg("https://github.com/astral-sh/python-build-standalone/releases/download")
+                    .arg(&self.python.version);
+
+                subproc::run(&mut download)?;
+            }
+
             /* Create the virtual environment */ {
                 let mut setup = subproc::uv()?;
 
@@ -107,6 +117,7 @@ impl PyaketProject {
                     .arg("--quiet");
                 if self.deps.rolling {setup
                     .arg("--allow-existing");}
+
                 subproc::run(&mut setup)?;
             }
 
