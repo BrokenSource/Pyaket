@@ -12,6 +12,7 @@ icon: material/file-document-edit
     - Enable `ConfigDict.validate_assignment` in PyaketModel for stricter values
     - Fix tarball should only be enabled for unix targets
     - Fix compiling with [cargo-xwin](https://github.com/rust-cross/cargo-xwin)
+    - Force astral-sh python downloads in GitHub mirror
 
 ### 📦 v0.10.0 <small>January 20, 2026</small> {#v0.10.0}
 

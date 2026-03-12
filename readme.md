@@ -45,7 +45,7 @@
 Check out the [project website](https://pyaket.dev) below for comprehensive information!
 
 <a href="https://pyaket.dev/">
-  <img alt="Website Screenshot" src="https://github.com/user-attachments/assets/86ef953b-f307-41b6-87c8-fcaf9f64be98" />
+  <img src="https://github.com/user-attachments/assets/86ef953b-f307-41b6-87c8-fcaf9f64be98" />
 </a>
 
 <sup><b>Warning:</b> Documentation <i>may include</i> unreleased or breaking changes, check changelog when in doubt 🙂</sup>
