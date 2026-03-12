@@ -40,21 +40,14 @@
 - [x] **Rolling** releases where a single binary always runs latest pypi or git branch/tag [#](https://pyaket.dev/docs/rust/#rolling)
 - [x] **PyTorch** installation at runtime, automatic backend detection (optional) [#](https://pyaket.dev/docs/rust/#torch-backend)
 
-## 🚀 Getting Started
-
-Check out the [project website](https://pyaket.dev) below for comprehensive information!
-
-<a href="https://pyaket.dev/">
-  <img src="https://github.com/user-attachments/assets/86ef953b-f307-41b6-87c8-fcaf9f64be98" />
-</a>
-
-<sup><b>Warning:</b> Documentation <i>may include</i> unreleased or breaking changes, check changelog when in doubt 🙂</sup>
-
-<br><br><br>
+## 📦 Getting Started
 
 <div align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=BrokenSource/Pyaket&theme=dark"/>
-    <img src="https://api.star-history.com/svg?repos=BrokenSource/Pyaket"/>
-  </picture>
+  <a href="https://pyaket.dev/">
+    <img src="https://github.com/user-attachments/assets/0bc4f617-17c1-4e29-92cd-3ea5432b67e7"/>
+  </a>
+  <i>
+    Visit our documentation at
+    <a href="https://pyaket.dev/">https://pyaket.dev/</a>
+  </i>
 </div>
