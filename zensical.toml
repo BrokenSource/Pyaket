@@ -82,7 +82,6 @@ extra_css = ["css/main.css"]
 
 [project.theme]
 variant = "modern"
-custom_dir = "website/overrides"
 favicon = "assets/images/logo.png"
 language = "en"
 features = [

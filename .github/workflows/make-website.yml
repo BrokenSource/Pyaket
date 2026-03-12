@@ -13,19 +13,12 @@ jobs:
     environment:
       name: github-pages
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
+      - run: uvx zensical build
 
-      - name: Setup uv
-        uses: astral-sh/setup-uv@v7
-
-      - name: Build website
-        run: uvx zensical build
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: site
 
-      - name: Deploy pages
-        uses: actions/deploy-pages@v4
+      - uses: actions/deploy-pages@v4
