@@ -1,6 +1,9 @@
 name: make-website
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - "website/**"
 
 permissions:
   id-token: write
