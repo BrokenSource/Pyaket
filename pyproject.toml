@@ -1,9 +1,5 @@
 [project.urls]
 GitHub    = "https://github.com/BrokenSource/Pyaket"
-Changelog = "https://pyaket.dev/about/changelog"
-Contact   = "https://pyaket.dev/about/contact"
-Docs      = "https://pyaket.dev/docs"
-Homepage  = "https://pyaket.dev"
 
 [project]
 name        = "pyaket"

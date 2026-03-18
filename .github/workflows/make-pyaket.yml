@@ -35,7 +35,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: ${{ inputs.publish == true }}
         with:
-          body: "**Changelog**: https://pyaket.dev/about/changelog/#v${{ env.VERSION }}"
+          body: "**Changelog**: https://pyaket.tremeschin.com/about/changelog/#v${{ env.VERSION }}"
           name: Release v${{ env.VERSION }}
           tag_name: v${{ env.VERSION }}
           files: release/*

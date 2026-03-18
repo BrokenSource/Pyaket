@@ -7,7 +7,7 @@
 site_name = "Pyaket"
 site_description = "📦 Easy Python to Fast Executables"
 site_author = "Tremeschin"
-site_url  = "https://pyaket.dev/"
+site_url  = "https://pyaket.tremeschin.com/"
 repo_url  = "https://github.com/BrokenSource/Pyaket/"
 repo_name = "BrokenSource/Pyaket"
 edit_uri  = "edit/main/website/"
@@ -108,40 +108,6 @@ features = [
 [project.extra.status]
 wip = "Work in Progress"
 deprecated = "Deprecated"
-
-# ---------------------------------------------------------------------------- #
-
-[project.markdown_extensions.pymdownx.snippets]
-
-# Fixme: Extend from default preset (snippets)
-# https://zensical.org/docs/setup/extensions/#default-configuration
-[project.markdown_extensions.abbr]
-[project.markdown_extensions.admonition]
-[project.markdown_extensions.attr_list]
-[project.markdown_extensions.def_list]
-[project.markdown_extensions.footnotes]
-[project.markdown_extensions.md_in_html]
-[project.markdown_extensions.pymdownx.betterem]
-smart_enable = "all"
-[project.markdown_extensions.pymdownx.caret]
-[project.markdown_extensions.pymdownx.details]
-[project.markdown_extensions.pymdownx.emoji]
-emoji_generator = "zensical.extensions.emoji.to_svg"
-emoji_index = "zensical.extensions.emoji.twemoji"
-[project.markdown_extensions.pymdownx.highlight]
-[project.markdown_extensions.pymdownx.inlinehilite]
-[project.markdown_extensions.pymdownx.keys]
-[project.markdown_extensions.pymdownx.mark]
-[project.markdown_extensions.pymdownx.smartsymbols]
-[project.markdown_extensions.pymdownx.superfences]
-custom_fences = [
-  {name="mermaid", class="mermaid", format="pymdownx.superfences.fence_code_format"}
-]
-[project.markdown_extensions.pymdownx.tabbed]
-alternate_style = true
-[project.markdown_extensions.pymdownx.tasklist]
-custom_checkbox = true
-[project.markdown_extensions.pymdownx.tilde]
 
 # ---------------------------------------------------------------------------- #
 

@@ -15,9 +15,9 @@
   <b>
     Links •
     <a href="https://github.com/BrokenSource/Pyaket/">GitHub</a> •
-    <a href="https://pyaket.dev/">Documentation</a> •
-    <a href="https://pyaket.dev/about/changelog">Changelog</a> •
-    <a href="https://pyaket.dev/about/license">License</a>
+    <a href="https://pyaket.tremeschin.com/">Documentation</a> •
+    <a href="https://pyaket.tremeschin.com/about/changelog">Changelog</a> •
+    <a href="https://pyaket.tremeschin.com/about/license">License</a>
   </b>
   <br>
   <sub><small>⭐️ Consider starring the project to help it grow! ⭐️</small></sub>
@@ -25,29 +25,29 @@
   <br>
 </div>
 
-![Asciinema](https://github.com/user-attachments/assets/c16122a6-7c39-45a6-a224-cc8714f12534)
+<img src="https://github.com/user-attachments/assets/c16122a6-7c39-45a6-a224-cc8714f12534"/>
 
 ## 🔥 Description
 
 **📦 Pyaket** is a tool that bundles and generates portable executables of your python projects for all platforms. No more convoluted installation steps, give users the convenience [they want](https://github.com/sherlock-project/sherlock/issues/2011), with maximum compatibility and dev-centric ease of use compared to alternative solutions.
 
 - [x] **Lightning fast** installation that automatically manages python, virtual environments, and dependencies without user intervention that just works, bundle wheels or install from pypi.
-- [x] **Max compatibility** with how the project is run in the user's machine - pyaket does not _reinvent the wheel_ or compile python with an intermediate, use tools that already exists [#](https://pyaket.dev/faq/general/#how-it-works)
-- [x] **Cross compile** from anywhere to most platforms and architectures, no docker or virtual machines required, portable immutable executables - see the table for details! [#](https://pyaket.dev/docs/rust/crosscompile/)
+- [x] **Max compatibility** with how the project is run in the user's machine - pyaket does not _reinvent the wheel_ or compile python with an intermediate, use tools that already exists [#](https://pyaket.tremeschin.com/faq/general/#how-it-works)
+- [x] **Cross compile** from anywhere to most platforms and architectures, no docker or virtual machines required, portable immutable executables - see the table for details! [#](https://pyaket.tremeschin.com/docs/rust/crosscompile/)
 - [x] **Intelligently** detects partial installations, downloads, archive unpacks, and automatically takes appropriate action - making iterative development easy and resilient against users
 - [ ] **Standalone** executables with no network calls at runtime that bundles all dependencies [#](https://github.com/BrokenSource/Pyaket/issues/2)
 - [x] **Monorepo** support in mind, decoupled dependencies and entry point specification
-- [x] **Rolling** releases where a single binary always runs latest pypi or git branch/tag [#](https://pyaket.dev/docs/rust/#rolling)
-- [x] **PyTorch** installation at runtime, automatic backend detection (optional) [#](https://pyaket.dev/docs/rust/#torch-backend)
+- [x] **Rolling** releases where a single binary always runs latest pypi or git branch/tag [#](https://pyaket.tremeschin.com/docs/rust/#rolling)
+- [x] **PyTorch** installation at runtime, automatic backend detection (optional) [#](https://pyaket.tremeschin.com/docs/rust/#torch-backend)
 
 ## 📦 Getting Started
 
 <div align="center">
-  <a href="https://pyaket.dev/">
+  <a href="https://pyaket.tremeschin.com/">
     <img src="https://github.com/user-attachments/assets/0bc4f617-17c1-4e29-92cd-3ea5432b67e7"/>
   </a>
   <i>
     Visit our documentation at
-    <a href="https://pyaket.dev/">https://pyaket.dev/</a>
+    <a href="https://pyaket.tremeschin.com/">https://pyaket.tremeschin.com/</a>
   </i>
 </div>
