@@ -100,7 +100,6 @@ impl PyaketProject {
                 let mut download = subproc::uv()?;
 
                 download.arg("python").arg("download")
-                    .arg("--mirror").arg("https://github.com/astral-sh/python-build-standalone/releases/download")
                     .arg(&self.python.version);
 
                 subproc::run(&mut download)?;

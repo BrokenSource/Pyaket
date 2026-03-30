@@ -1,6 +1,3 @@
-[project.urls]
-GitHub    = "https://github.com/BrokenSource/Pyaket"
-
 [project]
 name        = "pyaket"
 description = "📦 Easy Python to Fast Executables"
@@ -10,14 +7,17 @@ readme      = "readme.md"
 license     = "AGPL-3.0"
 requires-python = ">=3.10"
 dependencies = [
-    "attrs~=25.0",
+    "attrs",
     "dearlog",
-    "dotmap~=1.3",
-    "pillow~=12.0",
-    "pydantic~=2.12",
-    "rustbin~=1.28",
-    "typer~=0.21",
+    "dotmap",
+    "pillow",
+    "pydantic",
+    "rustbin",
+    "typer",
 ]
+
+[project.urls]
+GitHub = "https://github.com/BrokenSource/Pyaket"
 
 [project.scripts]
 pyaket = "pyaket.__main__:main"

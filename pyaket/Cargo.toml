@@ -10,7 +10,7 @@ documentation = "https://pyaket.tremeschin.com/docs/"
 homepage      = "https://pyaket.tremeschin.com/"
 license       = "AGPL-3.0-only"
 readme        = "../readme.md"
-rust-version  = "1.91"
+rust-version  = "1.92"
 edition       = "2024"
 
 # ---------------------------------------------------------------------------- #
@@ -27,7 +27,7 @@ path = "pyaket/main.rs"
 
 [dependencies]
 anyhow        = {version="1.0.102"}
-clap          = {version="4.5.60", features=["derive"]}
+clap          = {version="4.6.0", features=["derive"]}
 dialoguer     = {version="0.12.0", default-features=false}
 directories   = {version="6.0.0"}
 dotenvy       = {version="0.15.7"}
@@ -47,12 +47,12 @@ features = [
 ]
 
 [dependencies.uv]
-version = "0.10.8"
+version = "0.11.2"
 default-features = false
 optional = true
 
 [build-dependencies]
-winresource = {version="0.1.30", default-features=false}
+winresource = {version="0.1.31", default-features=false}
 
 # ---------------------------------------------------------------------------- #
 
