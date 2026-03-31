@@ -2,7 +2,6 @@ import json
 import os
 import subprocess
 from enum import Enum
-from functools import cache
 from pathlib import Path
 from typing import Iterable, Optional, Self
 
@@ -28,13 +27,12 @@ class Target(str, Enum):
     # -------------------------------- #
     # Meta
 
-    @cache
-    @staticmethod
-    def host() -> Self:
+    @classmethod
+    def host(cls) -> Self:
         """Get the current host triple"""
         if (value := os.getenv("PYAKET_HOST_TRIPLE")):
-            return Target(value)
-        return Target(subprocess.run(
+            return cls(value)
+        return cls(subprocess.run(
             ("rustc", "--print", "host-tuple"),
             capture_output=True, text=True
         ).stdout.strip())
@@ -110,11 +108,10 @@ class Target(str, Enum):
     # ARM
 
     def is_arm(self) -> bool:
-        # for prefix in ("aarch", "arm", "thumbv"):
-        #     if self.value.startswith(prefix):
-        #         return True
-        # return False
-        ...
+        for prefix in ("aarch", "arm", "thumbv"):
+            if self.value.startswith(prefix):
+                return True
+        return False
 
     # RISC-V
 
@@ -122,7 +119,6 @@ class Target(str, Enum):
 
     # -------------------------------- #
 
-    @classmethod
     def wheel(cls) -> Optional[str]:
         """Best-effort for a matching python wheel platform tag"""
         return {
@@ -175,7 +171,6 @@ class Target(str, Enum):
             cls.x86_64_unknown_linux_musl,
         )
 
-    @cache
     def in_uv_list(self) -> bool:
         return self in self.uv_list()
 
@@ -194,7 +189,6 @@ class Target(str, Enum):
             cls.x86_64_unknown_linux_gnu,
         )
 
-    @cache
     def in_recommended_list(self) -> bool:
         return self in self.recommended()
 
