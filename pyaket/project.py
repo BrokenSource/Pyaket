@@ -2,13 +2,13 @@ import os
 import subprocess
 import sys
 import tarfile
+import tomllib
 import uuid
 from enum import Enum
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Annotated, Iterable, Optional
 
-import tomllib
 from dotmap import DotMap
 from pydantic import BaseModel, ConfigDict, Field, PrivateAttr
 from typer import Option

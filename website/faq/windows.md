@@ -34,7 +34,7 @@ The answer is [code signing](https://en.wikipedia.org/wiki/Code_signing), simila
 
 :material-arrow-right: Essentially, files are _"sealed"_ with a digital signature before distribution, while still in a trusted environment from the developer. A certificate authority (like your government) maintains a list of trusted signatures that can be checked against (passports), but if the content differs from the original (fake photo or fingerprint) the signature will be deemed invalid and execution blocked.
 
-At its theoretical best, this is a way to gatekeep the bad actors out, as getting a signing certificate is often expensive, easily revoked if misused, requires sensitive information to become public such as address, phone number, legal name, etc. and [might not even work](https://discord.com/channels/518489831232503809/600724122242383894/781166981746655282) properly in the end.
+At its theoretical best, this is a way to gatekeep the bad actors out, as getting a signing certificate is often expensive, easily revoked if misused, requires sensitive information to become public such as address, phone number, legal name, etc. and might not even work properly in the end.
 
 - Many Open Source projects struggles due lack of funding, which makes it infeasible to even consider getting a certificate - as it's _**not**_ an investment with direct returns.
 

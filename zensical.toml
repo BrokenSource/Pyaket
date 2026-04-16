@@ -1,8 +1,3 @@
-# Note: Experimental transition to zensical from mkdocs and its plugins
-
-# Fixme: Missing gen-files, mkdocstrings, snippets include, etc.
-# Fixme: Extend from a base configuration when supported
-
 [project]
 site_name = "Pyaket"
 site_description = "📦 Easy Python to Fast Executables"
