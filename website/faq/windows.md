@@ -7,9 +7,9 @@ icon: material/microsoft
 
 This is a complex topic to explain or not sound suspicious, bear with me - [Tremeschin](https://github.com/Tremeschin) - here.
 
-:material-arrow-right: The short answer is to **only run executables from trusted sources**. There is nothing inherently malicious with my side of the packaging solution - you can read and verify the full [source code](https://github.com/BrokenSource/Pyaket), in fact, you can destroy my whole carreer[^carreer] if you find something of bad faith in there!
+:material-arrow-right: The short answer is to **only run executables from trusted sources**. There is nothing inherently malicious with my side of the packaging solution - you can read and verify the full [source code](https://github.com/BrokenSource/Pyaket), in fact, you can destroy my whole career[^career] if you find something of bad faith in there!
 
-[^carreer]: Not something particurarly of my interest and professionalism - [reductio ad absurdum](https://en.wikipedia.org/wiki/Reductio_ad_absurdum).
+[^career]: Not something particurarly of my interest and professionalism - [reductio ad absurdum](https://en.wikipedia.org/wiki/Reductio_ad_absurdum).
 
 !!! note "**Note:** I have no control or responsibility over what others use the project for"
     Similar to how a streaming platform or messaging app can't be held responsible for the shared content to an extent, other projects using pyaket (why you're reading this) requires your own judgement and benefit of the doubt.
@@ -20,7 +20,7 @@ Out of pure necessity for features to work, like bundling uv, python, script fil
 
 - Windows and Chrome knows every file you download or execute: A project getting popular or the rush to get a new release can have thousands of downloads pretty quickly. That's a sign of self-replication and fast spread, which will likely get automatically blocked.
 
-- Better be safe than sorry, if something is half _sketchy_ better avoid it - this is a rule for life too. Microsoft and/or the AV are trying to protect users from their own mistakes, being strong on it as the platform is filled with non-technical users with malware targetting them {>>fair<<}
+- Better be safe than sorry, if something is half _sketchy_ better avoid it - this is a rule for life too. Microsoft and/or the AV are trying to protect users from their own mistakes, being strong on it as the platform is filled with non-technical users with malware targeting them {>>fair<<}
 
 - Parts of the compiled rust code _can be similar_ to a known virus, as the language itself can be used to write malware (like any others), which will share many common community libraries source code, such as networking, compression, etc. {>>false positive<<}
 

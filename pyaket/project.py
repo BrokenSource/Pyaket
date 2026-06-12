@@ -240,13 +240,13 @@ class PyaketProject(PyaketModel):
 
         # Complaints session
         if self.build.target.tier == 2:
-            logger.warning(f"Rust doesn't guarantee a working build for {self.build.target.value} (tier=2)")
+            logger.warn(f"Rust doesn't guarantee a working build for {self.build.target.value} (tier=2)")
         if self.build.target.tier == 3:
-            logger.warning(f"Rust support for {self.build.target.value} is very limited (tier=3)")
+            logger.warn(f"Rust support for {self.build.target.value} is very limited (tier=3)")
         if not self.build.target.stdlib:
-            logger.critical(f"No stdlib available for {self.build.target.value}, build might fail")
+            logger.crit(f"No stdlib available for {self.build.target.value}, build might fail")
         if not self.build.target.host_tools:
-            logger.critical(f"No host tools available for {self.build.target.value}, get rust on your own!")
+            logger.crit(f"No host tools available for {self.build.target.value}, get rust on your own!")
 
         # Todo: Auto zigbuild, xwin method
 

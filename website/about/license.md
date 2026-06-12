@@ -4,6 +4,19 @@ icon: material/license
 status: wip
 ---
 
+## Code
+
+The code is licensed under the [AGPLv3](https://www.tldrlegal.com/license/gnu-affero-general-public-license-v3-agpl-3-0) terms - a strong copyleft license to ensure it remains forever **Free and Open Source** for all users. You may get in touch for a custom agreement to lift restrictions of the license to extend it privately, if your use case requires so.
+
+!!! info "Additional restrictions are suggestions"
+    Section 7 of the license allows dropping extra terms that limits your freedom, at your option. Consider honoring the requests below in good faith for a sustainable project and community from which everyone benefits.
+
+### Contributions
+
+Following a [BDFL](https://en.wikipedia.org/wiki/Benevolent_dictator_for_life) model, by submitting any contributions to the project, you agree to transfer all rights of your submissions to the project authors, including permission to incorporate and use them as part of the project under any applicable licenses.
+
+Pyaket will move to a permissive license in the future, otherwise it would be hard to migrate.
+
 ## Usage
 
 ### Open Source
@@ -27,16 +40,6 @@ Commercial use, including, but not limited to, selling executables, for-profit d
 ### Educational
 
 No restrictions, as in teaching, research, academic projects or deployments, and alike.
-
-## Code
-
-The code is licensed under the [AGPLv3](https://www.tldrlegal.com/license/gnu-affero-general-public-license-v3-agpl-3-0) terms - a strong copyleft license to ensure it remains forever **Free and Open Source** for all users. You may [Get in Touch](./contact.md) for a custom agreement to lift restrictions of the license to extend it privately, if your use case requires so.
-
-### Contributions
-
-Following a [BDFL](https://en.wikipedia.org/wiki/Benevolent_dictator_for_life) model, by submitting any contributions to the project, you agree to transfer all rights of your submissions to the project authors, including permission to incorporate and use them as part of the project under any applicable licenses.
-
-Pyaket will move to a permissive license in the future, otherwise it would be hard to migrate.
 
 ## Liability
 

@@ -12,20 +12,12 @@
     <a href="https://github.com/BrokenSource/Pyaket/stargazers/"><img src="https://img.shields.io/github/stars/BrokenSource/Pyaket?label=Stars&style=flat&color=orange"></a>
     <a href="https://discord.gg/KjqvcYwRHm"><img src="https://img.shields.io/discord/1184696441298485370?label=Discord&style=flat&color=purple"></a>
   <br>
-  <b>
-    Links •
-    <a href="https://github.com/BrokenSource/Pyaket/">GitHub</a> •
-    <a href="https://pyaket.tremeschin.com/">Documentation</a> •
-    <a href="https://pyaket.tremeschin.com/about/changelog">Changelog</a> •
-    <a href="https://pyaket.tremeschin.com/about/license">License</a>
-  </b>
-  <br>
   <sub><small>⭐️ Consider starring the project to help it grow! ⭐️</small></sub>
-  <br>
-  <br>
 </div>
 
 <img src="https://github.com/user-attachments/assets/c16122a6-7c39-45a6-a224-cc8714f12534"/>
+
+**Note**: The project will receive more attention and simplifications soon-ish.
 
 ## 🔥 Description
 
@@ -47,7 +39,7 @@
     <img src="https://github.com/user-attachments/assets/0bc4f617-17c1-4e29-92cd-3ea5432b67e7"/>
   </a>
   <i>
-    Visit our documentation at
+    Visit the documentation at
     <a href="https://pyaket.tremeschin.com/">https://pyaket.tremeschin.com/</a>
   </i>
 </div>
