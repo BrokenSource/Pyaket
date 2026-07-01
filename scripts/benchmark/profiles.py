@@ -20,7 +20,7 @@ import sys
 import tempfile
 import time
 from pathlib import Path
-from typing import Self
+from typing import Callable, Generator, Self
 
 import pyaket
 from attrs import Factory, define
@@ -32,7 +32,7 @@ from pyaket import (
 
 
 @contextlib.contextmanager
-def stopwatch(self) -> callable:
+def stopwatch(self) -> Generator[Callable, None, None]:
     start = time.monotonic()
     yield lambda: time.monotonic() - start
 

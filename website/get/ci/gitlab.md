@@ -1,7 +1,6 @@
 ---
-title: GitLab Workflows
+title: GitLab
 icon: material/gitlab
-status: wip
 ---
 
 !!! quote ""

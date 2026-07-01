@@ -1,7 +1,6 @@
 ---
 title: Docker
 icon: material/docker
-status: wip
 ---
 
 !!! info

@@ -5,23 +5,16 @@ site_author = "Tremeschin"
 site_url  = "https://pyaket.tremeschin.com/"
 repo_url  = "https://github.com/BrokenSource/Pyaket/"
 repo_name = "BrokenSource/Pyaket"
-edit_uri  = "edit/main/website/"
 copyright = "&copy; CC BY-SA 4.0, <a href='https://github.com/Tremeschin/'>Tremeschin</a> 🇧🇷"
 docs_dir  = "website"
 nav = [
   {Origin = "https://tremeschin.com/"},
   {Home = [
     "index.md",
-    "about/community.md",
-    "about/contributing.md",
-    "about/changelog.md",
-    "about/roadmap.md",
-    "about/contact.md",
-    "about/mission.md",
-    "about/license.md",
-    "about/credits.md",
+    "changelog.md",
+    "license.md",
   ]},
-  {Installation = [
+  {Get = [
     "get/index.md",
     {Packages = [
       "get/python.md",
@@ -37,10 +30,10 @@ nav = [
       "get/rust.md",
     ]},
   ]},
-  {Examples = [
+  {Show = [
     "examples/index.md",
   ]},
-  {Documentation = [
+  {Docs = [
     "docs/index.md",
     {Configuration = [
       "docs/project/application.md",
@@ -58,78 +51,29 @@ nav = [
       "docs/pinning.md",
     ]},
   ]},
-  {Questions = [
+  {Help = [
     {General = [
-      "faq/general.md",
-      "faq/alternatives.md",
+      "help/general.md",
+      "help/alternatives.md",
     ]},
     {Systems = [
-      "faq/windows.md",
-      "faq/linux.md",
-      "faq/macos.md",
+      "help/windows.md",
+      "help/linux.md",
+      "help/macos.md",
     ]},
   ]},
 ]
 
-# Fixme: Common monorepo theme
-extra_css = ["css/main.css"]
-
-# ---------------------------------------------------------------------------- #
-
 [project.theme]
-variant = "modern"
+name = "zentheme"
 favicon = "assets/images/logo.png"
-language = "en"
-features = [
-  "announce.dismiss",
-  "content.action.view",
-  "content.code.annotate",
-  "content.code.copy",
-  "content.footnote.tooltips",
-  "content.tabs.link",
-  "content.tooltips",
-  "navigation.expand",
-  "navigation.footer",
-  "navigation.indexes",
-  "navigation.instant.prefetch",
-  "navigation.instant.progress",
-  "navigation.instant",
-  "navigation.path",
-  "navigation.tabs",
-  "navigation.top",
-  "search.highlight",
-  "toc.follow",
-]
-
-[project.extra.status]
-wip = "Work in Progress"
-deprecated = "Deprecated"
-
-# ---------------------------------------------------------------------------- #
 
 [project.theme.icon]
 logo = "octicons/package-16"
-repo = "fontawesome/brands/github"
+tag.default = "material/tag"
 
-[project.theme.font]
-text = "Inter"
-code = "Cascadia Code"
-
-[[project.theme.palette]]
-toggle.icon = "lucide/sun"
-toggle.name = "Switch to dark mode"
-media       = "(prefers-color-scheme: light)"
-scheme      = "default"
-primary     = "blue"
-accent      = "light-blue"
-
-[[project.theme.palette]]
-toggle.icon = "lucide/moon"
-toggle.name = "Switch to light mode"
-media       = "(prefers-color-scheme: dark)"
-scheme      = "slate"
-primary     = "orange"
-accent      = "orange"
+[project.extra.tags]
+dummy = "key"
 
 [[project.extra.social]]
 icon = "fontawesome/brands/discord"
@@ -142,7 +86,3 @@ link = "https://www.patreon.com/Tremeschin"
 [[project.extra.social]]
 icon = "fontawesome/brands/github"
 link = "https://github.com/Tremeschin"
-
-[[project.extra.social]]
-icon = "fontawesome/brands/youtube"
-link = "https://www.youtube.com/@Tremeschin"

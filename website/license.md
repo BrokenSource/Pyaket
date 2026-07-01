@@ -1,7 +1,6 @@
 ---
 title: License
 icon: material/license
-status: wip
 ---
 
 ## Code
@@ -27,7 +26,7 @@ Pyaket is free to use for any project under [Open Source Initiative Approved Lic
 - Share the word by linking or attributing the project if it helped you out 🚀
 
 !!! tip "Pyaket encourages selling Open Source Software"
-    Read about its [Mission](./mission.md) on sustainability, you _deserve_ to be rewarded for your work!
+    Read about its Mission on sustainability, you _deserve_ to be rewarded for your work!
 
 ### Commercial
 
@@ -35,7 +34,7 @@ Commercial use, including, but not limited to, selling executables, for-profit d
 
 [^get-started]: Using the future revenue made by your project to sponsor is perfectly fine!
 
-- Feel free to [Get in Touch](./contact.md) for custom agreements, questions, discounts, grants, features you'd need to make it work for you, or anything else really!
+- Feel free to [Get in Touch](./about/contact.md) for custom agreements, questions, discounts, grants, features you'd need to make it work for you, or anything else really!
 
 ### Educational
 

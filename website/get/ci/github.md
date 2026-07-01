@@ -1,7 +1,6 @@
 ---
-title: GitHub Workflows
+title: GitHub
 icon: material/github
-status: wip
 ---
 
 !!! warning "Experimental"
