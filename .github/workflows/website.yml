@@ -3,7 +3,9 @@ on:
   workflow_dispatch:
   push:
     paths:
+      - "readme.md"
       - "website/**"
+      - "zensical.toml"
   schedule:
     - cron: "0 0 * * 5"
 

@@ -2,13 +2,13 @@
 
 [package]
 name          = "pyaket"
-version       = "0.10.0"
+version       = "0.11.0"
 authors       = ["Tremeschin"]
 description   = "📦 Easy Python to Fast Executables"
 repository    = "https://github.com/BrokenSource/Pyaket"
 documentation = "https://pyaket.tremeschin.com/docs/"
 homepage      = "https://pyaket.tremeschin.com/"
-license       = "AGPL-3.0-only"
+license       = "MIT OR Apache-2.0"
 readme        = "../readme.md"
 rust-version  = "1.94"
 edition       = "2024"
@@ -26,7 +26,7 @@ path = "pyaket/main.rs"
 # ---------------------------------------------------------------------------- #
 
 [dependencies]
-anyhow        = {version="1.0.102"}
+anyhow        = {version="1.0.103"}
 clap          = {version="4.6.1", features=["derive"]}
 dialoguer     = {version="0.12.0", default-features=false}
 directories   = {version="6.0.0"}
@@ -47,7 +47,7 @@ features = [
 ]
 
 [dependencies.uv]
-version = "0.11.21"
+version = "0.11.26"
 default-features = false
 optional = true
 

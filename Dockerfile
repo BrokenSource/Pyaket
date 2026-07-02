@@ -6,7 +6,7 @@ LABEL org.opencontainers.image.source="https://github.com/BrokenSource/Pyaket"
 LABEL org.opencontainers.image.url="https://github.com/orgs/BrokenSource/packages"
 LABEL org.opencontainers.image.documentation="https://pyaket.tremeschin.com/"
 LABEL org.opencontainers.image.authors="Tremeschin"
-LABEL org.opencontainers.image.licenses="AGPL-3.0"
+LABEL org.opencontainers.image.licenses="MIT OR Apache-2.0"
 WORKDIR "/app"
 
 # Enable caching on docker apt..
