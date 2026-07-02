@@ -6,8 +6,6 @@ from enum import Enum
 from pathlib import Path
 from typing import Iterable, Optional, Self
 
-from dotmap import DotMap
-
 specs_json: Path = (Path(__file__).parent.joinpath("resources", "targets.json"))
 """Json file path with all rust target specs"""
 
@@ -38,29 +36,33 @@ class Target(str, Enum):
     # Specifications
 
     @property
-    def spec(self) -> DotMap:
+    def spec(self) -> dict:
         """Same as `rustc --print target-spec-json --target <this>`"""
         return specs[self.value]
 
     @property
+    def metadata(self) -> dict:
+        return self.spec["metadata"]
+
+    @property
     def description(self) -> str:
         """Human-readable description of this target"""
-        return self.spec.metadata.description
+        return self.metadata["description"]
 
     @property
     def tier(self) -> int:
         """Support tier level for this target"""
-        return self.spec.metadata.tier
+        return self.metadata["tier"]
 
     @property
     def stdlib(self) -> bool:
         """Does this target have rust stdlib available?"""
-        return bool(self.spec.metadata.std)
+        return bool(self.metadata["std"])
 
     @property
     def host_tools(self) -> bool:
         """Does this target support compiling rust?"""
-        return bool(self.spec.metadata.host_tools)
+        return bool(self.metadata["host_tools"])
 
     @property
     def exe_suffix(self) -> str:
@@ -70,16 +72,16 @@ class Target(str, Enum):
     # Operating Systems
 
     def is_windows(self) -> bool:
-        return (self.spec.os == "windows")
+        return (self.spec["os"] == "windows")
 
     def is_linux(self) -> bool:
-        return (self.spec.os == "linux")
+        return (self.spec["os"] == "linux")
 
     def is_macos(self) -> bool:
-        return (self.spec.os == "macos")
+        return (self.spec["os"] == "macos")
 
     def is_bsd(self) -> bool:
-        return self.spec.os in ("freebsd", "netbsd", "openbsd")
+        return self.spec["os"] in ("freebsd", "netbsd", "openbsd")
 
     def is_unix(self) -> bool:
         return any((
@@ -94,13 +96,13 @@ class Target(str, Enum):
     # Intel x86
 
     def is_x86_32(self) -> bool:
-        return (self.spec.arch == "x86")
+        return (self.spec["arch"] == "x86")
 
     def is_x86_64(self) -> bool:
-        return (self.spec.arch == "x86_64")
+        return (self.spec["arch"] == "x86_64")
 
     def is_x86(self) -> bool:
-        return self.spec.arch.startswith("x86")
+        return self.spec["arch"].startswith("x86")
 
     # ARM
 
