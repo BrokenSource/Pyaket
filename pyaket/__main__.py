@@ -1,70 +1,46 @@
 import contextlib
-import inspect
 import sys
 from contextlib import nullcontext
 
+from cyclopts import App
+from parsenaut._cyclopts import Launcher
 from pydantic import BaseModel
-from typer import Typer
-from typer.models import OptionInfo
 
-from pyaket import PyaketProject, __version__
-
-
-def pydantic2typer(cls: BaseModel) -> callable:
-    signature = type(cls)
-
-    def wrapper(**options):
-        for name, value in options.items():
-            setattr(cls, name, value)
-
-    # Copy the signatures to the wrapper function
-    wrapper.__signature__ = inspect.signature(signature)
-    wrapper.__doc__ = cls.__doc__
-
-    # Inject docstring into typer.Option help
-    for value in cls.model_fields.values():
-        for metadata in value.metadata:
-            if isinstance(metadata, OptionInfo):
-                if (help := (metadata.help or value.description)):
-                    metadata.help = help.split("\n")[0]
-
-    return wrapper
+import pyaket
+from pyaket import (
+    PyaketApplication,
+    PyaketBuild,
+    PyaketDependencies,
+    PyaketDirectories,
+    PyaketEntry,
+    PyaketProject,
+    PyaketPython,
+    PyaketTorch,
+)
 
 
 def main():
-    app: Typer = Typer(
-        chain=True,
-        no_args_is_help=True,
-        add_completion=False,
-        pretty_exceptions_show_locals=False,
-    )
+    app: App = Launcher.chain(App(
+        result_action="return_value",
+        help_flags=["--help"],
+        version=pyaket.__version__,
+    ))
 
-    pyaket = PyaketProject()
-
-    # Think about it.
-    def common() -> dict:
-        nonlocal panel
-        return dict(
-            no_args_is_help=True,
-            rich_help_panel=panel
-        )
+    project = PyaketProject()
 
     with nullcontext("🔴 Project") as panel:
-        app.command(name="app", **common())(pydantic2typer(pyaket.app))
-        app.command(name="run", **common())(pydantic2typer(pyaket.entry))
-        app.command(name="dir", **common())(pydantic2typer(pyaket.dirs))
+        app.command(PyaketApplication, name="app", group=panel, result_action=lambda x: setattr(project, "app", x))
+        app.command(PyaketEntry,       name="run", group=panel, result_action=lambda x: setattr(project, "entry", x))
+        app.command(PyaketDirectories, name="dir", group=panel, result_action=lambda x: setattr(project, "directories", x))
 
     with nullcontext("🟡 Dependencies") as panel:
-        app.command(name="dep",    **common())(pydantic2typer(pyaket.deps))
-        app.command(name="python", **common())(pydantic2typer(pyaket.python))
-        app.command(name="torch",  **common())(pydantic2typer(pyaket.torch))
+        app.command(PyaketDependencies,  name="dep",    group=panel, result_action=lambda x: setattr(project, "deps", x))
+        app.command(PyaketPython,        name="python", group=panel, result_action=lambda x: setattr(project, "python", x))
+        app.command(PyaketTorch,         name="torch",  group=panel, result_action=lambda x: setattr(project, "torch", x))
 
     with nullcontext("🟢 Building") as panel:
-        app.command(name="build", **common())(pydantic2typer(pyaket.build))
-        app.command(name="compile", rich_help_panel=panel)(pyaket.compile)
+        app.command(PyaketBuild, name="build", group=panel, result_action=lambda x: setattr(project, "build", x))
+        app.command(project.compile, name="compile", group=panel, result_action=lambda x: setattr(project, "compile", x))
 
     with contextlib.suppress(SystemExit):
         app(sys.argv[1:])
-
-if __name__ == "__main__":
-    main()

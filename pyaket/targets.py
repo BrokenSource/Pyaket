@@ -1,3 +1,4 @@
+"""Last sync: Rust 1.97.0-nightly (2026-4-22)"""
 import json
 import os
 import subprocess
@@ -7,14 +8,10 @@ from typing import Iterable, Optional, Self
 
 from dotmap import DotMap
 
-import pyaket
+specs_json: Path = (Path(__file__).parent.joinpath("resources", "targets.json"))
+"""Json file path with all rust target specs"""
 
-# Last sync (json + enum): Rust 1.95.0-nightly (2026-01-19)
-
-TARGET_SPECS_JSON: Path = (pyaket.resources/"targets.json")
-"""Json file with all rust target specs"""
-
-TARGET_SPECS: DotMap = DotMap(json.loads(TARGET_SPECS_JSON.read_text("utf-8")))
+specs: dict = json.loads(specs_json.read_text(encoding="utf-8"))
 """Dictionary from `rustc -Z unstable-options --print all-target-specs-json`"""
 
 class Target(str, Enum):
@@ -43,7 +40,7 @@ class Target(str, Enum):
     @property
     def spec(self) -> DotMap:
         """Same as `rustc --print target-spec-json --target <this>`"""
-        return TARGET_SPECS[self.value]
+        return specs[self.value]
 
     @property
     def description(self) -> str:
@@ -182,11 +179,11 @@ class Target(str, Enum):
         - Known to be easily buildable in workflows
         """
         yield from (
+            cls.x86_64_unknown_linux_gnu,
+            cls.x86_64_pc_windows_gnu,
             cls.aarch64_apple_darwin,
             cls.aarch64_unknown_linux_gnu,
             cls.x86_64_apple_darwin,
-            cls.x86_64_pc_windows_gnu,
-            cls.x86_64_unknown_linux_gnu,
         )
 
     def in_recommended_list(self) -> bool:
@@ -515,11 +512,11 @@ if __name__ == "__main__":
     subprocess.check_call((
         "rustc", "-Z", "unstable-options",
         "--print", "all-target-specs-json",
-        "-o", str(TARGET_SPECS_JSON),
+        "-o", str(specs_json),
     ))
 
     # Generate and print enum entries
-    targets: dict = json.loads(TARGET_SPECS_JSON.read_text())
+    targets: dict = json.loads(specs_json.read_text())
     longest: int  = max(map(len, targets.keys()))
 
     for target in targets:

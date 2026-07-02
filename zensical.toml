@@ -30,9 +30,6 @@ nav = [
       "get/rust.md",
     ]},
   ]},
-  {Show = [
-    "examples/index.md",
-  ]},
   {Docs = [
     "docs/index.md",
     {Configuration = [

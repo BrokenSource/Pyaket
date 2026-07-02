@@ -27,7 +27,7 @@ Compiling to Apple targets requires any of:
 
 You're good to go, as simple as that :rocket:
 
-!!! tip "Pyaket [Docker images](../../get/docker.md#section) already includes them! :simple-docker: "
+!!! tip "Pyaket [Docker images](../../get/docker.md) already includes them! :simple-docker: "
 
 <sup><b>Note:</b> Automatically managing an SDK is tracked in <a href="https://github.com/BrokenSource/Pyaket/issues/17">this issue</a>.</sup>
 

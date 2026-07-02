@@ -1,5 +1,6 @@
-from pyaket import PyaketProject, Target
 import pyaket
+from pyaket import PyaketProject
+from pyaket.targets import Target
 
 for target in Target.recommended():
     project = PyaketProject()
