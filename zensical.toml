@@ -1,11 +1,10 @@
 [project]
 site_name = "Pyaket"
-site_description = "📦 Easy Python to Fast Executables"
 site_author = "Tremeschin"
+site_description = "📦 Easy Python to Fast Executables"
 site_url  = "https://pyaket.tremeschin.com/"
 repo_url  = "https://github.com/BrokenSource/Pyaket/"
 repo_name = "BrokenSource/Pyaket"
-copyright = "&copy; CC BY-SA 4.0, <a href='https://github.com/Tremeschin/'>Tremeschin</a> 🇧🇷"
 docs_dir  = "website"
 nav = [
   {Origin = "https://tremeschin.com/"},

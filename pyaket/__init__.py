@@ -1,11 +1,9 @@
 from dearlog import logger  # isort: split
 
-from importlib.metadata import metadata
-
-__meta__    = metadata(str(__package__))
-__about__   = __meta__.get("Summary", "")
-__author__  = __meta__.get("Author", "")
-__version__ = __meta__.get("Version", "")
+__about__   = "📦 Easy Python to Fast Executables"
+__package__ = "pyaket"
+__version__ = "0.11.0"
+__license__ = "MIT OR Apache-2.0"
 
 import contextlib
 import os

@@ -141,10 +141,10 @@ class CargoWrapper(str, Enum):
 class PyaketBuild(BaseModel):
     """Release configuration for the application"""
 
-    host: Target = Target.host()
+    host: Target = Field(default_factory=Target.host)
     """Host platform building the application"""
 
-    target: Target = Target.host()
+    target: Target = Field(default_factory=Target.host)
     """A rust target platform to compile for"""
 
     profile: CargoProfile = CargoProfile.Small

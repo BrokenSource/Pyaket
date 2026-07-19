@@ -1,4 +1,3 @@
-import contextlib
 import sys
 from contextlib import nullcontext
 
