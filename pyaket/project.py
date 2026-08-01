@@ -4,10 +4,10 @@ import sys
 import tarfile
 import tomllib
 import uuid
+from collections.abc import Iterable
 from enum import Enum
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Iterable, Optional
 
 from pydantic import BaseModel, Field, PrivateAttr
 
@@ -26,7 +26,7 @@ class PyaketApplication(BaseModel):
     author: str = "BrokenSource"
     """Subdirectory of the platform's user data directory to install the application"""
 
-    vendor: Optional[str] = None
+    vendor: str | None = None
     """Overrides platform directory workspace"""
 
     version: str = pyaket.__version__
@@ -36,7 +36,7 @@ class PyaketApplication(BaseModel):
     """A short description of the application, used for metadata, shortcuts"""
 
     # Todo: Ensure PNG for Unix, 256x256 .ico for Windows
-    icon: Optional[Path] = None
+    icon: Path | None = None
     """Path to an icon file to use for the application"""
 
 # ---------------------------------------------------------------------------- #
@@ -93,7 +93,7 @@ class PyaketPython(BaseModel):
 class PyaketTorch(BaseModel):
     """Optional configuration to install PyTorch at runtime"""
 
-    version: Optional[str] = None
+    version: str | None = None
     """A target torch version to use at runtime, empty disables it"""
 
     backend: str = "auto"
@@ -104,10 +104,10 @@ class PyaketTorch(BaseModel):
 class PyaketEntry(BaseModel):
     """Configuration for the entry point of the application"""
 
-    module: Optional[str] = None
+    module: str | None = None
     """A module to run at runtime as (python -m module ...)"""
 
-    command: Optional[str] = None
+    command: str | None = None
     """A command to run at runtime (command ...)"""
 
 # ---------------------------------------------------------------------------- #
@@ -184,8 +184,9 @@ class PyaketBuild(BaseModel):
 # ---------------------------------------------------------------------------- #
 
 class PyaketAssets(BaseModel):
-    _root = PrivateAttr(default_factory=lambda:
-        TemporaryDirectory(prefix=f"{__package__}-"))
+    _root: TemporaryDirectory = PrivateAttr(
+        default_factory=lambda: TemporaryDirectory(prefix=f"{__package__}-")
+    )
 
     @property
     def root(self) -> Path:
@@ -250,10 +251,10 @@ class PyaketProject(BaseModel):
 
         # Fixme (standalone)
         if self.build.standalone:
-            raise NotImplementedError((
+            raise NotImplementedError(
                 "Standalone releases aren't implemented, awaiting:\n"
                 "• https://github.com/astral-sh/uv/issues/1681"
-            ))
+            )
 
         # https://github.com/rust-cross/cargo-zigbuild/issues/329
         if sys.platform == "darwin":
@@ -292,7 +293,7 @@ class PyaketProject(BaseModel):
         # Find the compiled binary
         binary = next(
             (self.build.target_dir/self.build.target.value/self.build.profile.value)
-            .glob(("pyaket" + self.build.target.exe_suffix))
+            .glob("pyaket" + self.build.target.exe_suffix)
         )
 
         # Rename the compiled binary to the final release name

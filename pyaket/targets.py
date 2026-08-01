@@ -2,9 +2,11 @@
 import json
 import os
 import subprocess
+from collections.abc import Iterable
 from enum import Enum
 from pathlib import Path
-from typing import Iterable, Optional, Self
+from subprocess import PIPE
+from typing import Self
 
 specs_json: Path = (Path(__file__).parent.joinpath("resources", "targets.json"))
 """Json file path with all rust target specs"""
@@ -29,7 +31,7 @@ class Target(str, Enum):
             return cls(value)
         return cls(subprocess.run(
             ("rustc", "--print", "host-tuple"),
-            capture_output=True, text=True
+            check=True, text=True, stdout=PIPE,
         ).stdout.strip())
 
     # -------------------------------- #
@@ -114,11 +116,10 @@ class Target(str, Enum):
 
     # RISC-V
 
-    ...
 
     # -------------------------------- #
 
-    def wheel(cls) -> Optional[str]:
+    def wheel(cls) -> str:
         """Best-effort for a matching python wheel platform tag"""
         return {
             cls.aarch64_apple_darwin:          "macosx_11_0_arm64",
@@ -137,8 +138,7 @@ class Target(str, Enum):
             cls.arm_unknown_linux_gnueabihf:   "manylinux2014_armv7l",
             cls.armv7_unknown_linux_gnueabihf: "manylinux2014_armv7l",
             cls.armv7_unknown_linux_musleabi:  "musllinux_1_1_armv7l",
-            # ...
-        }.get(cls)
+        }[cls]
 
     # ------------------------------------------------------------------------ #
     # Lists
@@ -503,6 +503,7 @@ class Target(str, Enum):
     xtensa_esp32s3_none_elf              = "xtensa-esp32s3-none-elf"
 
 # ---------------------------------------------------------------------------- #
+# Update targets and enum options
 
 if __name__ == "__main__":
     import re
