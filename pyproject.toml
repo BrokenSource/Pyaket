@@ -12,7 +12,6 @@ dependencies = [
     "parsenaut",
     "pillow",
     "pydantic",
-    "rustbin",
 ]
 
 [project.urls]
@@ -22,7 +21,8 @@ GitHub = "https://github.com/BrokenSource/Pyaket"
 pyaket = "pyaket.__main__:main"
 
 [project.optional-dependencies]
-xwin = ["cargo-xwin<=0.22.0", "ninja"]
+rustup = ["rustbin"]
+xwin = ["cargo-xwin", "ninja"]
 zig  = ["cargo-zigbuild", "ziglang"]
 all  = [
     "pyaket[xwin]",
