@@ -71,6 +71,9 @@ tag.default = "material/tag"
 [project.extra.tags]
 dummy = "key"
 
+[project.plugins.social]
+enabled = true
+
 [[project.extra.social]]
 icon = "fontawesome/brands/discord"
 link = "https://discord.gg/KjqvcYwRHm"
