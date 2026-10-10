@@ -5,6 +5,7 @@ site_description = "📦 Easy Python to Fast Executables"
 site_url  = "https://pyaket.tremeschin.com/"
 repo_url  = "https://github.com/BrokenSource/Pyaket/"
 repo_name = "BrokenSource/Pyaket"
+extra_css = ["main.css"]
 docs_dir  = "website"
 nav = [
   {Origin = "https://tremeschin.com/"},
