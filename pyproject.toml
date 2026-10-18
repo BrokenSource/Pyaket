@@ -29,9 +29,6 @@ all  = [
     "pyaket[zig]",
 ]
 
-[dependency-groups]
-dev = ["pyaket[all]"]
-
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
