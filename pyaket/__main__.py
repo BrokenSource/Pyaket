@@ -2,7 +2,7 @@ import sys
 from contextlib import nullcontext
 
 from cyclopts import App
-from parsenaut._cyclopts import Launcher
+from parsenaut.cyclopts import Launcher
 
 import pyaket
 from pyaket import (
